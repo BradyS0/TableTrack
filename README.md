@@ -11,7 +11,7 @@ Antoinne
 
 Arsalan Siddiqui - siddiq11@myumanitoba.ca
 
-Brady
+Braydon Schick - schickb@myumanitoba.ca
 
 Matt
 
