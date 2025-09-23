@@ -1,12 +1,11 @@
-# COMP4350-group5
-
-
+<h1 style="display: flex; align-items: center; gap: 5px;">
+  <img src="TableTrack-logo.svg" alt="Logo" height="75" style="padding: 0; margin: 0;" />
+  TableTrack
+</h1>
 
 
 
 ## Contributors
-
-
 
 Antoinne
 
