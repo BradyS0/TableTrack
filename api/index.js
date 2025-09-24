@@ -23,14 +23,6 @@ app.get('/api/users', async (req, res) => {
   res.json({ data });
 });
 
-// Another example route: add a user
-app.post('/api/users', async (req, res) => {
-  const { name, email } = req.body;
-  const { data, error } = await supabase.from('users').insert([{ name, email }]);
-  if (error) return res.status(500).json({ error: error.message });
-  res.json({ data });
-});
-
 // Start server
 app.listen(PORT, () => {
   console.log(`API server running on port ${PORT}`);

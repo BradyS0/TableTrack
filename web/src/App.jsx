@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 function App() {
   useEffect(() => {
-    fetch(`${__API_URL__}/users`)
+    fetch(`${__API_URL__}/api/users`)
       .then(res => {
         if (!res.ok) throw new Error(`Server responded with ${res.status}`);
         return res.json();
