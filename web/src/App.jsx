@@ -5,7 +5,7 @@ function App() {
   const [error, setError] = useState(null); // store errors
 
   useEffect(() => {
-    fetch(`${__API_URL__}/users`)
+    fetch(`${__API_URL__}/api/users`)
       .then(res => {
         if (!res.ok) throw new Error(`Server responded with ${res.status}`);
         return res.json();
