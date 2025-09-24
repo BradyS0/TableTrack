@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Enable CORS for your frontend website
-app.use(cors({ origin: 'https://my-website.netlify.app' }));
+app.use(cors({ origin: process.env.WEBSITE_URL }));
 app.use(express.json());
 
 // Connect to Supabase
