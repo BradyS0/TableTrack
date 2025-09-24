@@ -2,47 +2,36 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`${__API_URL__}/api/users`)
-      .then(res => res.json())
-      .then(data => {
-        setUsers(data);
-        setLoading(false);
+    fetch(`${__API_URL__}/users`)
+      .then(res => {
+        if (!res.ok) throw new Error(`Server responded with ${res.status}`);
+        return res.json();
       })
-      .catch(err => {
-        console.error("Error fetching users:", err);
-        setLoading(false);
-      });
+      .then(data => {
+        if (!Array.isArray(data)) {
+          throw new Error("API did not return an array");
+        }
+        setUsers(data);
+      })
+      .catch(err => setError(err.message));
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (error) return <div style={{ color: "red" }}>Error: {error}</div>;
 
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
+    <div>
       <h1>Users</h1>
       {users.length === 0 ? (
-        <p>No users found.</p>
+        <p>No users yet</p>
       ) : (
-        <table border="1" cellPadding="8" style={{ borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map(user => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <ul>
+          {users.map(u => (
+            <li key={u.id}>{u.name} ({u.email})</li>
+          ))}
+        </ul>
       )}
     </div>
   );
