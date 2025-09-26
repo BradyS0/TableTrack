@@ -16,7 +16,6 @@ TableTrack is designed to make dining out more personal and convenient, bridging
 * Manager  
   * As a manager I want to be able to create an account so that I can create and edit my restaurant's dashboard/profile.  
     * As a manager, I want to upload a logo and restaurant details so that customers can easily recognize my business.  
-  * As a manager, I want to assign roles to staff accounts so that they can help manage reservations and reviews.  
 * Customer  
   * As a customer I want to be able to create an account so that I can make, save, edit and cancel any reservations under my name.  
   * As a customer, I want to delete my account so that my data is no longer stored in the system.  
@@ -43,8 +42,11 @@ TableTrack is designed to make dining out more personal and convenient, bridging
 
 * As a client, I want to search for restaurants by location or cuisine tag, so that I can discover the right branch to visit.  
 * As a customer, I want to be able to view multiple restaurants at once so that I can decide where to eat.  
-* As a customer, I want to compare availability across multiple restaurants so that I can choose the most convenient option.  
-* As a customer, I 
+* As a customer, I want to compare availability across multiple restaurants so that I can choose the most convenient option.
+
+# Non-Functional Feature
+
+* The database will purge reservations that have expired.
 
 # Additional Features and User Stories
 
@@ -78,7 +80,8 @@ TableTrack is designed to make dining out more personal and convenient, bridging
 
 ## Planned implementation for Sprint1
 **[Features](https://github.com/BradyS0/TableTrack/issues?q=milestone%3A%22Sprint%201%22%20label%3Afeature)**
-**[UserStories](https://github.com/BradyS0/TableTrack/issues?q=milestone%3A%22Sprint%201%22%20label%3Auser-story)** *(includes Acceptance cirteria)*
+
+**[User Stories](https://github.com/BradyS0/TableTrack/issues?q=milestone%3A%22Sprint%201%22%20label%3Auser-story)** *(includes Acceptance cirteria)*
 
 # Architecture Diagram
 ![Archtecture Diagram image](./archDiagram.png)
