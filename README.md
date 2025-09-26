@@ -3,17 +3,14 @@
   TableTrack
 </h1>
 
+Ever been too lazy to call for a reservation? How about being seated right by the washroom? Has managing the restaurant been too chaotic to pick up a call? At TableTrack, we can change that. TableTrack is your all-in-one service to discover restaurants, read reviews, and make your own personalized reservations.
 
 
-## Contributors
+## Sprint Worksheets
+ - [ ] ***[Sprint 0](./documentation/sprint0/sprint0.md)***
 
-Antoinne
+## Standards
+- Programming Standards *$_{TBA}$*
+- Workflow / Contribution Standards *$_{TBA}$*
 
-Arsalan Siddiqui - siddiq11@myumanitoba.ca
-
-Braydon Schick - schickb@myumanitoba.ca
-
-Matt
-
-Mohammad
 
