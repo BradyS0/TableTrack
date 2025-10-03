@@ -1,3 +1,4 @@
+// this code was partially generated with chatGPT
 // api/logic/index.js
 import express from 'express';
 import cors from 'cors';

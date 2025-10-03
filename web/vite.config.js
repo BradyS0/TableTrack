@@ -1,3 +1,4 @@
+// this code was partially generated with chatGPT
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 

@@ -1,3 +1,4 @@
+// this code was partially generated with chatGPT
 import { useEffect, useState } from "react";
 
 function App() {
