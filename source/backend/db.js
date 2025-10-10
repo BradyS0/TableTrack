@@ -2,7 +2,7 @@
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
 
-dotenv.config(); // loads .env if running locally or in Docker
+dotenv.config(); // loads .env if running locally, docker should inject it's own
 
 // Pick DB name based on NODE_ENV, with a fallback
 const dbName =

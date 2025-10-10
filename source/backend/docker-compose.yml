@@ -14,8 +14,12 @@ services:
     build: .
     depends_on:
       - db
-    env_file:
-      - .env
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=${DB_HOST}
     ports:
       - "3000:3000"
     volumes:
