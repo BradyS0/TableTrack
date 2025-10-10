@@ -32,10 +32,12 @@ jobs:
           node-version: 20
 
       - name: Build API Docker image
+        working-directory: ./source/backend
         run: |
           docker-compose -f docker-compose.yml build api
 
       - name: Run API container
+        working-directory: ./source/backend
         run: |
           docker-compose -f docker-compose.yml up -d api
           # Give it a few seconds to start up
@@ -46,5 +48,6 @@ jobs:
           curl -f http://localhost:3000 || (echo "API failed to start" && exit 1)
 
       - name: Stop containers
+        working-directory: ./source/backend
         if: always()
         run: docker-compose -f docker-compose.yml down
