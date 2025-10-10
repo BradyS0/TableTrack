@@ -32,11 +32,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: cd api && npm ci
+      - run: cd source/backend && npm ci
       - name: Wait for Postgres
         run: |
           until nc -z localhost 5432; do
             echo "Waiting for Postgres..."
             sleep 1
           done
-      - run: cd api && npm run test:integration
+      - run: cd source/backend && npm run test:integration
