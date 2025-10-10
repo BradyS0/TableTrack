@@ -2,8 +2,8 @@
 import express from "express";
 import cors from "cors";
 import userRouter from "./routes/user.js";
-import sequelize from "./db.js";
-import config from "./config/config.js";
+// import sequelize from "./db.js";
+import sequelize, { config } from "./config/config.js";
 
 const app = express();
 
