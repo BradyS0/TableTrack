@@ -6,7 +6,7 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     services:
-      postgres:
+      db:
         image: postgres:16
         env:
           POSTGRES_USER: user
@@ -24,17 +24,29 @@ jobs:
       DB_PASS: password
       DB_NAME: mydb_test
       DB_HOST: db
+      DB_PORT: 5432
 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: cd source/backend && npm ci
+
+      - name: Install dependencies
+        run: cd source/backend && npm ci
+
       - name: Wait for Postgres
         run: |
-          until nc -z db 5432; do
+          for i in {1..20}; do
+            if pg_isready -h db -U user -d mydb_test; then
+              echo "Postgres is ready"
+              exit 0
+            fi
             echo "Waiting for Postgres..."
-            sleep 1
+            sleep 3
           done
-      - run: cd source/backend && npm run test:integration
+          echo "Postgres did not start in time"
+          exit 1
+
+      - name: Run integration tests
+        run: cd source/backend && npm run test:integration
