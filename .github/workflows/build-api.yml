@@ -9,12 +9,12 @@ jobs:
     services:
       db:
         image: postgres:16
-        ports:
-          - 5432:5432
         env:
           POSTGRES_USER: user
           POSTGRES_PASSWORD: password
           POSTGRES_DB: mydb_test
+        ports:
+          - 5432:5432
         options: >-
           --health-cmd="pg_isready -U user -d mydb_test"
           --health-interval=10s
@@ -38,7 +38,8 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: cd source/backend && npm ci
+        working-directory: ./source/backend
+        run: npm ci
 
       - name: Build and run API Docker image
         working-directory: ./source/backend
@@ -61,6 +62,6 @@ jobs:
           exit 1
 
       - name: Stop containers
-        working-directory: ./source/backend
         if: always()
+        working-directory: ./source/backend
         run: docker compose down

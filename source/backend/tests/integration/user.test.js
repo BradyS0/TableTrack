@@ -1,4 +1,11 @@
 //file party created using chatGPT
+
+process.env.NODE_ENV = "test";
+process.env.DB_USER = "user";
+process.env.DB_PASS = "password";
+process.env.DB_NAME = "mydb_test";
+process.env.DB_HOST = "localhost";
+
 import request from "supertest";
 import app from "../../index.js";
 import sequelize from "../../db.js";
@@ -11,7 +18,8 @@ import { User } from "../../models/User.js";
 // const {}
 
 beforeAll(async () => {
-    process.env.NODE_ENV = "test";
+    await sequelize.authenticate();
+    console.log("Connection has been established successfully.");
     await sequelize.sync({ force: true });
 });
 
