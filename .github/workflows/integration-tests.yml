@@ -1,0 +1,44 @@
+name: Integration Tests
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: mydb_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U user"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      NODE_ENV: test
+      DB_USER: user
+      DB_PASS: password
+      DB_NAME: mydb_test
+      DB_HOST: localhost
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: cd api && npm ci
+      - name: Wait for Postgres
+        run: |
+          until nc -z localhost 5432; do
+            echo "Waiting for Postgres..."
+            sleep 1
+          done
+      - run: cd api && npm run test:integration

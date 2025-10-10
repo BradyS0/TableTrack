@@ -1,0 +1,28 @@
+// partly made using chatGPT
+import express from "express";
+import cors from "cors";
+import userRouter from "./routes/user.js";
+import sequelize from "./db.js";
+import config from "./config/config.js";
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+app.use("/users", userRouter);
+
+const startServer = () => {
+    app.listen(config.port, () => console.log(`Server running on port ${config.port}`));
+};
+
+const run = async () => {
+    await sequelize.sync(); // ensure DB is connected and models are synced
+
+    if (process.env.NODE_ENV !== "test") {
+        startServer();
+    }
+};
+
+run();
+
+export default app; // for supertest
