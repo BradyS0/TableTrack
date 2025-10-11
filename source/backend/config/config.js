@@ -1,4 +1,4 @@
-﻿// this file was created using chatGPT
+// this file was created using chatGPT
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME, NODE_ENV, PORT } = process.env;
 
 const config = {

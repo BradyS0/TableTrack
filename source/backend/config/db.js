@@ -1,4 +1,4 @@
-﻿//this file was created using chatGPT
+//this file was created using chatGPT
 import { Sequelize } from "sequelize";
 
 const sequelize = new Sequelize(
