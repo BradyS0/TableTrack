@@ -12,11 +12,6 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-        options: >-
-          --health-cmd="pg_isready -U user"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,8 +20,11 @@ jobs:
       - run: cd source/backend && npm ci
       - name: Wait for Postgres
         run: |
-          until nc -z postgres 5432; do
-            echo "Waiting for Postgres..."
-            sleep 1
+          for i in {1..30}; do
+            nc -z postgres 5432 && echo "Postgres is up!" && exit 0
+            echo "Waiting for Postgres... ($i)"
+            sleep 2
           done
+          echo "Postgres failed to start" >&2
+          exit 1
       - run: cd source/backend && npm run test:integration
