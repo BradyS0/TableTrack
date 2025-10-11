@@ -21,5 +21,5 @@ jobs:
       - run: cd source/backend && npm ci
       - name: Run Integration Tests
         env:
-          DATABASE_URL: db://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DB
+          DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@db:5432/${{ secrets.POSTGRES_DB }}
         run: cd source/backend && npm run test:integration
