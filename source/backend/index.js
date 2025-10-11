@@ -2,14 +2,14 @@
 import express from "express";
 import cors from "cors";
 import userRouter from "./routes/user.js";
-// import sequelize from "./db.js";
-import sequelize from "./config/config.js";
+import sequelize from "./config/db.js";
+import { config } from "./config/config.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/users", userRouter);
+app.use("/user", userRouter);
 
 const startServer = () => {
     app.listen(config.port, () => console.log(`Server running on port ${config.port}`));

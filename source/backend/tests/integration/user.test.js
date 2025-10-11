@@ -1,13 +1,13 @@
 //file party created using chatGPT
 import request from "supertest";
 import app from "../../index.js";
-import sequelize from "../../db.js";
+import sequelize from "../../config/db.js";
 import { User } from "../../models/User.js";
 
 // testing not using babel
 // const {request} = require('supertest');
 // const {app} = require('../../index.js');
-// const {sequelize} = require('../../db.js');
+// const {sequelize} = require('../../config/db.js');
 // const {}
 
 beforeAll(async () => {
