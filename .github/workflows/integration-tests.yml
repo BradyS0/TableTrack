@@ -14,12 +14,15 @@ jobs:
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         ports:
           - 5432:5432
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
       - run: cd source/backend && npm ci
+
       - name: Wait for Postgres
         run: |
           for i in {1..30}; do
@@ -29,4 +32,8 @@ jobs:
           done
           echo "Postgres failed to start" >&2
           exit 1
-      - run: cd source/backend && npm run test:integration
+
+      - name: Run Integration Tests
+        run: cd source/backend && npm run test:integration
+        env:
+          DATABASE_URL: postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@postgres:5432/$POSTGRES_DB
