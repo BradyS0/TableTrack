@@ -1,0 +1,86 @@
+.card-grid {
+  display: flex;
+  justify-content: flex-start; /* Aligns cards to the left, no space-between */
+  flex-wrap: wrap;
+  gap: 20px; /* Consistent gap between cards */
+  margin: 2em;
+  padding: 2em;
+  background-color: #66666628;
+}
+
+.restCard {
+  display: flex;
+  flex-flow: column;
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  flex: 0 0 23%; /* Slightly less than 25% to account for gap, allows 4 per row */
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  min-width: 250px;
+  min-height: 200px;
+  gap: 5px;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+.restCard h3 {
+  margin: 10px 0;
+}
+
+.restCard p {
+  color: #666;
+}
+
+.restLogo{
+  width: 80px;
+}
+
+.rating {
+ position: relative; /* Positions .rating absolutely within .restCard */
+  color: #ecad00;
+  align-self: flex-start; /* Ensures it starts at the left in the flex context */
+}
+
+
+.restTime{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-top: 10px;
+  align-self: flex-start;
+}
+
+.restTime img{
+  width: 25px;
+  opacity: .55;
+  margin-right: 5px;
+}
+
+
+.tags{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: .15rem;
+}
+
+.tags p {
+  background-color: grey;
+  color: white;
+  border-radius: 1rem;
+  padding: .25rem .5rem;
+  font-size: smaller;
+}
+
+/* show at most 3 tags */
+.tags p:nth-child(n+4) {
+  display: none;
+}
