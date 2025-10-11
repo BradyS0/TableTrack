@@ -1,4 +1,4 @@
-const {validate_email} = require('../../logic/userLogic.js');
+﻿const { validate_email } = require('../../logic/userLogic.js');
 
 test("email has @ symbol with in it", () => {
 

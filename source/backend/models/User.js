@@ -1,4 +1,4 @@
-//partly made using chatGPT
+﻿//partly made using chatGPT
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";  // updated import
 

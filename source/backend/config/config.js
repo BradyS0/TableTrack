@@ -1,14 +1,12 @@
-import { Sequelize } from "sequelize";
+﻿// this file was created using chatGPT
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME, NODE_ENV, PORT } = process.env;
 
-const sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASS,
-    {
-        host: process.env.DB_HOST || "localhost",
-        dialect: "postgres",
-        logging: false,
-    }
-);
+const config = {
+    port: PORT || 3000,
+    dbUrl: DB_USER && DB_PASSWORD && DB_HOST && DB_PORT && DB_NAME
+        ? `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
+        : '',
+    env: NODE_ENV || 'development',
+};
 
-export default sequelize;
+export default config; 

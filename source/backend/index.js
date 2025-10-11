@@ -1,9 +1,9 @@
-// partly made using chatGPT
+﻿// partly made using chatGPT
 import express from "express";
 import cors from "cors";
 import userRouter from "./routes/user.js";
 import sequelize from "./config/db.js";
-import { config } from "./config/config.js";
+import config from "./config/config.js";
 
 const app = express();
 
@@ -25,4 +25,4 @@ const run = async () => {
 
 run();
 
-export default app; // for supertest
+export default app;

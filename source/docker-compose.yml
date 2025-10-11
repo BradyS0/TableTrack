@@ -1,0 +1,43 @@
+﻿services:
+  db:
+    image: postgres:16
+    container_name: db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  api:
+    build: ./backend
+    container_name: api
+    depends_on:
+      - db
+    environment:
+      PORT: ${API_PORT}
+      NODE_ENV: ${NODE_ENV}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_HOST: db
+      DB_PORT: ${DB_PORT}
+    ports:
+      - "${API_PORT}:3000"
+    networks:
+      - app-network
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: ["./wait-for-it.sh", "db:5432", "--", "npm", "start"]
+
+volumes:
+  pgdata:
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,8 +1,8 @@
-function validate_email(email){
-    if(email.includes("@"))
+﻿function validate_email(email) {
+    if (email.includes("@"))
         return true;
     else
         return false;
 }
 
-module.exports = {validate_email};
+module.exports = { validate_email };
