@@ -20,6 +20,11 @@ jobs:
           node-version: 20
       - run: cd source/backend && npm ci
       - name: Run Integration Tests
-        env:
-          DATABASE_URL: postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@db:5432/${{ secrets.POSTGRES_DB }}
         run: cd source/backend && npm run test:integration
+        env:
+          DB_HOST: db
+          DB_NAME: ${{ secrets.POSTGRES_DB }}
+          DB_USER: ${{ secrets.POSTGRES_USER }}
+          DB_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          DB_PORT: 5432
+          DB_DIALECT: postgres
