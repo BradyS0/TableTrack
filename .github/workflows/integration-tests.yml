@@ -19,8 +19,11 @@ jobs:
         with:
           node-version: 20
       - run: cd source/backend && npm ci
+
       - name: Run Integration Tests
-        run: cd source/backend && npm run test:integration
+        run: |
+          cd source/backend
+          ./wait-for-it.sh db:5432 -- npm run test:integration
         env:
           DB_HOST: db
           DB_NAME: ${{ secrets.POSTGRES_DB }}
