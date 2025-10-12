@@ -9,13 +9,13 @@ function validate_all(first_name, last_name, email, password) {
 
 //function validate_name(first_name, last_name)
 
-//name validation regex taken from https://stackoverflow.com/a/66910482
+//name validation regex derived from https://stackoverflow.com/a/66910482
 //Length of names between 2-30 characters (inclusive)
 //Names can only contain A-Z, a-z and spaces, first letter of variable must always be upper case
 //Names cannot start or end with a space, but can be separated by a space
 //No special characters
 function validate_name(name) {
-    const name_regex = /^[A-Z](?=.{1,29}$)[A-Za-z]*(?:\h+[A-Z][A-Za-z]*)*$/;
+    const name_regex = /^[A-Z](?=.{1,29}$)[A-Za-z]*(?:[[:blank:]]+[A-Z][A-Za-z]*)*$/;
     return name_regex.test(name);
 }
 
@@ -41,4 +41,4 @@ function hash_password(password) {
     return hashed_password;
 }
 
-module.exports = {validation: validate_all, hash_password};
+module.exports = {validate_all, validate_email, hash_password};

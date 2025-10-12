@@ -18,10 +18,10 @@ router.post("/", async (req, res) => {
             });
             res.status(201).json(user.first_name, user.last_name, user.email);
         } catch (err) {
-            res.status(400).json({ error: "Invalid Parameters" });
+            res.status(400).json({error: err.message});
         }
     } else {
-        res.status(400).json({ error: err.message });
+        res.status(400).json({ error: "Invalid parameters" });
     }
 });
 
