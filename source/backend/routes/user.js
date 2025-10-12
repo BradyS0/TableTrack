@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     const { first_name, last_name, email, password } = req.body;
-    if (UserLogic.validation(first_name, last_name, email, password)) {
+    if (UserLogic.validate_all(first_name, last_name, email, password)) {
         try {
             const hashed_password = UserLogic.hash_password(password);
             const user = await User.create({

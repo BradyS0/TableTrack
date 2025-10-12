@@ -1,4 +1,4 @@
-function validation(first_name, last_name, email, password) {
+function validate_all(first_name, last_name, email, password) {
     let valid_names = validate_name(first_name, last_name)
     let valid_email = validate_email(email);
     let valid_pass = validate_password(password);
@@ -40,4 +40,4 @@ function hash_password(password) {
     return hashed_password;
 }
 
-module.exports = {validation, hash_password};
+module.exports = {validation: validate_all, hash_password};
