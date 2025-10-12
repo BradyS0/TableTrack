@@ -12,6 +12,11 @@ export function createHeader() {
     nav.classList.add('nav-active')
   })
 
+   overlay.addEventListener('click', ()=>{
+     nav.classList.remove('nav-active')
+     overlay.classList.remove('overlay-active')
+})
+
   
   header.innerHTML = `
   <image src="../assets/TableTrack-logo.svg" alt="Logo" class="logo"/>
@@ -20,5 +25,10 @@ export function createHeader() {
   `;
 
   header.prepend(hamburger)
+
+  header.children[1].addEventListener('click', goToHome);
+  header.children[2].addEventListener('click', goToHome);
   return header;
 }
+
+function goToHome(){window.location.href = './';}

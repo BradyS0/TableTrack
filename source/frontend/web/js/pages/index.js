@@ -28,10 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const loginBtn = document.querySelector('.login-btn');
   loginBtn.addEventListener('click', () => {
-    setUserState('user', { loggedIn: true, username: 'User' });
-    if (getUserState('user').loggedIn) {
-      window.location.href = 'profile.html';
-    }
+      console.log("loading login.html")
+      window.location.href = './login.html';
   });
 
   
