@@ -6,12 +6,26 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     services:
-      db:
+      postgres:
         image: postgres:16
         env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: mydb_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U user"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      NODE_ENV: test
+      DB_USER: user
+      DB_PASS: password
+      DB_NAME: mydb_test
+      DB_HOST: localhost
 
     steps:
       - uses: actions/checkout@v4
@@ -19,16 +33,10 @@ jobs:
         with:
           node-version: 20
       - run: cd source/backend && npm ci
-
-      - name: Run Integration Tests
+      - name: Wait for Postgres
         run: |
-          cd source/backend
-          chmod +x wait-for-it.sh
-          ./wait-for-it.sh db:5432 -- npm run test:integration
-        env:
-          DB_HOST: db
-          DB_NAME: ${{ secrets.POSTGRES_DB }}
-          DB_USER: ${{ secrets.POSTGRES_USER }}
-          DB_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          DB_PORT: 5432
-          DB_DIALECT: postgres
+          until nc -z localhost 5432; do
+            echo "Waiting for Postgres..."
+            sleep 1
+          done
+      - run: cd source/backend && npm run test:integration
