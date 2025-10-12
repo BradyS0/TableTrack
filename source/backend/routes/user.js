@@ -1,15 +1,27 @@
-// file party created using chatGPT
+// file partly created using chatGPT
 import express from "express";
 import { User } from "../models/User.js";
+import * as UserLogic from "../logic/userLogic.js";
 
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-    try {
-        const user = await User.create(req.body);
-        res.status(201).json(user);
-    } catch (err) {
-        res.status(400).json({ error: err.message });
+    const { first_name, last_name, email, password } = req.body;
+    if (UserLogic.validate_email(email)) {
+        try {
+            const hashed_password = UserLogic.hashPassword(password);
+            const user = await User.create({
+                first_name,
+                last_name,
+                email,
+                hashed_password,
+            });
+            res.status(201).json(user);
+        } catch (err) {
+            res.status(400).json({ error: err.message });
+        }
+    } else {
+        res.status(400).json({ error: "Invalid Email" });
     }
 });
 
@@ -19,7 +31,9 @@ router.get("/", async (req, res) => {
 });
 
 router.delete("/:userID", async (req, res) => {
-    const deleted = await User.destroy({ where: { userID: parseInt(req.params.userID) } });
+    const deleted = await User.destroy({
+        where: { userID: parseInt(req.params.userID) },
+    });
     if (deleted) res.status(204).send();
     else res.status(404).json({ error: "User not found" });
 });
@@ -29,6 +43,5 @@ router.patch("/changeName", async (req, res) => {
     const updated = await User.update({ name }, { where: { userID } });
     if (updated[0]) res.status(200).json({ message: "Name updated" });
     else res.status(404).json({ error: "User not found" });
-
 });
 export default router;
