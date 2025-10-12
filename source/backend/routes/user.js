@@ -7,9 +7,9 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     const { first_name, last_name, email, password } = req.body;
-    if (UserLogic.validate_email(email)) {
+    if (UserLogic.validation(first_name, last_name, email, password)) {
         try {
-            const hashed_password = UserLogic.hashPassword(password);
+            const hashed_password = UserLogic.hash_password(password);
             const user = await User.create({
                 first_name,
                 last_name,
@@ -18,10 +18,10 @@ router.post("/", async (req, res) => {
             });
             res.status(201).json(user);
         } catch (err) {
-            res.status(400).json({ error: err.message });
+            res.status(400).json({ error: "Invalid Parameters" });
         }
     } else {
-        res.status(400).json({ error: "Invalid Email" });
+        res.status(400).json({ error: err.message });
     }
 });
 
