@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
                 email,
                 hashed_password,
             });
-            res.status(201).json(user);
+            res.status(201).json(user.first_name, user.last_name, user.email);
         } catch (err) {
             res.status(400).json({ error: "Invalid Parameters" });
         }

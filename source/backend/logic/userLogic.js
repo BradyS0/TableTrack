@@ -1,9 +1,10 @@
 function validate_all(first_name, last_name, email, password) {
-    let valid_names = validate_name(first_name, last_name)
-    let valid_email = validate_email(email);
-    let valid_pass = validate_password(password);
+    const valid_first = validate_name(first_name)
+    const valid_last = validate_name(last_name)
+    const valid_email = validate_email(email);
+    const valid_pass = validate_password(password);
 
-    return valid_names && valid_email && valid_pass;
+    return valid_first && valid_last && valid_email && valid_pass;
 }
 
 //function validate_name(first_name, last_name)
@@ -13,9 +14,9 @@ function validate_all(first_name, last_name, email, password) {
 //Names can only contain A-Z, a-z and spaces, first letter of variable must always be upper case
 //Names cannot start or end with a space, but can be separated by a space
 //No special characters
-function validate_name(first_name, last_name) {
-    const name_regex = /^[A-Z](?=.{1,29}$)[A-Za-z]*(?:\h+[A-Za-z]*)*$/;
-    return name_regex.test(first_name) && name_regex.test(last_name);
+function validate_name(name) {
+    const name_regex = /^[A-Z](?=.{1,29}$)[A-Za-z]*(?:\h+[A-Z][A-Za-z]*)*$/;
+    return name_regex.test(name);
 }
 
 //function validate_email(email)
