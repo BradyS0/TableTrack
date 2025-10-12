@@ -9,7 +9,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/user", userRouter);
+app.use("/users", userRouter);
 
 const startServer = () => {
     app.listen(config.port, () => console.log(`Server running on port ${config.port}`));

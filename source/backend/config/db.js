@@ -1,4 +1,4 @@
-// created using copilot
+// created with help from copilot
 // Load environment variables from the repo .env when running tests or locally
 import dotenv from "dotenv";
 import path from "path";
@@ -23,7 +23,8 @@ const sequelize = new Sequelize(
     {
         host: process.env.DB_HOST || "localhost",
         dialect: "postgres",
-        logging: false,
+        // Enable query logging in non-production to surface SQL and DB errors during tests
+        logging: process.env.NODE_ENV !== 'production' ? console.log : false,
     }
 );
 
