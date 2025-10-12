@@ -32,4 +32,19 @@ if (process.env.NODE_ENV !== 'production') {
     console.debug(`DB host: ${process.env.DB_HOST || 'localhost'}, DB name: ${process.env.DB_NAME || ''}`);
 }
 
+// Run a quick authenticate to produce clearer errors during tests/dev
+if (process.env.NODE_ENV !== 'production') {
+    sequelize.authenticate()
+        .then(() => {
+            console.debug('Sequelize: DB connection authenticated successfully.');
+        })
+        .catch((err) => {
+            console.error('Sequelize: DB connection authentication failed.');
+            // print the error stack to get more detail for debugging
+            console.error(err && err.stack ? err.stack : err);
+            // Re-throw so startup/tests fail fast with the original error
+            throw err;
+        });
+}
+
 export default sequelize;

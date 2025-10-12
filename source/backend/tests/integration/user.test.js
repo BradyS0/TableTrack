@@ -1,4 +1,6 @@
 ﻿//file party created using chatGPT
+// Ensure test environment is set before importing app/db so config/db.js reads it
+process.env.NODE_ENV = "test";
 import request from "supertest";
 import app from "../../index.js";
 import sequelize from "../../config/db.js";
