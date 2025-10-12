@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | TableTrack</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <img src="TableTrack-logo.svg" class="logo" alt="TableTrack" />
+  </nav>
+
+  <main class="login-container">
+    <h2>User Login</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <button type="submit" class="btn">Login</button>
+      <button type="button" id="openSignup" class="btn secondary">Create an account</button>
+    </form>
+  </main>
+
+  <!-- Signup Popup -->
+  <div id="signupPopup" class="popup hidden">
+    <div class="popup-content">
+      <button class="close-btn" id="closeSignup">&times;</button>
+      <h2>Create an Account</h2>
+      <form id="signupForm">
+        <div class="row">
+          <input type="text" id="firstName" placeholder="First name" required />
+          <input type="text" id="lastName" placeholder="Last name" required />
+        </div>
+        <input type="email" id="signupEmail" placeholder="Email" required />
+        <input type="password" id="signupPassword" placeholder="Password" required />
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+        <button type="submit" class="btn">Confirm</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>
