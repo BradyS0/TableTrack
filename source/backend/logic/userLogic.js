@@ -7,8 +7,9 @@ function validation(first_name, last_name, email, password) {
 }
 
 function validate_name(first_name, last_name) {
-    
-    return true
+    //name validation regex taken from https://stackoverflow.com/a/66910482
+    const name_regex = /^[A-Z](?=.{1,29}$)[A-Za-z]*(?:\h+[A-Z][A-Za-z]*)*$/;
+    return name_regex.test(first_name) && name_regex.test(last_name);
 }
 
 function validate_email(email) {
@@ -16,7 +17,6 @@ function validate_email(email) {
     const email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return email_regex.test(email);
 }
-
 
 function validate_password(password) {
 
