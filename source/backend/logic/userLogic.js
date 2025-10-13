@@ -34,10 +34,6 @@ function validate_password(password) {
     return PASS_REGEX.test(password);
 }
 
-function compare_passwords(password_db, password_input) {
-    return password_db === password_input;
-}
-
 function hash_password(password) {
     let hashed_password = password;
     //hash password
@@ -45,4 +41,4 @@ function hash_password(password) {
     return hashed_password;
 }
 
-module.exports = {validate_all, validate_email, validate_name, validate_password, compare_passwords, hash_password};
+module.exports = {validate_all, validate_email, validate_name, validate_password, hash_password};

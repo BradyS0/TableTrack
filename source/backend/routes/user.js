@@ -124,7 +124,7 @@ router.patch("/change/password", async (req, res) => {
         
         if (!UserLogic.validate_password(old_password)) {
             res.status(400).json({ message: "Old password is invalid"});
-        } else if (!UserLogic.compare_passwords(db_password, old_hashed)) {
+        } else if (db_password !== old_hashed) {
             res.status(401).json({ message: "Passwords do not match"});
         } else if (!UserLogic.validate_password(new_password)) {
             res.status(400).json({ message: "New password is invalid"});     
