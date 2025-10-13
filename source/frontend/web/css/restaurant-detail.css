@@ -8,6 +8,11 @@
     margin: 1rem 5rem;
 }
 
+#restaurant-info hr{
+    margin: 1rem .05rem;
+    opacity: 0.2;
+} 
+
 #restaurant-name > img {
     height: 75px;
     border-radius: 50%;

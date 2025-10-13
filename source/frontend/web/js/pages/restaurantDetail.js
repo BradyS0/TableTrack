@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 function createRestaurantInfo({ restId, name, logo,tags, rating, location, hours}) {
   // Create main container
+  const hr_break = document.createElement('hr')
   const container = document.createElement('div');
   container.id = 'restaurant-info';
 
@@ -36,12 +37,12 @@ function createRestaurantInfo({ restId, name, logo,tags, rating, location, hours
   contentSection.id = 'restaurant-content';
 
   const comingSoon = document.createElement('h2');
-  comingSoon.textContent = 'More info coming soon';
+  comingSoon.textContent = 'Menu coming soon';
 
   contentSection.appendChild(comingSoon);
 
   // --- Combine All ---
-  container.append(nameHeader, tagsSpan, detailSection, contentSection);
+  container.append(nameHeader, tagsSpan, detailSection, hr_break,contentSection);
 
   return container;
 }
@@ -80,7 +81,7 @@ function createReservationButton(restId){
   reservationBtn.textContent = 'Make Reservation';
   
   reservationBtn.addEventListener("click",()=>{
-    alert("feature comming soon!")
+    alert("feature coming soon!")
   })
 
   return reservationBtn;
