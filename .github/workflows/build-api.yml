@@ -1,3 +1,4 @@
+# built using copilot
 name: Build and Test API (docker-compose)
 
 on: [push, pull_request]
@@ -18,8 +19,23 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Set up Docker Compose CLI
-        uses: docker/compose-action@v2
+      - name: Install Docker Compose CLI plugin on runner
+        run: |
+          set -eux
+          mkdir -p /usr/local/lib/docker/cli-plugins
+          COMPOSE_VERSION="v2.20.2"
+          arch=$(uname -m)
+          if [ "$arch" = "x86_64" ]; then
+            bin_arch="linux-x86_64"
+          elif [ "$arch" = "aarch64" ] || [ "$arch" = "arm64" ]; then
+            bin_arch="linux-aarch64"
+          else
+            echo "Unsupported arch: $arch" >&2
+            exit 1
+          fi
+          curl -sSL "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-${bin_arch}" -o /usr/local/lib/docker/cli-plugins/docker-compose
+          chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+          docker compose version
 
       - name: Build and bring up services (docker-compose)
         working-directory: source
