@@ -47,9 +47,7 @@ nav {
     margin: 0;
     padding: 10px 20px;
     padding-top: 50px; 
-    max-width: 275px; /* Maximum width in pixels */
-    min-width: 250px; /* Minimum width as a percentage of parent */
-    width: 20%; /* Base width, adjustable within min/max constraints */
+    width: 250px; /* Base width, adjustable within min/max constraints */
     height: 100%; /* Full height of parent */
     z-index: 2;
     transform: translateX(-500px);
@@ -78,31 +76,28 @@ nav {
     transition: all ease-in 200ms;
 }
 
-#overlay{
+.overlay{
+    display: none;
     position: absolute;
     top: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(1px);
     z-index: 1;
     width: 100%;
     height: 100%;
-}
-
-.overlay{
-    display: none;
     opacity: 0;
+    background-color: rgba(0, 0, 0, 0);
     transition: all 450ms ease;
 }
 .overlay-active{
     display: block;
     opacity: 1;
-    transition: opacity 1s ease;
+    background-color: rgba(53, 53, 53, 0.75);
+    transition: opacity 1s ease, background-color 5s ease-in;
 }
 
-.login-btn {
-    margin-left: auto;
-    margin-top: 1rem;
+.btn {
+    width: 100%;
     padding: 0.8rem 1.25rem;
     border: none;
     border-radius: 1.5rem;
@@ -110,6 +105,13 @@ nav {
     color: white;
     font-weight: bold;
     cursor: pointer;
+  }
+  
+.login-btn {
+    max-width: fit-content;
+    margin-left: auto;
+    margin-top: 1rem;
+    padding: 0.8rem 1.25rem;
     transition: all ease-in 100ms;
 }
 
