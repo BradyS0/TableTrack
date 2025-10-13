@@ -21,7 +21,7 @@ export function createHeader() {
   header.innerHTML = `
   <image src="../assets/TableTrack-logo.svg" alt="Logo" class="logo"/>
   <h1>Table<span>Track</span></h1>
-  <button class="login-btn">Login</button>
+  <button class="login-btn btn">Login</button>
   `;
 
   header.prepend(hamburger)
