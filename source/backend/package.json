@@ -5,6 +5,7 @@
     "scripts": {
         "test:integration": "jest --coverage --testPathPattern=tests/integration",
         "test:unit": "jest --coverage --testPathPattern=tests/unit",
+        "smoke": "node ./scripts/smoke-check.js",
         "start": "node index.js"
     },
     "dependencies": {

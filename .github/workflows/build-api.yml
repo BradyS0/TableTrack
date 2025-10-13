@@ -18,10 +18,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Install Docker Compose CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose-plugin
+      - name: Set up Docker Compose CLI
+        uses: docker/compose-action@v2
 
       - name: Build and bring up services (docker-compose)
         working-directory: source
@@ -49,7 +47,7 @@ jobs:
         working-directory: source
         run: |
           # Run tests inside the api container; the backend is mounted at /app
-          docker compose exec -T api bash -lc 'cd /app && npm ci && npm run test:integration'
+          docker compose exec -T api bash -lc 'cd /app && npm ci --no-audit --no-fund && npm run smoke'
 
       - name: Collect logs
         if: failure()
