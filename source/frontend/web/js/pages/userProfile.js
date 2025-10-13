@@ -2,8 +2,7 @@ import { createNav } from '../components/nav.js';
 import { getUserState, setUserState } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-   const navContainer = document.querySelector('nav');
-   createNav(['home', 'about', 'logout'], navContainer); 
+   createNav(['home', 'about', 'logout']); 
 
   const user = getUserState('user') || { username: 'Guest', email: 'guest@example.com' };
   document.querySelector('.username').textContent = user.username;
