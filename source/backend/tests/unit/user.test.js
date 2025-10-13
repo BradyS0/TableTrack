@@ -67,17 +67,17 @@ test("name ends with a space", () => {
 
 //validate_password
 //valid cases
-test("password has one uppercase letter, one number, one special character and within character limit", () => {
+test("password has one uppercase letter, one lowercase letter, one number, one special character and within character limit", () => {
     expect(validate_password("Password1!")).toEqual(true);
-});
-
-test("password has no lowercase letters, but has at least one uppercase letter, one number, one special character and is withing char limit", () => {
-    expect(validate_password("PASSWORD1!")).toEqual(true);
 });
 
 //edge cases
 test("password has no uppercase letters", () => {
     expect(validate_password("password1!")).toEqual(false);
+});
+
+test("password has no lowercase letters", () => {
+    expect(validate_password("PASSWORD1!")).toEqual(false);
 });
 
 test("password has no numbers", () => {
