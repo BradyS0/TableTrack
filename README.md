@@ -8,6 +8,9 @@ Ever been too lazy to call for a reservation? How about being seated right by th
 
 ## Sprint Worksheets
  - [ ] ***[Sprint 0](./documentation/sprint0/sprint0.md)***
+  
+## Running Instructions
+***[Instructions](./documentation/Run_Instructions.md***
 
 ## Standards
 - Programming Standards *$_{TBA}$*

@@ -1,0 +1,65 @@
+name: Build and Test API (docker-compose)
+
+on: [push, pull_request]
+
+jobs:
+  compose-build-and-smoke:
+    runs-on: ubuntu-latest
+    env:
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      API_PORT: ${{ secrets.API_PORT }}
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Install Docker Compose CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose-plugin
+
+      - name: Build and bring up services (docker-compose)
+        working-directory: source
+        run: |
+          docker compose up --build -d
+
+      - name: Fail if required secrets are missing
+        working-directory: source
+        run: |
+          if [ -z "${DB_PASSWORD}" ]; then
+            echo "Missing required secret: DB_PASSWORD" >&2
+            exit 1
+          fi
+
+      - name: Wait for Postgres
+        working-directory: source
+        run: |
+          # Wait until Postgres is ready
+          until docker compose exec -T db pg_isready -U ${DB_USER:-user}; do
+            echo "Waiting for Postgres..."
+            sleep 1
+          done
+
+      - name: Run smoke check inside api container
+        working-directory: source
+        run: |
+          # Run tests inside the api container; the backend is mounted at /app
+          docker compose exec -T api bash -lc 'cd /app && npm ci && npm run test:integration'
+
+      - name: Collect logs
+        if: failure()
+        working-directory: source
+        run: docker compose logs --no-color --tail=200
+
+      - name: Tear down compose
+        if: always()
+        working-directory: source
+        run: |
+          docker compose down -v
+          # remove temporary .env created from secrets (do not leave secrets in the repo)
+          if [ -f .env ]; then rm .env; fi
