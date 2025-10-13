@@ -11,10 +11,10 @@ router.post("/", async (req, res) => {
         try {
             const hashed_password = UserLogic.hash_password(password);
             const user = await User.create({
-                first_name,
-                last_name,
-                email,
-                hashed_password,
+                first_name : first_name,
+                last_name : last_name,
+                email : email,
+                password : hashed_password,
             });
             res.status(201).json(user.first_name, user.last_name, user.email);
         } catch (err) {
@@ -38,10 +38,105 @@ router.delete("/:userID", async (req, res) => {
     else res.status(404).json({ error: "User not found" });
 });
 
-router.patch("/changeName", async (req, res) => {
-    const { userID, name } = req.body;
-    const updated = await User.update({ name }, { where: { userID } });
-    if (updated[0]) res.status(200).json({ message: "Name updated" });
-    else res.status(404).json({ error: "User not found" });
+router.patch("/change/firstname", async (req, res) => {
+    const { userID, first_name} = req.body;
+
+    if (UserLogic.validate_name(first_name)) {
+        const updated = await User.update({ first_name : first_name }, 
+        { 
+            where: { 
+                userID: userID 
+            } 
+        });
+
+        if (updated[0]) {
+            //user exists
+            res.status(200).json({ message: "First name updated" });
+        } else {
+            res.status(404).json({ error: "User not found" });
+        }
+    } else {
+        res.status(400).json({ error: "Invalid first name"})
+    }
+});
+
+router.patch("/change/lastname", async (req, res) => {
+    const { userID, last_name} = req.body;
+
+    if (UserLogic.validate_name(last_name)) {
+        const updated = await User.update({ last_name : last_name }, 
+        { 
+            where: { 
+                userID: userID 
+            } 
+        });
+
+        if (updated[0]) {
+            //user exists
+            res.status(200).json({ message: "Last name updated" });
+        } else {
+            res.status(404).json({ error: "User not found" });
+        }
+    } else {
+        res.status(400).json({ error: "Invalid last name"})
+    }
+});
+
+router.patch("/change/email", async (req, res) => {
+    const { userID, email } = req.body;
+    if (UserLogic.validate_email(email)) {
+        const emailList = await User.findAll({
+            where: {
+                email: email
+            }
+        });
+
+        if (!emailList[0]) {
+            //email is not a duplicate
+            const updated = await User.update({ email : email }, { where: { userID }});
+            if (updated[0]) {
+                res.status(200).json({ message: "Email updated" });
+            } else {
+                res.status(404).json({ error: "User not found" });
+            }
+        } else {
+            //email is a duplicate (already in database)
+            res.status(400).json({ error: "Email is already being used"})
+        }
+    } else {
+        //invalid email
+        res.status(400).json({ error: "Invalid email"})
+    }
+});
+
+router.patch("/change/password", async (req, res) => {
+    const { userID, old_password, new_password } = req.body;
+    try {
+        //account password stored in database
+        const db_password = await User.findAll({
+            attributes: ['password'],
+            where: {
+                userID: userID
+            }
+        });
+
+        const old_hashed = UserLogic.hash_password(old_password);
+        
+        if (!UserLogic.validate_password(old_password)) {
+            res.status(400).json({ message: "Old password is invalid"});
+        } else if (!UserLogic.compare_passwords(db_password, old_hashed)) {
+            res.status(401).json({ message: "Passwords do not match"});
+        } else if (!UserLogic.validate_password(new_password)) {
+            res.status(400).json({ message: "New password is invalid"});     
+        } else {
+            const new_hashed = UserLogic.hash_password(new_password);
+            await User.update({ password: new_hashed }, { where: { userID }});
+
+            //already checked if user exists
+            res.status(200).json({ message: "Password updated" });
+        }
+    } catch (err) {
+        res.status(404).json({ error: "User not found" });
+    }
 });
 export default router;
