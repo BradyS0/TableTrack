@@ -7,7 +7,17 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     const { first_name, last_name, email, password } = req.body;
-    if (UserLogic.validate_all(first_name, last_name, email, password)) {
+    const emailList = await User.findAll({
+            where: {
+                email: email
+            }
+        });
+    
+    if (!emailList[0]) {
+        res.status(400).json({ error: "Email is already being used"});
+    } else if (!UserLogic.validate_all(first_name, last_name, email, password)) {
+        res.status(400).json({ error: "Invalid parameters" });
+    } else {
         try {
             const hashed_password = UserLogic.hash_password(password);
             const user = await User.create({
@@ -20,8 +30,6 @@ router.post("/", async (req, res) => {
         } catch (err) {
             res.status(400).json({error: err.message});
         }
-    } else {
-        res.status(400).json({ error: "Invalid parameters" });
     }
 });
 
@@ -136,7 +144,7 @@ router.patch("/change/password", async (req, res) => {
             res.status(200).json({ message: "Password updated" });
         }
     } catch (err) {
-        res.status(404).json({ error: "User not found" });
+        res.status(404).json({ error: err.message });
     }
 });
 export default router;
