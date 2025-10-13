@@ -1,6 +1,12 @@
+import { createNav, toggleLoginButton } from '../components/nav.js';
+
 const openBtn = document.getElementById("openSignup");
 const closeBtn = document.getElementById("closeSignup");
 const popup = document.getElementById("signupPopup");
+
+createNav(["home","about","random", "option"]) //in the future we can pass specific links here to populate the nav bar
+toggleLoginButton() // remove the login button from the header since we are on the login page
+
 
 // Toggle popup visibility
 openBtn.addEventListener("click", () => popup.classList.remove("hidden"));

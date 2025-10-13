@@ -1,15 +1,9 @@
 export function mainNavRoutes(){
-
+  return null;
 }
 
 export function createNav(menuItems = [item1, item2]) {
   const nav = document.querySelector('nav')
-  const nav_close = document.getElementById("overlay");
-
-  nav_close.addEventListener('click', ()=>{
-     nav.classList.remove('nav-active')
-     nav_close.classList.remove('overlay-active')
-})
 
   menuItems.forEach(item => {
     const link = document.createElement('p');
@@ -22,4 +16,15 @@ export function createNav(menuItems = [item1, item2]) {
   merchantNote.textContent = 'Become a merchant!';
 
   nav.appendChild(merchantNote)
+}
+
+export function toggleLoginButton(){
+  document.addEventListener('DOMContentLoaded',()=>{
+  const loginButton = document.querySelector(".login-btn")
+  
+  if (loginButton.style.display == 'none'){
+    loginButton.style.display = ''
+  }else{
+  loginButton.style.display = 'none'
+}})
 }
