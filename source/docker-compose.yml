@@ -5,7 +5,8 @@ services:
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      # Ensure the DB is created at init with the requested name (fallback to mydb_test)
+      POSTGRES_DB: ${DB_NAME:-mydb_test}
     ports:
       - "${DB_PORT}:5432"
     volumes:
@@ -25,7 +26,7 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
-      DB_HOST: db
+      DB_HOST: localhost
       DB_PORT: ${DB_PORT}
     ports:
       - "${API_PORT}:${API_PORT}"

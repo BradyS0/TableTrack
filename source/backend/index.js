@@ -21,6 +21,26 @@ const startServer = () => {
 };
 
 const run = async () => {
+    // Wait for DB to be reachable and authenticated before syncing
+    const maxAttempts = 12;
+    const delayMs = 5000;
+    let attempt = 0;
+    while (true) {
+        try {
+            await sequelize.authenticate();
+            console.log('DB authenticated, proceeding to sync');
+            break;
+        } catch (err) {
+            attempt += 1;
+            console.error(`DB auth attempt ${attempt} failed: ${err.message}`);
+            if (attempt >= maxAttempts) {
+                console.error('Exceeded max attempts to authenticate with DB');
+                throw err;
+            }
+            await new Promise((r) => setTimeout(r, delayMs));
+        }
+    }
+
     await sequelize.sync(); // ensure DB is connected and models are synced
 
     if (process.env.NODE_ENV !== "test") {
