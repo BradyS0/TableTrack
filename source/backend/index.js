@@ -11,6 +11,11 @@ app.use(cors());
 app.use(express.json());
 app.use("/users", userRouter);
 
+// Lightweight health endpoint for smoke checks
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', env: config.env });
+});
+
 const startServer = () => {
     app.listen(config.port, () => console.log(`Server running on port ${config.port}`));
 };

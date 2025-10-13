@@ -2,7 +2,7 @@
 // Simple smoke check: polls the API until it returns a successful response or times out
 const host = process.env.API_HOST || 'localhost';
 const port = process.env.API_PORT || process.env.PORT || '3000';
-const path = process.env.SMOKE_PATH || '/users';
+const path = process.env.SMOKE_PATH || '/health';
 const url = `http://${host}:${port}${path}`;
 
 const timeoutMs = parseInt(process.env.SMOKE_TIMEOUT || '60000', 10);
