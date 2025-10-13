@@ -15,7 +15,7 @@ function validate_all(first_name, last_name, email, password) {
 //Names cannot start or end with a space, but can be separated by a space
 //No special characters
 function validate_name(name) {
-    const NAME_REGEX = /^[A-Z](?=.{1,29}$)[A-Za-z]*(?:\s+[A-Z][A-Za-z]*)*$/;
+    const NAME_REGEX = /^[A-Z](?=.{1,29}$)[A-Za-z]*(?:[ ]+[A-Z][A-Za-z]*)*$/;
     return NAME_REGEX.test(name);
 }
 
