@@ -63,8 +63,8 @@ export function createRegistrationPopup() {
   phoneInput.minLength = 10
   phoneInput.maxLength = 15
   phoneInput.addEventListener('input', (e) => {
-  e.target.value = phone_num_validator(e.target.value)
-});
+  e.target.value = phone_num_strip(e.target.value)
+ });
 
   // Save Button
   const registerBtn = document.createElement('button');

@@ -1,6 +1,6 @@
 
 // generated via chat-gpt
-export function phone_num_validator(num){
+export function phone_num_strip(num){
   var value = num.replace(/[^0-9+\s()-]/g, '');
 
   // 2. Ensure "+" only appears once and only at the beginning
@@ -18,4 +18,8 @@ export function phone_num_validator(num){
   if (closeParenCount > 1) value = value.replace(/\)/g, ')').replace(/\)/g, '');
   
   return value
+}
+
+export function phone_num_validator(num){
+    
 }
