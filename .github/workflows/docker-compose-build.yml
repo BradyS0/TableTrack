@@ -5,6 +5,12 @@ on: [push, pull_request]
 jobs:
   build-and-smoke:
     runs-on: ubuntu-latest
+    env:
+      DB_USER: user
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_NAME: tabletrackdb
+      DB_PORT: 5432
+      API_PORT: 3000
     defaults:
       run:
         working-directory: ./source/
