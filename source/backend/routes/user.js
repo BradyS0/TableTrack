@@ -7,35 +7,49 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     const { first_name, last_name, email, password } = req.body;
-    const emailList = await User.findAll({
+    const email_list = await User.findAll({
             where: {
                 email: email
             }
         });
     
-    if (!emailList[0]) {
-        res.status(400).json({ error: "Email is already being used"});
-    } else if (!UserLogic.validate_all(first_name, last_name, email, password)) {
-        res.status(400).json({ error: "Invalid parameters" });
-    } else {
+    const valid_params = UserLogic.validate_all(first_name, last_name, email, password);
+
+    if ((email_list === undefined || email_list.length == 0 ) && valid_params) {
         try {
             const hashed_password = UserLogic.hash_password(password);
             const user = await User.create({
                 first_name : first_name,
                 last_name : last_name,
                 email : email,
-                password : hashed_password,
+                password : hashed_password
             });
-            res.status(201).json(user.first_name, user.last_name, user.email);
+            res.status(201).json({
+                first_name: user.first_name, 
+                last_name: user.last_name, 
+                email: user.email});
         } catch (err) {
             res.status(400).json({error: err.message});
         }
+    } else {
+        res.status(400).json({ error: "Invalid parameters" });
     }
 });
 
-router.get("/", async (req, res) => {
-    const users = await User.findAll();
-    res.json(users);
+router.post("/login", async (req, res) => {
+    const {email, password} = req.body;
+    const user = await User.findAll({
+            attributes: ['password'],
+            where: {
+                email: email
+            }
+        });
+    const password_input = UserLogic.hash_password(password);
+    if(user !== undefined && user.length == 1  && password_input === user[0].password) {
+        res.status(200).json({message: "Login successful!"});
+    } else {
+        res.status(401).json({error: "Invalid email or password"});
+    }
 });
 
 router.delete("/:userID", async (req, res) => {
@@ -64,7 +78,7 @@ router.patch("/change/firstname", async (req, res) => {
             res.status(404).json({ error: "User not found" });
         }
     } else {
-        res.status(400).json({ error: "Invalid first name"})
+        res.status(400).json({ error: "Invalid first name"});
     }
 });
 
@@ -86,7 +100,7 @@ router.patch("/change/lastname", async (req, res) => {
             res.status(404).json({ error: "User not found" });
         }
     } else {
-        res.status(400).json({ error: "Invalid last name"})
+        res.status(400).json({ error: "Invalid last name"});
     }
 });
 
@@ -99,7 +113,7 @@ router.patch("/change/email", async (req, res) => {
             }
         });
 
-        if (!emailList[0]) {
+        if (emailList === undefined || emailList.length == 0) {
             //email is not a duplicate
             const updated = await User.update({ email : email }, { where: { userID }});
             if (updated[0]) {
@@ -109,11 +123,11 @@ router.patch("/change/email", async (req, res) => {
             }
         } else {
             //email is a duplicate (already in database)
-            res.status(400).json({ error: "Email is already being used"})
+            res.status(400).json({ error: "Invalid parameter"});
         }
     } else {
         //invalid email
-        res.status(400).json({ error: "Invalid email"})
+        res.status(400).json({ error: "Invalid parameter"});
     }
 });
 
@@ -121,7 +135,7 @@ router.patch("/change/password", async (req, res) => {
     const { userID, old_password, new_password } = req.body;
     try {
         //account password stored in database
-        const db_password = await User.findAll({
+        const user = await User.findAll({
             attributes: ['password'],
             where: {
                 userID: userID
@@ -132,7 +146,7 @@ router.patch("/change/password", async (req, res) => {
         
         if (!UserLogic.validate_password(old_password)) {
             res.status(400).json({ message: "Old password is invalid"});
-        } else if (db_password !== old_hashed) {
+        } else if (user[0].password !== old_hashed) {
             res.status(401).json({ message: "Passwords do not match"});
         } else if (!UserLogic.validate_password(new_password)) {
             res.status(400).json({ message: "New password is invalid"});     
