@@ -73,7 +73,7 @@ router.get("/", async (req, res) => {
 
         // Process data
         var formatted_json = {restaurants: []};
-        for (rest in db_restaurants)
+        for (var rest in db_restaurants)
         {
             // Add needed values to restaurant json
             var rest_json = {};
