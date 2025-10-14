@@ -5,9 +5,6 @@ In order to run locally:
 - Make sure you have docker desktop open
 - To build the project and run unit tests in command line type:
   - cd source
-  - docker compose up --build
-- In another terminal/powershell window type:
-  - cd source
 - Create a .env file in the source directoty with the following:
   - DB_USER=user
   - DB_PASSWORD=password
@@ -15,10 +12,13 @@ In order to run locally:
   - DB_PORT=5432
   - API_PORT=3000
   - NODE_ENV=development
-- After creating the .env file youcan now run:
+- After creating the .env file you can now run:
+  - docker compose up --build
+- In another terminal/powershell window type:
+  - cd source
   - docker compose exec api npm run test:integration
 - To shut down the project type(in same window as test):
-  - docker compose down
+  - docker compose down -v
 - To run unit tests in command line type type(either window will work):
   - cd backend
   - npm ci
