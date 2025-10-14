@@ -33,6 +33,22 @@ router.post("/", async (req, res) => {
     }
 });
 
+router.post("/login", async (req, res) => {
+    const {email, password} = req.body;
+    const user = await User.findAll({
+            attributes: ['password'],
+            where: {
+                email: email
+            }
+        });
+    const password_input = UserLogic.hash_password(password)
+    if(user[0] && password_input === user.password) {
+        res.status(200).json({message: "Login successful!"});
+    } else {
+        res.status(401).json({error: "Invalid email or password"});
+    }
+});
+
 router.get("/", async (req, res) => {
     const users = await User.findAll();
     res.json(users);
