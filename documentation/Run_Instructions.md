@@ -5,7 +5,7 @@ In order to run locally:
 - Make sure you have docker desktop open
 - To build the project and run unit tests in command line type:
   - cd source
-- Create a .env file in the source directoty with the following:
+- Create a .env file in the source directory with the following:
   - DB_USER=user
   - DB_PASSWORD=password
   - DB_NAME=tabletrackdb
@@ -19,7 +19,7 @@ In order to run locally:
   - docker compose exec api npm run test:integration
 - To shut down the project type(in same window as test):
   - docker compose down -v
-- To run unit tests in command line type type(either window will work):
+- To run unit tests in command line type (either window will work):
   - cd backend
   - npm ci
   - npm run test:unit
