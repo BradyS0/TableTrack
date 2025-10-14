@@ -1,4 +1,5 @@
 // created with help from copilot
+// this file sets up the database connection using Sequelize
 // Load environment variables from the repo .env when running tests or locally
 import dotenv from "dotenv";
 import path from "path";
@@ -28,6 +29,7 @@ const sequelize = new Sequelize(
     }
 );
 
+//debugging logs
 // Safe startup log for non-production: show DB host and DB name (do NOT log password)
 if (process.env.NODE_ENV !== 'production') {
     console.debug(`DB host: ${process.env.DB_HOST || 'localhost'}, DB name: ${process.env.DB_NAME || ''}`);

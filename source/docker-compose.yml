@@ -1,3 +1,4 @@
+# Docker Compose file to set up Postgres and Node.js backend
 services:
   db:
     image: postgres:16

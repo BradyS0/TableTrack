@@ -1,3 +1,4 @@
+# set up docker container for backend
 FROM node:20
 WORKDIR /app
 COPY package*.json ./
