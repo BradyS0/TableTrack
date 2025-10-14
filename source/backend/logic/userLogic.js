@@ -1,4 +1,4 @@
-function validate_all(first_name, last_name, email, password) {
+﻿function validate_all(first_name, last_name, email, password) {
     const VALID_FIRST = validate_name(first_name);
     const VALID_LAST = validate_name(last_name);
     const VALID_EMAIL = validate_email(email);

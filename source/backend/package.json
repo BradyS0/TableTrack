@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "test:integration": "jest --coverage --testPathPattern=tests/integration",
-        "test:unit": "jest --coverage --testPathPattern=tests/unit"
+        "test:unit": "jest --coverage --testPathPattern=tests/unit",
+        "start": "node index.js"
     },
     "dependencies": {
         "cors": "^2.8.5",
