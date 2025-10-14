@@ -25,25 +25,11 @@ jobs:
         run: |
           docker compose up --build -d
 
-      - name: Wait for server ready log (preferred)
+      - name: Run in-container smoke check (preferred)
         run: |
-          # Poll api logs for the server-ready message printed by the app
-          RETRIES=30
-          SLEEP=2
-          i=0
-          while [ $i -lt $RETRIES ]; do
-            if docker compose logs --no-color api --tail=200 | grep -F "Server running on port" >/dev/null 2>&1; then
-              echo "Found server-ready log in api logs"
-              exit 0
-            fi
-            echo "waiting for server ready log... ($((i+1))/$RETRIES)"
-            sleep $SLEEP
-            i=$((i+1))
-          done
-          echo "server did not emit ready log in time; dumping logs for diagnosis"
-          docker compose ps
-          docker compose logs api --tail=500 || true
-          exit 1
+          # run the project's smoke-check script inside the 'api' service container
+          # this uses the container's environment and will exit nonzero on failure
+          docker compose exec -T api node /app/scripts/smoke-check.js || true
 
       - name: Host-level smoke curl test (fallback)
         run: |
