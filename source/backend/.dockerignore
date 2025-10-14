@@ -1,0 +1,11 @@
+# created with copilot
+node_modules
+npm-debug.logS
+Dockerfile
+.dockerignore
+.env
+.git
+.gitignore
+coverage
+.vscode
+.idea
