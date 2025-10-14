@@ -37,7 +37,7 @@ describe("User API", () => {
         expect(res.body.email).toBe("johndoe@example.com");
     });
     
-    //EDGE cases (5)
+    //EDGE cases
     it("create a user with an invalid first name", async () => {
         const res = await request(app)
             .post("/users")
@@ -94,6 +94,18 @@ describe("User API", () => {
                 last_name: "Doe",
                 email: "janedoe@example.com",
                 password: ""
+            });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("create a user with the wrong datatype", async () => {
+        const res = await request(app)
+            .post("/users")
+            .send({
+                first_name: 1,
+                last_name: "Doe",
+                email: "janedoe@example.com",
+                password: "Password1!"
             });
         expect(res.statusCode).toBe(400);
     });
