@@ -164,10 +164,10 @@ describe("User API", () => {
         expect(res.statusCode).toBe(200);
     });
     
-    it("update an existing user's password with a valid password", async () => {
+    it("update an existing user's password with the correct old password and a valid new password", async () => {
         const res = await request(app)
             .patch("/users/change/password")
-            .send({ userID: 2, password: "Password2@" });
+            .send({ userID: 2, old_password: "Password1!", new_password: "Password2@" });
         expect(res.statusCode).toBe(200);
     });
     //now is
@@ -230,17 +230,31 @@ describe("User API", () => {
     });
 
     //password
-    it("update an existing user's password with an invalid password", async () => {
+    it("update an existing user's password with an invalid old password and a valid new password", async () => {
         const res = await request(app)
             .patch("/users/change/password")
-            .send({ userID: 2, password: "" });
+            .send({ userID: 0, old_password: "", new_password: "Password1!" });
+        expect(res.statusCode).toBe(400);
+    });
+    
+    it("update an existing user's password, but old passwords don't match", async () => {
+        const res = await request(app)
+            .patch("/users/change/password")
+            .send({ userID: 0, old_password: "Password3!", new_password: "Password1!" });
+        expect(res.statusCode).toBe(401);
+    });
+
+    it("update an existing user's password with the correct old password and an invalid new password", async () => {
+        const res = await request(app)
+            .patch("/users/change/password")
+            .send({ userID: 2, old_password: "Password2@", new_password: "" });
         expect(res.statusCode).toBe(400);
     });
 
-    it("update a non-existent user's first name with a valid name", async () => {
+    it("update a non-existent user's password with the correct old password and a valid new password", async () => {
         const res = await request(app)
-        .patch("/users/change/password")
-        .send({ userID: 0, password: "Password1!" });
+            .patch("/users/change/password")
+            .send({ userID: 0, old_password: "Password2@", new_password: "Password1!" });
         expect(res.statusCode).toBe(404);
     });
 
