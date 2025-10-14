@@ -36,7 +36,8 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-    entrypoint: ["bash", "-c", "while ! (echo > /dev/tcp/db/5432) >/dev/null 2>&1; do echo 'Waiting for Postgres at db:5432...'; sleep 1; done; echo 'Postgres is up - starting app'; npm start"]
+  # Print key env vars for debugging, then wait for Postgres and start the app
+  entrypoint: ["bash", "-c", "echo \"Container environment (selected): DB_HOST=$DB_HOST DB_NAME=$DB_NAME DB_USER=$DB_USER DB_PORT=$DB_PORT NODE_ENV=$NODE_ENV API_PORT=$API_PORT\"; echo '\nFull env:'; env | sort; \nwhile ! (echo > /dev/tcp/db/5432) >/dev/null 2>&1; do echo 'Waiting for Postgres at db:5432...'; sleep 1; done; echo 'Postgres is up - starting app'; npm start"]
 
 volumes:
   pgdata:
