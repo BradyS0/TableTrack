@@ -153,7 +153,7 @@ describe("User API", () => {
     it("update an existing user's last name with a valid name", async () => {
         const res = await request(app)
             .patch("/users/change/lastname")
-            .send({ userID: 2, name: "Roe" });
+            .send({ userID: 2, last_name: "Roe" });
         expect(res.statusCode).toBe(200);
     });
     
@@ -188,7 +188,7 @@ describe("User API", () => {
     it("update a non-existent user's first name with a valid name", async () => {
         const res = await request(app)
             .patch("/users/change/firstname")
-            .send({ userID: 0, last_name: "John" });
+            .send({ userID: 0, first_name: "John" });
         expect(res.statusCode).toBe(404);
     });
     
@@ -226,7 +226,7 @@ describe("User API", () => {
         const res = await request(app)
             .patch("/users/change/email")
             .send({ userID: 2, email: "johndoe@example.com" });
-        expect(res.statusCode).toBe(404);
+        expect(res.statusCode).toBe(409);
     });
 
     //password

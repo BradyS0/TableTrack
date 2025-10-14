@@ -47,7 +47,7 @@ router.post("/login", async (req, res) => {
             }
         });
     const password_input = UserLogic.hash_password(password)
-    if(user !== undefined && user == 1  && password_input == user.password) {
+    if(user !== undefined && user.length == 1  && password_input == user.password) {
         res.status(200).json({message: "Login successful!"});
     } else {
         res.status(401).json({error: "Invalid email or password"});
@@ -130,7 +130,7 @@ router.patch("/change/email", async (req, res) => {
             }
         } else {
             //email is a duplicate (already in database)
-            res.status(400).json({ error: "Email is already being used"})
+            res.status(409).json({ error: "Email is already being used"})
         }
     } else {
         //invalid email
@@ -153,7 +153,7 @@ router.patch("/change/password", async (req, res) => {
         
         if (!UserLogic.validate_password(old_password)) {
             res.status(400).json({ message: "Old password is invalid"});
-        } else if (db_password != old_hashed) {
+        } else if (db_password !== old_hashed) {
             res.status(401).json({ message: "Passwords do not match"});
         } else if (!UserLogic.validate_password(new_password)) {
             res.status(400).json({ message: "New password is invalid"});     
