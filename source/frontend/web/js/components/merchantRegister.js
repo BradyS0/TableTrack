@@ -3,7 +3,6 @@ import {phone_num_strip, phone_num_validator} from '../logic/validators.js'
 export function createRegistrationPopup() {
   // Main popup container
   const popup = document.createElement('div');
-  popup.id = 'edit-Popup';
   popup.classList.add('popup');
 
   // Popup content
@@ -66,7 +65,7 @@ export function createRegistrationPopup() {
   e.target.value = phone_num_strip(e.target.value)
  });
 
-  // Save Button
+  // Register Button
   const registerBtn = document.createElement('button');
   registerBtn.type = 'submit';
   registerBtn.classList.add('register-btn', 'btn');

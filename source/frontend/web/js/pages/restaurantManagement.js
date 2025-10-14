@@ -50,7 +50,7 @@ function createEditPopup() {
 
   // Header
   const heading = document.createElement('h2');
-  heading.textContent = 'Create Restaurant Details';
+  heading.textContent = 'Edit Restaurant Details';
 
   // Form
   const form = document.createElement('form');
