@@ -14,7 +14,7 @@ router.post("/", async (req, res) => {
         });
     
     if (emailList === undefined || emailList.length == 0) {
-        res.status(400).json({ error: "Email is already being used"});
+        res.status(409).json({ error: "Email is already being used"});
     } else if (!UserLogic.validate_all(first_name, last_name, email, password)) {
         res.status(400).json({ error: "Invalid parameters" });
     } else {
@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
                 first_name : first_name,
                 last_name : last_name,
                 email : email,
-                password : hashed_password,
+                password : hashed_password
             });
             res.status(201).json(user.first_name, user.last_name, user.email);
         } catch (err) {
@@ -148,7 +148,7 @@ router.patch("/change/password", async (req, res) => {
         
         if (!UserLogic.validate_password(old_password)) {
             res.status(400).json({ message: "Old password is invalid"});
-        } else if (db_password !== old_hashed) {
+        } else if (db_password != old_hashed) {
             res.status(401).json({ message: "Passwords do not match"});
         } else if (!UserLogic.validate_password(new_password)) {
             res.status(400).json({ message: "New password is invalid"});     

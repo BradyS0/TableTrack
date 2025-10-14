@@ -34,7 +34,7 @@ describe("User API", () => {
         expect(res.statusCode).toBe(201);
         expect(res.body.first_name).toBe("John");
         expect(res.body.last_name).toBe("Doe");
-        expect(res.body.email).toBe("johndoe@example.com")
+        expect(res.body.email).toBe("johndoe@example.com");
     });
     
     //EDGE cases (5)
