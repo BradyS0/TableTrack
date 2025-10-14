@@ -26,7 +26,8 @@ services:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: ${DB_NAME}
-      DB_HOST: localhost
+      # Use the compose service hostname so the api container can reach Postgres
+      DB_HOST: db
       DB_PORT: ${DB_PORT}
     ports:
       - "${API_PORT}:${API_PORT}"
