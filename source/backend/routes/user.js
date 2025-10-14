@@ -24,7 +24,10 @@ router.post("/", async (req, res) => {
                 email : email,
                 password : hashed_password
             });
-            res.status(201).json(user.first_name, user.last_name, user.email);
+            res.status(201).json({
+                first_name: user.first_name, 
+                last_name: user.last_name, 
+                email: user.email});
         } catch (err) {
             res.status(400).json({error: err.message});
         }
@@ -44,7 +47,7 @@ router.post("/login", async (req, res) => {
             }
         });
     const password_input = UserLogic.hash_password(password)
-    if(user[0] && password_input === user.password) {
+    if(user !== undefined && user == 1  && password_input == user.password) {
         res.status(200).json({message: "Login successful!"});
     } else {
         res.status(401).json({error: "Invalid email or password"});
