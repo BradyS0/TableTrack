@@ -1,0 +1,173 @@
+
+import express from "express";
+import { Restaurant } from "../models/Restaurant.js";
+
+const { // Import functions from restaurantLogic
+    validate_userID,
+    validate_address,
+    validate_phone,
+    validate_name,
+    validate_description,
+    validate_hours
+} = require('../../logic/restaurantLogic.js');
+
+const router = express.Router();
+
+
+
+// POST /restaurant
+// Create a new restaurant
+router.post("/", async (req, res) => {
+    try 
+    {
+        // Retrieve and validate information from body
+        const { ownerID, name, address, phone, desc, hours } = req.body;
+        if ( validate_name(name) &&
+             validate_address(address) &&
+             validate_phone(phone) &&
+             validate_description(desc) &&
+             validate_hours(hours)
+        ){
+            // Validate ownerID for new restaurant
+            const userState = validate_userID(ownerID);
+            if (userState == 404)
+                res.status(404).json({ error: "User cannot be found" });
+            else if (userState == 409)
+                res.status(409).json({ error: "User already has a restaurant" })
+            else if (userState == 200)
+            {
+                // Create the new restaurant
+                const restaurant = await Restaurant.create({
+                    userID:      ownerID,
+                    name:        name,
+                    address:     address,
+                    phone_num:   phone,
+                    description: desc,
+                    open_hours:  hours,
+                    logo:        ""
+                });
+                res.status(201).json(restaurant);
+            }
+        } 
+        else // Non-ownerID item is invalid
+        {
+            res.status(400).json({ error: "Invalid item in request" });
+        }
+    }
+    catch (err)
+    {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+
+// GET /restaurant
+// Get a list of restaurants
+router.get("/", async (req, res) => {
+    try
+    {
+        // Get a list of available restaurants
+        const db_restaurants = Restaurant.findAll();
+
+        // Process data
+        var formatted_json = {restaurants: []};
+        for (rest in db_restaurants)
+        {
+            // Add needed values to restaurant json
+            var rest_json = {};
+            rest_json.id          = rest.restID;
+            rest_json.name        = rest.name;
+            rest_json.address     = rest.address;
+            rest_json.phone_num   = rest.phone_num;
+            rest_json.description = rest.description;
+            rest_json.tags        = ["temp_tag"]; // <-------------------------------------------------- REMOVE ONCE TAGS HAVE BEEN ADDED
+
+            // Add this object to the formatted json
+            formatted_json.restaurants.push(rest_json);
+        }
+        res.status(200).json(formatted_json);
+    }
+    catch (err)
+    {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+
+// GET /restaurant/{id}
+// Get a specific restaurant
+router.get("/:id", async (req, res) => {
+    try
+    {
+        // Get restaurant id from URL
+        const restID = req.params.id;
+
+        // Get restaurant using the id
+        const restaurant = await Restaurant.findByPk(parseInt(restID));
+        if (restaurant == null)
+            res.status(404).json({ error: "Restaurant not found" });
+        else
+            res.status(200).json(restaurant);
+    }
+    catch (err)
+    {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+
+// PATCH /restaurant/change
+// Makes changes to a restaurant
+router.patch("/change", async (req, res) => {
+    try
+    {
+        // Retrieve and validate information from body
+        const { restID, name, address, phone, desc, hours } = req.body;
+        if ( validate_name(name) &&
+             validate_address(address) &&
+             validate_phone(phone) &&
+             validate_description(desc) &&
+             validate_hours(hours)
+        ){
+            // Validate restID to make changes to
+            const restaurant = await Restaurant.findByPk(parseInt(restID));
+            if (restaurant == null)
+                res.status(404).json({ error: "Restaurant cannot be found" });
+            else
+            {
+                // Update values of the restaurant
+                await Restaurant.update({
+                    name: name,
+                    address: address,
+                    phone_num: phone,
+                    description: desc,
+                    open_hours: hours
+                },{ where: {
+                    restID: parseInt(restID)
+                },},);
+                var new_restaurant = await Restaurant.findByPk(parseInt(restID));
+                new_restaurant.tags = ["temp_tag"]; // <-------------------------------------------------- REMOVE ONCE TAGS HAVE BEEN ADDED
+                res.status(200).json(new_restaurant);
+            }
+        }
+        else // Non-restID item is invalid
+        {
+            res.status(400).json({ error: "Invalid item in request" });
+        }
+    }
+    catch (err)
+    {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+
+export default router;

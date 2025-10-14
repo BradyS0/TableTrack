@@ -11,17 +11,17 @@ async function validate_userID(id) {
     // Check if the owner exists
     const user = await User.findByPk(parseInt(id));
     if (user === null) {
-        return false; // No user found
+        return 404; // No user found
     }
 
     // Check if already has restaurant
     else {
         const rest = await Restaurant.findOne({ where: { userID: parseInt(id) } });
         if (rest === null) {
-            return true; // No current restaurant
+            return 200; // No current restaurant
         }
     }
-    return false; // Already has restaurant
+    return 409; // Already has restaurant
 }
 
 
@@ -42,6 +42,22 @@ function validate_phone(phone) {
     // Ensure formatting is correct
     const regex = /^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$/;
     return regex.test(phone);
+}
+
+
+
+// Test name
+function validate_name(name) {
+
+    const MAX_NAME_LEN = 50;
+    const MIN_NAME_LEN = 1;
+
+    // Ensure valid name length
+    if (name.length >= MIN_NAME_LEN && name.length <= MAX_NAME_LEN) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
@@ -91,6 +107,7 @@ module.exports = {
     validate_userID,
     validate_address,
     validate_phone,
+    validate_name,
     validate_description,
     validate_hours
 };
