@@ -1,9 +1,12 @@
+import {createRegistrationPopup} from '../components/merchantRegister.js'
+
 document.addEventListener("DOMContentLoaded",()=>{
     const reservationBtn = document.querySelector(".reservation-btn")
     reservationBtn.parentElement.removeChild(reservationBtn)
     
     //load edit icons
     loadEditableFields()
+    document.getElementById("app").append(createRegistrationPopup())
 })
 
 function loadEditableFields(){
