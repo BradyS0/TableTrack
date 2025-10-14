@@ -25,7 +25,7 @@ jobs:
       DB_USER: user
       DB_PASSWORD: password
       DB_NAME: tabletrackdb
-      DB_HOST: db
+      DB_HOST: localhost
 
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
       - run: cd source/backend && npm ci
       - name: Wait for Postgres
         run: |
-          until nc -z db 5432; do
+          until nc -z localhost 5432; do
             echo "Waiting for Postgres..."
             sleep 1
           done
