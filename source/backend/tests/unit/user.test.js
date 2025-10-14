@@ -1,12 +1,34 @@
 const {validate_email, validate_name, validate_password} = require('../../logic/userLogic.js');
 
 //validate_email
-test("email has @ symbol with in it", () => {
+//valid cases
+test("email has @ symbol, domain with at least one ., and no leading, trailing, or consecutive whitespace characters", () => {
     expect(validate_email("email@example.ca")).toEqual(true);
+});
+
+//edge cases
+test("empty email", () => {
+    expect(validate_email("")).toEqual(false);
 });
 
 test("email with no @ symbol in it", () => {
     expect(validate_email("emailexample.ca")).toEqual(false);
+});
+
+test("email with no username", () => {
+    expect(validate_email("@example.ca")).toEqual(false);
+});
+
+test("email with no domain", () => {
+    expect(validate_email("email@")).toEqual(false);
+});
+
+test("email with no mail server name, only top-level domain", () => {
+    expect(validate_email("email@.ca")).toEqual(false);
+});
+
+test("email with mail server name, but no top-level domain", () => {
+    expect(validate_email("email@email")).toEqual(false);
 });
 
 //validate_name
