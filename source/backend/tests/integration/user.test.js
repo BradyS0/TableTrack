@@ -233,14 +233,14 @@ describe("User API", () => {
     it("update an existing user's password with an invalid old password and a valid new password", async () => {
         const res = await request(app)
             .patch("/users/change/password")
-            .send({ userID: 0, old_password: "", new_password: "Password1!" });
+            .send({ userID: 2, old_password: "", new_password: "Password1!" });
         expect(res.statusCode).toBe(400);
     });
     
     it("update an existing user's password, but old passwords don't match", async () => {
         const res = await request(app)
             .patch("/users/change/password")
-            .send({ userID: 0, old_password: "Password3!", new_password: "Password1!" });
+            .send({ userID: 2, old_password: "Password3!", new_password: "Password1!" });
         expect(res.statusCode).toBe(401);
     });
 
