@@ -20,12 +20,82 @@ afterAll(async () => {
 });
 
 describe("User API", () => {
-    it("creates a user", async () => {
+    //CREATING A USER
+    //VALID case
+    it("create a user with a valid name, email, and password", async () => {
         const res = await request(app)
             .post("/users")
-            .send({ name: "Alice", email: "alice@example.com" });
+            .send({
+                first_name: "John",
+                last_name: "Doe",
+                email: "johndoe@example.com",
+                password: "Password1!"
+            });
         expect(res.statusCode).toBe(201);
-        expect(res.body.name).toBe("Alice");
+        expect(res.body.first_name).toBe("John");
+        expect(res.body.last_name).toBe("Doe");
+        expect(res.body.email).toBe("johndoe@example.com")
+    });
+    
+    //EDGE cases (5)
+    it("create a user with an invalid first name", async () => {
+        const res = await request(app)
+            .post("/users")
+            .send({
+                first_name: "",
+                last_name: "Doe",
+                email: "janedoe@example.com",
+                password: "Password1!"
+            });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("create a user with an invalid last name", async () => {
+        const res = await request(app)
+            .post("/users")
+            .send({
+                first_name: "Jane",
+                last_name: "",
+                email: "janedoe@example.com",
+                password: "Password1!"
+            });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("create a user with an email with invalid syntax", async () => {
+        const res = await request(app)
+            .post("/users")
+            .send({
+                first_name: "Jane",
+                last_name: "Doe",
+                email: "",
+                password: "Password1!"
+            });
+        expect(res.statusCode).toBe(400);
+    });
+    
+    it("create a user with an email already in use", async () => {
+        const res = await request(app)
+            .post("/users")
+            .send({
+                first_name: "Jane",
+                last_name: "Doe",
+                email: "johndoe@example.com",
+                password: "Password1!"
+            });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("create a user with an invalid password", async () => {
+        const res = await request(app)
+            .post("/users")
+            .send({
+                first_name: "Jane",
+                last_name: "Doe",
+                email: "janedoe@example.com",
+                password: ""
+            });
+        expect(res.statusCode).toBe(400);
     });
 
     it("fetches all users", async () => {
@@ -34,30 +104,162 @@ describe("User API", () => {
         expect(res.body.length).toBeGreaterThan(0);
     });
 
-    it("deletes a user", async () => {
-        const user = await User.create({ name: "Bob", email: "bob@example.com" });
+    //LOGIN
+    //VALID case
+    it("login to an existing user", async () => {
+        const res = await request(app)
+            .post("/users/login")
+            .send({
+                email: "johndoe@example.com",
+                password: "Password1!"
+            });
+        expect(res.statusCode).toBe(200);
+    });
+    
+    //EDGE case
+    it("login to a non-existent user", async () => {
+        const res = await request(app)
+            .post("/users/login")
+            .send({
+                email: "janedoe@example.com",
+                password: "Password1!"
+            });
+        expect(res.statusCode).toBe(401);
+    })
+    
+    //UPDATING A USER
+    //VALID cases
+    //following tests use the same account to test update
+    //starts with
+    //first_name: "John"
+    //last_name: "Smith"
+    //email: johnsmith@example.com
+    //password: Password1!
+    it("update an existing user's first name with a valid name", async () => {
+        await request(app)
+            .post("/users")
+            .send({
+                first_name: "John",
+                last_name: "Smith",
+                email: "johnsmith@example.com",
+                password: "Password1!"
+            });
+        const res = await request(app)
+            .patch("/users/change/firstname")
+            .send({ userID: 2, first_name: "Jane" });
+        expect(res.statusCode).toBe(200);
+    });
+        
+    it("update an existing user's last name with a valid name", async () => {
+        const res = await request(app)
+            .patch("/users/change/lastname")
+            .send({ userID: 2, name: "Roe" });
+        expect(res.statusCode).toBe(200);
+    });
+    
+    it("update an existing user's email with a valid email", async () => {
+        const res = await request(app)
+            .patch("/users/change/email")
+            .send({ userID: 2, email: "janeroe@example.com" });
+        expect(res.statusCode).toBe(200);
+    });
+    
+    it("update an existing user's password with a valid password", async () => {
+        const res = await request(app)
+            .patch("/users/change/password")
+            .send({ userID: 2, password: "Password2@" });
+        expect(res.statusCode).toBe(200);
+    });
+    //now is
+    //first_name: "Jane"
+    //last_name: "Roe"
+    //email: janeroe@example.com
+    //password: Password2@
+    
+    //EDGE cases
+    //first name
+    it("update an existing user's first name with an invalid name", async () => {
+        const res = await request(app)
+            .patch("/users/change/firstname")
+            .send({ userID: 2, first_name: "" });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("update a non-existent user's first name with a valid name", async () => {
+        const res = await request(app)
+            .patch("/users/change/firstname")
+            .send({ userID: 0, last_name: "John" });
+        expect(res.statusCode).toBe(404);
+    });
+    
+    //last name
+    it("update an existing user's last name with an invalid name", async () => {
+        const res = await request(app)
+            .patch("/users/change/lastname")
+            .send({ userID: 2, last_name: "" });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("update a non-existent user's last name with a valid name", async () => {
+        const res = await request(app)
+            .patch("/users/change/lastname")
+            .send({ userID: 0, last_name: "Smith" });
+        expect(res.statusCode).toBe(404);
+    });
+    
+    //email
+    it("update an existing user's email with an invalid email", async () => {
+        const res = await request(app)
+            .patch("/users/change/email")
+            .send({ userID: 2, email: "" });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("update a non-existent user's first name with a valid email", async () => {
+        const res = await request(app)
+            .patch("/users/change/email")
+            .send({ userID: 0, email: "johnsmith@examplemail.com" });
+        expect(res.statusCode).toBe(404);
+    });
+    
+    it("update an existing user's email to an email already being used", async () => {
+        const res = await request(app)
+            .patch("/users/change/email")
+            .send({ userID: 2, email: "johndoe@example.com" });
+        expect(res.statusCode).toBe(404);
+    });
+
+    //password
+    it("update an existing user's password with an invalid password", async () => {
+        const res = await request(app)
+            .patch("/users/change/password")
+            .send({ userID: 2, password: "" });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("update a non-existent user's first name with a valid name", async () => {
+        const res = await request(app)
+        .patch("/users/change/password")
+        .send({ userID: 0, password: "Password1!" });
+        expect(res.statusCode).toBe(404);
+    });
+
+    //DELETING A USER
+    //VALID case
+    it("delete an existing user", async () => {
+        const user = await User.create({
+                first_name: "Jane",
+                last_name: "Doe",
+                email: "janedoe@example.com",
+                password: "Password1!"
+            });
         const res = await request(app).delete(`/users/${user.userID}`);
         expect(res.statusCode).toBe(204);
     });
 
-    it("returns 404 when deleting non-existent user", async () => {
-        const res = await request(app).delete("/users/9999");
-        expect(res.statusCode).toBe(404);
-    });
-
-    it("updates a user's name", async () => {
-        const user = await User.create({ name: "Charlie", email: "kirk@example.com" });
-        const res = await request(app)
-            .patch("/users/changeName")
-            .send({ userID: user.userID, name: "Charles" });
-        expect(res.statusCode).toBe(200);
-        expect(res.body.message).toBe("Name updated");
-    });
-
-    it("returns 404 when updating non-existent user", async () => {
-        const res = await request(app)
-            .patch("/users/changeName")
-            .send({ userID: 9999, name: "NoOne" });
+    //EDGE case
+    it("delete a non-existing user", async () => {
+        const res = await request(app).delete("/users/0");
         expect(res.statusCode).toBe(404);
     });
 });
