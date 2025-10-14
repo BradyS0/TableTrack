@@ -33,13 +33,29 @@ jobs:
 
       - name: Host-level smoke curl test (fallback)
         run: |
-          # In some runners the container ports are published on localhost:3000 - try a quick curl as an extra validation
-          if curl -sSf --max-time 5 http://localhost:3000/health >/dev/null 2>&1; then
-            echo "/health OK on host"
-          else
-            echo "/health not ok on host, trying /users"
-            curl -sSf http://localhost:3000/users | sed -n '1,200p' || true
-          fi
+          docker compose ps
+          RETRIES=15
+          SLEEP=2
+          URL=http://localhost:3000/health
+
+          i=0
+          while [ $i -lt $RETRIES ]; do
+            if curl -sSf --max-time 5 "$URL" >/dev/null 2>&1; then
+              echo "/health OK on host"
+              exit 0
+            fi
+            echo "waiting for host port 3000... ($((i+1))/$RETRIES)"
+            sleep $SLEEP
+            i=$((i+1))
+          done
+
+          echo "/health not ok on host, trying /users (one final attempt)"
+          curl -sSf --max-time 5 http://localhost:3000/users | sed -n '1,200p' || true
+
+          echo "API did not respond on host; dumping docker compose ps and logs for diagnosis"
+          docker compose ps
+          docker compose logs api --tail=200 || true
+          exit 1
 
       - name: Tear down docker-compose
         if: always()
