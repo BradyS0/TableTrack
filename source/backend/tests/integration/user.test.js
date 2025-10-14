@@ -83,7 +83,7 @@ describe("User API", () => {
                 email: "johndoe@example.com",
                 password: "Password1!"
             });
-        expect(res.statusCode).toBe(400);
+        expect(res.statusCode).toBe(409);
     });
 
     it("create a user with an invalid password", async () => {

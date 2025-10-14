@@ -7,17 +7,15 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     const { first_name, last_name, email, password } = req.body;
-    const emailList = await User.findAll({
+    const email_list = await User.findAll({
             where: {
                 email: email
             }
         });
     
-    if (emailList === undefined || emailList.length == 0) {
-        res.status(409).json({ error: "Email is already being used"});
-    } else if (!UserLogic.validate_all(first_name, last_name, email, password)) {
-        res.status(400).json({ error: "Invalid parameters" });
-    } else {
+    const valid_params = UserLogic.validate_all(first_name, last_name, email, password);
+
+    if ((email_list === undefined || email_list.length == 0 ) && valid_params) {
         try {
             const hashed_password = UserLogic.hash_password(password);
             const user = await User.create({
@@ -30,6 +28,10 @@ router.post("/", async (req, res) => {
         } catch (err) {
             res.status(400).json({error: err.message});
         }
+    } else if (!valid_params) {
+        res.status(400).json({ error: "Invalid parameters" });
+    } else {
+        res.status(409).json({ error: "Email is already being used"});
     }
 });
 
