@@ -49,8 +49,8 @@ function validate_phone(phone) {
 // Test description
 function validate_description(desc) {
 
-    MAX_DESC_LEN = 400;
-    MIN_DESC_LEN = 10;
+    const MAX_DESC_LEN = 400;
+    const MIN_DESC_LEN = 10;
 
     // Ensure valid description length
     if (desc.length >= MIN_DESC_LEN && desc.length <= MAX_DESC_LEN) {
