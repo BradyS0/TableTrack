@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
             }
         });
     
-    if (!emailList[0]) {
+    if (emailList === undefined || emailList.length == 0) {
         res.status(400).json({ error: "Email is already being used"});
     } else if (!UserLogic.validate_all(first_name, last_name, email, password)) {
         res.status(400).json({ error: "Invalid parameters" });
@@ -115,7 +115,7 @@ router.patch("/change/email", async (req, res) => {
             }
         });
 
-        if (!emailList[0]) {
+        if (emailList === undefined || emailList.length == 0) {
             //email is not a duplicate
             const updated = await User.update({ email : email }, { where: { userID }});
             if (updated[0]) {
