@@ -1,5 +1,6 @@
+# created with copilot
 node_modules
-npm-debug.log
+npm-debug.logS
 Dockerfile
 .dockerignore
 .env

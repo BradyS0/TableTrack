@@ -7,11 +7,12 @@ jobs:
   compose-build-and-smoke:
     runs-on: ubuntu-latest
     env:
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_NAME: ${{ secrets.DB_NAME }}
-      DB_PORT: ${{ secrets.DB_PORT }}
-      API_PORT: ${{ secrets.API_PORT }}
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: mydb_test
+      DB_PORT: 5432
+      API_PORT: 3000
+      PORT: 3000
       NODE_ENV: test
     steps:
       - uses: actions/checkout@v4
