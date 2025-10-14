@@ -21,15 +21,47 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Write .env for docker-compose
+        run: |
+          cat > source/.env <<EOF
+          API_PORT=${{ env.API_PORT }}
+          DB_USER=${{ env.DB_USER }}
+          DB_PASSWORD=${{ env.DB_PASSWORD }}
+          DB_NAME=${{ env.DB_NAME }}
+          DB_PORT=${{ env.DB_PORT }}
+          EOF
+
       - name: Start docker-compose stack
         run: |
           docker compose up --build -d
+
+      - name: Wait for api container to report Up
+        run: |
+          RETRIES=30
+          SLEEP=2
+          i=0
+          while [ $i -lt $RETRIES ]; do
+            status=$(docker compose ps --services --filter "status=running" | grep -w api || true)
+            if [ "$status" = "api" ]; then
+              echo "api service is running"
+              break
+            fi
+            echo "waiting for api service to be running... ($((i+1))/$RETRIES)"
+            sleep $SLEEP
+            i=$((i+1))
+          done
+          if [ $i -ge $RETRIES ]; then
+            echo "api service did not become running in time"
+            docker compose ps
+            docker compose logs api --tail=200 || true
+            exit 1
+          fi
 
       - name: Run in-container smoke check (preferred)
         run: |
           # run the project's smoke-check script inside the 'api' service container
           # this uses the container's environment and will exit nonzero on failure
-          docker compose exec -T api node /app/scripts/smoke-check.js || true
+          docker compose exec -T api node /app/scripts/smoke-check.js
 
       - name: Host-level smoke curl test (fallback)
         run: |
