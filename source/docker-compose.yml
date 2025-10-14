@@ -33,7 +33,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
-    command: ["./wait-for-it.sh", "db:5432", "--", "npm", "start"]
+    entrypoint: ["bash", "-c", "while ! (echo > /dev/tcp/db/5432) >/dev/null 2>&1; do echo 'Waiting for Postgres at db:5432...'; sleep 1; done; echo 'Postgres is up - starting app'; npm start"]
 
 volumes:
   pgdata:
