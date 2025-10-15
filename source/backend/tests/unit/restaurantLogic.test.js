@@ -9,19 +9,9 @@ const { // Import functions from restaurantLogic
 } = require('../../logic/restaurantLogic.js');
 
 // -------------------------------------------------- validate_userID
-/*
-test("validate_userID: User does not exist", () => {
 
-});
+// Done in integration tests
 
-test("validate_userID: User has a restaurant", () => {
-
-});
-
-test("validate_userID: Valid user", () => {
-
-});
-*/
 
 
 // -------------------------------------------------- validate_address
@@ -65,6 +55,12 @@ test("validate_phone: Valid number", () => {
     const str = "(204) 123-4567";
     expect(validate_phone(str)).toEqual(true);
 });
+
+
+
+// -------------------------------------------------- validate_name
+
+// Same implementation as validate_description
 
 
 

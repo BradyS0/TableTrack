@@ -111,6 +111,7 @@ router.get("/:id", async (req, res) => {
         if (restaurant == null)
             res.status(404).json({ error: "Restaurant not found" });
         else
+            restaurant.tags = ["temp_tag"]; // <-------------------------------------------------- REMOVE ONCE TAGS HAVE BEEN ADDED
             res.status(200).json(restaurant);
     }
     catch (err)
