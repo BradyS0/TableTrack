@@ -68,15 +68,13 @@ router.post("/", async (req, res) => {
 // GET /restaurant
 // Get a list of restaurants
 router.get("/", async (req, res) => {
-    try
-    {
+    try {
         // Get a list of available restaurants
-        const db_restaurants = Restaurant.findAll();
+        const db_restaurants = await Restaurant.findAll();
 
         // Process data
-        var formatted_json = {restaurants: []};
-        for (var rest in db_restaurants)
-        {
+        var formatted_json = { restaurants: [] };
+        for (const rest of db_restaurants) {
             // Add needed values to restaurant json
             var rest_json = {};
             rest_json.id          = rest.restID;
@@ -90,9 +88,7 @@ router.get("/", async (req, res) => {
             formatted_json.restaurants.push(rest_json);
         }
         res.status(200).json(formatted_json);
-    }
-    catch (err)
-    {
+    } catch (err) {
         // Unexpected internal error occured
         res.status(500).json({ error: err.message });
     }
