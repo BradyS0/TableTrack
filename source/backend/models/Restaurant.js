@@ -12,5 +12,5 @@ export const Restaurant = sequelize.define("Restaurant", {
     phone_num:   { type: DataTypes.STRING,  allowNull: false, unique: true },
     description: { type: DataTypes.STRING,  allowNull: false },
     open_hours:  { type: DataTypes.STRING,  allowNull: false },
-    logo:        { type: DataTypes.STRING } // Filepath to image
+    logo:        { type: DataTypes.STRING }, // Filepath to image
 });
