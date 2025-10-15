@@ -77,7 +77,8 @@ export function createRegistrationPopup() {
   completeRegistration(form,nameInput,tagsInput,phoneInput,locationInput,popup)
   // Return the full popup element
 
-  return popup;
+  const app = document.getElementById('app');
+  app.append(popup);
 }
 
 function completeRegistration(form,input_name, input_tags, input_phone,input_location, popup){

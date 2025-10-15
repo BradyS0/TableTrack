@@ -55,15 +55,25 @@ nav {
     transition: transform  500ms ease-out,  opacity 800ms ease; ;  
 }
 
+nav .user-options{
+    display: flex;
+    flex-flow: column;
+    gap: .5rem;
+}
+
 .nav-active{
     transition: transform 500ms ease-in, opacity 800ms ease; 
     transform: translateX(0);
     opacity: .98;
     filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.2));    
 }
-.nav-active > *{
+
+.nav-active p{
     cursor: pointer;
     user-select: none;
+}
+.nav-active p:hover{
+    opacity: .75;
 }
 
 #hamburger{
@@ -131,7 +141,6 @@ nav {
 }
 
 .merchant-note {
-    margin-top: 20px;
     color: red;
     font-weight: bold;
 }
@@ -162,5 +171,25 @@ nav {
     margin: 1rem;
 }
 
+form input {
+    min-width: fit-content;
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.7rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+}
 
+.close-btn {
+    position: absolute;
+    top: 0.8rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
 
+.close-btn:hover{
+    color: rgb(148, 0, 0);
+}
