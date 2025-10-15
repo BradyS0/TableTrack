@@ -24,14 +24,14 @@ router.post("/", async (req, res) => {
             // Validate ownerID for new restaurant exists
             const users = await User.findAll({ where: { userID: parseInt(userID) } });
             if (users === undefined || users.length == 0)
+            {
                 res.status(404).json({ error: "User cannot be found" });
+            }
             else
             {
                 // Check if this user already owns a restaurant
                 const restaurants = Restaurant.findAll({ where: { userID: parseInt(userID) } })
-                if (!(restaurants === undefined || restaurants.length == 0))
-                    res.status(409).json({ error: "User already has a restaurant" });
-                else
+                if (restaurants === undefined || restaurants.length == 0)
                 {
                     // Create the new restaurant
                     const restaurant = await Restaurant.create({
@@ -44,6 +44,10 @@ router.post("/", async (req, res) => {
                         logo:        ""
                     });
                     res.status(201).json(restaurant);
+                }
+                else
+                {
+                    res.status(409).json({ error: "User already has a restaurant" });
                 }
             }   
         } 
