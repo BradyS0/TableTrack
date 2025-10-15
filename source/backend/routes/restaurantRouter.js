@@ -108,9 +108,10 @@ router.get("/:id", async (req, res) => {
         const restaurant = await Restaurant.findByPk(parseInt(restID));
         if (restaurant == null)
             res.status(404).json({ error: "Restaurant not found" });
-        else
+        else{
             restaurant.tags = ["temp_tag"]; // <-------------------------------------------------- REMOVE ONCE TAGS HAVE BEEN ADDED
             res.status(200).json(restaurant);
+        }
     }
     catch (err)
     {
