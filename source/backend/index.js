@@ -4,7 +4,7 @@ import cors from "cors";
 import userRouter from "./routes/user.js";
 import restaurantRouter from "./routes/restaurantRouter.js";
 import sequelize from "./config/db.js";
-import { config } from "./config/config.js";
+import config from "./config/config.js";
 
 const app = express();
 

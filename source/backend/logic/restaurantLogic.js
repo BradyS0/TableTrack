@@ -76,7 +76,7 @@ function validate_hours(hours) {
 
 
 // Export functions
-module.exports = {
+export default {
     validate_address,
     validate_phone,
     validate_name,
