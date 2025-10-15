@@ -66,7 +66,7 @@ export function mainNavRoutes(){
 
 
 
-export function createNav(menuItems = [item1, item2]) {
+export function createNav(menuItems = ['item1', 'item2']) {
   const nav = document.querySelector('nav')
 
   menuItems.forEach(item => {
