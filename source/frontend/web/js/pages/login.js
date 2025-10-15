@@ -28,8 +28,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   const data = await res.json();
 
   if (res.ok) {
-    setUserState(data.token || email, 7); // 7 days cookie
-    sessionStorage.setItem("user", JSON.stringify(data.user || { email }));
+    setUserState(data);
     alert("Login successful!");
     // redirect user
     window.location.href = "/dashboard.html";  //change this
