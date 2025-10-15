@@ -41,4 +41,4 @@ function hash_password(password) {
     return hashed_password;
 }
 
-module.exports = {validate_all, validate_email, validate_name, validate_password, hash_password};
+export default {validate_all, validate_email, validate_name, validate_password, hash_password};

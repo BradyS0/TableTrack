@@ -1,18 +1,27 @@
-//file party created using chatGPT
+﻿//file party created using chatGPT
+// Ensure test environment is set before importing app/db so config/db.js reads it
+process.env.NODE_ENV = "test";
 import request from "supertest";
 import app from "../../index.js";
-import sequelize from "../../db.js";
+import sequelize from "../../config/db.js";
 import { User } from "../../models/User.js";
 
 // testing not using babel
 // const {request} = require('supertest');
 // const {app} = require('../../index.js');
-// const {sequelize} = require('../../db.js');
+// const {sequelize} = require('../../config/db.js');
 // const {}
 
 beforeAll(async () => {
     process.env.NODE_ENV = "test";
-    await sequelize.sync({ force: true });
+    try {
+        await sequelize.authenticate();
+        await sequelize.sync({ force: true });
+    } catch (err) {
+        console.error('Error during sequelize.sync in tests:');
+        console.error(err && err.stack ? err.stack : err);
+        throw err;
+    }
 });
 
 afterAll(async () => {

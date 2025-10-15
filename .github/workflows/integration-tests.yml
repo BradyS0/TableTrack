@@ -1,17 +1,18 @@
+# runs integration tests in CI environment (github actions)
 name: Integration Tests
 
-on: [pull_request]
+on: [push, pull_request]
 
 jobs:
   integration:
     runs-on: ubuntu-latest
     services:
-      postgres:
+      db:
         image: postgres:16
         env:
           POSTGRES_USER: user
           POSTGRES_PASSWORD: password
-          POSTGRES_DB: mydb_test
+          POSTGRES_DB: tabletrackdb
         ports:
           - 5432:5432
         options: >-
@@ -23,8 +24,8 @@ jobs:
     env:
       NODE_ENV: test
       DB_USER: user
-      DB_PASS: password
-      DB_NAME: mydb_test
+      DB_PASSWORD: password
+      DB_NAME: tabletrackdb
       DB_HOST: localhost
 
     steps:

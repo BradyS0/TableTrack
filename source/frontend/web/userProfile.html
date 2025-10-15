@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TableTrack - Profile</title>
+
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/userProfile.css" />
+</head>
+<body>
+  <!-- App container -->
+  <div id="app">
+    <!-- Navigation Menu -->
+    <nav></nav>
+    <div id="overlay" class="overlay"></div>
+
+  </div>
+  <!-- Profile Section -->
+  <main>
+    <section class="profile-section">
+      <div class="profile-card">
+        <img src="assets/default-avatar.png" alt="User avatar" class="profile-avatar" />
+        <h2 class="username">Mohammad Arqam</h2>
+        <p class="email">mohammad1234@example.com</p>
+        <p class="joined-date">Joined: Oct 2025</p>
+        <hr />
+
+        <div class="profile-actions">
+          <button id="editProfileBtn" class="btn">Edit Profile</button>
+          <button class="btn merchant" id="merchantBtn">Become a merchant!</button>
+          <button class="btn danger" id="logoutBtn">Logout</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Edit Profile Popup -->
+  <div id="editPopup" class="popup hidden">
+    <div class="popup-content">
+      <button class="close-btn" id="closeEdit">&times;</button>
+      <h2>Edit Profile</h2>
+      <form id="editForm">
+        <input type="text" id="editName" placeholder="Full Name" required />
+        <input type="email" id="editEmail" placeholder="Email" required />
+        <input type="password" id="editPassword" placeholder="New Password (optional)" />
+        <button type="submit" class="btn">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Merchant Popup -->
+  <div id="merchantPopup" class="popup hidden">
+    <div class="popup-content">
+      <button class="close-btn" id="closeMerchant">&times;</button>
+      <h2>Coming Soon!</h2>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script type="module" src="js/global.js"></script>
+  <script type="module" src="js/pages/userProfile.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-// partly made using chatGPT
+﻿// partly made using chatGPT
 import express from "express";
 import cors from "cors";
 import userRouter from "./routes/user.js";
@@ -27,4 +27,4 @@ const run = async () => {
 
 run();
 
-export default app; // for supertest
+export default app;

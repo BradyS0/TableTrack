@@ -1,0 +1,119 @@
+.profile-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+  }
+  
+  .profile-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+  }
+  
+  .profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #cb0300;
+    margin-bottom: 1rem;
+  }
+  
+  .username {
+    font-size: 1.6rem;
+    color: #222;
+  }
+  
+  .email {
+    color: #555;
+    margin: 0.5rem 0;
+  }
+  
+  .joined-date {
+    color: #777;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  
+  hr {
+    margin: 1.2rem 0;
+    border: 0;
+    border-top: 1px solid #ddd;
+  }
+  
+  .profile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .btn {
+    padding: 0.8rem;
+    border: none;
+    border-radius: 1.5rem;
+    background: #222;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background: #444;
+  }
+  
+  .btn.danger {
+    background: #a00;
+  }
+  
+  .btn.danger:hover {
+    background: #c00;
+  }
+  
+  .popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 10;
+  }
+  
+  .popup.hidden {
+    display: none;
+  }
+  
+  .popup-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #editForm input {
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.7rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+  }
+
+
+  
