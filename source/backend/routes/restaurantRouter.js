@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
             else
             {
                 // Check if this user already owns a restaurant
-                const restaurants = Restaurant.findAll({ where: { userID: parseInt(userID) } })
+                const restaurants = await Restaurant.findAll({ where: { userID: parseInt(userID) } })
                 if (restaurants === undefined || restaurants.length == 0)
                 {
                     // Create the new restaurant
