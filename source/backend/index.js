@@ -18,7 +18,7 @@ const startServer = () => {
 };
 
 const run = async () => {
-    await sequelize.sync({ alter: true }); // ensure DB is connected and models are synced
+    await sequelize.sync({ force: true }); // ensure DB is connected and models are synced
 
     if (process.env.NODE_ENV !== "test") {
         startServer();
