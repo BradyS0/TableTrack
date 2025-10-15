@@ -1,7 +1,7 @@
 
 // Model Imports
-import User       from "../models/User.js";
-import Restaurant from "../models/Restaurant.js";
+import { User }       from "../models/User.js";
+import { Restaurant } from "../models/Restaurant.js";
 
 
 
@@ -11,7 +11,7 @@ async function validate_userID(id) {
     try
     {
         // Check if the owner exists
-        const user = await User.findAll({
+        const user = await User.findOne({
             where: { userID: id }
         });
         if (user === null) {
