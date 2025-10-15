@@ -8,7 +8,7 @@ export function mainNavRoutes(){
 
   const merchant = document.createElement('p')
   merchant.className = 'merchant-note'
-  
+
    //if user logged-in
     //show user-profile option
     const userName = document.createElement('b')
@@ -35,7 +35,7 @@ export function mainNavRoutes(){
   login.innerText = "Login"
   login.className = 'login-btn btn'
   login.addEventListener('click', goToLogin)
-  //userOptions.append(login)
+  userOptions.append(login)
   //}
 
   const hr  = document.createElement('hr')
