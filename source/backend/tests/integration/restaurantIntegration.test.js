@@ -72,7 +72,7 @@ describe("Restaurant API", () => {
             name:    "Burger Queen",
             address: "100 Burger street",
             phone:   "(204) 123-4567",
-            desc:    "Burgers made by a queen",
+            description:    "Burgers made by a queen",
             hours:   hours
         });
         expect(res.statusCode).toBe(201);
@@ -88,7 +88,7 @@ describe("Restaurant API", () => {
             name:    "Dairy King",
             address: "205 Dairy road",
             phone:   "(204) 234-5678",
-            desc:    "Ice cream made by a king",
+            description:    "Ice cream made by a king",
             hours:   hours
         });
         expect(res.statusCode).toBe(201);
@@ -104,7 +104,7 @@ describe("Restaurant API", () => {
             name:    "Macdonald",
             address: "nope",
             phone:   "(204) 345-6789",
-            desc:    "Try our new 3000 calorie meal",
+            description:    "Try our new 3000 calorie meal",
             hours:   hours
         });
         expect(res.statusCode).toBe(400);
@@ -118,7 +118,7 @@ describe("Restaurant API", () => {
             name:    "Macdonald",
             address: "70 Flavor town",
             phone:   "(204) 345-6789",
-            desc:    "Try our new 3000 calorie meal",
+            description:    "Try our new 3000 calorie meal",
             hours:   hours
         });
         expect(res.statusCode).toBe(404);
@@ -132,7 +132,7 @@ describe("Restaurant API", () => {
             name:    "Macdonald",
             address: "70 Flavor town",
             phone:   "(204) 345-6789",
-            desc:    "Try our new 3000 calorie meal",
+            description:    "Try our new 3000 calorie meal",
             hours:   hours
         });
         expect(res.statusCode).toBe(409);
@@ -192,7 +192,7 @@ describe("Restaurant API", () => {
             name:    "Burger Queen",
             address: "nope",
             phone:   "(204) 123-4567",
-            desc:    "Burgers made by a queen",
+            description:    "Burgers made by a queen",
             hours:   hours
         });
         expect(res.statusCode).toBe(400);
@@ -206,7 +206,7 @@ describe("Restaurant API", () => {
             name:    "Macdonald",
             address: "70 Flavor town",
             phone:   "(204) 345-6789",
-            desc:    "Try our new 3000 calorie meal",
+            description:    "Try our new 3000 calorie meal",
             hours:   hours
         });
         expect(res.statusCode).toBe(404);

@@ -14,11 +14,11 @@ router.post("/", async (req, res) => {
     try 
     {
         // Retrieve and validate information from body
-        const { userID, name, address, phone, desc, hours } = req.body;
+        const { userID, name, address, phone, description, hours } = req.body;
         if ( RestaurantLogic.validate_name(name) &&
              RestaurantLogic.validate_address(address) &&
              RestaurantLogic.validate_phone(phone) &&
-             RestaurantLogic.validate_description(desc) &&
+             RestaurantLogic.validate_description(description) &&
              RestaurantLogic.validate_hours(hours)
         ){
             // Validate ownerID for new restaurant exists
@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
                         name:        name,
                         address:     address,
                         phone_num:   phone,
-                        description: desc,
+                        description: descdescription,
                         open_hours:  hours,
                         logo:        ""
                     });
