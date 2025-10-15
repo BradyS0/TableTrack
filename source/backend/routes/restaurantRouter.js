@@ -29,6 +29,7 @@ router.post("/", async (req, res) => {
              validate_hours(hours)
         ){
             res.status(200);
+            return;
             // Validate ownerID for new restaurant exists
             const user = await User.findAll({ where: { userID: parseInt(userID) } });
             if (user == null)
