@@ -128,11 +128,11 @@ router.patch("/change", async (req, res) => {
     try
     {
         // Retrieve and validate information from body
-        const { restID, name, address, phone, desc, hours } = req.body;
+        const { restID, name, address, phone, description, hours } = req.body;
         if ( RestaurantLogic.validate_name(name) &&
              RestaurantLogic.validate_address(address) &&
              RestaurantLogic.validate_phone(phone) &&
-             RestaurantLogic.validate_description(desc) &&
+             RestaurantLogic.validate_description(description) &&
              RestaurantLogic.validate_hours(hours)
         ){
             // Validate restID to make changes to
@@ -146,7 +146,7 @@ router.patch("/change", async (req, res) => {
                     name: name,
                     address: address,
                     phone_num: phone,
-                    description: desc,
+                    description: description,
                     open_hours: hours
                 },{ where: {
                     restID: parseInt(restID)

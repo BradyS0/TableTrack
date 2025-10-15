@@ -181,7 +181,7 @@ describe("Restaurant API", () => {
         });
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("Bob's Dairy");
-        expect(res.body.desc).toBe("Due to the revolution, the king has been replaced by Bob.");
+        expect(res.body.description).toBe("Due to the revolution, the king has been replaced by Bob.");
     });
 
     it("Change values of existing restaurant to something invalid", async () => {
