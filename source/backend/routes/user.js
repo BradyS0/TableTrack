@@ -31,10 +31,8 @@ router.post("/", async (req, res) => {
         } catch (err) {
             res.status(400).json({error: err.message});
         }
-    } else if (!valid_params) {
-        res.status(400).json({ error: "Invalid parameters" });
     } else {
-        res.status(409).json({ error: "Email is already being used"});
+        res.status(400).json({ error: "Invalid parameters" });
     }
 });
 
@@ -141,11 +139,11 @@ router.patch("/change/email", async (req, res) => {
             }
         } else {
             //email is a duplicate (already in database)
-            res.status(409).json({ error: "Email is already being used"})
+            res.status(400).json({ error: "Invalid parameter"});
         }
     } else {
         //invalid email
-        res.status(400).json({ error: "Invalid email"})
+        res.status(400).json({ error: "Invalid parameter"});
     }
 });
 
