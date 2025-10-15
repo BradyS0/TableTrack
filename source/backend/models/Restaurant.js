@@ -13,4 +13,10 @@ export const Restaurant = sequelize.define("Restaurant", {
     description: { type: DataTypes.TEXT,  allowNull: false },
     open_hours:  { type: DataTypes.TEXT,  allowNull: false },
     logo:        { type: DataTypes.STRING }, // Filepath to image
+    },{
+        freezeTableName: true
 });
+    
+// Sync the model with the database
+// (Uncomment the line below if you want to force sync the model each time this file is run)
+Restaurant.sync({ force: true });
