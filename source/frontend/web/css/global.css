@@ -139,5 +139,30 @@ nav {
     font-weight: bold;
 }
 
+.popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(128, 128, 128, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.popup-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    position: relative;
+    width: fit-content;
+    max-width: 600px;
+    box-shadow: rgba(0, 0, 0, 0.144) 0 10px 1rem;
+}
+
+.popup-content p{
+    margin: 1rem;
+}
+
 
 

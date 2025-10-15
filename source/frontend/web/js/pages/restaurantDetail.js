@@ -3,34 +3,34 @@ import { restById } from '../tempRestdata.js';
 document.addEventListener("DOMContentLoaded",()=>{
     const app = document.getElementById('app')
     const params = new URLSearchParams(window.location.search);
-    const rest = restById(params.get('restId'))
+    const rest = restById(params.get('restId')) || {}
     app.append(createRestaurantInfo(rest));
     console.log("populated the restaurant")
     
 })
 
-function createRestaurantInfo({ restId, name, logo,tags, rating, location, hours}) {
+function createRestaurantInfo({ restId, name, logo,tags=["no-tag-found"], rating, location, hours, phone}) {
   // Create main container
   const hr_break = document.createElement('hr')
   const container = document.createElement('div');
   container.id = 'restaurant-info';
 
   // --- Header (name + image) ---
-  const nameHeader = document.createElement('h1');
+  const nameHeader = document.createElement('span');
   nameHeader.id = 'restaurant-name';
 
   const img = document.createElement('img');
   img.src = "https://media.istockphoto.com/id/1038356020/vector/restaurant-icon.jpg?s=612x612&w=0&k=20&c=Tk_v3JuJA4lz_8ZRJi78xS4p75Idqt97uEtYJciVtFI=";
 
   nameHeader.appendChild(img);
-  nameHeader.innerHTML = nameHeader.innerHTML + `${name}`; 
-
+  nameHeader.innerHTML = nameHeader.innerHTML + `<h1>${name || "No name found"} </h1>`; 
+  
   const tagsSpan = document.createElement("span")
   tagsSpan.classList.add('tags')
-  tagsSpan.innerHTML = tags.map(tag => `<p>${tag}</p>`).join('');
+  tagsSpan.innerHTML = tags.map(tag => `<p>${tag}</p>`).join('') || "<p> no tags found</p>";
 
   // --- Detail Section ---
-  const detailSection = createDetailSection({restId,name,location,rating,hours})
+  const detailSection = createDetailSection({restId,name,location,rating,hours,phone})
 
   // --- Content Section ---
   const contentSection = document.createElement('section');
@@ -47,7 +47,7 @@ function createRestaurantInfo({ restId, name, logo,tags, rating, location, hours
   return container;
 }
 
-function createDetailSection({restId,rating,hours,location}){
+function createDetailSection({restId,rating,hours,location,phoneNum}){
   const detailSection = document.createElement('section');
   detailSection.className = 'detail-header';
 
@@ -55,17 +55,21 @@ function createDetailSection({restId,rating,hours,location}){
 
   const ratingP = document.createElement('p');
   ratingP.className = 'rating';
-  ratingP.textContent = `⭐ ${rating}`;
+  ratingP.textContent = `⭐ ${rating || "NaN"}`;
 
   const locationP = document.createElement('p');
   locationP.id = 'restaurant-location';
-  locationP.textContent = `Location: ${location}`;
+  locationP.innerHTML = `Location: <span>${location || "404 Lost street, Nowhere, Never Land"}</span>`;
 
   const hoursP = document.createElement('p');
   hoursP.id = 'restaurant-hours';
-  hoursP.textContent = `Hours: ${hours}`;
+  hoursP.textContent = `Hours: ${hours || "13pm-14pm"}`;
 
-  detailsDiv.append(ratingP, locationP, hoursP);
+  const phoneNumP = document.createElement('p');
+  phoneNumP.id = 'restaurant-phone';
+  phoneNumP.innerHTML = `Phone: <span>${phoneNum || "204 - 111 - 1111"}</span>`;
+
+  detailsDiv.append(ratingP, locationP, phoneNumP, hoursP);
 
   // --- Reservation Button ---
   const reservationBtn = createReservationButton(restId)

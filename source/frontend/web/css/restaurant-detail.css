@@ -42,6 +42,7 @@
     align-items: center;
     gap: 20px;
     margin-top: 1rem;
+    width: 100%;
 }
 
 .detail-header  p{
@@ -63,6 +64,7 @@
   align-items: center;
   margin: .25rem;
   gap: .5rem;
+  width: fit-content;
 }
 
 .tags p {

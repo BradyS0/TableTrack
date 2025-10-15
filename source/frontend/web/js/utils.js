@@ -12,3 +12,8 @@ export function getUserState(key) {
     return null;
   }
 }
+
+
+export function clearUserState(){
+  //void function clears cookies and session storage
+}
