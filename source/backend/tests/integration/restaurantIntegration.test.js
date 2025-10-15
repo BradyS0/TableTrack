@@ -6,12 +6,12 @@ import sequelize from "../../db.js";
 
 
 // Data related to created restaurants
-var rest1id = 0;
-var rest2id = 0;
+const rest1id = 1;
+const rest2id = 2;
 
 // Users needed to test Restaurant API
-var user1id = 0;
-var user2id = 0;
+const user1id = 1;
+const user2id = 2;
 
 // Hours string to use for restaurants
 const hours = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
@@ -60,8 +60,6 @@ describe("Restaurant API", () => {
         });
         expect(res1.statusCode).toBe(201);
         expect(res2.statusCode).toBe(201);
-        user1id = 1;
-        user2id = 2;
     });
 
     // -------------------------------------------------- POST /restaurant
