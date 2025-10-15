@@ -176,7 +176,7 @@ describe("Restaurant API", () => {
             name:    "Bob's Dairy",
             address: "205 Dairy road",
             phone:   "(204) 234-5678",
-            desc:    "Due to the revolution, the king has been replaced by Bob.",
+            description:    "Due to the revolution, the king has been replaced by Bob.",
             hours:   hours
         });
         expect(res.statusCode).toBe(200);
