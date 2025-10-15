@@ -11,5 +11,3 @@ export const User = sequelize.define("User", {
     },{ freezeTableName: true
     
 }); // Sync the model with the database
-// (Uncomment the line below if you want to force sync the model each time this file is run)
-User.sync({ force: true });
