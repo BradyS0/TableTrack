@@ -31,8 +31,26 @@ router.post("/", async (req, res) => {
         } catch (err) {
             res.status(400).json({error: err.message});
         }
-    } else {
+    } else if (!valid_params) {
         res.status(400).json({ error: "Invalid parameters" });
+    } else {
+        res.status(409).json({ error: "Email is already being used"});
+    }
+});
+
+router.post("/login", async (req, res) => {
+    const {email, password} = req.body;
+    const user = await User.findAll({
+            attributes: ['password'],
+            where: {
+                email: email
+            }
+        });
+    const password_input = UserLogic.hash_password(password)
+    if(user !== undefined && user.length == 1  && password_input === user[0].password) {
+        res.status(200).json({message: "Login successful!"});
+    } else {
+        res.status(401).json({error: "Invalid email or password"});
     }
 });
 
@@ -78,7 +96,7 @@ router.patch("/change/firstname", async (req, res) => {
             res.status(404).json({ error: "User not found" });
         }
     } else {
-        res.status(400).json({ error: "Invalid first name"});
+        res.status(400).json({ error: "Invalid first name"})
     }
 });
 
@@ -100,7 +118,7 @@ router.patch("/change/lastname", async (req, res) => {
             res.status(404).json({ error: "User not found" });
         }
     } else {
-        res.status(400).json({ error: "Invalid last name"});
+        res.status(400).json({ error: "Invalid last name"})
     }
 });
 
@@ -123,11 +141,11 @@ router.patch("/change/email", async (req, res) => {
             }
         } else {
             //email is a duplicate (already in database)
-            res.status(400).json({ error: "Invalid parameter"});
+            res.status(409).json({ error: "Email is already being used"})
         }
     } else {
         //invalid email
-        res.status(400).json({ error: "Invalid parameter"});
+        res.status(400).json({ error: "Invalid email"})
     }
 });
 
