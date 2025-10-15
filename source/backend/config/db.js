@@ -50,4 +50,4 @@ if (process.env.NODE_ENV !== 'production') {
         });
 }
 
-export default sequelize;
+module.exports = {sequelize};
