@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
             {
                 // Check if this user already owns a restaurant
                 const prev_rest = Restaurant.findAll({ where: { userID: parseInt(userID) } })
-                if (prev_rest != null)
+                if (!(prev_rest == null))
                     res.status(409).json({ error: "User already has a restaurant" });
                 else
                 {
