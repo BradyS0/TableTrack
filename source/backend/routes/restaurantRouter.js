@@ -29,13 +29,13 @@ router.post("/", async (req, res) => {
              validate_hours(hours)
         ){
             // Validate ownerID for new restaurant exists
-            const user = await User.findByPk(parseInt(ownerID));
+            const user = await User.findAll({ where: { userID: ownerID } });
             if (user == null)
                 res.status(404).json({ error: "User cannot be found" });
             else
             {
                 // Check if this user already owns a restaurant
-                const prev_rest = Restaurant.findOne({ where: { userID: parseInt(ownerID) } })
+                const prev_rest = Restaurant.findAll({ where: { userID: parseInt(ownerID) } })
                 if (prev_rest != null)
                     res.status(409).json({ error: "User already has a restaurant" });
                 else
