@@ -6,8 +6,8 @@ import sequelize from "../../db.js";
 
 
 // Data related to created restaurants
-const rest1id = 1;
-const rest2id = 2;
+let rest1id = 1;
+let rest2id = 2;
 
 // Users needed to test Restaurant API
 const user1id = 1;
