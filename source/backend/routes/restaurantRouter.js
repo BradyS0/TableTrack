@@ -9,7 +9,7 @@ const { // Import functions from restaurantLogic
     validate_name,
     validate_description,
     validate_hours
-} = require('../../logic/restaurantLogic.js');
+} = require('../logic/restaurantLogic.js');
 
 const router = express.Router();
 
