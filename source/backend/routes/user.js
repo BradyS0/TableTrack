@@ -1,7 +1,7 @@
 // file partly created using chatGPT
 import express from "express";
 import { User } from "../models/User.js";
-import * as UserLogic from "../logic/userLogic.js";
+import UserLogic from "../logic/userLogic.js";
 
 const router = express.Router();
 
@@ -33,22 +33,6 @@ router.post("/", async (req, res) => {
         }
     } else {
         res.status(400).json({ error: "Invalid parameters" });
-    }
-});
-
-router.post("/login", async (req, res) => {
-    const {email, password} = req.body;
-    const user = await User.findAll({
-            attributes: ['password'],
-            where: {
-                email: email
-            }
-        });
-    const password_input = UserLogic.hash_password(password)
-    if(user !== undefined && user.length == 1  && password_input === user[0].password) {
-        res.status(200).json({message: "Login successful!"});
-    } else {
-        res.status(401).json({error: "Invalid email or password"});
     }
 });
 
