@@ -33,7 +33,9 @@ router.post("/", async (req, res) => {
             if (userState == 404)
                 res.status(404).json({ error: "User cannot be found" });
             else if (userState == 409)
-                res.status(409).json({ error: "User already has a restaurant" })
+                res.status(409).json({ error: "User already has a restaurant" });
+            else if (userState == 500)
+                res.status(500).json({ error: "Internal error while finding user" });
             else if (userState == 200)
             {
                 // Create the new restaurant

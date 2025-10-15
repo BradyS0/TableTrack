@@ -1,27 +1,35 @@
 
 // Model Imports
-import User       from "../models/User";
-import Restaurant from "../models/Restaurant";
+import User       from "../models/User.js";
+import Restaurant from "../models/Restaurant.js";
 
 
 
 // Test owner userID
 async function validate_userID(id) {
 
-    // Check if the owner exists
-    const user = await User.findByPk(parseInt(id));
-    if (user === null) {
-        return 404; // No user found
-    }
-
-    // Check if already has restaurant
-    else {
-        const rest = await Restaurant.findOne({ where: { userID: parseInt(id) } });
-        if (rest === null) {
-            return 200; // No current restaurant
+    try
+    {
+        // Check if the owner exists
+        const user = await User.findByPk(parseInt(id));
+        if (user === null) {
+            return 404; // No user found
         }
+
+        // Check if already has restaurant
+        else {
+            const rest = await Restaurant.findOne({ where: { userID: parseInt(id) } });
+            if (rest === null) {
+                return 200; // No current restaurant
+            }
+        }
+        return 409; // Already has restaurant
     }
-    return 409; // Already has restaurant
+    catch (err)
+    {
+        // Unkown error has occured
+        return 500;
+    }
 }
 
 
