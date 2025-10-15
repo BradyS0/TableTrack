@@ -46,7 +46,7 @@ nav {
     background-color: whitesmoke;
     margin: 0;
     padding: 10px 20px;
-    padding-top: 50px; 
+    padding-top: 25px; 
     width: 250px; /* Base width, adjustable within min/max constraints */
     height: 100%; /* Full height of parent */
     z-index: 2;
@@ -108,9 +108,6 @@ nav {
   }
   
 .login-btn {
-    max-width: fit-content;
-    margin-left: auto;
-    margin-top: 1rem;
     padding: 0.8rem 1.25rem;
     transition: all ease-in 100ms;
 }
@@ -148,6 +145,7 @@ nav {
     justify-content: center;
     background: rgba(128, 128, 128, 0.5);
     backdrop-filter: blur(2px);
+    z-index: 3;
 }
 
 .popup-content {

@@ -1,3 +1,5 @@
+import {goToHome, mainNavRoutes} from './nav.js'
+
 export function createHeader() {
   const header = document.createElement('header');
   const nav = document.querySelector('nav');
@@ -17,11 +19,12 @@ export function createHeader() {
      overlay.classList.remove('overlay-active')
 })
 
+  mainNavRoutes()
+
   
   header.innerHTML = `
   <image src="../assets/TableTrack-logo.svg" alt="Logo" class="logo"/>
   <h1>Table<span>Track</span></h1>
-  <button class="login-btn btn">Login</button>
   `;
 
   header.prepend(hamburger)
@@ -30,5 +33,3 @@ export function createHeader() {
   header.children[2].addEventListener('click', goToHome);
   return header;
 }
-
-function goToHome(){window.location.href = './';}

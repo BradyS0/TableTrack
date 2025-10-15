@@ -1,20 +1,37 @@
+import { display_popup_msg } from "./popupMsg.js"; 
+
 export function mainNavRoutes(){
+  const nav = document.querySelector('nav')
+  const userOptions = document.createElement('div')
    //if user logged-in
     //show user-profile option
     //show restaurant management option - redirect to restaurant management page
     //show a logout button
 
-  //else show a signin button
+  //else{
+  const login = document.createElement('button')
+  login.innerText = "Login"
+  login.className = 'login-btn btn'
+  login.addEventListener('click', goToLogin)
+  userOptions.append(login)
+  //}
 
-  //------ hr ---------
-  //Home
-  //About - working in progress popup
+  const hr  = document.createElement('hr')
+  const home = document.createElement('p')
+  home.innerText = "Home"
+  home.addEventListener("click",goToHome)
+  
+  const about = document.createElement('about')
+  about.innerText = 'About'
+  about.addEventListener('click', ()=>{
+    display_popup_msg("In Progress", "This page will contain our project vision statement and a little info about project feature 😊.")})
+
   //Become a merchant
       // if user not logged in - redirect to login-page show a popup that user needs to be logged-in to become a merchant
       // if user logged in show become merchantRegistration popup
       // if user already a merchant dont show the option
-
-  return null;
+  
+  nav.append(userOptions,hr,home,about)
 }
 
 
@@ -45,3 +62,9 @@ export function toggleLoginButton(){
   loginButton.style.display = 'none'
 }})
 }
+
+export function goToHome(){window.location.href = './';}
+
+function goToLogin(){
+  console.log("call made to login")
+  window.location.herf = "./login.html"}
