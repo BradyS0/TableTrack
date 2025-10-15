@@ -2,14 +2,7 @@
 import express from "express";
 import { User }       from "../models/User.js";
 import { Restaurant } from "../models/Restaurant.js";
-
-const { // Import functions from restaurantLogic
-    validate_address,
-    validate_phone,
-    validate_name,
-    validate_description,
-    validate_hours
-} = require('../logic/restaurantLogic.js');
+import * as RestaurantLogic from "../logic/restaurantLogic.js";
 
 const router = express.Router();
 
@@ -22,14 +15,12 @@ router.post("/", async (req, res) => {
     {
         // Retrieve and validate information from body
         const { userID, name, address, phone, desc, hours } = req.body;
-        if ( validate_name(name) &&
-             validate_address(address) &&
-             validate_phone(phone) &&
-             validate_description(desc) &&
-             validate_hours(hours)
+        if ( RestaurantLogic.validate_name(name) &&
+             RestaurantLogic.validate_address(address) &&
+             RestaurantLogic.validate_phone(phone) &&
+             RestaurantLogic.validate_description(desc) &&
+             RestaurantLogic.validate_hours(hours)
         ){
-            res.status(200);
-            return;
             // Validate ownerID for new restaurant exists
             const user = await User.findAll({ where: { userID: parseInt(userID) } });
             if (user == null)
@@ -137,11 +128,11 @@ router.patch("/change", async (req, res) => {
     {
         // Retrieve and validate information from body
         const { restID, name, address, phone, desc, hours } = req.body;
-        if ( validate_name(name) &&
-             validate_address(address) &&
-             validate_phone(phone) &&
-             validate_description(desc) &&
-             validate_hours(hours)
+        if ( RestaurantLogic.validate_name(name) &&
+             RestaurantLogic.validate_address(address) &&
+             RestaurantLogic.validate_phone(phone) &&
+             RestaurantLogic.validate_description(desc) &&
+             RestaurantLogic.validate_hours(hours)
         ){
             // Validate restID to make changes to
             const restaurant = await Restaurant.findByPk(parseInt(restID));
