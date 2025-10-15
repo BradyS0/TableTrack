@@ -1,7 +1,7 @@
 // file partly created using chatGPT
 import express from "express";
 import { User } from "../models/User.js";
-import * as UserLogic from "../logic/userLogic.js";
+import UserLogic from "../logic/userLogic.js";
 
 const router = express.Router();
 
@@ -39,14 +39,14 @@ router.post("/", async (req, res) => {
 router.post("/login", async (req, res) => {
     const {email, password} = req.body;
     const user = await User.findAll({
-            attributes: ['password'],
+            attributes: ['password', 'userID', 'first_name', 'last_name', 'email'],
             where: {
                 email: email
             }
         });
     const password_input = UserLogic.hash_password(password);
     if(user !== undefined && user.length == 1  && password_input === user[0].password) {
-        res.status(200).json({message: "Login successful!"});
+        res.status(200).json({message: "Login successful!", 'userID':user[0].userID, 'first_name':user[0].first_name, 'last_name':user[0].last_name, 'email':user[0].email});
     } else {
         res.status(401).json({error: "Invalid email or password"});
     }
@@ -78,7 +78,7 @@ router.patch("/change/firstname", async (req, res) => {
             res.status(404).json({ error: "User not found" });
         }
     } else {
-        res.status(400).json({ error: "Invalid first name"});
+        res.status(400).json({ error: "Invalid first name"})
     }
 });
 
@@ -100,7 +100,7 @@ router.patch("/change/lastname", async (req, res) => {
             res.status(404).json({ error: "User not found" });
         }
     } else {
-        res.status(400).json({ error: "Invalid last name"});
+        res.status(400).json({ error: "Invalid last name"})
     }
 });
 

@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "type": "module",
     "scripts": {
-        "test:integration": "jest --coverage --testPathPattern=tests/integration",
+        "test:integration": "jest --coverage --runInBand --testPathPattern=tests/integration",
         "test:unit": "jest --coverage --testPathPattern=tests/unit",
         "start": "node index.js"
     },
