@@ -1,9 +1,6 @@
-import { createNav } from '../components/nav.js';
 import { getUserState, setUserState } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-   createNav(['home', 'about', 'logout']); 
-
   const user = getUserState('user') || { username: 'Guest', email: 'guest@example.com' };
   document.querySelector('.username').textContent = user.username;
   document.querySelector('.email').textContent = user.email || 'Not provided';

@@ -46,7 +46,7 @@ nav {
     background-color: whitesmoke;
     margin: 0;
     padding: 10px 20px;
-    padding-top: 50px; 
+    padding-top: 25px; 
     width: 250px; /* Base width, adjustable within min/max constraints */
     height: 100%; /* Full height of parent */
     z-index: 2;
@@ -55,15 +55,25 @@ nav {
     transition: transform  500ms ease-out,  opacity 800ms ease; ;  
 }
 
+nav .user-options{
+    display: flex;
+    flex-flow: column;
+    gap: .5rem;
+}
+
 .nav-active{
     transition: transform 500ms ease-in, opacity 800ms ease; 
     transform: translateX(0);
     opacity: .98;
     filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.2));    
 }
-.nav-active > *{
+
+.nav-active p{
     cursor: pointer;
     user-select: none;
+}
+.nav-active p:hover{
+    opacity: .75;
 }
 
 #hamburger{
@@ -108,9 +118,6 @@ nav {
   }
   
 .login-btn {
-    max-width: fit-content;
-    margin-left: auto;
-    margin-top: 1rem;
     padding: 0.8rem 1.25rem;
     transition: all ease-in 100ms;
 }
@@ -134,7 +141,6 @@ nav {
 }
 
 .merchant-note {
-    margin-top: 20px;
     color: red;
     font-weight: bold;
 }
@@ -148,6 +154,7 @@ nav {
     justify-content: center;
     background: rgba(128, 128, 128, 0.5);
     backdrop-filter: blur(2px);
+    z-index: 3;
 }
 
 .popup-content {
@@ -164,5 +171,25 @@ nav {
     margin: 1rem;
 }
 
+form input {
+    min-width: fit-content;
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.7rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+}
 
+.close-btn {
+    position: absolute;
+    top: 0.8rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
 
+.close-btn:hover{
+    color: rgb(148, 0, 0);
+}
