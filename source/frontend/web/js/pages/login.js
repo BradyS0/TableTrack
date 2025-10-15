@@ -1,3 +1,5 @@
+import { setUserState, getUserState, clearUserState } from './utils.js';
+
 const openBtn = document.getElementById("openSignup");
 const closeBtn = document.getElementById("closeSignup");
 const popup = document.getElementById("signupPopup");
@@ -21,6 +23,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   const data = await res.json();
 
   if (res.ok) {
+    setUserState(data);
     alert("Login successful!");
     // redirect user
     window.location.href = "/dashboard.html";  //change this
