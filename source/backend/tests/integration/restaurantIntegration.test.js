@@ -28,7 +28,6 @@ const hours = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
 beforeAll(async () => {
     process.env.NODE_ENV = "test";         // Set environment to testing
     await sequelize.sync({ force: true }); // Reset tables (use current models)
-    createUsers();                         // Create user models to test on
 });
 
 // Testing cleanup
