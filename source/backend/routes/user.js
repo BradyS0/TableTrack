@@ -31,10 +31,8 @@ router.post("/", async (req, res) => {
         } catch (err) {
             res.status(400).json({error: err.message});
         }
-    } else if (!valid_params) {
-        res.status(400).json({ error: "Invalid parameters" });
     } else {
-        res.status(409).json({ error: "Email is already being used"});
+        res.status(400).json({ error: "Invalid parameters" });
     }
 });
 
@@ -54,9 +52,20 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.get("/", async (req, res) => {
-    const users = await User.findAll();
-    res.json(users);
+router.post("/login", async (req, res) => {
+    const {email, password} = req.body;
+    const user = await User.findAll({
+            attributes: ['password'],
+            where: {
+                email: email
+            }
+        });
+    const password_input = UserLogic.hash_password(password);
+    if(user !== undefined && user.length == 1  && password_input === user[0].password) {
+        res.status(200).json({message: "Login successful!"});
+    } else {
+        res.status(401).json({error: "Invalid email or password"});
+    }
 });
 
 router.delete("/:userID", async (req, res) => {
@@ -130,11 +139,11 @@ router.patch("/change/email", async (req, res) => {
             }
         } else {
             //email is a duplicate (already in database)
-            res.status(409).json({ error: "Email is already being used"})
+            res.status(400).json({ error: "Invalid parameter"});
         }
     } else {
         //invalid email
-        res.status(400).json({ error: "Invalid email"})
+        res.status(400).json({ error: "Invalid parameter"});
     }
 });
 

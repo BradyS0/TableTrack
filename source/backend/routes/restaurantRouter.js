@@ -1,15 +1,8 @@
 
 import express from "express";
+import { User }       from "../models/User.js";
 import { Restaurant } from "../models/Restaurant.js";
-
-const { // Import functions from restaurantLogic
-    validate_userID,
-    validate_address,
-    validate_phone,
-    validate_name,
-    validate_description,
-    validate_hours
-} = require('../../logic/restaurantLogic.js');
+import * as RestaurantLogic from "../logic/restaurantLogic.js";
 
 const router = express.Router();
 
@@ -21,33 +14,42 @@ router.post("/", async (req, res) => {
     try 
     {
         // Retrieve and validate information from body
-        const { ownerID, name, address, phone, desc, hours } = req.body;
-        if ( validate_name(name) &&
-             validate_address(address) &&
-             validate_phone(phone) &&
-             validate_description(desc) &&
-             validate_hours(hours)
+        const { userID, name, address, phone, desc, hours } = req.body;
+        if ( RestaurantLogic.validate_name(name) &&
+             RestaurantLogic.validate_address(address) &&
+             RestaurantLogic.validate_phone(phone) &&
+             RestaurantLogic.validate_description(desc) &&
+             RestaurantLogic.validate_hours(hours)
         ){
-            // Validate ownerID for new restaurant
-            const userState = validate_userID(ownerID);
-            if (userState == 404)
-                res.status(404).json({ error: "User cannot be found" });
-            else if (userState == 409)
-                res.status(409).json({ error: "User already has a restaurant" })
-            else if (userState == 200)
+            // Validate ownerID for new restaurant exists
+            const users = await User.findAll({ where: { userID: parseInt(userID) } });
+            if (users === undefined || users.length == 0)
             {
-                // Create the new restaurant
-                const restaurant = await Restaurant.create({
-                    userID:      ownerID,
-                    name:        name,
-                    address:     address,
-                    phone_num:   phone,
-                    description: desc,
-                    open_hours:  hours,
-                    logo:        ""
-                });
-                res.status(201).json(restaurant);
+                res.status(404).json({ error: "User cannot be found" });
             }
+            else
+            {
+                // Check if this user already owns a restaurant
+                const restaurants = await Restaurant.findAll({ where: { userID: parseInt(userID) } })
+                if (restaurants === undefined || restaurants.length == 0)
+                {
+                    // Create the new restaurant
+                    const restaurant = await Restaurant.create({
+                        userID:      userID,
+                        name:        name,
+                        address:     address,
+                        phone_num:   phone,
+                        description: desc,
+                        open_hours:  hours,
+                        logo:        ""
+                    });
+                    res.status(201).json(restaurant);
+                }
+                else
+                {
+                    res.status(409).json({ error: "User already has a restaurant" });
+                }
+            }   
         } 
         else // Non-ownerID item is invalid
         {
@@ -66,15 +68,13 @@ router.post("/", async (req, res) => {
 // GET /restaurant
 // Get a list of restaurants
 router.get("/", async (req, res) => {
-    try
-    {
+    try {
         // Get a list of available restaurants
-        const db_restaurants = Restaurant.findAll();
+        const db_restaurants = await Restaurant.findAll();
 
         // Process data
-        var formatted_json = {restaurants: []};
-        for (var rest in db_restaurants)
-        {
+        var formatted_json = { restaurants: [] };
+        for (const rest of db_restaurants) {
             // Add needed values to restaurant json
             var rest_json = {};
             rest_json.id          = rest.restID;
@@ -88,9 +88,7 @@ router.get("/", async (req, res) => {
             formatted_json.restaurants.push(rest_json);
         }
         res.status(200).json(formatted_json);
-    }
-    catch (err)
-    {
+    } catch (err) {
         // Unexpected internal error occured
         res.status(500).json({ error: err.message });
     }
@@ -110,9 +108,10 @@ router.get("/:id", async (req, res) => {
         const restaurant = await Restaurant.findByPk(parseInt(restID));
         if (restaurant == null)
             res.status(404).json({ error: "Restaurant not found" });
-        else
+        else{
             restaurant.tags = ["temp_tag"]; // <-------------------------------------------------- REMOVE ONCE TAGS HAVE BEEN ADDED
             res.status(200).json(restaurant);
+        }
     }
     catch (err)
     {
@@ -130,11 +129,11 @@ router.patch("/change", async (req, res) => {
     {
         // Retrieve and validate information from body
         const { restID, name, address, phone, desc, hours } = req.body;
-        if ( validate_name(name) &&
-             validate_address(address) &&
-             validate_phone(phone) &&
-             validate_description(desc) &&
-             validate_hours(hours)
+        if ( RestaurantLogic.validate_name(name) &&
+             RestaurantLogic.validate_address(address) &&
+             RestaurantLogic.validate_phone(phone) &&
+             RestaurantLogic.validate_description(desc) &&
+             RestaurantLogic.validate_hours(hours)
         ){
             // Validate restID to make changes to
             const restaurant = await Restaurant.findByPk(parseInt(restID));

@@ -1,31 +1,4 @@
 
-// Model Imports
-import User       from "../models/User";
-import Restaurant from "../models/Restaurant";
-
-
-
-// Test owner userID
-async function validate_userID(id) {
-
-    // Check if the owner exists
-    const user = await User.findByPk(parseInt(id));
-    if (user === null) {
-        return 404; // No user found
-    }
-
-    // Check if already has restaurant
-    else {
-        const rest = await Restaurant.findOne({ where: { userID: parseInt(id) } });
-        if (rest === null) {
-            return 200; // No current restaurant
-        }
-    }
-    return 409; // Already has restaurant
-}
-
-
-
 // Test address
 function validate_address(address) {
 
@@ -104,7 +77,6 @@ function validate_hours(hours) {
 
 // Export functions
 module.exports = {
-    validate_userID,
     validate_address,
     validate_phone,
     validate_name,

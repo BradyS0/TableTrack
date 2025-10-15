@@ -6,34 +6,12 @@ import sequelize from "../../db.js";
 
 
 // Data related to created restaurants
-var rest1id = 0;
-var rest2id = 0;
+let rest1id = 1;
+let rest2id = 2;
 
-// Create users needed to test Restaurant API
+// Users needed to test Restaurant API
 const user1id = 1;
 const user2id = 2;
-async function createUsers()
-{
-    // User 1
-    await request(app)
-    .post("/users")
-    .send({
-        first_name: "John",
-        last_name:  "Doe",
-        email:      "emailone@example.com",
-        password:   "Password1!"
-    });
-
-    // User 2
-    await request(app)
-    .post("/users")
-    .send({
-        first_name: "Joe",
-        last_name:  "Doe",
-        email:      "emailtwo@example.com",
-        password:   "Password2!"
-    });
-}
 
 // Hours string to use for restaurants
 const hours = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
@@ -50,7 +28,6 @@ const hours = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
 beforeAll(async () => {
     process.env.NODE_ENV = "test";         // Set environment to testing
     await sequelize.sync({ force: true }); // Reset tables (use current models)
-    createUsers();                         // Create user models to test on
 });
 
 // Testing cleanup
@@ -62,11 +39,34 @@ afterAll(async () => {
 
 describe("Restaurant API", () => {
 
+    // -------------------------------------------------- Create users for testing
+
+    it("Create users for restaurant integration tests", async () => {
+        const res1 = await request(app)
+        .post("/v1/user")
+        .send({
+            first_name: "John",
+            last_name:  "Doe",
+            email:      "emailone@example.com",
+            password:   "Password1!"
+        });
+        const res2 = await request(app)
+        .post("/v1/user")
+        .send({
+            first_name: "Joe",
+            last_name:  "Doe",
+            email:      "emailtwo@example.com",
+            password:   "Password2!"
+        });
+        expect(res1.statusCode).toBe(201);
+        expect(res2.statusCode).toBe(201);
+    });
+
     // -------------------------------------------------- POST /restaurant
 
     it("Create valid restaurant 1", async () => {
         const res = await request(app)
-        .post("/restaurant")
+        .post("/v1/restaurant")
         .send({
             userID:  user1id,
             name:    "Burger Queen",
@@ -82,7 +82,7 @@ describe("Restaurant API", () => {
 
     it("Create valid restaurant 2", async () => {
         const res = await request(app)
-        .post("/restaurant")
+        .post("/v1/restaurant")
         .send({
             userID:  user2id,
             name:    "Dairy King",
@@ -98,7 +98,7 @@ describe("Restaurant API", () => {
 
     it("Create restaurant with invalid data", async () => {
         const res = await request(app)
-        .post("/restaurant")
+        .post("/v1/restaurant")
         .send({
             userID:  100,
             name:    "Macdonald",
@@ -112,7 +112,7 @@ describe("Restaurant API", () => {
 
     it("Create restaurant with non-existant user", async () => {
         const res = await request(app)
-        .post("/restaurant")
+        .post("/v1/restaurant")
         .send({
             userID:  100,
             name:    "Macdonald",
@@ -126,7 +126,7 @@ describe("Restaurant API", () => {
 
     it("Create restaurant with user already owning a restaurant", async () => {
         const res = await request(app)
-        .post("/restaurant")
+        .post("/v1/restaurant")
         .send({
             userID:  user1id,
             name:    "Macdonald",
@@ -142,7 +142,7 @@ describe("Restaurant API", () => {
 
     it("Get a list of existing restaurants", async () => {
         const res = await request(app)
-        .get("/restaurant")
+        .get("/v1/restaurant")
         .send();
         expect(res.statusCode).toBe(200);
         var restaurants = res.body.restaurants;
@@ -153,7 +153,7 @@ describe("Restaurant API", () => {
 
     it("Get the restaurant with id 1 (Should be Burger Queen)", async () => {
         const res = await request(app)
-        .get("/restaurant/1")
+        .get("/v1/restaurant/1")
         .send();
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("Burger Queen");
@@ -161,7 +161,7 @@ describe("Restaurant API", () => {
 
     it("Get the restaurant with id 5 (Should not exist)", async () => {
         const res = await request(app)
-        .get("/restaurant/5")
+        .get("/v1/restaurant/5")
         .send();
         expect(res.statusCode).toBe(404);
     });
@@ -170,7 +170,7 @@ describe("Restaurant API", () => {
 
     it("Change name and description of existing restaurant", async () => {
         const res = await request(app)
-        .patch("/restaurant/change")
+        .patch("/v1/restaurant/change")
         .send({
             restID:  rest2id,
             name:    "Bob's Dairy",
@@ -181,12 +181,12 @@ describe("Restaurant API", () => {
         });
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("Bob's Dairy");
-        expect(res.body.desc).toBe("Due to the revolution, the king has been replaced by Bob.");
+        expect(res.body.description).toBe("Due to the revolution, the king has been replaced by Bob.");
     });
 
     it("Change values of existing restaurant to something invalid", async () => {
         const res = await request(app)
-        .patch("/restaurant/change")
+        .patch("/v1/restaurant/change")
         .send({
             restID:  rest1id,
             name:    "Burger Queen",
@@ -200,7 +200,7 @@ describe("Restaurant API", () => {
 
     it("Change values of non-existant restaurant", async () => {
         const res = await request(app)
-        .patch("/restaurant/change")
+        .patch("/v1/restaurant/change")
         .send({
             restID:  10,
             name:    "Macdonald",
