@@ -1,5 +1,6 @@
 
 import express from "express";
+import { User }       from "../models/User.js";
 import { Restaurant } from "../models/Restaurant.js";
 
 const { // Import functions from restaurantLogic
