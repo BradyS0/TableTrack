@@ -9,31 +9,9 @@ import sequelize from "../../db.js";
 var rest1id = 0;
 var rest2id = 0;
 
-// Create users needed to test Restaurant API
-const user1id = 1;
-const user2id = 2;
-async function createUsers()
-{
-    // User 1
-    await request(app)
-    .post("/v1/users")
-    .send({
-        first_name: "John",
-        last_name:  "Doe",
-        email:      "emailone@example.com",
-        password:   "Password1!"
-    });
-
-    // User 2
-    await request(app)
-    .post("/v1/users")
-    .send({
-        first_name: "Joe",
-        last_name:  "Doe",
-        email:      "emailtwo@example.com",
-        password:   "Password2!"
-    });
-}
+// Users needed to test Restaurant API
+const user1id = 0;
+const user2id = 0;
 
 // Hours string to use for restaurants
 const hours = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
@@ -61,6 +39,31 @@ afterAll(async () => {
 
 
 describe("Restaurant API", () => {
+
+    // -------------------------------------------------- Create users for testing
+
+    it("Create users for restaurant integration tests", async () => {
+        const res1 = await request(app)
+        .post("/v1/user")
+        .send({
+            first_name: "John",
+            last_name:  "Doe",
+            email:      "emailone@example.com",
+            password:   "Password1!"
+        });
+        const res2 = await request(app)
+        .post("/v1/user")
+        .send({
+            first_name: "Joe",
+            last_name:  "Doe",
+            email:      "emailtwo@example.com",
+            password:   "Password2!"
+        });
+        expect(res1.statusCode).toBe(201);
+        expect(res2.statusCode).toBe(201);
+        user1id = 1;
+        user2id = 2;
+    });
 
     // -------------------------------------------------- POST /restaurant
 
