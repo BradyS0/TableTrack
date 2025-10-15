@@ -10,7 +10,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/v1/users", userRouter);
+app.use("/v1/user", userRouter);
 app.use("/v1/restaurant", restaurantRouter);
 
 const startServer = () => {

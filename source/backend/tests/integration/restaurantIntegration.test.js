@@ -16,7 +16,7 @@ async function createUsers()
 {
     // User 1
     await request(app)
-    .post("/users")
+    .post("/v1/users")
     .send({
         first_name: "John",
         last_name:  "Doe",
@@ -26,7 +26,7 @@ async function createUsers()
 
     // User 2
     await request(app)
-    .post("/users")
+    .post("/v1/users")
     .send({
         first_name: "Joe",
         last_name:  "Doe",
@@ -66,7 +66,7 @@ describe("Restaurant API", () => {
 
     it("Create valid restaurant 1", async () => {
         const res = await request(app)
-        .post("/restaurant")
+        .post("/v1/restaurant")
         .send({
             userID:  user1id,
             name:    "Burger Queen",
@@ -82,7 +82,7 @@ describe("Restaurant API", () => {
 
     it("Create valid restaurant 2", async () => {
         const res = await request(app)
-        .post("/restaurant")
+        .post("/v1/restaurant")
         .send({
             userID:  user2id,
             name:    "Dairy King",
@@ -98,7 +98,7 @@ describe("Restaurant API", () => {
 
     it("Create restaurant with invalid data", async () => {
         const res = await request(app)
-        .post("/restaurant")
+        .post("/v1/restaurant")
         .send({
             userID:  100,
             name:    "Macdonald",
@@ -112,7 +112,7 @@ describe("Restaurant API", () => {
 
     it("Create restaurant with non-existant user", async () => {
         const res = await request(app)
-        .post("/restaurant")
+        .post("/v1/restaurant")
         .send({
             userID:  100,
             name:    "Macdonald",
@@ -126,7 +126,7 @@ describe("Restaurant API", () => {
 
     it("Create restaurant with user already owning a restaurant", async () => {
         const res = await request(app)
-        .post("/restaurant")
+        .post("/v1/restaurant")
         .send({
             userID:  user1id,
             name:    "Macdonald",
@@ -142,7 +142,7 @@ describe("Restaurant API", () => {
 
     it("Get a list of existing restaurants", async () => {
         const res = await request(app)
-        .get("/restaurant")
+        .get("/v1/restaurant")
         .send();
         expect(res.statusCode).toBe(200);
         var restaurants = res.body.restaurants;
@@ -153,7 +153,7 @@ describe("Restaurant API", () => {
 
     it("Get the restaurant with id 1 (Should be Burger Queen)", async () => {
         const res = await request(app)
-        .get("/restaurant/1")
+        .get("/v1/restaurant/1")
         .send();
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("Burger Queen");
@@ -161,7 +161,7 @@ describe("Restaurant API", () => {
 
     it("Get the restaurant with id 5 (Should not exist)", async () => {
         const res = await request(app)
-        .get("/restaurant/5")
+        .get("/v1/restaurant/5")
         .send();
         expect(res.statusCode).toBe(404);
     });
@@ -170,7 +170,7 @@ describe("Restaurant API", () => {
 
     it("Change name and description of existing restaurant", async () => {
         const res = await request(app)
-        .patch("/restaurant/change")
+        .patch("/v1/restaurant/change")
         .send({
             restID:  rest2id,
             name:    "Bob's Dairy",
@@ -186,7 +186,7 @@ describe("Restaurant API", () => {
 
     it("Change values of existing restaurant to something invalid", async () => {
         const res = await request(app)
-        .patch("/restaurant/change")
+        .patch("/v1/restaurant/change")
         .send({
             restID:  rest1id,
             name:    "Burger Queen",
@@ -200,7 +200,7 @@ describe("Restaurant API", () => {
 
     it("Change values of non-existant restaurant", async () => {
         const res = await request(app)
-        .patch("/restaurant/change")
+        .patch("/v1/restaurant/change")
         .send({
             restID:  10,
             name:    "Macdonald",
