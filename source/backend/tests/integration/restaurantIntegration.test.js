@@ -72,7 +72,7 @@ describe("Restaurant API", () => {
             name:    "Burger Queen",
             address: "100 Burger street",
             phone:   "(204) 123-4567",
-            description:    "Burgers made by a queen",
+            desc:    "Burgers made by a queen",
             hours:   hours
         });
         expect(res.statusCode).toBe(201);
@@ -88,7 +88,7 @@ describe("Restaurant API", () => {
             name:    "Dairy King",
             address: "205 Dairy road",
             phone:   "(204) 234-5678",
-            description:    "Ice cream made by a king",
+            desc:    "Ice cream made by a king",
             hours:   hours
         });
         expect(res.statusCode).toBe(201);
@@ -104,7 +104,7 @@ describe("Restaurant API", () => {
             name:    "Macdonald",
             address: "nope",
             phone:   "(204) 345-6789",
-            description:    "Try our new 3000 calorie meal",
+            desc:    "Try our new 3000 calorie meal",
             hours:   hours
         });
         expect(res.statusCode).toBe(400);
@@ -118,7 +118,7 @@ describe("Restaurant API", () => {
             name:    "Macdonald",
             address: "70 Flavor town",
             phone:   "(204) 345-6789",
-            description:    "Try our new 3000 calorie meal",
+            desc:    "Try our new 3000 calorie meal",
             hours:   hours
         });
         expect(res.statusCode).toBe(404);
@@ -132,7 +132,7 @@ describe("Restaurant API", () => {
             name:    "Macdonald",
             address: "70 Flavor town",
             phone:   "(204) 345-6789",
-            description:    "Try our new 3000 calorie meal",
+            desc:    "Try our new 3000 calorie meal",
             hours:   hours
         });
         expect(res.statusCode).toBe(409);
@@ -176,7 +176,7 @@ describe("Restaurant API", () => {
             name:    "Bob's Dairy",
             address: "205 Dairy road",
             phone:   "(204) 234-5678",
-            description:    "Due to the revolution, the king has been replaced by Bob.",
+            desc:    "Due to the revolution, the king has been replaced by Bob.",
             hours:   hours
         });
         expect(res.statusCode).toBe(200);
@@ -192,7 +192,7 @@ describe("Restaurant API", () => {
             name:    "Burger Queen",
             address: "nope",
             phone:   "(204) 123-4567",
-            description:    "Burgers made by a queen",
+            desc:    "Burgers made by a queen",
             hours:   hours
         });
         expect(res.statusCode).toBe(400);
@@ -206,7 +206,7 @@ describe("Restaurant API", () => {
             name:    "Macdonald",
             address: "70 Flavor town",
             phone:   "(204) 345-6789",
-            description:    "Try our new 3000 calorie meal",
+            desc:    "Try our new 3000 calorie meal",
             hours:   hours
         });
         expect(res.statusCode).toBe(404);
