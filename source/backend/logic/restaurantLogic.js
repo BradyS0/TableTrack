@@ -11,7 +11,9 @@ async function validate_userID(id) {
     try
     {
         // Check if the owner exists
-        const user = await User.findByPk(parseInt(id));
+        const user = await User.findAll({
+            where: { userID: id }
+        });
         if (user === null) {
             return 404; // No user found
         }
