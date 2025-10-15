@@ -1,4 +1,6 @@
 import { createNav, toggleLoginButton } from '../components/nav.js';
+import { setUserState, getUserState, clearUserState } from './utils.js';
+
 
 const openBtn = document.getElementById("openSignup");
 const closeBtn = document.getElementById("closeSignup");
@@ -26,6 +28,8 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   const data = await res.json();
 
   if (res.ok) {
+    setUserState(data.token || email, 7); // 7 days cookie
+    sessionStorage.setItem("user", JSON.stringify(data.user || { email }));
     alert("Login successful!");
     // redirect user
     window.location.href = "/dashboard.html";  //change this
