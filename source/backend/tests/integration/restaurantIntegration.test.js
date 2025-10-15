@@ -10,8 +10,8 @@ var rest1id = 0;
 var rest2id = 0;
 
 // Users needed to test Restaurant API
-const user1id = 0;
-const user2id = 0;
+var user1id = 0;
+var user2id = 0;
 
 // Hours string to use for restaurants
 const hours = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
