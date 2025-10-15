@@ -1,16 +1,11 @@
 
 const { // Import functions from restaurantLogic
-    //validate_userID,
     validate_address,
     validate_phone,
     //validate_name,
     validate_description,
     validate_hours
 } = require('../../logic/restaurantLogic.js');
-
-// -------------------------------------------------- validate_userID
-
-// Done in integration tests
 
 
 

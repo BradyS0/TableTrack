@@ -3,7 +3,6 @@ import express from "express";
 import { Restaurant } from "../models/Restaurant.js";
 
 const { // Import functions from restaurantLogic
-    validate_userID,
     validate_address,
     validate_phone,
     validate_name,
@@ -28,28 +27,31 @@ router.post("/", async (req, res) => {
              validate_description(desc) &&
              validate_hours(hours)
         ){
-            // Validate ownerID for new restaurant
-            const userState = validate_userID(ownerID);
-            if (userState == 404)
+            // Validate ownerID for new restaurant exists
+            const user = await User.findByPk(parseInt(ownerID));
+            if (user == null)
                 res.status(404).json({ error: "User cannot be found" });
-            else if (userState == 409)
-                res.status(409).json({ error: "User already has a restaurant" });
-            else if (userState == 500)
-                res.status(500).json({ error: "Internal error while finding user" });
-            else if (userState == 200)
+            else
             {
-                // Create the new restaurant
-                const restaurant = await Restaurant.create({
-                    userID:      ownerID,
-                    name:        name,
-                    address:     address,
-                    phone_num:   phone,
-                    description: desc,
-                    open_hours:  hours,
-                    logo:        ""
-                });
-                res.status(201).json(restaurant);
-            }
+                // Check if this user already owns a restaurant
+                const prev_rest = Restaurant.findOne({ where: { userID: parseInt(ownerID) } })
+                if (prev_rest != null)
+                    res.status(409).json({ error: "User already has a restaurant" });
+                else
+                {
+                    // Create the new restaurant
+                    const restaurant = await Restaurant.create({
+                        userID:      ownerID,
+                        name:        name,
+                        address:     address,
+                        phone_num:   phone,
+                        description: desc,
+                        open_hours:  hours,
+                        logo:        ""
+                    });
+                    res.status(201).json(restaurant);
+                }
+            }   
         } 
         else // Non-ownerID item is invalid
         {
