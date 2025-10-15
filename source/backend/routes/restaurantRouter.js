@@ -22,14 +22,14 @@ router.post("/", async (req, res) => {
              RestaurantLogic.validate_hours(hours)
         ){
             // Validate ownerID for new restaurant exists
-            const user = await User.findAll({ where: { userID: parseInt(userID) } });
-            if (user == null)
+            const users = await User.findAll({ where: { userID: parseInt(userID) } });
+            if (users === undefined || users.length == 0)
                 res.status(404).json({ error: "User cannot be found" });
             else
             {
                 // Check if this user already owns a restaurant
-                const prev_rest = Restaurant.findAll({ where: { userID: parseInt(userID) } })
-                if (prev_rest.length > 0)
+                const restaurants = Restaurant.findAll({ where: { userID: parseInt(userID) } })
+                if (!(restaurants === undefined || restaurants.length == 0))
                     res.status(409).json({ error: "User already has a restaurant" });
                 else
                 {
