@@ -15,7 +15,7 @@ const user2id = 2;
 async function createUsers()
 {
     // User 1
-    const res1 = await request(app)
+    await request(app)
     .post("/users")
     .send({
         first_name: "John",
@@ -25,7 +25,7 @@ async function createUsers()
     });
 
     // User 2
-    const res2 = await request(app)
+    await request(app)
     .post("/users")
     .send({
         first_name: "Joe",
