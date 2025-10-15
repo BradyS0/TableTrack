@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
     try 
     {
         // Retrieve and validate information from body
-        const { ownerID, name, address, phone, desc, hours } = req.body;
+        const { userID, name, address, phone, desc, hours } = req.body;
         if ( validate_name(name) &&
              validate_address(address) &&
              validate_phone(phone) &&
@@ -29,20 +29,20 @@ router.post("/", async (req, res) => {
              validate_hours(hours)
         ){
             // Validate ownerID for new restaurant exists
-            const user = await User.findAll({ where: { userID: ownerID } });
+            const user = await User.findAll({ where: { userID: parseInt(userID) } });
             if (user == null)
                 res.status(404).json({ error: "User cannot be found" });
             else
             {
                 // Check if this user already owns a restaurant
-                const prev_rest = Restaurant.findAll({ where: { userID: parseInt(ownerID) } })
+                const prev_rest = Restaurant.findAll({ where: { userID: parseInt(userID) } })
                 if (prev_rest != null)
                     res.status(409).json({ error: "User already has a restaurant" });
                 else
                 {
                     // Create the new restaurant
                     const restaurant = await Restaurant.create({
-                        userID:      ownerID,
+                        userID:      userID,
                         name:        name,
                         address:     address,
                         phone_num:   phone,
