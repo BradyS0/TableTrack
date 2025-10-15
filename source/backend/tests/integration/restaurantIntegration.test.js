@@ -2,8 +2,6 @@
 import request from "supertest";
 import app from "../../index.js";
 import sequelize from "../../db.js";
-import { User } from "../../models/User.js";
-import { Restaurant } from "../../models/Restaurant";
 
 
 
@@ -12,12 +10,8 @@ var rest1id = 0;
 var rest2id = 0;
 
 // Create users needed to test Restaurant API
-var user1 = null;
-var user2 = null;
-var user3 = null;
 const user1id = 1;
 const user2id = 2;
-const user3id = 3;
 async function createUsers()
 {
     // User 1
@@ -29,7 +23,6 @@ async function createUsers()
         email:      "emailone@example.com",
         password:   "Password1!"
     });
-    user1 = res1.body;
 
     // User 2
     const res2 = await request(app)
@@ -40,18 +33,6 @@ async function createUsers()
         email:      "emailtwo@example.com",
         password:   "Password2!"
     });
-    user2 = res2.body;
-
-    // User 3
-    const res3 = await request(app)
-    .post("/users")
-    .send({
-        first_name: "Jeff",
-        last_name:  "Doe",
-        email:      "emailthree@example.com",
-        password:   "Password3!"
-    });
-    user3 = res3.body;
 }
 
 // Hours string to use for restaurants
