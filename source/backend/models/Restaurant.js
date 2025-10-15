@@ -1,7 +1,7 @@
 
 // Database Imports
 import { DataTypes } from "sequelize";
-import sequelize from "../db.js";
+import sequelize from "../config/db.js";
 
 // Model Definition
 export const Restaurant = sequelize.define("Restaurant", {
