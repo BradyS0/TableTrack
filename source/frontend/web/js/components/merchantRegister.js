@@ -1,4 +1,3 @@
-import {phone_num_strip, phone_num_validator} from '../logic/validators.js'
 
 export function createRegistrationPopup() {
   // Main popup container
@@ -59,11 +58,8 @@ export function createRegistrationPopup() {
   phoneInput.placeholder = "Phone: +1 204 123 1234";
   phoneInput.required = true;
   phoneInput.title = "Enter a valid phone number (10–15 digits)";
-  phoneInput.minLength = 10
-  phoneInput.maxLength = 15
-  phoneInput.addEventListener('input', (e) => {
-  e.target.value = phone_num_strip(e.target.value)
- });
+  phoneInput.pattern = "^[+]?[\\s\\-\\(\\)0-9]{10,20}$";
+
 
   // Register Button
   const registerBtn = document.createElement('button');
@@ -78,16 +74,13 @@ export function createRegistrationPopup() {
   content.append(closeBtn, heading, form);
   popup.appendChild(content);
 
-  completeRegistration(registerBtn,form,nameInput,tagsInput,phoneInput,locationInput,popup)
+  completeRegistration(form,nameInput,tagsInput,phoneInput,locationInput,popup)
   // Return the full popup element
 
   return popup;
 }
 
-function completeRegistration(register_button,form,input_name, input_tags, input_phone,input_location, popup){
-    const rest_name = document.querySelector("#restaurant-name>h1");
-    const tags = document.querySelector(".tags")
-    const location = document.querySelector("#restaurant-location>span")
+function completeRegistration(form,input_name, input_tags, input_phone,input_location, popup){
 
 
 
@@ -101,10 +94,7 @@ function completeRegistration(register_button,form,input_name, input_tags, input
         //make request to back end
 
         //upon success
-        rest_name.innerText = input_name.value //set the new restaurant name
-        location.innerText = input_location.value //set new location
-        tags.innerHTML = new_tags.map(tag => `<p>${tag}</p>`).join('');
-        popup.parentElement.removeChild(popup)
+    
         }
     });
 
