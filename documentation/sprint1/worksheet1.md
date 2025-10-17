@@ -88,12 +88,12 @@ Our group attempted to run and build the project of group 7 “CarDex”. The pr
   
 Unit and integration tests, CLI and coverage-report UI:  
 
-![(https://github.com/BradyS0/TableTrack/blob/main/documentation/sprint1/worksheet/imgs/backend-test.png)]
-![(https://github.com/BradyS0/TableTrack/blob/main/documentation/sprint1/worksheet/imgs/backend-test-coverage-UI.png)]
+![](./worksheet/imgs/backend-test.png)
+![](./worksheet/imgs/backend-test-coverage-UI.png)
 
 Overall it took our group under 40mins to have everything setup, including having to download and install .NET. The only thing that took us long to figure out was the front-end part of the project where we were able to build and run the tests quite effortlessly.  
 
-![(https://github.com/BradyS0/TableTrack/blob/main/documentation/sprint1/worksheet/imgs/frontend-test.png)]
+![](./worksheet/imgs/frontend-test.png)
 
 We sort of misunderstood and thought that “Trading Engine” had some UI element to it too and spent some time trying to start the front end, again that was a misunderstanding on our part and what was provided was just the logic part of it. Overall everything provided was of exceptional quality and all the instructions were clear and easy to follow.
 

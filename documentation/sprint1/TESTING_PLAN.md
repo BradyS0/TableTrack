@@ -95,15 +95,15 @@ Include screenshots or links if applicable (e.g., `/coverage/index.html`).
 
 Running the unit tests will create a coverage report in the console as well as the fancy html from jest where you can see in the logic file what is not being run. This can be found at source/backend/coverage/Icov-report/index.html after unit tests have run. Right now we don’t have a lot of logic so having code that isn’t tested causes a large decrease in tested statements, branches, functions and lines.
 
-![unit tests]()
+![unit tests](./unittests.png)
 
 Right at the deadline, we ran into issues running our integration tests. When merging to our dev branch, something was changed resulting in our tests failing. This implies that the issue did not come from bad tests, but because the environment was not properly set up. Because of this, the coverage seen in our last push to main is not a proper representation of the coverage of our tests. Found below are two images. The first image shows the test coverage of our last commit to main, and below that is our test coverage for the last commit where tests did work. As is seen here, the most recent commit is much more accurate to what is really covered in our tests and integration test suites.
 
-![integration tests failed]()
+![integration tests failed](./inttestfail.png)
 
 Last commit before 4:30pm on Oct 15th
 
-![integration tests succeed]()
+![integration tests succeed](./inttestpass.png)
 
 When our tests were actually working, this was the coverage (Lines 56-67 is from when we accidentally had a duplicate of one of our functions, so it was only testing the first function)
 ---
