@@ -51,10 +51,10 @@ export function mainNavRoutes(){
   //Become a merchant
   merchant.innerText = "Become a Merchant"
   merchant.addEventListener("click", ()=>{
-    //display_popup_msg("Requirement", 
-    // "You need to be logged-in or be a registered user to become a merchant", goToLogin)
+    display_popup_msg("Requirement", 
+    "You need to be logged-in or be a registered user to become a merchant", goToLogin)
 
-    createRegistrationPopup()
+    // createRegistrationPopup()
 
   })
       // if user not logged in - redirect to login-page show a popup that user needs to be logged-in to become a merchant
