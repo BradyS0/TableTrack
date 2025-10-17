@@ -1,4 +1,4 @@
-import { setUserState, getUserState, clearUserState } from './utils.js';
+import { setUserState, getUserState, clearUserState } from '../utils.js';
 
 const openBtn = document.getElementById("openSignup");
 const closeBtn = document.getElementById("closeSignup");
