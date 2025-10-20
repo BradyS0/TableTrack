@@ -1,13 +1,21 @@
-import { restById } from '../tempRestdata.js'; 
+import { api } from "../global.js"
 
-document.addEventListener("DOMContentLoaded",()=>{
+
+document.addEventListener("DOMContentLoaded", loadRestaurant)
+
+async function loadRestaurant(){
     const app = document.getElementById('app')
     const params = new URLSearchParams(window.location.search);
-    const rest = restById(params.get('restId')) || {}
-    app.append(createRestaurantInfo(rest));
-    console.log("populated the restaurant")
-    
-})
+    const response = await api.getRestaurantByID(params.get('restID'))
+
+    console.log(response)
+
+    if (response.code==200){
+      const rest = response.data
+      app.append(createRestaurantInfo(rest));
+      console.log("populated the restaurant")
+    }
+}
 
 function createRestaurantInfo({ restId, name, logo,tags=["no-tag-found"], rating, location, hours, phone}) {
   // Create main container
