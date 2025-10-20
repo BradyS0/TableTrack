@@ -1,11 +1,20 @@
 import { createHeader } from './components/header.js';
 import { getUserState, setUserState } from './utils.js';
 import {mockUsersAPI} from './api_calls/mock/user_api.js'
+import {mockRestaurantAPI} from './api_calls/mock/restaurant_api.js'
+
+//import {userAPI} from "./api_calls/live/user_api.js"
+
+export const api = {...mockUsersAPI, ...mockRestaurantAPI};
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = document.getElementById('app');
   app.appendChild(createHeader());
 
-  let result = mockUsersAPI.createUser("Arsalan","Siddiqui","arsalan@gmail.com","newPassword1");
+  let result = api.createUser("Arsalan","Siddiqui","arsalan@gmail.com","newPassword1");
   console.log(result)
+
+  console.log(api.loginUser("arsalan@gmail.com","newPasswo1"))
+
+
 });
