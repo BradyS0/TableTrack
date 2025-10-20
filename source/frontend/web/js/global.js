@@ -10,11 +10,4 @@ export const api = {...mockUsersAPI, ...mockRestaurantAPI};
 document.addEventListener('DOMContentLoaded', () => {
   const app = document.getElementById('app');
   app.appendChild(createHeader());
-
-  let result = api.createUser("Arsalan","Siddiqui","arsalan@gmail.com","newPassword1");
-  console.log(result)
-
-  console.log(api.loginUser("arsalan@gmail.com","newPasswo1"))
-
-
 });

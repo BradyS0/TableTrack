@@ -6,7 +6,7 @@ export const restaurants = [
     tags: ['italian', 'cheesy'], 
     logo: null, 
     rating: 5,
-    location: '123 Main St, Toronto, Canada'
+    address: '123 Main St, Toronto, Canada'
   },
   { 
     restId: 2, 
@@ -15,7 +15,7 @@ export const restaurants = [
     tags: ['burgers', 'fastfood', 'dairy-free'], 
     logo: null, 
     rating: 4,
-    location: '456 King St, Vancouver, Canada'
+    address: '456 King St, Vancouver, Canada'
   },
   { 
     restId: 3, 
@@ -24,7 +24,7 @@ export const restaurants = [
     tags: ['japanese', 'seafood', 'fresh', 'vegan', 'organic', 'healthy'], 
     logo: null, 
     rating: 4.5,
-    location: '789 Queen St, Montreal, Canada'
+    address: '789 Queen St, Montreal, Canada'
   },
   { 
     restId: 4, 
@@ -33,7 +33,7 @@ export const restaurants = [
     tags: ['mexican', 'spicy', 'street-food'], 
     logo: null, 
     rating: 4.2,
-    location: '321 Elm St, Calgary, Canada'
+    address: '321 Elm St, Calgary, Canada'
   },
   { 
     restId: 5, 
@@ -42,7 +42,7 @@ export const restaurants = [
     tags: ['vegan', 'organic', 'healthy'], 
     logo: null, 
     rating: 4.8,
-    location: '654 Maple Ave, Ottawa, Canada'
+    address: '654 Maple Ave, Ottawa, Canada'
   },
   { 
     restId: 6, 
@@ -51,7 +51,7 @@ export const restaurants = [
     tags: ['indian', 'spicy', 'vegetarian'], 
     logo: null, 
     rating: 4.3,
-    location: '987 Bloor St, Edmonton, Canada'
+    address: '987 Bloor St, Edmonton, Canada'
   },
   { 
     restId: 7, 
@@ -60,7 +60,7 @@ export const restaurants = [
     tags: ['barbecue', 'steakhouse', 'meat-lovers'], 
     logo: null, 
     rating: 4.6,
-    location: '111 Front St, Winnipeg, Canada'
+    address: '111 Front St, Winnipeg, Canada'
   },
   { 
     restId: 8, 
@@ -69,7 +69,7 @@ export const restaurants = [
     tags: ['chinese', 'noodles', 'comfort-food'], 
     logo: null, 
     rating: 4.1,
-    location: '222 Bay St, Halifax, Canada'
+    address: '222 Bay St, Halifax, Canada'
   },
   { 
     restId: 9, 
@@ -78,7 +78,7 @@ export const restaurants = [
     tags: ['coffee', 'breakfast', 'pastries'], 
     logo: null, 
     rating: 4.9,
-    location: '333 Yonge St, Victoria, Canada'
+    address: '333 Yonge St, Victoria, Canada'
   },
   { 
     restId: 10, 
@@ -87,7 +87,7 @@ export const restaurants = [
     tags: ['mediterranean', 'vegan', 'wraps'], 
     logo: null, 
     rating: 4.4,
-    location: '444 Granville St, Quebec City, Canada'
+    address: '444 Granville St, Quebec City, Canada'
   }
 ];
 
