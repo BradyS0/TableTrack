@@ -1,7 +1,7 @@
 import {users} from './mockUserdata.js'
 const MOCK = "mockUsers"
 
-const init = ()=>{
+function init(){
     if (!sessionStorage.getItem(MOCK)){
         sessionStorage.setItem(MOCK,JSON.stringify(users))
     }
