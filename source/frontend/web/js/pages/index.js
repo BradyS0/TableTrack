@@ -1,17 +1,23 @@
-import { createNav } from '../components/nav.js';
 import { createCard } from '../components/restCard.js';
-import { getUserState, setUserState } from '../utils.js';
-import { restaurants } from '../tempRestdata.js'; 
+import { display_popup_msg } from '../components/popupMsg.js';
+import { api } from '../global.js'
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', populateRestaurants);
+
+
+async function populateRestaurants(){
   const app = document.getElementById('app');
   const cardGrid = document.createElement('div');
-  
-  
   cardGrid.classList.add('card-grid');
-  restaurants.forEach(restaurant => {
-    cardGrid.appendChild(createCard(restaurant));
-  });
-  
-  app.appendChild(cardGrid);
-});
+
+  const response = await api.getRestaurants();
+  if (response.code<300){
+    const restaurants = response.restaurants;
+    restaurants.forEach(restaurant => {
+      cardGrid.appendChild(createCard(restaurant));
+    });
+    app.appendChild(cardGrid);
+   }else{
+    display_popup_msg(`Error ${response.code}`, response.message)
+   }
+}

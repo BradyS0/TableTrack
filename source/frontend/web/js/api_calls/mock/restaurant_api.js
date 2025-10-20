@@ -14,7 +14,7 @@ function getRandomRating(min, max) {
 }
 
 
-function getRestaurants() {
+async function getRestaurants() {
   init();
   const rests = JSON.parse(sessionStorage.getItem(MOCK)) || [];
 
@@ -26,7 +26,7 @@ function getRestaurants() {
 
 
 
-const createRestaurant = (userID, name, tags, address, phone) => {
+const createRestaurant = async (userID, name, tags, address, phone) => {
   init();
 
   let data = JSON.parse(sessionStorage.getItem(MOCK));
@@ -53,7 +53,7 @@ const createRestaurant = (userID, name, tags, address, phone) => {
 
 
 
-const getRestaurantByOwner = (userID) => {
+const getRestaurantByOwner = async(userID) => {
   init();
 
   let data = JSON.parse(sessionStorage.getItem(MOCK));
@@ -68,11 +68,12 @@ const getRestaurantByOwner = (userID) => {
 };
 
 
-const getRestaurantByID = (restID) => {
+const getRestaurantByID = async(restID) => {
   init();
 
   let data = JSON.parse(sessionStorage.getItem(MOCK));
-  const rest = data.find(r => r.restID === restID);
+  const rest = data.find(r => r.restID == restID);
+  console.log(rest, data, restID)
 
   if (!rest) {
     return { code: 404, message: "Restaurant not found" };
@@ -83,7 +84,7 @@ const getRestaurantByID = (restID) => {
 
 
 
-const changeRestaurantName = (restID, userID, name) => {
+const changeRestaurantName = async(restID, userID, name) => {
   let data = JSON.parse(sessionStorage.getItem(MOCK));
   const rest = data.find(r => r.restID === restID && r.userID === userID);
 
@@ -98,7 +99,7 @@ const changeRestaurantName = (restID, userID, name) => {
 };
 
 
-const changeRestaurantAddress = (restID, userID, address) => {
+const changeRestaurantAddress = async(restID, userID, address) => {
   let data = JSON.parse(sessionStorage.getItem(MOCK));
   const rest = data.find(r => r.restID === restID && r.userID === userID);
 
@@ -113,7 +114,7 @@ const changeRestaurantAddress = (restID, userID, address) => {
 };
 
 
-const changeRestaurantPhone = (restID, userID, phone) => {
+const changeRestaurantPhone = async(restID, userID, phone) => {
   let data = JSON.parse(sessionStorage.getItem(MOCK));
   const rest = data.find(r => r.restID === restID && r.userID === userID);
 
@@ -128,7 +129,7 @@ const changeRestaurantPhone = (restID, userID, phone) => {
 };
 
 
-const changeRestaurantTags = (restID, userID, tags) => {
+const changeRestaurantTags = async(restID, userID, tags) => {
   let data = JSON.parse(sessionStorage.getItem(MOCK));
   const rest = data.find(r => r.restID === restID && r.userID === userID);
 
