@@ -1,7 +1,6 @@
 import { display_popup_msg } from "./popupMsg.js"; 
 import {createRegistrationPopup} from './merchantRegister.js'
-import { setUserState, getUserState, clearUserState } from '../utils.js';
-import {api} from '../global.js'
+import { getUserState, clearUserState } from '../utils.js';
 
 export async function mainNavRoutes(){
   const nav = document.querySelector('nav')
@@ -32,10 +31,9 @@ export async function mainNavRoutes(){
         createRegistrationPopup()
       else //if user is a merchant
         merchant.style.display='none'
-
     }
   })
-  
+
   nav.append(userOptions,hr,home,about,merchant)
 }
 
@@ -55,7 +53,7 @@ async function createUserOptions(){
     userProfile.addEventListener('click',goToUserProfile)
     userOptions.append(userName,userProfile)
 
-    if(user.resID){
+    if(user.restID){
     const manage = document.createElement('p')
     manage.innerText = "Manage Restaurant"
     manage.addEventListener('click', goToRestaurantManagement)
@@ -97,16 +95,6 @@ export function createNav(menuItems = ['item1', 'item2']) {
   nav.appendChild(merchantNote)
 }
 
-export function toggleLoginButton(){
-  document.addEventListener('DOMContentLoaded',()=>{
-  const loginButton = document.querySelector(".login-btn")
-  
-  if (loginButton.style.display == 'none'){
-    loginButton.style.display = ''
-  }else{
-  loginButton.style.display = 'none'
-}})
-}
 
 export function goToHome(){window.location.href = './';}
 function goToLogin(){window.location.href = './login.html';}
