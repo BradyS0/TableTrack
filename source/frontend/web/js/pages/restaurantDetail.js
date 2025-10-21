@@ -1,12 +1,14 @@
 import { api } from "../global.js"
 
 
-document.addEventListener("DOMContentLoaded", loadRestaurant)
+document.addEventListener("DOMContentLoaded", ()=>{
+     const params = new URLSearchParams(window.location.search);
+     loadRestaurant(params.get('restID'))
+    })
 
-async function loadRestaurant(){
+export async function loadRestaurant(restID){
     const app = document.getElementById('app')
-    const params = new URLSearchParams(window.location.search);
-    const response = await api.getRestaurantByID(params.get('restID'))
+    const response = await api.getRestaurantByID(restID)
 
     console.log(response)
 
@@ -14,6 +16,8 @@ async function loadRestaurant(){
       const rest = response.data
       app.append(createRestaurantInfo(rest));
       console.log("populated the restaurant")
+    }else{
+      app.append(createRestaurantInfo({}));
     }
 }
 
