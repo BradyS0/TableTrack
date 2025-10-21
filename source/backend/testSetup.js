@@ -13,6 +13,7 @@ async function resetDatabaseWithRetry(retries = 5, delay = 5000) {
             console.log('[TEST SETUP] Resetting the test database...');
             await sequelize.sync({ force: true });
             sleep(5000); // wait for 5 seconds to ensure DB is ready
+            await sequelize.authenticate(); // verify connection
             console.log('[TEST SETUP] Test database reset complete.');
             return;
         } catch (error) {
