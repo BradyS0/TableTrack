@@ -60,7 +60,7 @@ const getRestaurantByOwner = async(userID) => {
 
   const owned = data.find(r => r.userID === userID);
 
-  if (owned.length === 0) {
+  if (!owned) {
     return { code: 404, message: "No restaurants found for this user" };
   }
 

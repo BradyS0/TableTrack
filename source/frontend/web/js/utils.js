@@ -17,4 +17,5 @@ export function getUserState() {
 
 export function clearUserState() {
   sessionStorage.removeItem("userState");
+  window.location.href = './';
 }

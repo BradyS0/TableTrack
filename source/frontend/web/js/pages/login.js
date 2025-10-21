@@ -13,23 +13,35 @@ closeBtn.addEventListener("click", () => popup.classList.add("hidden"));
 // Handle login form submission
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const email = loginEmail.value;
-  const password = loginPassword.value;
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
 
-  const res = await fetch("/api/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password })
-  });
-  const data = await res.json();
+  // const res = await fetch("/api/auth/login", {
+  //   method: "POST",
+  //   headers: { "Content-Type": "application/json" },
+  //   body: JSON.stringify({ email, password })
+  // });
+  // const data = await res.json();
 
-  if (res.ok) {
-    setUserState(data);
-    alert("Login successful!");
-    // redirect user
-    window.location.href = "/dashboard.html";  //change this
-  } else {
-    alert(data.message || "Login failed");
+  // if (res.ok) {
+  //   setUserState(data);
+  //   alert("Login successful!");
+  //   // redirect user
+  //   window.location.href = "/dashboard.html";  //change this
+  // } else {
+  //   alert(data.message || "Login failed");
+  // }
+
+  const res = await api.loginUser(email,password);
+  console.log(res)
+  if (res.code <300){
+    const res2 = await api.getRestaurantByOwner(res.user.userID) //call made to check if the user is a restaurant owner
+    if(res2.code===200)
+      res.user.restID = res2.restID
+    setUserState(res.user)
+    window.location.href = "./";  //change this
+  }else{
+    alert(res.message || "Login failed")
   }
 });
 
@@ -67,7 +79,7 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
       popup.classList.add("hidden");
   } else {
     alert(data.message || "Signup failed");
-  }
+  }   
 
 
 });
