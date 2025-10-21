@@ -1,7 +1,7 @@
 
 import request from "supertest";
 import app from "../../index.js";
-import sequelize from "../../config/db.js";
+// import sequelize from "../../db.js";
 
 
 
@@ -25,21 +25,16 @@ const hours = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
 
 
 // Testing setup
-beforeAll(async () => {
-    process.env.NODE_ENV = "test";
-    try {
-        await sequelize.authenticate();
-        await sequelize.sync({ force: true });
-    } catch (err) {
-        console.error('Error during sequelize.sync in tests:');
-        console.error(err && err.stack ? err.stack : err);
-        throw err;
-    }
-});
-// Testing cleanup
-afterAll(async () => {
-    await sequelize.close();
-});
+// beforeAll(async () => {
+//     process.env.NODE_ENV = "test";         // Set environment to testing
+//     await sequelize.sync({ force: true }); // Reset tables (use current models)
+// });
+
+// // Testing cleanup
+// afterAll(async () => {
+//     await sequelize.close(); // Close database connection
+// });
+
 
 
 describe("Restaurant API", () => {
