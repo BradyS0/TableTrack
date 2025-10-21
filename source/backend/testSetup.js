@@ -7,27 +7,7 @@ import { User } from './models/User.js';
 dotenv.config({ path: './.env' });
 console.log('TEST DB_PASS:', process.env.DB_PASS ? '******' : 'NOT SET');
 
-async function resetDatabaseWithRetry(retries = 5, delay = 5000) {
-    for (let i = 0; i < retries; i++) {
-        try {
-            console.log('[TEST SETUP] Resetting the test database...');
-            await sequelize.sync({ force: true });
-            sleep(5000); // wait for 5 seconds to ensure DB is ready
-            await sequelize.authenticate(); // verify connection
-            console.log('[TEST SETUP] Test database reset complete.');
-            return;
-        } catch (error) {
-            console.log(`[TEST SETUP] Failed to reset database (attempt ${i + 1}/${retries}):`, error.message);
-            if (i < retries - 1) {
-                console.log(`[TEST SETUP] Retrying in ${delay / 1000} seconds...`);
-                await new Promise(resolve => setTimeout(resolve, delay));
-            } else {
-                console.error('[TEST SETUP] Could not reset database after multiple attempts.');
-                throw error;
-            }
-        }
-    }
-}
+
 
 beforeAll(async () => {
     try {
@@ -35,8 +15,6 @@ beforeAll(async () => {
         await sequelize.authenticate();
         console.log('[TEST SETUP] Database connection established.')
         
-        await resetDatabaseWithRetry();
-
         //create any necessary test data here
         // console.log('[TEST SETUP] Creating test user...');
         // await User.create({
