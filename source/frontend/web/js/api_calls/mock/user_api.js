@@ -8,7 +8,7 @@ function init(){
 
 }
 
-const createUser = (first_name,last_name, email, password)=>{
+const createUser = async (first_name,last_name, email, password)=>{
     init()
     let users = JSON.parse(sessionStorage.getItem(MOCK))
     let result = { code: 400,
@@ -32,7 +32,7 @@ const createUser = (first_name,last_name, email, password)=>{
 };
 
 
-const loginUser = (email, password) => {
+const loginUser = async (email, password) => {
   init()
   let users = JSON.parse(sessionStorage.getItem(MOCK));
   let user = users.find(u => u.email === email && u.password === password);
@@ -46,7 +46,7 @@ const loginUser = (email, password) => {
 
 
 
-const changeEmail = (userID, newEmail) => {
+const changeEmail = async (userID, newEmail) => {
   let users = getUsers();
   let user = users.find(u => u.userID === userID);
 
@@ -64,7 +64,7 @@ const changeEmail = (userID, newEmail) => {
 
 
 
-const changeFirstName = (userID, newFirstName) => {
+const changeFirstName = async(userID, newFirstName) => {
   let users = getUsers();
   let user = users.find(u => u.userID === userID);
 
@@ -79,7 +79,7 @@ const changeFirstName = (userID, newFirstName) => {
 };
 
 
-const changeLastName = (userID, newLastName) => {
+const changeLastName = async(userID, newLastName) => {
   let users = getUsers();
   let user = users.find(u => u.userID === userID);
 
@@ -94,7 +94,7 @@ const changeLastName = (userID, newLastName) => {
 };
 
 
-const changePassword = (userID, old_password, new_password) => {
+const changePassword = async(userID, old_password, new_password) => {
   let users = getUsers();
   let user = users.find(u => u.userID === userID);
 
