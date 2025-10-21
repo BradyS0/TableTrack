@@ -1,42 +1,14 @@
 import { display_popup_msg } from "./popupMsg.js"; 
 import {createRegistrationPopup} from './merchantRegister.js'
+import { setUserState, getUserState, clearUserState } from '../utils.js';
+import {api} from '../global.js'
 
-export function mainNavRoutes(){
+export async function mainNavRoutes(){
   const nav = document.querySelector('nav')
-  const userOptions = document.createElement('div')
-  userOptions.className = 'user-options'
-
   const merchant = document.createElement('p')
   merchant.className = 'merchant-note'
-
-   //if user logged-in
-    //show user-profile option
-    const userName = document.createElement('b')
-    userName.innerHTML = "First Last"
-
-    const userProfile = document.createElement('p')
-    userProfile.innerText = "Profile Settings"
-    userProfile.addEventListener('click',goToUserProfile)
-    userOptions.append(userName,userProfile)
-
-    //if restaurant owner show restaurant management option - redirect to restaurant management page
-    const manage = document.createElement('p')
-    manage.innerText = "Manage Restaurant"
-    manage.addEventListener('click', goToRestaurantManagement)
-    userOptions.append(manage)
-
-    //show a logout button
-    const logoutOption = document.createElement('p')
-    logoutOption.innerText = 'Logout'
-    userOptions.append(logoutOption)
-
-  //else{
-  const login = document.createElement('button')
-  login.innerText = "Login"
-  login.className = 'login-btn btn'
-  login.addEventListener('click', goToLogin)
-  userOptions.append(login)
-  //}
+  
+  const userOptions = await createUserOptions()
 
   const hr  = document.createElement('hr')
   const home = document.createElement('p')
@@ -51,19 +23,62 @@ export function mainNavRoutes(){
   //Become a merchant
   merchant.innerText = "Become a Merchant"
   merchant.addEventListener("click", ()=>{
+    const user = getUserState() 
+    if(!user){
     display_popup_msg("Requirement", 
     "You need to be logged-in or be a registered user to become a merchant", goToLogin)
+    }else{
+      if (!user.resID) //if user is not a merchant
+        createRegistrationPopup()
+      else //if user is a merchant
+        merchant.style.display='none'
 
-    // createRegistrationPopup()
-
+    }
   })
-      // if user not logged in - redirect to login-page show a popup that user needs to be logged-in to become a merchant
-      // if user logged in show become merchantRegistration popup
-      // if user already a merchant dont show the option
   
   nav.append(userOptions,hr,home,about,merchant)
 }
 
+
+async function createUserOptions(){
+  const userOptions = document.createElement('div')
+  userOptions.className = 'user-options'
+  
+  const user = getUserState();
+  
+  if(user){    
+    const userName = document.createElement('b')
+    userName.innerHTML = `${user.first_name} ${user.last_name}`
+
+    const userProfile = document.createElement('p')
+    userProfile.innerText = "Profile Settings"
+    userProfile.addEventListener('click',goToUserProfile)
+    userOptions.append(userName,userProfile)
+
+    if(user.resID){
+    const manage = document.createElement('p')
+    manage.innerText = "Manage Restaurant"
+    manage.addEventListener('click', goToRestaurantManagement)
+    userOptions.append(manage)
+    }
+
+    //show a logout button
+    const logoutOption = document.createElement('button')
+    logoutOption.className = 'login-btn btn'
+    logoutOption.innerText = 'Logout'
+    userOptions.append(logoutOption)
+    logoutOption.addEventListener('click', clearUserState)
+  
+  }else{
+    const login = document.createElement('button')
+    login.innerText = "Login"
+    login.className = 'login-btn btn'
+    login.addEventListener('click', goToLogin)
+    userOptions.append(login)
+  }
+
+  return userOptions;
+}
 
 
 export function createNav(menuItems = ['item1', 'item2']) {
