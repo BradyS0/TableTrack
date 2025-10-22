@@ -9,7 +9,7 @@ function init(){
 }
 
 const getUsers = ()=>{
-  return sessionStorage.getItem(MOCK)
+  return JSON.parse(sessionStorage.getItem(MOCK))
 }
 
 const saveUsers = (this_users)=>{
