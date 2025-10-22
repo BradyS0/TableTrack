@@ -37,6 +37,6 @@ jobs:
         run: |
           until nc -z localhost 5432; do
             echo "Waiting for Postgres..."
-            sleep 5
+            sleep 1
           done
       - run: cd source/backend && npm run test:integration
