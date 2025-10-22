@@ -101,6 +101,7 @@ function completeRegistration(form,input_name, input_tags, input_phone,input_loc
           window.location.reload();
         }else{
           alert(`code: ${res.code} ::: ${res.message}`)
+          popup.parentElement.removeChild(popup)
         }
       }
 

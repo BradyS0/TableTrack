@@ -1,4 +1,4 @@
-import { setUserState, getUserState, clearUserState } from '../utils.js';
+import { setUserState} from '../utils.js';
 import {api} from '../global.js'
 
 const openBtn = document.getElementById("openSignup");
