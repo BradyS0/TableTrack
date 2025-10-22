@@ -1,6 +1,6 @@
-﻿//partly made using chatGPT
+//partly made using chatGPT
 import { DataTypes } from "sequelize";
-import sequelize from "../config/db.js";  // updated import
+import sequelize from "../db.js"; // updated import
 
 export const User = sequelize.define("User", {
     userID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
@@ -8,6 +8,4 @@ export const User = sequelize.define("User", {
     last_name: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
     password: { type: DataTypes.STRING, allowNull: false },
-    },{ freezeTableName: true
-    
-}); // Sync the model with the database
+});

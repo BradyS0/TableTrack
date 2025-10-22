@@ -8,28 +8,29 @@ const router = express.Router();
 router.post("/", async (req, res) => {
     const { first_name, last_name, email, password } = req.body;
     const email_list = await User.findAll({
-            where: {
-                email: email
-            }
-        });
-    
+        where: {
+            email: email
+        }
+    });
+
     const valid_params = UserLogic.validate_all(first_name, last_name, email, password);
 
-    if ((email_list === undefined || email_list.length == 0 ) && valid_params) {
+    if ((email_list === undefined || email_list.length == 0) && valid_params) {
         try {
             const hashed_password = UserLogic.hash_password(password);
             const user = await User.create({
-                first_name : first_name,
-                last_name : last_name,
-                email : email,
-                password : hashed_password
+                first_name: first_name,
+                last_name: last_name,
+                email: email,
+                password: hashed_password
             });
             res.status(201).json({
-                first_name: user.first_name, 
-                last_name: user.last_name, 
-                email: user.email});
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email: user.email
+            });
         } catch (err) {
-            res.status(400).json({error: err.message});
+            res.status(400).json({ error: err.message });
         }
     } else {
         res.status(400).json({ error: "Invalid parameters" });
@@ -37,18 +38,18 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     const user = await User.findAll({
-            attributes: ['password', 'userID', 'first_name', 'last_name', 'email'],
-            where: {
-                email: email
-            }
-        });
+        attributes: ['password'],
+        where: {
+            email: email
+        }
+    });
     const password_input = UserLogic.hash_password(password);
-    if(user !== undefined && user.length == 1  && password_input === user[0].password) {
-        res.status(200).json({message: "Login successful!", 'userID':user[0].userID, 'first_name':user[0].first_name, 'last_name':user[0].last_name, 'email':user[0].email});
+    if (user !== undefined && user.length == 1 && password_input === user[0].password) {
+        res.status(200).json({ message: "Login successful!" });
     } else {
-        res.status(401).json({error: "Invalid email or password"});
+        res.status(401).json({ error: "Invalid email or password" });
     }
 });
 
@@ -61,15 +62,15 @@ router.delete("/:userID", async (req, res) => {
 });
 
 router.patch("/change/firstname", async (req, res) => {
-    const { userID, first_name} = req.body;
+    const { userID, first_name } = req.body;
 
     if (UserLogic.validate_name(first_name)) {
-        const updated = await User.update({ first_name : first_name }, 
-        { 
-            where: { 
-                userID: userID 
-            } 
-        });
+        const updated = await User.update({ first_name: first_name },
+            {
+                where: {
+                    userID: userID
+                }
+            });
 
         if (updated[0]) {
             //user exists
@@ -78,20 +79,20 @@ router.patch("/change/firstname", async (req, res) => {
             res.status(404).json({ error: "User not found" });
         }
     } else {
-        res.status(400).json({ error: "Invalid first name"})
+        res.status(400).json({ error: "Invalid first name" })
     }
 });
 
 router.patch("/change/lastname", async (req, res) => {
-    const { userID, last_name} = req.body;
+    const { userID, last_name } = req.body;
 
     if (UserLogic.validate_name(last_name)) {
-        const updated = await User.update({ last_name : last_name }, 
-        { 
-            where: { 
-                userID: userID 
-            } 
-        });
+        const updated = await User.update({ last_name: last_name },
+            {
+                where: {
+                    userID: userID
+                }
+            });
 
         if (updated[0]) {
             //user exists
@@ -100,7 +101,7 @@ router.patch("/change/lastname", async (req, res) => {
             res.status(404).json({ error: "User not found" });
         }
     } else {
-        res.status(400).json({ error: "Invalid last name"})
+        res.status(400).json({ error: "Invalid last name" })
     }
 });
 
@@ -115,7 +116,7 @@ router.patch("/change/email", async (req, res) => {
 
         if (emailList === undefined || emailList.length == 0) {
             //email is not a duplicate
-            const updated = await User.update({ email : email }, { where: { userID }});
+            const updated = await User.update({ email: email }, { where: { userID } });
             if (updated[0]) {
                 res.status(200).json({ message: "Email updated" });
             } else {
@@ -123,11 +124,11 @@ router.patch("/change/email", async (req, res) => {
             }
         } else {
             //email is a duplicate (already in database)
-            res.status(400).json({ error: "Invalid parameter"});
+            res.status(400).json({ error: "Invalid parameter" });
         }
     } else {
         //invalid email
-        res.status(400).json({ error: "Invalid parameter"});
+        res.status(400).json({ error: "Invalid parameter" });
     }
 });
 
@@ -143,16 +144,16 @@ router.patch("/change/password", async (req, res) => {
         });
 
         const old_hashed = UserLogic.hash_password(old_password);
-        
+
         if (!UserLogic.validate_password(old_password)) {
-            res.status(400).json({ message: "Old password is invalid"});
+            res.status(400).json({ message: "Old password is invalid" });
         } else if (user[0].password !== old_hashed) {
-            res.status(401).json({ message: "Passwords do not match"});
+            res.status(401).json({ message: "Passwords do not match" });
         } else if (!UserLogic.validate_password(new_password)) {
-            res.status(400).json({ message: "New password is invalid"});     
+            res.status(400).json({ message: "New password is invalid" });
         } else {
             const new_hashed = UserLogic.hash_password(new_password);
-            await User.update({ password: new_hashed }, { where: { userID }});
+            await User.update({ password: new_hashed }, { where: { userID } });
 
             //already checked if user exists
             res.status(200).json({ message: "Password updated" });

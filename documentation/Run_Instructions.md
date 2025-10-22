@@ -3,23 +3,20 @@ In order to run locally:
 - Clone repository
 - Open directory in editor or terminal/powershell
 - Make sure you have docker desktop open
-- To build the project and run unit tests in command line type:
-  - cd source
-- Create a .env file in the source directory with the following:
-  - DB_USER=user
-  - DB_PASSWORD=password
-  - DB_NAME=tabletrackdb
-  - DB_PORT=5432
-  - API_PORT=3000
-  - NODE_ENV=development
-- After creating the .env file you can now run:
-  - docker compose up --build
-- In another terminal/powershell window type:
-  - cd source
-  - docker compose exec api npm run test:integration
-- To shut down the project type(in same window as test):
-  - docker compose down -v
-- To run unit tests in command line type (either window will work):
-  - cd backend
+- To do all the backend running, go to backend folder with command:
+  - cd source/backend
+- To run the unit tests:
   - npm ci
   - npm run test:unit
+- To run the integration tests create a .env file in the source directory with the following:
+DB_NAME=testdb
+DB_USER=testuser
+DB_PASS=testpassword
+- In the command line run:
+  - npm run test:integration:start
+  - npm run test:integration
+  - npm run test:integration:stop
+- To build the project in command line type:
+  - npm run local:dev:start
+  - npm run local:dev:test
+  - npm run local:dev:stop

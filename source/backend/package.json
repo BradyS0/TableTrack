@@ -3,9 +3,15 @@
     "version": "1.0.0",
     "type": "module",
     "scripts": {
-        "test:integration": "jest --coverage --runInBand --testPathPattern=tests/integration",
+        "test:integration": "jest --config=jest.integration.config.js --coverage --runInBand --testPathPattern=tests/integration",
         "test:unit": "jest --coverage --testPathPattern=tests/unit",
-        "start": "node index.js"
+        "start": "node server.js",
+        "test:integration:start": "docker-compose -f docker-compose.test.yml up -d",
+        "test:integration:logs": "docker-compose -f docker-compose.test.yml logs",
+        "test:integration:stop": "docker-compose -f docker-compose.test.yml down -v",
+        "local:dev:start": "docker-compose -f docker-compose.yml up -d",
+        "local:dev:stop": "docker-compose -f docker-compose.yml down -v",
+        "local:dev:test": "node testUserFlow.cjs"
     },
     "dependencies": {
         "cors": "^2.8.5",
@@ -23,4 +29,3 @@
         "supertest": "^6.3.4"
     }
 }
-
