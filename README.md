@@ -9,6 +9,11 @@ Ever been too lazy to call for a reservation? How about being seated right by th
 ## Sprint Worksheets
  - [ ] ***[Sprint 0](./documentation/sprint0/sprint0.md)***
 
+
+## Run Instructions
+- [backend](./documentation/Run_Instructions.md)
+- [frontend](./source/frontend/web/README.md)
+
 ## Standards
 - Programming Standards *$_{TBA}$*
 - Workflow / Contribution Standards *$_{TBA}$*
