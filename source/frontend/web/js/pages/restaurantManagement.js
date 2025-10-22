@@ -147,7 +147,7 @@ function saveEditChanges(
         .filter((tag) => tag.length > 2);
 
       //make request to back end
-      if(old_tags !== new_tags){
+      if(old_tags !== input_tags.value){
         const res = await api.changeRestaurantTags(owner.restID, owner.userID,new_tags)
         if (res.code===200)
           tags.innerHTML = new_tags.map((tag) => `<p>${tag}</p>`).join("");
@@ -165,9 +165,9 @@ function saveEditChanges(
           location.innerText = input_location.value
       }
 
-      if(oldPhone){
+      if(oldPhone !== input_phone.value){
         const res = await api.changeRestaurantPhone(owner.restID, owner.userID, input_phone.value)
-        if (res.code == 200)
+        if (res.code === 200)
           phone.innerText = input_phone.value;
       }
       popup.parentElement.removeChild(popup);
