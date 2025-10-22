@@ -8,7 +8,7 @@ In order to run locally:
 - To run the unit tests:
   - npm ci
   - npm run test:unit
-- To run the integration tests create a .env file in the source directory with the following:
+- To run the integration tests create a .env file in the backend directory with the following:
 DB_NAME=testdb
 DB_USER=testuser
 DB_PASS=testpassword
