@@ -1,4 +1,13 @@
-# Front end start instructions
+## Front end start instructions
 
-- Open vs-code in the web directory
-- Then load the webpage using vs-code extention `live-server` or `Five Server` on vscode so that .js files of `type = "module"` can be loaded.
+### Prerequisites
+  - [Node.js](https://nodejs.org/) (v18.0 or higher)
+  - npm (comes with Node.js)
+  
+```bash
+ # from repos root directory
+ cd ./source/frontend/web
+
+# once in frontend/web
+ npm run start
+```

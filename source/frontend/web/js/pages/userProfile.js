@@ -1,4 +1,4 @@
-import { getUserState, setUserState } from '../utils.js';
+import { getUserState, setUserState, clearUserState } from '../utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const user = getUserState('user') || { username: 'Guest', email: 'guest@example.com' };
@@ -52,8 +52,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Logout
-  logoutBtn.addEventListener('click', () => {
-    setUserState('user', { loggedIn: false });
-    window.location.href = 'login.html';
-  });
+  logoutBtn.addEventListener('click', clearUserState);
 });
