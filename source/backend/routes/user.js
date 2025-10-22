@@ -45,7 +45,7 @@ router.post("/login", async (req, res) => {
             email: email
         }
     });
-    const password_input = UserLogic.hash_password(password)
+    const password_input = UserLogic.hash_password(password);
     if (user !== undefined && user.length == 1 && password_input === user[0].password) {
         res.status(200).json({ message: "Login successful!" });
     } else {
