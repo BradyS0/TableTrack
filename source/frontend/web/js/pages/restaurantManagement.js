@@ -122,19 +122,24 @@ function saveEditChanges(
   const tags = document.querySelector(".tags");
   const location = document.querySelector("#restaurant-location>span");
   const phone = document.querySelector("#restaurant-phone>span");
-
-  input_name.value = rest_name.innerText;
-
-  var old_tags = [...tags.querySelectorAll("p")]
-    .map((tag) => `${tag.innerText},`)
-    .join("");
-
+ 
+  let old_tags = [...tags.querySelectorAll("p")]
+  .map((tag) => `${tag.innerText},`)
+  .join("");
+  
   input_tags.value = old_tags.slice(0, -1);
-
+  input_name.value = rest_name.innerText;
   input_location.value = location.innerText;
+  input_phone.value = phone.innerText;
 
-  form.addEventListener("submit", (e) => {
+  let oldName = rest_name.innerText;
+  let oldLocation = location.innerText;
+  old_tags = input_tags.value
+  let oldPhone = phone.innerText
+
+  form.addEventListener("submit", async(e) => {
     e.preventDefault();
+    const owner = getUserState()
 
     if (form.checkValidity()) {
       const new_tags = input_tags.value
@@ -142,12 +147,29 @@ function saveEditChanges(
         .filter((tag) => tag.length > 2);
 
       //make request to back end
+      if(old_tags !== new_tags){
+        const res = await api.changeRestaurantTags(owner.restID, owner.userID,new_tags)
+        if (res.code===200)
+          tags.innerHTML = new_tags.map((tag) => `<p>${tag}</p>`).join("");
+      }
 
-      //upon success
-      rest_name.innerText = input_name.value; //set the new restaurant name
-      location.innerText = input_location.value; //set new location
-      phone.innerText = input_phone.value;
-      tags.innerHTML = new_tags.map((tag) => `<p>${tag}</p>`).join("");
+      if(oldName !== input_name.value){
+        const res = await api.changeRestaurantName(owner.restID, owner.userID,input_name.value)
+        if (res.code===200)
+          rest_name.innerText = input_name.value; //set the new restaurant name
+      }
+
+      if(oldLocation !== input_location.value){
+        const res = await api.changeRestaurantAddress(owner.restID, owner.userID, input_location.value)
+        if(res.code===200)
+          location.innerText = input_location.value
+      }
+
+      if(oldPhone){
+        const res = await api.changeRestaurantPhone(owner.restID, owner.userID, input_phone.value)
+        if (res.code == 200)
+          phone.innerText = input_phone.value;
+      }
       popup.parentElement.removeChild(popup);
     }
   });
