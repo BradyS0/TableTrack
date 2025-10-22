@@ -1,7 +1,7 @@
 //this file was partially created using copilot
 import dotenv from 'dotenv';
 import sequelize from './db.js';
-import { User } from './models/User.js';
+// import { User } from './models/User.js';
 
 // Load environment variables from .env.test
 dotenv.config({ path: './.env' });
