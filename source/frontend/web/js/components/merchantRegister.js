@@ -1,3 +1,5 @@
+import {api} from "../global.js"
+import { getUserState,setUserState } from "../utils.js";
 
 export function createRegistrationPopup() {
   // Main popup container
@@ -83,20 +85,25 @@ export function createRegistrationPopup() {
 
 function completeRegistration(form,input_name, input_tags, input_phone,input_location, popup){
 
-
-
-
-    form.addEventListener('submit',(e)=>{
+    form.addEventListener('submit',async (e)=>{
         e.preventDefault()
+        const user = getUserState();
 
         if(form.checkValidity()){
-        const new_tags = input_tags.value.split(',').filter(tag => tag.length>2)
+        const new_tags = input_tags.value.split(',').filter(tag => tag.length>2) //clean up tags input into an array of tags
+        const res = await api.createRestaurant(user.userID,input_name.value, new_tags,
+        input_location.value,input_phone.value)
 
-        //make request to back end
-
-        //upon success
-    
+        if(res.code<300){
+          alert("New Restaurant Creation successfull")
+          user.restID = res.restID
+          setUserState(user)
+          window.location.reload();
+        }else{
+          alert(`code: ${res.code} ::: ${res.message}`)
         }
+      }
+
     });
 
 }
