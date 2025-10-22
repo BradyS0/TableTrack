@@ -8,7 +8,7 @@ export function createCard({ restID, name, logo, tags, hours, rating }) {
   card.innerHTML = `
     <div class="cardHeader"> <h3>${name}</h3> <image src="${logo || tempImagesrc }" class="restLogo"></image></div>
     <span class="tags">${tagsHTML}</span>
-    <span class="restTime"> <image src="${timeImage}"/> ${hours || ''}</span>
+    <span class="restTime"> <image src="${timeImage}"/> ${hours || '<b>closed</b>'}</span>
     ${rating ? `<span class="rating">★ ${rating}</span>` : ''}
   `;
 
