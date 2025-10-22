@@ -1,6 +1,6 @@
 //file party created using chatGPT
 import request from "supertest";
-import app from "../../index.js";
+import { app } from "../../app.js";
 
 describe("User API", () => {
     //CREATING A USER

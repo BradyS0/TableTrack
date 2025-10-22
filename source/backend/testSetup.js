@@ -7,13 +7,12 @@ import { User } from './models/User.js';
 dotenv.config({ path: './.env' });
 console.log('TEST DB_PASS:', process.env.DB_PASS ? '******' : 'NOT SET');
 
-
-
 beforeAll(async () => {
     try {
+        console.log('[TEST SETUP] Resetting the test database...');
+        await sequelize.sync({ force: true });
         console.log('[TEST SETUP] Connecting to the test database...');
         await sequelize.authenticate();
-        console.log('[TEST SETUP] Database connection established.')
         
         //create any necessary test data here
         // console.log('[TEST SETUP] Creating test user...');
