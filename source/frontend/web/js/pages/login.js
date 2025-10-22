@@ -78,7 +78,7 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
       alert("Account created! You can now log in.");
       popup.classList.add("hidden");
   } else {
-    alert(data.message || "Signup failed");
+    alert(res.message || "Signup failed");
   }   
 
 
