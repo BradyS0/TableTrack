@@ -8,9 +8,17 @@ function init(){
 
 }
 
+const getUsers = ()=>{
+  return sessionStorage.getItem(MOCK)
+}
+
+const saveUsers = (this_users)=>{
+  sessionStorage.setItem(MOCK,JSON.stringify(this_users))
+}
+
 const createUser = async (first_name,last_name, email, password)=>{
     init()
-    let users = JSON.parse(sessionStorage.getItem(MOCK))
+    let users = getUsers()
     let result = { code: 400,
                    message:"Invalid parameters, user was not created"}
     let userCheck = users.find(user => user.email === email);
@@ -23,9 +31,7 @@ const createUser = async (first_name,last_name, email, password)=>{
         last_name:last_name, email:email, password:password 
     }
 
-   sessionStorage.setItem(MOCK,JSON.stringify(users))
-    
-
+   saveUsers(users)
     result.code = 201;
     result.message = "User created successfully"
     return result;
