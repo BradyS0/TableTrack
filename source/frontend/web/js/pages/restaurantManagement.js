@@ -1,9 +1,17 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const reservationBtn = document.querySelector(".reservation-btn");
-  reservationBtn.parentElement.removeChild(reservationBtn);
+import {api} from '../global.js'
+import { getUserState } from '../utils.js';
+import { loadRestaurant } from './restaurantDetail.js';
 
+document.addEventListener("DOMContentLoaded", async () => {
+  const owner = getUserState()
+  if(owner.restID){
+    await loadRestaurant(owner.restID)
+    const reservationBtn = document.querySelector(".reservation-btn");
+    reservationBtn.parentElement.removeChild(reservationBtn);
+
+    loadEditableFields();
+  }
   //load edit icons
-  loadEditableFields();
 });
 
 function loadEditableFields() {

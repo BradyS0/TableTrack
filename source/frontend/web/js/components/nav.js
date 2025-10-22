@@ -3,9 +3,12 @@ import {createRegistrationPopup} from './merchantRegister.js'
 import { getUserState, clearUserState } from '../utils.js';
 
 export async function mainNavRoutes(){
+  const user = getUserState() 
   const nav = document.querySelector('nav')
+  
   const merchant = document.createElement('p')
   merchant.className = 'merchant-note'
+  merchant.innerText = "Become a Merchant"
   
   const userOptions = await createUserOptions()
 
@@ -20,18 +23,13 @@ export async function mainNavRoutes(){
     display_popup_msg("In Progress", "This page will contain our project vision statement and a little info about project feature 😊.")})
 
   //Become a merchant
-  merchant.innerText = "Become a Merchant"
+  if(user && user.restID) merchant.style.display='none'    
   merchant.addEventListener("click", ()=>{
-    const user = getUserState() 
     if(!user){
     display_popup_msg("Requirement", 
     "You need to be logged-in or be a registered user to become a merchant", goToLogin)
-    }else{
-      if (!user.resID) //if user is not a merchant
+    }else
         createRegistrationPopup()
-      else //if user is a merchant
-        merchant.style.display='none'
-    }
   })
 
   nav.append(userOptions,hr,home,about,merchant)

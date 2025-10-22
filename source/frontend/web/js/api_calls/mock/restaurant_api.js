@@ -10,7 +10,7 @@ function init(){
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random#getting_a_random_number_between_two_values
 //place holder for random rating for sprint1
 function getRandomRating(min, max) {
-  return Math.random() * (max - min) + min;
+  return (Math.random() * (max - min) + min).toFixed(1);
 }
 
 
@@ -33,6 +33,8 @@ const createRestaurant = async (userID, name, tags, address, phone) => {
 
   if (!userID || !name || !address || !phone || !Array.isArray(tags)) {
     return { code: 400, message: "Invalid parameters" };
+  }else if (data.find(r=> r.address === address)){
+    return { code: 400, message: `Address "${address}" already in use` };
   }
 
   const newRest = {
@@ -48,7 +50,7 @@ const createRestaurant = async (userID, name, tags, address, phone) => {
   data.push(newRest);
   sessionStorage.setItem(MOCK,JSON.stringify(data))
 
-  return {code: 201, message: "Restaurant created successfully"};
+  return {code: 201, message: "Restaurant created successfully", restID:newRest.restID};
 };
 
 
@@ -147,7 +149,8 @@ const changeRestaurantTags = async(restID, userID, tags) => {
 
 
 
-export const mockRestaurantAPI = {getRestaurants,getRestaurantByOwner,getRestaurantByID,
+export const mockRestaurantAPI = {getRestaurants,createRestaurant,
+  getRestaurantByOwner,getRestaurantByID,
     changeRestaurantName,changeRestaurantAddress,
     changeRestaurantPhone,changeRestaurantTags
 };
