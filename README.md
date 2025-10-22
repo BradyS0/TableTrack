@@ -8,6 +8,7 @@ Ever been too lazy to call for a reservation? How about being seated right by th
 
 ## Sprint Worksheets
  - [ ] ***[Sprint 0](./documentation/sprint0/sprint0.md)***
+ - [ ] ***[Sprint 1](./documentation/sprint1/worksheet1.md)***
 
 
 ## Run Instructions
