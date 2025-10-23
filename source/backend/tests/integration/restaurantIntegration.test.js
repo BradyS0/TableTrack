@@ -3,16 +3,6 @@ import request from "supertest";
 import { app } from "../../app.js";
 // import sequelize from "../../db.js";
 
-
-
-// Data related to created restaurants
-let rest1id = 1;
-let rest2id = 2;
-
-// Users needed to test Restaurant API
-const user1id = 1;
-const user2id = 2;
-
 // Hours string to use for restaurants
 const hours = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
                "\"monday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
@@ -22,121 +12,7 @@ const hours = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
                "\"friday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
              "\"saturday\":{\"open\":\"6:00\", \"close\":\"12:30\"}}";
 
-
-
-// Testing setup
-// beforeAll(async () => {
-//     process.env.NODE_ENV = "test";         // Set environment to testing
-//     await sequelize.sync({ force: true }); // Reset tables (use current models)
-// });
-
-// // Testing cleanup
-// afterAll(async () => {
-//     await sequelize.close(); // Close database connection
-// });
-
-
-
 describe("Restaurant API", () => {
-
-    // -------------------------------------------------- Create users for testing
-
-    it("Create users for restaurant integration tests", async () => {
-        const res1 = await request(app)
-        .post("/v1/user")
-        .send({
-            first_name: "John",
-            last_name:  "Doe",
-            email:      "emailone@example.com",
-            password:   "Password1!"
-        });
-        const res2 = await request(app)
-        .post("/v1/user")
-        .send({
-            first_name: "Joe",
-            last_name:  "Doe",
-            email:      "emailtwo@example.com",
-            password:   "Password2!"
-        });
-        expect(res1.statusCode).toBe(201);
-        expect(res2.statusCode).toBe(201);
-    });
-
-    // -------------------------------------------------- POST /restaurant
-
-    it("Create valid restaurant 1", async () => {
-        const res = await request(app)
-        .post("/v1/restaurant")
-        .send({
-            userID:  user1id,
-            name:    "Burger Queen",
-            address: "100 Burger street",
-            phone:   "(204) 123-4567",
-            desc:    "Burgers made by a queen",
-            hours:   hours
-        });
-        expect(res.statusCode).toBe(201);
-        expect(res.body.name).toBe("Burger Queen");
-        rest1id = res.body.restID;
-    });
-
-    it("Create valid restaurant 2", async () => {
-        const res = await request(app)
-        .post("/v1/restaurant")
-        .send({
-            userID:  user2id,
-            name:    "Dairy King",
-            address: "205 Dairy road",
-            phone:   "(204) 234-5678",
-            desc:    "Ice cream made by a king",
-            hours:   hours
-        });
-        expect(res.statusCode).toBe(201);
-        expect(res.body.name).toBe("Dairy King");
-        rest2id = res.body.restID;
-    });
-
-    it("Create restaurant with invalid data", async () => {
-        const res = await request(app)
-        .post("/v1/restaurant")
-        .send({
-            userID:  100,
-            name:    "Macdonald",
-            address: "nope",
-            phone:   "(204) 345-6789",
-            desc:    "Try our new 3000 calorie meal",
-            hours:   hours
-        });
-        expect(res.statusCode).toBe(400);
-    });
-
-    it("Create restaurant with non-existant user", async () => {
-        const res = await request(app)
-        .post("/v1/restaurant")
-        .send({
-            userID:  100,
-            name:    "Macdonald",
-            address: "70 Flavor town",
-            phone:   "(204) 345-6789",
-            desc:    "Try our new 3000 calorie meal",
-            hours:   hours
-        });
-        expect(res.statusCode).toBe(404);
-    });
-
-    it("Create restaurant with user already owning a restaurant", async () => {
-        const res = await request(app)
-        .post("/v1/restaurant")
-        .send({
-            userID:  user1id,
-            name:    "Macdonald",
-            address: "70 Flavor town",
-            phone:   "(204) 345-6789",
-            desc:    "Try our new 3000 calorie meal",
-            hours:   hours
-        });
-        expect(res.statusCode).toBe(409);
-    });
 
     // -------------------------------------------------- GET /restaurant
 
@@ -146,14 +22,15 @@ describe("Restaurant API", () => {
         .send();
         expect(res.statusCode).toBe(200);
         var restaurants = res.body.restaurants;
-        expect(restaurants.length).toBe(2);
+        expect(restaurants.length).toBe(1);
+        expect(restaurants[0].name).toBe("TestRestaurant1");
     });
 
     // -------------------------------------------------- GET /restaurant/{id}
 
-    it("Get the restaurant with id 1 (Should be Burger Queen)", async () => {
+    it("Get the restaurant (Should be TestRestaurant1)", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/1")
+        .get("/v1/restaurant/" + String(rest1.restID))
         .send();
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("Burger Queen");
@@ -161,7 +38,31 @@ describe("Restaurant API", () => {
 
     it("Get the restaurant with id 5 (Should not exist)", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/5")
+        .get("/v1/restaurant/100")
+        .send();
+        expect(res.statusCode).toBe(404);
+    });
+
+    // -------------------------------------------------- GET /restaurant/user/{id}
+
+    it("Get restaurant by owner - valid", async () => {
+        const res = await request(app)
+        .get("/v1/restaurant/user/" + String(user1.userID))
+        .send();
+        expect(res.statusCode).toBe(200);
+        expect(res.body.name).toBe("TestRestaurant1");
+    });
+
+    it("Get restaurant by owner - user DNE", async () => {
+        const res = await request(app)
+        .get("/v1/restaurant/user/100")
+        .send();
+        expect(res.statusCode).toBe(404);
+    });
+
+    it("Get restaurant by owner - restaurant DNE", async () => {
+        const res = await request(app)
+        .get("/v1/restaurant/user/" + String(user2.userID))
         .send();
         expect(res.statusCode).toBe(404);
     });
@@ -172,23 +73,23 @@ describe("Restaurant API", () => {
         const res = await request(app)
         .patch("/v1/restaurant/change")
         .send({
-            restID:  rest2id,
+            restID:  rest1.restID,
             name:    "Bob's Dairy",
             address: "205 Dairy road",
             phone:   "(204) 234-5678",
-            desc:    "Due to the revolution, the king has been replaced by Bob.",
+            desc:    "Ice cream and burgers.",
             hours:   hours
         });
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("Bob's Dairy");
-        expect(res.body.description).toBe("Due to the revolution, the king has been replaced by Bob.");
+        expect(res.body.description).toBe("Ice cream and burgers.");
     });
 
     it("Change values of existing restaurant to something invalid", async () => {
         const res = await request(app)
         .patch("/v1/restaurant/change")
         .send({
-            restID:  rest1id,
+            restID:  rest1.restID,
             name:    "Burger Queen",
             address: "nope",
             phone:   "(204) 123-4567",
@@ -211,5 +112,91 @@ describe("Restaurant API", () => {
         });
         expect(res.statusCode).toBe(404);
     });
+
+    // -------------------------------------------------- POST /restaurant
+
+    it("Create restaurant with invalid data", async () => {
+        const res = await request(app)
+        .post("/v1/restaurant")
+        .send({
+            userID:  user2.userID,
+            name:    "Macdonald",
+            address: "nope",
+            phone:   "(204) 345-6789"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Create restaurant with non-existant user", async () => {
+        const res = await request(app)
+        .post("/v1/restaurant")
+        .send({
+            userID:  100,
+            name:    "Macdonald",
+            address: "70 Flavor town",
+            phone:   "(204) 345-6789"
+        });
+        expect(res.statusCode).toBe(404);
+    });
+
+    it("Create restaurant with user already owning a restaurant", async () => {
+        const res = await request(app)
+        .post("/v1/restaurant")
+        .send({
+            userID:  user1.userID,
+            name:    "Macdonald",
+            address: "70 Flavor town",
+            phone:   "(204) 345-6789"
+        });
+        expect(res.statusCode).toBe(409);
+    });
+
+    it("Create valid restaurant", async () => {
+        const res = await request(app)
+        .post("/v1/restaurant")
+        .send({
+            userID:  user2.userID,
+            name:    "Burger Queen",
+            address: "100 Burger street",
+            phone:   "(204) 234-5678"
+        });
+        expect(res.statusCode).toBe(201);
+        expect(res.body.name).toBe("Burger Queen");
+    });
+
+    // -------------------------------------------------- PUT /restaurant/description
+
+    it("Change description - valid", async () => {
+        const res = await request(app)
+        .put("/v1/restaurant/description")
+        .send({
+            restID: rest1.restID,
+            description: "edited restaurant description 1"
+        });
+        expect(res.statusCode).toBe(200);
+        expect(res.body.description).toBe("edited restaurant description 1");
+    });
+
+    it("Change description - invalid description", async () => {
+        const res = await request(app)
+        .put("/v1/restaurant/description")
+        .send({
+            restID: rest1.restID,
+            description: "bad"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change description - restaurant DNE", async () => {
+        const res = await request(app)
+        .put("/v1/restaurant/description")
+        .send({
+            restID: 100,
+            description: "edited restaurant description 2"
+        });
+        expect(res.statusCode).toBe(404);
+    });
 });
+
+
 
