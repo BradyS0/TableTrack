@@ -38,7 +38,7 @@ describe("Restaurant API", () => {
         .get("/v1/restaurant/" + String(rest1id))
         .send();
         expect(res.statusCode).toBe(200);
-        expect(res.body.name).toBe("Burger Queen");
+        expect(res.body.name).toBe("TestRestaurant1");
     });
 
     it("Get the restaurant with id 5 (Should not exist)", async () => {
