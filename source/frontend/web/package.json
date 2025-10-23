@@ -2,10 +2,12 @@
   "devDependencies": {
     "five-server": "^0.4.4"
   },
-
   "scripts": {
     "serve": "five-server --port=8484 --root=./",
     "build": "npm ci",
     "start": "npm run build && npm run serve"
+  },
+  "dependencies": {
+    "axios": "^1.12.2"
   }
 }
