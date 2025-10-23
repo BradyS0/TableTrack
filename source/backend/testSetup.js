@@ -1,6 +1,7 @@
 //this file was partially created using copilot
 import dotenv from 'dotenv';
 import sequelize from './db.js';
+import { Restaurant } from './models/Restaurant.js';
 // import { User } from './models/User.js';
 
 // Load environment variables from .env.test
@@ -22,6 +23,28 @@ beforeAll(async () => {
         //     email: 'testuser@example.com',
         //     password: 'password123', // You can hash this if needed
         // });
+
+        console.log("[TEST SETUP] Creating test users");
+        const user1 = await User.create({
+            first_name: "TestUserA",
+            last_name:  "LastnameA",
+            email:      "testusera@example.com",
+            password:   "Password1"
+        });
+        const user2 = await User.create({
+            first_name: "TestUserB",
+            last_name:  "LastnameB",
+            email:      "testuserb@example.com",
+            password:   "Password2"
+        });
+
+        console.log("[TEST SETUP] Creating test restaurants");
+        const rest1 = await Restaurant.create({
+            userID:    parseInt(user1.userID),
+            name:      "TestRestaurant1",
+            address:   "100 Test Street",
+            phone_num: "(204) 123-4567"
+        });
 
         //for future use
         // console.log('[TEST SETUP] Running migrations...');
