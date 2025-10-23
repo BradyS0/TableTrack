@@ -1,7 +1,13 @@
+import { goToLogin } from "./nav.js";
 import {api} from "../global.js"
+import { display_popup_msg } from "./popupMsg.js"; 
 import { getUserState,setUserState } from "../utils.js";
 
 export function createRegistrationPopup() {
+  if(!getUserState())
+    display_popup_msg("Requirement", 
+      "You need to be logged-in or be a registered user to become a merchant", goToLogin)
+
   // Main popup container
   const popup = document.createElement('div');
   popup.classList.add('popup');
