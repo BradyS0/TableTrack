@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
                 else
                 {
                     // Create the new restaurant
-                    const new_restaurant = await Restaurant.create({
+                    var new_restaurant = await Restaurant.create({
                         userID: userID,
                         name: name,
                         address: address,
