@@ -12,6 +12,11 @@ const hours = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
                "\"friday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
              "\"saturday\":{\"open\":\"6:00\", \"close\":\"12:30\"}}";
 
+// Data used in testing
+const user1id = 1
+const user2id = 2
+const rest1id = 1
+
 describe("Restaurant API", () => {
 
     // -------------------------------------------------- GET /restaurant
@@ -30,7 +35,7 @@ describe("Restaurant API", () => {
 
     it("Get the restaurant (Should be TestRestaurant1)", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/" + String(rest1.restID))
+        .get("/v1/restaurant/" + String(rest1id))
         .send();
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("Burger Queen");
@@ -47,7 +52,7 @@ describe("Restaurant API", () => {
 
     it("Get restaurant by owner - valid", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/user/" + String(user1.userID))
+        .get("/v1/restaurant/user/" + String(user1id))
         .send();
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("TestRestaurant1");
@@ -62,7 +67,7 @@ describe("Restaurant API", () => {
 
     it("Get restaurant by owner - restaurant DNE", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/user/" + String(user2.userID))
+        .get("/v1/restaurant/user/" + String(user2id))
         .send();
         expect(res.statusCode).toBe(404);
     });
@@ -73,7 +78,7 @@ describe("Restaurant API", () => {
         const res = await request(app)
         .patch("/v1/restaurant/change")
         .send({
-            restID:  rest1.restID,
+            restID:  rest1id,
             name:    "Bob's Dairy",
             address: "205 Dairy road",
             phone:   "(204) 234-5678",
@@ -89,7 +94,7 @@ describe("Restaurant API", () => {
         const res = await request(app)
         .patch("/v1/restaurant/change")
         .send({
-            restID:  rest1.restID,
+            restID:  rest1id,
             name:    "Burger Queen",
             address: "nope",
             phone:   "(204) 123-4567",
@@ -119,7 +124,7 @@ describe("Restaurant API", () => {
         const res = await request(app)
         .post("/v1/restaurant")
         .send({
-            userID:  user2.userID,
+            userID:  user2id,
             name:    "Macdonald",
             address: "nope",
             phone:   "(204) 345-6789"
@@ -143,7 +148,7 @@ describe("Restaurant API", () => {
         const res = await request(app)
         .post("/v1/restaurant")
         .send({
-            userID:  user1.userID,
+            userID:  user1id,
             name:    "Macdonald",
             address: "70 Flavor town",
             phone:   "(204) 345-6789"
@@ -155,7 +160,7 @@ describe("Restaurant API", () => {
         const res = await request(app)
         .post("/v1/restaurant")
         .send({
-            userID:  user2.userID,
+            userID:  user2id,
             name:    "Burger Queen",
             address: "100 Burger street",
             phone:   "(204) 234-5678"
@@ -170,7 +175,7 @@ describe("Restaurant API", () => {
         const res = await request(app)
         .put("/v1/restaurant/description")
         .send({
-            restID: rest1.restID,
+            restID: rest1id,
             description: "edited restaurant description 1"
         });
         expect(res.statusCode).toBe(200);
@@ -181,7 +186,7 @@ describe("Restaurant API", () => {
         const res = await request(app)
         .put("/v1/restaurant/description")
         .send({
-            restID: rest1.restID,
+            restID: rest1id,
             description: "bad"
         });
         expect(res.statusCode).toBe(400);
