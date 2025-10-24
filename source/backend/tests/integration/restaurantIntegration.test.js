@@ -81,7 +81,7 @@ describe("Restaurant API", () => {
             restID:  rest1id,
             name:    "Bob's Dairy",
             address: "205 Dairy road",
-            phone:   "(204) 234-5678",
+            phone:   "(204) 456-7890",
             desc:    "Ice cream and burgers.",
             hours:   hours
         });
