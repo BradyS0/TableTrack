@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const currentUser = getUserState('user');
+    const currentUser = getUserState();
     let response;
 
     // Change first name
@@ -89,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     popup.classList.add('hidden');
 
     alert('Profile updated successfully!');
+    window.location.reload()
   });
 
   // Logout functionality
