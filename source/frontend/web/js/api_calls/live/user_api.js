@@ -2,7 +2,6 @@ import axios from 'axios';
 const API = "http://localhost:3000/v1/user"
 
 const createUser = async (first_name,last_name, email, password)=>{
-
     const result = {code:500};
     const user = {first_name,last_name,email,password}
 
@@ -22,6 +21,7 @@ const createUser = async (first_name,last_name, email, password)=>{
     
     return result;
 };
+
 
 
 const loginUser = async (email, password) => {
