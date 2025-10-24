@@ -6,7 +6,7 @@ import RestaurantLogic from "../logic/restaurantLogic.js";
 
 const router = express.Router();
 
-// ================================================================================ POST / PUT
+// ================================================================================ POST / PATCH
 
 // POST /restaurant
 // Create a new restaurant
@@ -58,9 +58,9 @@ router.post("/", async (req, res) => {
 
 
 
-// PUT /restaurant/description
+// PATCH /restaurant/description
 // Edit description of a restaurant
-router.put("/description", async (req, res) => {
+router.patch("/description", async (req, res) => {
     try {
         // Retrieve and validate information from body
         const { restID, description, } = req.body;
