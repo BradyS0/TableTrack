@@ -96,7 +96,7 @@ function completeRegistration(form,input_name, input_tags, input_phone,input_loc
         const user = getUserState();
 
         if(form.checkValidity()){
-        const new_tags = input_tags.value.split(',').filter(tag => tag.length>2) //clean up tags input into an array of tags
+        const new_tags = input_tags.value.split(',').filter(tag => tag.trim().length>2) //clean up tags input into an array of tags
         const res = await api.createRestaurant(user.userID,input_name.value, new_tags,
         input_location.value,input_phone.value)
 
