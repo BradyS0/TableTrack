@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
     merchantBtn.replaceWith(managerButton())
 
   // Open popup
-  editBtn.addEventListener('click', () => popup.classList.remove('hidden'));
+  editBtn.addEventListener('click', () => {
+    populateCurrentInput(user)
+    popup.classList.remove('hidden')
+  });
 
   // Close popup
   closeBtn.addEventListener('click', () => popup.classList.add('hidden'));
@@ -38,44 +41,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const updatedPassword = document.getElementById('editPassword').value.trim();
     const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
-    if (!updatedFName || !updatedLName || !updatedEmail) {
-      alert('Please fill in all required fields.');
-      return;
-    }
-    if (updatedPassword && updatedPassword !== confirmPassword) {
-      alert('Passwords do not match.');
-      return;
-    }
+    // if (!updatedFName || !updatedLName || !updatedEmail) {
+    //   alert('Please fill in all required fields.');
+    //   return;
+    // }
+    // if (updatedPassword && updatedPassword !== confirmPassword) {
+    //   alert('Passwords do not match.');
+    //   return;
+    // }
 
     const currentUser = getUserState();
     let response;
 
     // Change first name
-    if (updatedFName !== currentUser.first_name) {
+    if (updatedFName.length>3 && updatedFName !== currentUser.first_name) {
       response = await api.changeFirstName(currentUser.userID, updatedFName);
-      if (response.code !== 200) return alert(response.message);
+      if (response.code !== 200) {
+        alert(response.message); 
+        return }
       currentUser.first_name = updatedFName;
     }
 
     // Change last name
-    if (updatedLName !== currentUser.last_name) {
+    if (updatedLName.length>3 && updatedLName !== currentUser.last_name) {
       response = await api.changeLastName(currentUser.userID, updatedLName);
       if (response.code !== 200) return alert(response.message);
       currentUser.last_name = updatedLName;
     }
 
     // Change email
-    if (updatedEmail !== currentUser.email) {
+    if (updatedEmail.length>4 && updatedEmail !== currentUser.email) {
       response = await api.changeEmail(currentUser.userID, updatedEmail);
       if (response.code !== 200) return alert(response.message);
       currentUser.email = updatedEmail;
     }
 
     // Change password
-    if (updatedPassword) {
+    if (updatedPassword.length>8) {
       response = await api.changePassword(
         currentUser.userID,
-        currentUser.password,
+        confirmPassword,
         updatedPassword
       );
       if (response.code !== 200) return alert(response.message);
@@ -88,13 +93,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.email').textContent = currentUser.email;
     popup.classList.add('hidden');
 
-    alert('Profile updated successfully!');
+    //alert('Profile updated successfully!');
     window.location.reload()
   });
 
   // Logout functionality
   logoutBtn.addEventListener('click',clearUserState);
 });
+
+
+function populateCurrentInput(user){
+  const updatedFName = document.getElementById('editFName');
+  const updatedLName = document.getElementById('editLName');
+  const updatedEmail = document.getElementById('editEmail');
+
+  updatedFName.value = user.first_name
+  updatedLName.value = user.last_name
+  updatedEmail.value = user.email
+}
 
 function managerButton(){
   const manageBtn = document.createElement('button');

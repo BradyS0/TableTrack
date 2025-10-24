@@ -1,23 +1,25 @@
-import axios from 'axios';
 const API = "http://localhost:3000/v1/user"
 
 const createUser = async (first_name,last_name, email, password)=>{
     const result = {code:500};
     const user = {first_name,last_name,email,password}
 
-    const req = await axios.post(`${API}/`,user)
+    const req = await fetch(API, {
+      method: 'POST', 
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(user)
+    });
 
     result.code = req.status
-
+    
     if(result.code<300){
-        result.message = "User created successfully"
+      result.message = "User created successfully"
     }else{
-        const data = await req.json();
-        result.message = data.error
+      const data = await req.json();
+      result.message = data.error
     }
 
-    console.log(result)
-    
+    console.log("RESULT:::",result)
     
     return result;
 };
@@ -28,87 +30,131 @@ const loginUser = async (email, password) => {
    const result = {code:500};
     const user = {email,password}
     
-    const req = axios.post(`${API}/login/`,user)
+    const req = await fetch(`${API}/login/`,{
+      method: 'POST', 
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(user)
+    });
 
     result.code = req.status
-    const data = await req.json();
-
+    const data = await req.json()
+    
     if(result.code<300){
-        result.message = "User login successfull";
-        //result.user = data.user;
+      result.user = data.user;
+      result.message = data.message
     }else{
-        result.message = data.error
+      result.message = data.error
     }
 
     console.log(result)
-  
+    
   return result;
 };
 
 
 
-const changeEmail = async (userID, newEmail) => {
-  let users = getUsers();
-  let user = users.find(u => u.userID === userID);
+const changeEmail = async (userID, email) => {
+  const result = {code:500};
+  const user = {userID,email}
 
-  if (!user) return { code: 404, message: "User not found" };
+  const req = await fetch(`${API}/change/email`,{
+      method: 'PATCH', 
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(user)
+    });
 
-  // Check if email is already taken
-  let exists = users.find(u => u.email === newEmail);
-  if (exists) return { code: 400, message: "Email already in use" };
+  
+  result.code = req.status
+  const data = await req.json()
+    
+    if(result.code<300){
+      result.message = data.message
+    }else{
+      result.message = data.error
+    }
 
-  user.email = newEmail;
-  saveUsers(users);
+    console.log(result)
 
-  return { code: 200, message: "Email updated successfully" };
+    return result;
 };
 
 
 
-const changeFirstName = async(userID, newFirstName) => {
-  let users = getUsers();
-  let user = users.find(u => u.userID === userID);
+const changeFirstName = async(userID, first_name) => {
+  const result = {code:500};
+  const user = {userID,first_name}
 
-  if (!user) return { code: 404, message: "User not found" };
-  if (!newFirstName || newFirstName.length < 2)
-    return { code: 400, message: "Invalid first name" };
+  const req = await fetch(`${API}/change/firstname`,{
+      method: 'PATCH', 
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(user)
+    });
 
-  user.first_name = newFirstName;
-  saveUsers(users);
+  
+  result.code = req.status
+  const data = await req.json()
+    
+    if(result.code<300){
+      result.message = data.message
+    }else{
+      result.message = data.error
+    }
 
-  return { code: 200, message: "First name updated successfully" };
+    console.log(result)
+
+    return result;
 };
 
 
-const changeLastName = async(userID, newLastName) => {
-  let users = getUsers();
-  let user = users.find(u => u.userID === userID);
+const changeLastName = async(userID, last_name) => {
+  const result = {code:500};
+  const user = {userID,last_name}
 
-  if (!user) return { code: 404, message: "User not found" };
-  if (!newLastName || newLastName.length < 2)
-    return { code: 400, message: "Invalid last name" };
+  const req = await fetch(`${API}/change/lastname`,{
+      method: 'PATCH', 
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(user)
+    });
 
-  user.last_name = newLastName;
-  saveUsers(users);
+  
+  result.code = req.status
+  const data = await req.json()
+    
+    if(result.code<300){
+      result.message = data.message
+    }else{
+      result.message = data.error
+    }
 
-  return { code: 200, message: "Last name updated successfully" };
+    console.log(result)
+
+    return result;
 };
 
 
 const changePassword = async(userID, old_password, new_password) => {
-  let users = getUsers();
-  let user = users.find(u => u.userID === userID);
+  const result = {code:500};
+  const user = {userID,old_password,new_password}
 
-  if (!user) return { code: 404, message: "User not found" };
-  if (user.password !== old_password)
-    return { code: 401, message: "Old password is incorrect" };
-  if (new_password.length < 5)
-    return { code: 400, message: "New password must be at least 5 characters" };
+  const req = await fetch(`${API}/change/password`,{
+      method: 'PATCH', 
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(user)
+    });
 
-  user.password = new_password;
-  saveUsers(users);
+  
+  result.code = req.status
+  const data = await req.json()
+    
+    if(result.code<300){
+      result.message = data.message
+    }else{
+      result.message = data.message
+    }
 
-  return { code: 200, message: "Password changed successfully" };
+    console.log(result)
+
+    return result;
 };
 
 const deleteUser = async(userID) =>{
@@ -124,7 +170,9 @@ export const usersAPI = {
 
 
 
-//createUser("Daa","Sidddd","test256@email.com","NewPassword1!")
-//loginUser("test25@email.com","NewPassword1!")
+//createUser("Daa","Sidddd","test215@email.com","NewPassword1!")
 
+//loginUser("arsala2@example.com","NewPassword23!")
+
+//changePassword(2,"NewPassword23!","NewPassword26!")
 
