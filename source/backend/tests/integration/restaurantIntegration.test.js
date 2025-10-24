@@ -169,11 +169,11 @@ describe("Restaurant API", () => {
         expect(res.body.name).toBe("Burger Queen");
     });
 
-    // -------------------------------------------------- PUT /restaurant/description
+    // -------------------------------------------------- PATCH /restaurant/description
 
     it("Change description - valid", async () => {
         const res = await request(app)
-        .put("/v1/restaurant/description")
+        .patch("/v1/restaurant/description")
         .send({
             restID: rest1id,
             description: "edited restaurant description 1"
@@ -184,7 +184,7 @@ describe("Restaurant API", () => {
 
     it("Change description - invalid description", async () => {
         const res = await request(app)
-        .put("/v1/restaurant/description")
+        .patch("/v1/restaurant/description")
         .send({
             restID: rest1id,
             description: "bad"
@@ -194,7 +194,7 @@ describe("Restaurant API", () => {
 
     it("Change description - restaurant DNE", async () => {
         const res = await request(app)
-        .put("/v1/restaurant/description")
+        .patch("/v1/restaurant/description")
         .send({
             restID: 100,
             description: "edited restaurant description 2"
