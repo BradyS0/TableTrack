@@ -1,9 +1,10 @@
 const API = "http://localhost:3000/v1/user"
 
 const createUser = async (first_name,last_name, email, password)=>{
-    const result = {code:500};
+    const result = {code:9001, message:"api backend cannot be reached"};
+    
+    try{
     const user = {first_name,last_name,email,password}
-
     const req = await fetch(API, {
       method: 'POST', 
       headers: {'Content-Type': 'application/json'},
@@ -14,12 +15,15 @@ const createUser = async (first_name,last_name, email, password)=>{
     
     if(result.code<300){
       result.message = "User created successfully"
-    }else{
+    }else if(req){
       const data = await req.json();
       result.message = data.error
     }
-
     console.log("RESULT:::",result)
+  }catch(error){
+      console.log("ERROR:::",result)
+    }
+
     
     return result;
 };
@@ -27,9 +31,10 @@ const createUser = async (first_name,last_name, email, password)=>{
 
 
 const loginUser = async (email, password) => {
-   const result = {code:500};
+    const result = {code:9001, message:"api backend cannot be reached"};
     const user = {email,password}
     
+    try{
     const req = await fetch(`${API}/login/`,{
       method: 'POST', 
       headers: {'Content-Type': 'application/json'},
@@ -37,6 +42,7 @@ const loginUser = async (email, password) => {
     });
 
     result.code = req.status
+    console.log(result.code)
     const data = await req.json()
     
     if(result.code<300){
@@ -45,8 +51,10 @@ const loginUser = async (email, password) => {
     }else{
       result.message = data.error
     }
-
     console.log(result)
+  }catch(error){
+    console.log("ERROR:::",result)
+  }
     
   return result;
 };
@@ -54,9 +62,10 @@ const loginUser = async (email, password) => {
 
 
 const changeEmail = async (userID, email) => {
-  const result = {code:500};
+  const result = {code:9001, message:"api backend cannot be reached"};
   const user = {userID,email}
 
+  try{
   const req = await fetch(`${API}/change/email`,{
       method: 'PATCH', 
       headers: {'Content-Type': 'application/json'},
@@ -74,6 +83,9 @@ const changeEmail = async (userID, email) => {
     }
 
     console.log(result)
+  }catch(error){
+    console.log("ERROR:::",result)
+  }
 
     return result;
 };
@@ -81,9 +93,10 @@ const changeEmail = async (userID, email) => {
 
 
 const changeFirstName = async(userID, first_name) => {
-  const result = {code:500};
+  const result = {code:9001, message:"api backend cannot be reached"};
+  
+  try{
   const user = {userID,first_name}
-
   const req = await fetch(`${API}/change/firstname`,{
       method: 'PATCH', 
       headers: {'Content-Type': 'application/json'},
@@ -101,15 +114,19 @@ const changeFirstName = async(userID, first_name) => {
     }
 
     console.log(result)
+  }catch(error){
+    console.log("ERROR:::",result)
+  }
 
     return result;
 };
 
 
 const changeLastName = async(userID, last_name) => {
-  const result = {code:500};
+  const result = {code:9001, message:"api backend cannot be reached"};
+  
+  try{
   const user = {userID,last_name}
-
   const req = await fetch(`${API}/change/lastname`,{
       method: 'PATCH', 
       headers: {'Content-Type': 'application/json'},
@@ -127,15 +144,19 @@ const changeLastName = async(userID, last_name) => {
     }
 
     console.log(result)
+  }catch(error){
+    console.log("ERROR:::",result)
+  }
 
     return result;
 };
 
 
 const changePassword = async(userID, old_password, new_password) => {
-  const result = {code:500};
+  const result = {code:9001, message:"api backend cannot be reached"};
+  
+  try{ 
   const user = {userID,old_password,new_password}
-
   const req = await fetch(`${API}/change/password`,{
       method: 'PATCH', 
       headers: {'Content-Type': 'application/json'},
@@ -153,20 +174,43 @@ const changePassword = async(userID, old_password, new_password) => {
     }
 
     console.log(result)
+  }catch(error){
+    console.log("ERROR:::",result)
+  }
 
     return result;
 };
 
 const deleteUser = async(userID) =>{
+  const result = {code:9001, message:"api backend cannot be reached"};
 
+  try{
+  const req = await fetch(`${API}/${userID}`,{
+      method: 'Delete', 
+    });
+
+  
+  result.code = req.status
+  
+  if(result.code<300){
+    result.message = "User successfully deleted."
+  }else{
+      const data = await req.json()
+      result.message = data.error
+  }
+}catch(error){
+  console.log("ERROR:::",result)
 }
+
+  return result;
+}
+
 
 export const usersAPI = {
     createUser, loginUser, changeEmail,
     changeFirstName, changeLastName, changePassword,
     deleteUser
 }
-
 
 
 
