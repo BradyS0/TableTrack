@@ -20,7 +20,7 @@ const createUser = async (first_name,last_name, email, password)=>{
       result.message = data.error
     }
     console.log("RESULT:::",result)
-  }catch(error){
+  }catch{
       console.log("ERROR:::",result)
     }
 
@@ -52,7 +52,7 @@ const loginUser = async (email, password) => {
       result.message = data.error
     }
     console.log(result)
-  }catch(error){
+  }catch{
     console.log("ERROR:::",result)
   }
     
@@ -83,7 +83,7 @@ const changeEmail = async (userID, email) => {
     }
 
     console.log(result)
-  }catch(error){
+  }catch{
     console.log("ERROR:::",result)
   }
 
@@ -114,7 +114,7 @@ const changeFirstName = async(userID, first_name) => {
     }
 
     console.log(result)
-  }catch(error){
+  }catch{
     console.log("ERROR:::",result)
   }
 
@@ -144,7 +144,7 @@ const changeLastName = async(userID, last_name) => {
     }
 
     console.log(result)
-  }catch(error){
+  }catch{
     console.log("ERROR:::",result)
   }
 
@@ -174,7 +174,7 @@ const changePassword = async(userID, old_password, new_password) => {
     }
 
     console.log(result)
-  }catch(error){
+  }catch{
     console.log("ERROR:::",result)
   }
 
@@ -198,7 +198,7 @@ const deleteUser = async(userID) =>{
       const data = await req.json()
       result.message = data.error
   }
-}catch(error){
+}catch{
   console.log("ERROR:::",result)
 }
 
