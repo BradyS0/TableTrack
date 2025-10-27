@@ -1,4 +1,4 @@
-const editPopup = function(heading) {
+export const editPopup = function(heading) {
     const overlay = document.createElement('div');
     overlay.className = 'popup overlay overlay-active';
     const popup = document.createElement('div');
@@ -88,7 +88,6 @@ const editPopup = function(heading) {
     };
 
     popup.showFeedback = function(code,message){
-        const container = overlay.querySelector('.edit-container')
         const feedback = document.createElement('span')
         feedback.className = 'feedback-msg'
         feedback.innerText = message
@@ -96,8 +95,12 @@ const editPopup = function(heading) {
         if(code>299) 
             feedback.classList.add('feedback-fail')
 
-        container.prepend(feedback)
-        setTimeout(()=>{feedback.remove()}, 3000)
+        overlay.append(feedback)
+         setTimeout(()=>{
+            feedback.classList.add('feedback-transition')
+            setTimeout(()=>{feedback.remove()}, 2300+Math.min(message.length,1000))
+         }, 10)
+        
     }
 
     
@@ -109,15 +112,16 @@ const editPopup = function(heading) {
     return popup;
 };
 
-const app = document.querySelector('#app')
-const newEdit = editPopup('Edit User Profile')
 
-newEdit.add('First Name').editText('Arsalan')
-newEdit.add('Last Name').editText('Siddiqui')
-newEdit.add('Email').editText('arsalan@email.com',(input)=>{
-    console.log(input.value)
-    newEdit.showFeedback(400,`The new email will be: ${input.value}`)
-})
-newEdit.add('Password').editPassword()
+// const app = document.querySelector('#app')
+// const newEdit = editPopup('Edit User Profile')
 
-app.append(newEdit.overlay)
+// newEdit.add('First Name').editText('Arsalan')
+// newEdit.add('Last Name').editText('Siddiqui')
+// newEdit.add('Email').editText('arsalan@email.com',(input)=>{
+//     console.log(input.value)
+//     newEdit.showFeedback(400,`The new email will be: ${input.value}`)
+// })
+// newEdit.add('Password').editPassword()
+
+// app.append(newEdit.overlay)

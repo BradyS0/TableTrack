@@ -106,7 +106,8 @@ const changeRestaurantAddress = async(restID, userID, address) => {
   const rest = data.find(r => r.restID === restID && r.userID === userID);
 
   if (!rest) return { code: 404, message: "Restaurant not found or not owned by user" };
-  if (!address || address.length < 5) return { code: 400, message: "Invalid address" };
+  if (!address || address.length < 5 || address.length>120) return { code: 400, message: "Invalid address" };
+  if (address && data.find(r=> r.restID != restID && r.address==address)) return {code:400, message:"Address already in use by another restaurant"}
 
   rest.address = address;
   data[restID-1] = rest
@@ -134,9 +135,11 @@ const changeRestaurantPhone = async(restID, userID, phone) => {
 const changeRestaurantTags = async(restID, userID, tags) => {
   let data = JSON.parse(sessionStorage.getItem(MOCK));
   const rest = data.find(r => r.restID === restID && r.userID === userID);
-
+  const tagInfo = Array.isArray(tags) ? 
+                  tags.filter(tag=>tag.length>2).join('') : ""
+                  
   if (!rest) return { code: 404, message: "Restaurant not found or not owned by user" };
-  if (!Array.isArray(tags)) return { code: 400, message: "Tags must be an array" };
+  if (tagInfo.length<3) return { code: 400, message: "Tags must contain some information consisting of atleast 3 characters or more" };
 
   rest.tags = tags;
   data[restID-1] = rest
