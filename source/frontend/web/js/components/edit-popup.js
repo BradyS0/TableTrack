@@ -1,9 +1,11 @@
 const editPopup = function(heading) {
+    const overlay = document.createElement('div');
+    overlay.className = 'popup overlay overlay-active';
     const popup = document.createElement('div');
     popup.className = 'edit-container';
     popup.innerHTML = `
         <span>
-            <h1>${heading}</h1>
+            <h2>${heading}</h2>
             <button class="close-btn">×</button>
         </span>`;
 
@@ -27,7 +29,7 @@ const editPopup = function(heading) {
         })();
 
         const createEditScreen = (inputs, onSubmit, special) => {
-            const screen = document.createElement('div');
+            const screen = document.createElement('form');
             screen.className = 'edit-container';
 
             goBack.onclick = () => screen.replaceWith(popup);
@@ -35,9 +37,15 @@ const editPopup = function(heading) {
             special(...inputs);
 
             const submit = document.createElement('button');
+            submit.type = 'submit'
             submit.textContent = 'Save Changes';
             submit.className = 'submit';
-            submit.onclick = () => onSubmit(...inputs);
+            
+            screen.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (screen.checkValidity())
+                    onSubmit(...inputs)
+            });
 
             screen.append(editHeader, ...inputs, submit);
             popup.replaceWith(screen);
@@ -50,11 +58,13 @@ const editPopup = function(heading) {
                     el.type = 'text';
                     el.value = preExist;
                     el.placeholder = name;
+                    el.required = true;
                     return el;
                 })();
                 createEditScreen([input], () => onSubmit(input), special);
             };
         };
+        
 
         editButton.editPassword = function(onSubmit = () => {}, special = () => {}) {
             editButton.onclick = () => {
@@ -63,6 +73,7 @@ const editPopup = function(heading) {
                         const input = document.createElement('input');
                         input.type = 'password';
                         input.placeholder = placeholder;
+                        input.required = true;
                         return input;
                     });
 
@@ -76,8 +87,20 @@ const editPopup = function(heading) {
         return editButton;
     };
 
-    const overlay = document.createElement('div');
-    overlay.className = 'popup overlay overlay-active';
+    popup.showFeedback = function(code,message){
+        const container = overlay.querySelector('.edit-container')
+        const feedback = document.createElement('span')
+        feedback.className = 'feedback-msg'
+        feedback.innerText = message
+
+        if(code>299) 
+            feedback.classList.add('feedback-fail')
+
+        container.prepend(feedback)
+        setTimeout(()=>{feedback.remove()}, 3000)
+    }
+
+    
     overlay.append(popup);
     popup.overlay = overlay;
 
@@ -91,7 +114,10 @@ const newEdit = editPopup('Edit User Profile')
 
 newEdit.add('First Name').editText('Arsalan')
 newEdit.add('Last Name').editText('Siddiqui')
-newEdit.add('Email').editText('arsalan@email.com')
+newEdit.add('Email').editText('arsalan@email.com',(input)=>{
+    console.log(input.value)
+    newEdit.showFeedback(400,`The new email will be: ${input.value}`)
+})
 newEdit.add('Password').editPassword()
 
 app.append(newEdit.overlay)

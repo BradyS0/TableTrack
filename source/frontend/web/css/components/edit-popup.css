@@ -43,7 +43,6 @@
 
 .edit-container section{
     padding: 5px;
-    font-size: large;
     display: flex;
     justify-content: space-between;
     cursor: pointer;
@@ -54,8 +53,7 @@
 }
 
 .edit-container section:hover{
-    color: white;
-    background-color: burlywood;
+    background-color: #f9e8d0;
 }
 
 .edit-container section:hover span{
@@ -97,7 +95,7 @@
 .edit-container .submit{
   align-self: flex-end;
   margin-top: auto;
-  font-size: larger;
+  font-size: large;
   padding: 0.7em 1.4em;
   border-radius: 1em;
   border: none;
@@ -111,7 +109,7 @@
 }
 
 .edit-container .submit:hover {
-  background-color: limegreen;
+  background-color: rgb(36, 190, 36);
   transform: scale(1.025);
 }
 
