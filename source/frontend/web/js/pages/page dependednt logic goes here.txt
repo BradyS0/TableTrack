@@ -1,1 +1,0 @@
-stuff like profile.js, restaurant.js etc.
