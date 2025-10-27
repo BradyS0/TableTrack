@@ -22,9 +22,9 @@ export const editPopup = function(heading) {
 
         const editHeader = (() => {
             const span = document.createElement('span');
-            const h1 = document.createElement('h1');
-            h1.textContent = `Edit ${name}`;
-            span.append(goBack, h1);
+            const h2 = document.createElement('h2');
+            h2.textContent = `Edit ${name}`;
+            span.append(goBack, h2);
             return span;
         })();
 
@@ -108,6 +108,10 @@ export const editPopup = function(heading) {
     popup.overlay = overlay;
 
     popup.querySelector('.close-btn').addEventListener('click', () => overlay.remove());
+    overlay.addEventListener("click", (e)=>{
+        if(e.target==overlay)
+            overlay.remove()
+    })
 
     return popup;
 };
