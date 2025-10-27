@@ -1,5 +1,6 @@
 import { clearUserState, getUserState, setUserState } from '../utils.js';
 import { createRegistrationPopup } from '../components/merchantRegister.js';
+import { editPopup } from '../components/edit-popup.js';
 import { api } from '../global.js'; 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,7 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Open popup
   editBtn.addEventListener('click', () => {
     populateCurrentInput(user)
-    popup.classList.remove('hidden')
+    // popup.classList.remove('hidden')
+    createEditProfilePopup(user)
   });
 
   // Close popup
@@ -101,6 +103,16 @@ document.addEventListener('DOMContentLoaded', () => {
   logoutBtn.addEventListener('click',clearUserState);
 });
 
+function createEditProfilePopup(user){
+  const userEdit = editPopup("User Profile")
+
+  userEdit.add("First Name").editText(user.first_name)
+  userEdit.add("Last Name").editText(user.last_name)
+  userEdit.add("Email").editText(user.email)
+  userEdit.add("Password").editPassword()
+
+  document.querySelector("#app").append(userEdit.overlay)
+}
 
 function populateCurrentInput(user){
   const updatedFName = document.getElementById('editFName');
