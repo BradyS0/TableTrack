@@ -39,15 +39,18 @@ router.post("/", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findAll({
-        attributes: ['password'],
+    const user = await User.findOne({
+        attributes: ['userID','first_name','last_name','email'],
         where: {
-            email: email
+            email: email,
+            password : UserLogic.hash_password(password)
         }
     });
-    const password_input = UserLogic.hash_password(password);
-    if (user !== undefined && user.length == 1 && password_input === user[0].password) {
-        res.status(200).json({ message: "Login successful!" });
+    
+    if (user) {
+        res.status(200).json({ 
+            user,
+            message: "Login successful!" });
     } else {
         res.status(401).json({ error: "Invalid email or password" });
     }

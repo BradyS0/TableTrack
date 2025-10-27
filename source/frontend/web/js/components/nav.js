@@ -1,6 +1,6 @@
-import { display_popup_msg } from "./popupMsg.js"; 
 import {createRegistrationPopup} from './merchantRegister.js'
 import { getUserState, clearUserState } from '../utils.js';
+import { display_popup_msg } from "./popupMsg.js"; 
 
 export async function mainNavRoutes(){
   const user = getUserState() 
@@ -20,17 +20,12 @@ export async function mainNavRoutes(){
   const about = document.createElement('p')
   about.innerText = 'About'
   about.addEventListener('click', ()=>{
-    display_popup_msg("In Progress", "This page will contain our project vision statement and a little info about project feature 😊.")})
+    display_popup_msg("In Progress", "This page will contain our project vision statement and a little info about project features 😊.")})
 
   //Become a merchant
   if(user && user.restID) merchant.style.display='none'    
-  merchant.addEventListener("click", ()=>{
-    if(!user){
-    display_popup_msg("Requirement", 
-    "You need to be logged-in or be a registered user to become a merchant", goToLogin)
-    }else
-        createRegistrationPopup()
-  })
+  merchant.addEventListener("click",
+        createRegistrationPopup)
 
   nav.append(userOptions,hr,home,about,merchant)
 }
@@ -95,6 +90,6 @@ export function createNav(menuItems = ['item1', 'item2']) {
 
 
 export function goToHome(){window.location.href = './';}
-function goToLogin(){window.location.href = './login.html';}
+export function goToLogin(){window.location.href = './login.html';}
 function goToUserProfile(){window.open('./userProfile.html', '_self');}
 function goToRestaurantManagement(){window.location.href = './restaurantManagement.html'}

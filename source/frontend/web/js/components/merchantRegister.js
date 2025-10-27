@@ -1,4 +1,6 @@
+import { goToLogin } from "./nav.js";
 import {api} from "../global.js"
+import { display_popup_msg } from "./popupMsg.js"; 
 import { getUserState,setUserState } from "../utils.js";
 
 export function createRegistrationPopup() {
@@ -80,7 +82,11 @@ export function createRegistrationPopup() {
   // Return the full popup element
 
   const app = document.getElementById('app');
-  app.append(popup);
+  if(!getUserState())
+    display_popup_msg("Requirement", 
+      "You need to be logged-in or be a registered user to become a merchant", goToLogin)
+  else
+    app.append(popup);
 }
 
 function completeRegistration(form,input_name, input_tags, input_phone,input_location, popup){
@@ -90,7 +96,7 @@ function completeRegistration(form,input_name, input_tags, input_phone,input_loc
         const user = getUserState();
 
         if(form.checkValidity()){
-        const new_tags = input_tags.value.split(',').filter(tag => tag.length>2) //clean up tags input into an array of tags
+        const new_tags = input_tags.value.split(',').filter(tag => tag.trim().length>2) //clean up tags input into an array of tags
         const res = await api.createRestaurant(user.userID,input_name.value, new_tags,
         input_location.value,input_phone.value)
 

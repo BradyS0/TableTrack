@@ -34,7 +34,7 @@ function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], rating
   nameHeader.id = 'restaurant-name';
 
   const img = document.createElement('img');
-  img.src = "https://media.istockphoto.com/id/1038356020/vector/restaurant-icon.jpg?s=612x612&w=0&k=20&c=Tk_v3JuJA4lz_8ZRJi78xS4p75Idqt97uEtYJciVtFI=";
+  img.src = logo || "https://media.istockphoto.com/id/1038356020/vector/restaurant-icon.jpg?s=612x612&w=0&k=20&c=Tk_v3JuJA4lz_8ZRJi78xS4p75Idqt97uEtYJciVtFI=";
 
   nameHeader.appendChild(img);
   nameHeader.innerHTML = nameHeader.innerHTML + `<h1>${name || "No name found"} </h1>`; 
@@ -100,6 +100,7 @@ function createReservationButton(restID){
   
   reservationBtn.addEventListener("click",()=>{
     alert("feature coming soon!")
+    restID //use this to make a call to reservation logic
   })
 
   return reservationBtn;

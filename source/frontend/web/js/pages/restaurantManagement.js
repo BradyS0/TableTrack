@@ -144,7 +144,7 @@ function saveEditChanges(
     if (form.checkValidity()) {
       const new_tags = input_tags.value
         .split(",")
-        .filter((tag) => tag.length > 2);
+        .filter((tag) => tag.trim().length > 2);
 
       //make request to back end
       if(old_tags !== input_tags.value){

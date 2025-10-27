@@ -1,14 +1,10 @@
-import { createNav } from '../components/nav.js';
 import { clearUserState, getUserState, setUserState } from '../utils.js';
 import { createRegistrationPopup } from '../components/merchantRegister.js';
-import { mockUsersAPI } from '../api_calls/mock/user_api.js'; 
+import { api } from '../global.js'; 
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Reuse your hamburger nav and overlay system
-  createNav(['home', 'about', 'logout']); 
-
   const user = getUserState('user') || { username: 'Guest', email: 'guest@example.com' };
-  document.querySelector('.username').textContent = user.username;
+  document.querySelector('.username').textContent = `${user.first_name} ${user.last_name}`;
   document.querySelector('.email').textContent = user.email || 'Not provided';
 
   // Get elements
@@ -19,39 +15,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('editForm');
   const merchantBtn = document.getElementById('merchantBtn');
 
+  if(user.restID)
+    merchantBtn.replaceWith(managerButton())
+
   // Open popup
-  editBtn.addEventListener('click', () => popup.classList.remove('hidden'));
+  editBtn.addEventListener('click', () => {
+    populateCurrentInput(user)
+    popup.classList.remove('hidden')
+  });
 
   // Close popup
   closeBtn.addEventListener('click', () => popup.classList.add('hidden'));
 
   // Open merchant registration popup
-  merchantBtn.addEventListener('click', () => {
-    createRegistrationPopup();
+  merchantBtn.addEventListener('click', createRegistrationPopup)
 
-    // Observe user changes after registration
-    const observer = new MutationObserver(() => {
-      const updatedUser = getUserState('user');
-      if (updatedUser.restID) {
-        observer.disconnect();
 
-        // Create "Manage Restaurant" button
-        const manageBtn = document.createElement('button');
-        manageBtn.classList.add('btn', 'merchant');
-        manageBtn.textContent = 'Manage Restaurant';
-        manageBtn.addEventListener('click', () => {
-          window.location.href = 'restaurantManagement.html';
-        });
-
-        // Replace "Become a Merchant!" button
-        merchantBtn.replaceWith(manageBtn);
-      }
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-  });
-
-  // Save updated profile using mockUsersAPI
+  // Save updated profile using api
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -61,44 +41,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const updatedPassword = document.getElementById('editPassword').value.trim();
     const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
-    if (!updatedFName || !updatedLName || !updatedEmail) {
-      alert('Please fill in all required fields.');
-      return;
-    }
-    if (updatedPassword && updatedPassword !== confirmPassword) {
-      alert('Passwords do not match.');
-      return;
-    }
+    // if (!updatedFName || !updatedLName || !updatedEmail) {
+    //   alert('Please fill in all required fields.');
+    //   return;
+    // }
+    // if (updatedPassword && updatedPassword !== confirmPassword) {
+    //   alert('Passwords do not match.');
+    //   return;
+    // }
 
-    const currentUser = getUserState('user');
+    const currentUser = getUserState();
     let response;
 
     // Change first name
-    if (updatedFName !== currentUser.first_name) {
-      response = await mockUsersAPI.changeFirstName(currentUser.userID, updatedFName);
-      if (response.code !== 200) return alert(response.message);
+    if (updatedFName.length>3 && updatedFName !== currentUser.first_name) {
+      response = await api.changeFirstName(currentUser.userID, updatedFName);
+      if (response.code !== 200) {
+        alert(response.message); 
+        return }
       currentUser.first_name = updatedFName;
     }
 
     // Change last name
-    if (updatedLName !== currentUser.last_name) {
-      response = await mockUsersAPI.changeLastName(currentUser.userID, updatedLName);
+    if (updatedLName.length>3 && updatedLName !== currentUser.last_name) {
+      response = await api.changeLastName(currentUser.userID, updatedLName);
       if (response.code !== 200) return alert(response.message);
       currentUser.last_name = updatedLName;
     }
 
     // Change email
-    if (updatedEmail !== currentUser.email) {
-      response = await mockUsersAPI.changeEmail(currentUser.userID, updatedEmail);
+    if (updatedEmail.length>4 && updatedEmail !== currentUser.email) {
+      response = await api.changeEmail(currentUser.userID, updatedEmail);
       if (response.code !== 200) return alert(response.message);
       currentUser.email = updatedEmail;
     }
 
     // Change password
-    if (updatedPassword) {
-      response = await mockUsersAPI.changePassword(
+    if (updatedPassword.length>8) {
+      response = await api.changePassword(
         currentUser.userID,
-        currentUser.password,
+        confirmPassword,
         updatedPassword
       );
       if (response.code !== 200) return alert(response.message);
@@ -106,17 +88,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Update session state
-    setUserState('user', currentUser);
+    setUserState(currentUser);
     document.querySelector('.username').textContent = `${currentUser.first_name} ${currentUser.last_name}`;
     document.querySelector('.email').textContent = currentUser.email;
     popup.classList.add('hidden');
 
-    alert('Profile updated successfully!');
+    //alert('Profile updated successfully!');
+    window.location.reload()
   });
 
   // Logout functionality
-  logoutBtn.addEventListener('click', () => {
-    clearUserState();
-    window.location.href = 'login.html';
-  });
+  logoutBtn.addEventListener('click',clearUserState);
 });
+
+
+function populateCurrentInput(user){
+  const updatedFName = document.getElementById('editFName');
+  const updatedLName = document.getElementById('editLName');
+  const updatedEmail = document.getElementById('editEmail');
+
+  updatedFName.value = user.first_name
+  updatedLName.value = user.last_name
+  updatedEmail.value = user.email
+}
+
+function managerButton(){
+  const manageBtn = document.createElement('button');
+  manageBtn.classList.add('btn', 'merchant');
+  manageBtn.textContent = 'Manage Restaurant';
+  manageBtn.addEventListener('click', () => {
+    window.location.href = 'restaurantManagement.html';
+  });
+  return manageBtn;
+}
