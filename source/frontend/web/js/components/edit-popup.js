@@ -10,7 +10,8 @@ export const editPopup = function(heading) {
         </span>`;
 
     popup.add = function(name) {
-        const editButton = document.createElement('section');
+        const editButton = document.createElement('button');
+        editButton.className = 'edit-button'
         editButton.innerHTML = `${name} <span>›</span>`;
 
         const goBack = (() => {
@@ -32,7 +33,10 @@ export const editPopup = function(heading) {
             const screen = document.createElement('form');
             screen.className = 'edit-container';
 
-            goBack.onclick = () => screen.replaceWith(popup);
+            goBack.onclick = (e) => {
+                e.preventDefault();
+                screen.replaceWith(popup)
+            };
 
             special(...inputs);
 
@@ -59,6 +63,7 @@ export const editPopup = function(heading) {
                     el.value = preExist;
                     el.placeholder = name;
                     el.required = true;
+                    el.minLength = 2
                     return el;
                 })();
                 createEditScreen([input], () => onSubmit(input), special);

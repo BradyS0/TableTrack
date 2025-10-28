@@ -106,10 +106,46 @@ document.addEventListener('DOMContentLoaded', () => {
 function createEditProfilePopup(user){
   const userEdit = editPopup("User Profile")
 
-  userEdit.add("First Name").editText(user.first_name)
-  userEdit.add("Last Name").editText(user.last_name)
-  userEdit.add("Email").editText(user.email)
-  userEdit.add("Password").editPassword()
+  userEdit.add("First Name").editText(user.first_name, async(nameInput)=>{
+
+  })
+  
+  userEdit.add("Last Name").editText(user.last_name, async(nameInput)=>{
+    
+
+  })
+  
+  userEdit.add("Email").editText(user.email,async(emailInput)=>{
+  },(emailInput)=>{
+    emailInput.type = 'email'
+    email.minLength = 8
+  })
+  
+
+  //setting up edit password np:new password,  cp:confirm new password,  op: old password
+  userEdit.add("Password").editPassword(async(np,cp,op)=>{
+    //logic to confirm passwords and submit the new password
+    if (np.value.length>=8 && op.length>8 && np.value===cp.value){
+      const res = await api.changePassword(user.userID,op.value,np.value)
+      userEdit.showPopover(res.code, res.message)
+    }
+  },
+  (np,cp,op)=>{
+    cp.maxLength=0
+    np.minLength = op.minLength= 8
+
+    cp.addEventListener("input", ()=>{
+      if(cp.value.length === np.value.length && cp.value !== np.value)
+        userEdit.showFeedback(9000,'passwords do not match')
+
+      if(cp.value===np.value && np.value.length>=8){
+        cp.style.outline = np.style.outline =  '1px solid limegreen'
+      }else{
+        cp.style.outline = np.style.outline =  'none'
+      }
+    })
+    np.addEventListener("blur",()=>{cp.minLength = cp.maxLength = np.value.length})
+  }); 
 
   document.querySelector("#app").append(userEdit.overlay)
 }

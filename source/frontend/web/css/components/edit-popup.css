@@ -34,12 +34,13 @@
     transition: 500ms all ease;
 }
 
-.edit-container .close-btn:hover{
+.edit-container .close-btn:hover, .close-btn:focus{
     transform: scale(1.5);
     color :darkred;
+    outline: none;
 }
 
-.edit-container section, .edit-container input, .edit-container .submit{
+.edit-container .edit-button, .edit-container input, .edit-container .submit{
     padding: 5px;
     display: flex;
     justify-content: space-between;
@@ -50,11 +51,12 @@
     padding: .5rem 1rem;
 }
 
-.edit-container section:hover{
+.edit-container .edit-button:hover, .edit-button:focus{
     background-color: #f9e8d08e;
+    outline: none;
 }
 
-.edit-container section:hover span{
+.edit-container .edit-button:hover span, .edit-button:focus span{
     transform: scale(1.4) translate(1px);
 }
 
@@ -70,9 +72,10 @@
     padding-left: .1rem;    
 }
 
-.edit-container .prev-btn:hover{
+.edit-container .prev-btn:hover, .prev-btn:focus{
     transform: scale(1.5);
     opacity: .4;
+    outline: none;
 }
 
 .edit-container input {
@@ -102,9 +105,10 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
-.edit-container .submit:hover {
+.edit-container .submit:hover, .submit:focus {
   background-color: rgb(13, 168, 13);
   transform: scale(1.01);
+  outline: none;
 }
 
 .feedback-msg{
