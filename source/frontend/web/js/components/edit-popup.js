@@ -1,4 +1,4 @@
-export const editPopup = function(heading) {
+export const editPopup = function (heading) {
     const overlay = document.createElement('div');
     overlay.className = 'popup overlay overlay-active';
     const popup = document.createElement('div');
@@ -9,7 +9,7 @@ export const editPopup = function(heading) {
             <button class="close-btn">×</button>
         </span>`;
 
-    popup.add = function(name) {
+    popup.add = function (name) {
         const editButton = document.createElement('button');
         editButton.className = 'edit-button'
         editButton.innerHTML = `${name} <span>›</span>`;
@@ -44,7 +44,7 @@ export const editPopup = function(heading) {
             submit.type = 'submit'
             submit.textContent = 'Save Changes';
             submit.className = 'submit';
-            
+
             screen.addEventListener('submit', (e) => {
                 e.preventDefault();
                 if (screen.checkValidity())
@@ -55,7 +55,7 @@ export const editPopup = function(heading) {
             popup.replaceWith(screen);
         };
 
-        editButton.editText = function(preExist, onSubmit, special = () => {}) {
+        editButton.editText = function (preExist, onSubmit, special = () => { }) {
             editButton.onclick = () => {
                 const input = (() => {
                     const el = document.createElement('input');
@@ -69,9 +69,9 @@ export const editPopup = function(heading) {
                 createEditScreen([input], () => onSubmit(input), special);
             };
         };
-        
 
-        editButton.editPassword = function(onSubmit = () => {}, special = () => {}) {
+
+        editButton.editPassword = function (onSubmit = () => { }) {
             editButton.onclick = () => {
                 const [newPass, confirmNew, confirmOld] = ['New Password', 'Confirm New Password', 'Old Password']
                     .map(placeholder => {
@@ -84,41 +84,56 @@ export const editPopup = function(heading) {
 
                 createEditScreen([newPass, confirmNew, confirmOld],
                     () => onSubmit(newPass, confirmNew, confirmOld),
-                    special);
-            };
-        };
+                    (newPass, confirmNew, confirmOld) => {
+                        confirmNew.maxLength = 0
+                        newPass.minLength = confirmOld.minLength = 8
 
-        popup.append(editButton);
-        return editButton;
+                        confirmNew.addEventListener("input", () => {
+                            if (confirmNew.value.length === newPass.value.length && confirmNew.value !== newPass.value)
+                                popup.showFeedback(9000, 'passwords do not match')
+
+                            if (confirmNew.value === newPass.value && newPass.value.length >= 8) {
+                                confirmNew.style.outline = newPass.style.border = '3px solid limegreen'
+                            } else {
+                                confirmNew.style.outline = newPass.style.border = 'none'
+                            }
+                        })
+                        newPass.addEventListener("blur", () => { confirmNew.minLength = confirmNew.maxLength = newPass.value.length })
+                    });
+        };
     };
 
-    popup.showFeedback = function(code,message){
-        const feedback = document.createElement('span')
-        feedback.className = 'feedback-msg'
-        feedback.innerText = message
+    popup.append(editButton);
+    return editButton;
+};
 
-        if(code>299) 
-            feedback.classList.add('feedback-fail')
+popup.showFeedback = function (code, message) {
+    const feedback = document.createElement('span')
+    feedback.className = 'feedback-msg'
+    feedback.innerText = message
 
-        overlay.append(feedback)
-         setTimeout(()=>{
-            feedback.classList.add('feedback-transition')
-            setTimeout(()=>{feedback.remove()}, 2300+Math.min(message.length,1000))
-         }, 10)
-        
-    }
+    if (code > 299)
+        feedback.classList.add('feedback-fail')
 
-    
-    overlay.append(popup);
-    popup.overlay = overlay;
+    overlay.append(feedback)
+    setTimeout(() => {
+        feedback.classList.add('feedback-transition')
+        setTimeout(() => { feedback.remove() }, 2300 + Math.min(message.length, 1000))
+    }, 10)
 
-    popup.querySelector('.close-btn').addEventListener('click', () => overlay.remove());
-    overlay.addEventListener("click", (e)=>{
-        if(e.target==overlay)
-            overlay.remove()
-    })
+}
 
-    return popup;
+
+overlay.append(popup);
+popup.overlay = overlay;
+
+popup.querySelector('.close-btn').addEventListener('click', () => overlay.remove());
+overlay.addEventListener("click", (e) => {
+    if (e.target == overlay)
+        overlay.remove()
+})
+
+return popup;
 };
 
 
