@@ -1,13 +1,19 @@
 ## Front end start instructions
-
+  The css styling has been tested for google chrome only so far, other browsers may or may not look as expected  
+  
 ### Prerequisites
   - [Node.js](https://nodejs.org/) (v18.0 or higher)
   - npm (comes with Node.js)
-  
+
+*In a Terminal/Bash*  
 ```bash
  # from repos root directory
  cd ./source/frontend/web
 
-# once in frontend/web
+# once in ./frontend/web
  npm run start
+
+ # this should start the front end on your default browser
+ # If it doesnt and the Five Server is successfully running
+ # Go to http://localhost:8484
 ```
