@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     createEditProfilePopup(user)
   });
 
-
   // Open merchant registration popup
   merchantBtn.addEventListener('click', createRegistrationPopup)
 
@@ -79,6 +78,7 @@ function createEditProfilePopup(user){
       np.value = cp.value = op.value = ''
     }
   }); 
+  
 
   //adding the popup to the page
   document.querySelector("#app").append(userEdit.overlay)

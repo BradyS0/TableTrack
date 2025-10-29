@@ -2,6 +2,7 @@ import {api} from '../global.js'
 import { getUserState } from '../utils.js';
 import { loadRestaurant } from './restaurantDetail.js';
 import { editPopup } from '../components/edit-popup.js';
+import { formatPhoneNumber } from '../logic/format-utils.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
   const owner = getUserState()
@@ -28,7 +29,6 @@ function loadEditableFields(owner) {
 }
 
 async function createEditPopup(owner){
-
   //preexisting fields
   const rest_name = document.querySelector("#restaurant-name>h1");
   const tags = document.querySelector(".tags");
@@ -110,7 +110,6 @@ async function createEditPopup(owner){
         rest_edit.showFeedback(res.code,res.message)
           if (res.code === 200)
           phone.innerText = phoneInput.value;
-        
       },
         (phoneInput)=>{ //define input fields properties
           phoneInput.type = 'tel'
@@ -123,17 +122,4 @@ async function createEditPopup(owner){
     
     document.querySelector('#app').append(rest_edit.overlay)
   }
-}
-
-function formatPhoneNumber(input){
-  input = input.replace(/\D/g, "");
-  input = input.substring(0, 10);
-
-  // Apply formatting: (111) 111-1111
-  let formatted = "";
-  if (input.length > 0) formatted = "(" + input.substring(0, 3);
-  if (input.length >= 4) formatted += ") " + input.substring(3, 6);
-  if (input.length >= 7) formatted += "-" + input.substring(6, 10);
-
-  return formatted
 }
