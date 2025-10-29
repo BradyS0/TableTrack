@@ -1,0 +1,137 @@
+.edit-container{
+    position: absolute;
+    display: flex;
+    flex-flow: column;
+    min-width: 80px;
+    width: 90%;
+    max-width: 700px;
+    min-height: 200px;
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.45);
+    border-radius: 2em;
+    padding: 1.75rem;
+    gap: 1rem;
+    font-family:Arial, Helvetica, sans-serif;
+    margin: 1%;
+    top: 25%;
+}
+
+.edit-container>span{
+    display: flex;
+    width: 100%;
+}
+
+
+.edit-container .close-btn{
+    position: absolute;
+    background: none;
+    border: none;
+    right: 1%;
+    top: 0;
+    margin: 1rem;
+    font-size: large;
+    cursor: pointer;
+    transition: 500ms all ease;
+}
+
+.edit-container .close-btn:hover, .close-btn:focus{
+    transform: scale(1.5);
+    color :darkred;
+    outline: none;
+}
+
+.edit-container .edit-button, .edit-container input, .edit-container .submit{
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 1rem;;
+    transition: 300ms all ease;
+    padding: .5rem 1rem;
+}
+
+.edit-container .edit-button:hover, .edit-button:focus{
+    background-color: #f9e8d08e;
+    outline: none;
+}
+
+.edit-container .edit-button:hover span, .edit-button:focus span{
+    transform: scale(1.4) translate(1px);
+}
+
+.edit-container .prev-btn{
+    background: none;
+    border: none;
+    margin-right: .1rem;
+    font-size: x-large;
+    cursor: pointer;
+    transform: scale(1);
+    transition: 100ms transform,500ms opacity ease;
+    padding-right: .8rem;
+    padding-left: .1rem;    
+}
+
+.edit-container .prev-btn:hover, .prev-btn:focus{
+    transform: scale(1.5);
+    opacity: .4;
+    outline: none;
+}
+
+.edit-container input {
+  padding: 0.6em 1em;       /* comfortable spacing */
+  border: 1px solid #ccc;   /* light gray border */
+  outline: none;            /* remove blue browser outline */
+  width: 100%;              /* take full width of container */
+  box-sizing: border-box;   /* ensure padding doesn’t overflow */
+  transition: border-color 0.2s, box-shadow 0.3s;
+}
+
+.edit-container input:focus {
+  border: 2px solid peachpuff;
+  box-shadow: 0 0 8px rgba(255, 218, 185, 0.315);
+}
+
+.edit-container .submit{
+  justify-content: center;
+  margin-top: auto;
+  border: none;
+  background-color: green;
+  align-self: center;
+  width: 95%;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.edit-container .submit:hover, .submit:focus {
+  background-color: rgb(13, 168, 13);
+  transform: scale(1.01);
+  outline: none;
+}
+
+.feedback-msg{
+    display: flex;
+    justify-content: center;
+    background: rgba(12, 128, 31, 0.65);
+    color: white;
+    padding: .5rem 1rem;
+    min-width: 150px;
+    width: 65vw;
+    max-width: 550px;
+    text-align: center;
+    border-radius: 5rem;
+    backdrop-filter: blur(2px) saturate(8);
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
+    opacity: 0.05;
+    transition: opacity 600ms ease;
+}
+
+.feedback-transition{
+    opacity: 1;
+}
+
+.feedback-fail{
+    background: rgba(143, 1, 1, 0.65);
+}

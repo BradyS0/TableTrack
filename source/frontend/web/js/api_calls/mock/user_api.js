@@ -56,7 +56,7 @@ const changeEmail = async (userID, newEmail) => {
   let users = getUsers();
   let user = users.find(u => u.userID === userID);
 
-  if (!user) return { code: 404, message: "User not found" };
+  if (!user || !userID) return { code: 404, message: "User not found" };
 
   // Check if email is already taken
   let exists = users.find(u => u.email === newEmail);
@@ -74,7 +74,7 @@ const changeFirstName = async(userID, newFirstName) => {
   let users = getUsers();
   let user = users.find(u => u.userID === userID);
 
-  if (!user) return { code: 404, message: "User not found" };
+  if (!user || !userID) return { code: 404, message: "User not found" };
   if (!newFirstName || newFirstName.length < 2)
     return { code: 400, message: "Invalid first name" };
 
@@ -89,7 +89,7 @@ const changeLastName = async(userID, newLastName) => {
   let users = getUsers();
   let user = users.find(u => u.userID === userID);
 
-  if (!user) return { code: 404, message: "User not found" };
+  if (!user || !userID) return { code: 404, message: "User not found" };
   if (!newLastName || newLastName.length < 2)
     return { code: 400, message: "Invalid last name" };
 
@@ -104,7 +104,7 @@ const changePassword = async(userID, old_password, new_password) => {
   let users = getUsers();
   let user = users.find(u => u.userID === userID);
 
-  if (!user) return { code: 404, message: "User not found" };
+  if (!user || !userID) return { code: 404, message: "User not found" };
   if (user.password !== old_password)
     return { code: 401, message: "Old password is incorrect" };
   if (new_password.length < 5)

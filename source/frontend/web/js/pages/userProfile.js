@@ -1,18 +1,16 @@
 import { clearUserState, getUserState, setUserState } from '../utils.js';
 import { createRegistrationPopup } from '../components/merchantRegister.js';
+import { editPopup } from '../components/edit-popup.js';
 import { api } from '../global.js'; 
 
 document.addEventListener('DOMContentLoaded', () => {
-  const user = getUserState('user') || { username: 'Guest', email: 'guest@example.com' };
+  const user = getUserState('user') || { first_name: 'Guest', last_name:'User', email: 'guest@example.com' };
   document.querySelector('.username').textContent = `${user.first_name} ${user.last_name}`;
   document.querySelector('.email').textContent = user.email || 'Not provided';
 
   // Get elements
   const editBtn = document.getElementById('editProfileBtn');
   const logoutBtn = document.getElementById('logoutBtn');
-  const popup = document.getElementById('editPopup');
-  const closeBtn = document.getElementById('closeEdit');
-  const form = document.getElementById('editForm');
   const merchantBtn = document.getElementById('merchantBtn');
 
   if(user.restID)
@@ -20,97 +18,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Open popup
   editBtn.addEventListener('click', () => {
-    populateCurrentInput(user)
-    popup.classList.remove('hidden')
+    createEditProfilePopup(user)
   });
-
-  // Close popup
-  closeBtn.addEventListener('click', () => popup.classList.add('hidden'));
 
   // Open merchant registration popup
   merchantBtn.addEventListener('click', createRegistrationPopup)
 
 
-  // Save updated profile using api
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const updatedFName = document.getElementById('editFName').value.trim();
-    const updatedLName = document.getElementById('editLName').value.trim();
-    const updatedEmail = document.getElementById('editEmail').value.trim();
-    const updatedPassword = document.getElementById('editPassword').value.trim();
-    const confirmPassword = document.getElementById('confirmPassword').value.trim();
-
-    // if (!updatedFName || !updatedLName || !updatedEmail) {
-    //   alert('Please fill in all required fields.');
-    //   return;
-    // }
-    // if (updatedPassword && updatedPassword !== confirmPassword) {
-    //   alert('Passwords do not match.');
-    //   return;
-    // }
-
-    const currentUser = getUserState();
-    let response;
-
-    // Change first name
-    if (updatedFName.length>3 && updatedFName !== currentUser.first_name) {
-      response = await api.changeFirstName(currentUser.userID, updatedFName);
-      if (response.code !== 200) {
-        alert(response.message); 
-        return }
-      currentUser.first_name = updatedFName;
-    }
-
-    // Change last name
-    if (updatedLName.length>3 && updatedLName !== currentUser.last_name) {
-      response = await api.changeLastName(currentUser.userID, updatedLName);
-      if (response.code !== 200) return alert(response.message);
-      currentUser.last_name = updatedLName;
-    }
-
-    // Change email
-    if (updatedEmail.length>4 && updatedEmail !== currentUser.email) {
-      response = await api.changeEmail(currentUser.userID, updatedEmail);
-      if (response.code !== 200) return alert(response.message);
-      currentUser.email = updatedEmail;
-    }
-
-    // Change password
-    if (updatedPassword.length>8) {
-      response = await api.changePassword(
-        currentUser.userID,
-        confirmPassword,
-        updatedPassword
-      );
-      if (response.code !== 200) return alert(response.message);
-      currentUser.password = updatedPassword;
-    }
-
-    // Update session state
-    setUserState(currentUser);
-    document.querySelector('.username').textContent = `${currentUser.first_name} ${currentUser.last_name}`;
-    document.querySelector('.email').textContent = currentUser.email;
-    popup.classList.add('hidden');
-
-    //alert('Profile updated successfully!');
-    window.location.reload()
-  });
-
   // Logout functionality
   logoutBtn.addEventListener('click',clearUserState);
 });
 
+function createEditProfilePopup(user){
+  const userEdit = editPopup("User Profile")
 
-function populateCurrentInput(user){
-  const updatedFName = document.getElementById('editFName');
-  const updatedLName = document.getElementById('editLName');
-  const updatedEmail = document.getElementById('editEmail');
+  //creating first name edit field
+  userEdit.add("First Name").editText(user.first_name, async(nameInput)=>{
+    const res = await api.changeFirstName(user.userID,nameInput.value)
+    userEdit.showFeedback(res.code, res.message)
+    if(res.code < 300){
+      user.first_name = nameInput.value
+      setUserState(user)
+      document.querySelector('.username').textContent = `${user.first_name} ${user.last_name}`;
+    }
+  })
+  
+  //creating last name edit field
+  userEdit.add("Last Name").editText(user.last_name, async(nameInput)=>{
+    const res = await api.changeLastName(user.userID,nameInput.value)
+    userEdit.showFeedback(res.code, res.message)
+    if(res.code < 300){
+      user.last_name = nameInput.value
+      setUserState(user)
+      document.querySelector('.username').textContent = `${user.first_name} ${user.last_name}`;
+    }
+  })
+  
+  //creating user email edit field
+  userEdit.add("Email").editText(user.email,async(emailInput)=>{
+    const res = await api.changeEmail(user.userID,emailInput.value)
+    userEdit.showFeedback(res.code, res.message)
+    if(res.code < 300){
+      user.email = emailInput.value
+      setUserState(user)
+      document.querySelector('.email').textContent = user.email
+    }
+  },(emailInput)=>{
+    emailInput.type = 'email'
+    emailInput.minLength = 8
+  })
+  
 
-  updatedFName.value = user.first_name
-  updatedLName.value = user.last_name
-  updatedEmail.value = user.email
+  //setting up edit password np:new password,  cp:confirm new password,  op: old password
+  userEdit.add("Password").editPassword(async(np,cp,op)=>{
+    //logic to confirm passwords and submit the new password
+    if (np.value.length>=8 && op.value.length>8 && np.value===cp.value){
+      const res = await api.changePassword(user.userID,op.value,np.value)
+      userEdit.showFeedback(res.code, res.message)
+      np.value = cp.value = op.value = ''
+    }
+  }); 
+  
+
+  //adding the popup to the page
+  document.querySelector("#app").append(userEdit.overlay)
 }
+
 
 function managerButton(){
   const manageBtn = document.createElement('button');
