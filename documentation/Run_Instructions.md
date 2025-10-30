@@ -10,12 +10,17 @@ To do all the backend running, go to backend folder with command:
 ```bash
 cd ./source/backend
 ```
+To run the unit and integration tests you will need to install all necessary dependencies. Our package-lock contains all the details so all you need to do is to run the command:
+```bash
+# from ./source/backend
+
+npm ci
+```
 
 To run the unit tests:
 ```bash
 # from ./source/backend
 
-npm ci
 npm run test:unit
 ```
 
