@@ -12,7 +12,7 @@ Ever been too lazy to call for a reservation? How about being seated right by th
 
 
 ## Run Instructions
-- [backend](./documentation/Run_Instructions.md)
+- [backend](./source/backend/README.md)
 - [frontend](./source/frontend/web/README.md#front-end-start-instructions)
 
 ## Standards

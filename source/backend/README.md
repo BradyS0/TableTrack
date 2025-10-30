@@ -1,4 +1,15 @@
-## Run Instructions
+## Backend Directory Structure
+
+```bash
+\---backend
+    +---logic # conatins all logic code used in routes, one file for each route
+    +---models # contains Sequelize model definitions
+    +---routes # contains api route files, where all backend components come together
+    \---tests
+        +---integration # contains integration test files, one for each data type
+        \---unit # contains unit test files, one for each data type
+```
+## Backend Run Instructions
 
 In order to run locally:  
 - Clone repository
