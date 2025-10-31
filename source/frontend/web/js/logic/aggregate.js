@@ -1,4 +1,4 @@
-import {restaurants} from "../api_calls/mock/mockRestdata.js"
+//import {restaurants} from "../api_calls/mock/mockRestdata.js"
 
 export function restaurantSearchByNameTags(search_by, restaurants){
     const result = restaurants.filter(rest =>
