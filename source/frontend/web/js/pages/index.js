@@ -14,28 +14,12 @@ async function setupBody() {
 
   app.append(search, container)
 
-
   const response = await api.getRestaurants();
   if (response.code < 300) {
     const restaurants = response.restaurants;
-    const mainContainer = await populateRestaurants(restaurants)
-    let restContainer = mainContainer
-    container.appendChild(restContainer);
-
-    search.search.addEventListener('input', async () => {
-      if (search.search.value.length >= 2) {
-        const searchedRes = restaurantSearchByNameTags(search.search.value, restaurants);
-        const newContainer = await populateRestaurants(searchedRes)
-        restContainer.replaceWith(newContainer)
-        restContainer = newContainer
-      } else {
-        restContainer.replaceWith(mainContainer)
-        restContainer = mainContainer
-      }
-
-    })
-
-    //potentially do a backend search when search button or enter is pressed
+    const mainContainer = await populateRestaurants(restaurants);
+    container.appendChild(mainContainer);
+    implementSearch(search, restaurants, mainContainer);
   } else {
     display_popup_msg(`Error ${response.code}`, response.message)
   }
@@ -55,4 +39,23 @@ async function populateRestaurants(restaurants) {
   }
 
   return cardGrid;
+}
+
+
+function implementSearch(search,restaurants,mainContainer){
+  let restContainer = mainContainer
+  search.search.addEventListener('input', async () => {
+      if (search.search.value.length >= 2) {
+        const searchedRes = restaurantSearchByNameTags(search.search.value, restaurants);
+        const newContainer = await populateRestaurants(searchedRes)
+        restContainer.replaceWith(newContainer)
+        restContainer = newContainer
+      } else {
+        restContainer.replaceWith(mainContainer)
+        restContainer = mainContainer
+      }
+
+    })
+
+    //potentially do a backend search when search button or enter is pressed
 }
