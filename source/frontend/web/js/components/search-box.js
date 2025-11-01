@@ -9,6 +9,7 @@ export function createSearchBox(){
     searchButton.className = 'btn search-btn'
     searchButton.innerHTML = '<img src="../assets/magnifying-glass-solid-full.svg" alt="search-icon"/>' 
 
+    searchInput.maxLength = 65
     searchGroup.search = searchInput
     searchGroup.searchButton = searchButton
     searchGroup.append(searchInput,searchButton)
