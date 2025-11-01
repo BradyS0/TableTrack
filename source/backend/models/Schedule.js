@@ -15,12 +15,12 @@ const Schedule = sequelize.define("Schedule", {
 async function set_day(restID, day, open, close)
 {
     // Find entry with primary key
-    const day = await Schedule.findOne({ where: {
+    var sched = await Schedule.findOne({ where: {
         restID: parseInt(restID),
         day:    parseInt(day),
     }});
 
-    if (day === null) // CASE 1: Schedule does not exist -> create day
+    if (sched === null) // CASE 1: Schedule does not exist -> create day
     {
         var new_day = await Schedule.create({
             restID: parseInt(restID),
@@ -57,13 +57,13 @@ async function del_day(restID, day)
 async function get_open(restID, day)
 {
     // Find entry with primary key
-    const day = await Schedule.findOne({ where: {
+    const sched = await Schedule.findOne({ where: {
         restID: parseInt(restID),
         day:    parseInt(day),
     }});
 
     // If day exists return open hour
-    if (day !== null) return day.open;
+    if (sched !== null) return sched.open;
     else return -1;
 }
 
@@ -71,13 +71,13 @@ async function get_open(restID, day)
 async function get_close(restID, day)
 {
     // Find entry with primary key
-    const day = await Schedule.findOne({ where: {
+    const sched = await Schedule.findOne({ where: {
         restID: parseInt(restID),
         day:    parseInt(day),
     }});
 
     // If day exists return close hour
-    if (day !== null) return day.close;
+    if (sched !== null) return sched.close;
     else return -1;
 }
 

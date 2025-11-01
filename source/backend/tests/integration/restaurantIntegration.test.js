@@ -3,15 +3,6 @@ import request from "supertest";
 import { app } from "../../app.js";
 // import sequelize from "../../db.js";
 
-// Hours string to use for restaurants
-const hours = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-               "\"monday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-              "\"tuesday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-            "\"wednesday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-             "\"thursday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-               "\"friday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-             "\"saturday\":{\"open\":\"6:00\", \"close\":\"12:30\"}}";
-
 // Data used in testing
 const user1id = 1
 const user2id = 2
@@ -83,7 +74,6 @@ describe("Restaurant API", () => {
             address: "205 Dairy road",
             phone:   "(204) 456-7890",
             desc:    "Ice cream and burgers.",
-            hours:   hours
         });
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("Bob's Dairy");
@@ -99,7 +89,6 @@ describe("Restaurant API", () => {
             address: "nope",
             phone:   "(204) 123-4567",
             desc:    "Burgers made by a queen",
-            hours:   hours
         });
         expect(res.statusCode).toBe(400);
     });
@@ -113,7 +102,6 @@ describe("Restaurant API", () => {
             address: "70 Flavor town",
             phone:   "(204) 345-6789",
             desc:    "Try our new 3000 calorie meal",
-            hours:   hours
         });
         expect(res.statusCode).toBe(404);
     });
