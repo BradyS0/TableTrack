@@ -181,8 +181,8 @@ export const editPopup = function (heading) {
                 statusToggle.value = "closed";
                 openInput.value = "";
                 closeInput.value = "";
-                openInput.disabled = closeInput.disabled = true;
             }
+            statusToggle.disabled = openInput.disabled = closeInput.disabled = !checkbox.checked;
 
             // When status changes
             statusToggle.addEventListener("change", () => {
@@ -194,6 +194,8 @@ export const editPopup = function (heading) {
             // Checkbox visual and state
             checkbox.addEventListener("change", () => {
                 row.classList.toggle("selected", checkbox.checked);
+                statusToggle.disabled= !checkbox.checked
+                openInput.disabled = closeInput.disabled =  !checkbox.checked || statusToggle.value == 'closed'
             });
 
             row.append(checkbox, label, statusToggle, openInput, closeInput);

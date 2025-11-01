@@ -137,17 +137,16 @@
 }
 
 
-/* stuff for schedule editing ui */
+/* stuff for schedule editing styles */
 
 .schedule-edit {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  margin-top: 1rem;
-  min-height: 200px;
-  max-height: 450px;
+  max-height: 350px;
   overflow-y: scroll;
 }
+
 
 .schedule-row {
   display: grid;
@@ -156,17 +155,18 @@
   gap: 0.4rem;
   padding: 0.4rem 0.6rem;
   border-radius: 8px;
-  background-color: #fafafa;
-  transition: background-color 0.2s ease;
+  background-color: #fafafa71;
+  transition: background-color 0.3s ease, opacity .2s ease;
+  opacity: .35;
+  user-select: none;
 }
 
 .schedule-row.selected {
-  background-color: #e8f5ff;
+  background-color: rgba(255, 209, 169, 0.25);
+  opacity: 1;
 }
 
-.schedule-row.closed {
-  opacity: 0.7;
-}
+
 
 .day-label {
   font-weight: 500;
@@ -174,13 +174,13 @@
 }
 
 .time-input {
-  padding: 0.3rem;
+  padding: 0.3re;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
 
 .day-check {
-  accent-color: #0077ff;
+  accent-color: rgb(211, 118, 42);
 }
 
 .status-toggle {
