@@ -1,0 +1,59 @@
+.schedule-card {
+  width: 260px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 1rem 1.2rem;
+  font-family: "Inter", sans-serif;
+  color: #222;
+}
+
+.schedule-card h3 {
+  text-align: center;
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.5rem;
+  color: #333;
+}
+
+.schedule-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.schedule-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 0.95rem;
+  border-bottom: 1px dashed #f0f0f0;
+}
+
+.schedule-item:last-child {
+  border-bottom: none;
+}
+
+.schedule-day {
+  font-weight: 500;
+  color: #555;
+}
+
+.schedule-time {
+  font-weight: 400;
+  color: #111;
+}
+
+.schedule-time.closed {
+  color: #b22;
+  font-weight: 500;
+}
+
+.schedule-item:hover {
+  background-color: #f9fafb;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}

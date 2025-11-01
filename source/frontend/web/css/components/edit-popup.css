@@ -13,7 +13,7 @@
     gap: 1rem;
     font-family:Arial, Helvetica, sans-serif;
     margin: 1%;
-    top: 25%;
+    top: 15%;
 }
 
 .edit-container>span{
@@ -134,4 +134,59 @@
 
 .feedback-fail{
     background: rgba(143, 1, 1, 0.65);
+}
+
+
+/* stuff for schedule editing ui */
+
+.schedule-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  min-height: 200px;
+  max-height: 450px;
+  overflow-y: scroll;
+}
+
+.schedule-row {
+  display: grid;
+  grid-template-columns: 25px 40px 70px 1fr 1fr;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  background-color: #fafafa;
+  transition: background-color 0.2s ease;
+}
+
+.schedule-row.selected {
+  background-color: #e8f5ff;
+}
+
+.schedule-row.closed {
+  opacity: 0.7;
+}
+
+.day-label {
+  font-weight: 500;
+  color: #444;
+}
+
+.time-input {
+  padding: 0.3rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.day-check {
+  accent-color: #0077ff;
+}
+
+.status-toggle {
+  padding: 0.25rem 0.4rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
 }
