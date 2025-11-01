@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#This file was created using Github Copilot
 # List files changed since last commit or since a base branch.
 # Usage:
 #   ./scripts/changed_files.sh [--mode MODE] [--base BASE] [--output FILE]
