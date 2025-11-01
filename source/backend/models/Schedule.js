@@ -20,27 +20,27 @@ async function set_day(restID, day, open, close)
         day:    parseInt(day),
     }});
 
+    var new_day = null;
     if (sched === null) // CASE 1: Schedule does not exist -> create day
     {
-        var new_day = await Schedule.create({
+        new_day = await Schedule.create({
             restID: parseInt(restID),
             day:    parseInt(day),
             open:   parseInt(open),
             close:  parseInt(close),
         });
-        return new_day;
     }
     else // ------------ CASE 2: Schedule already exists -> update day
     {
-        var new_day = await Restaurant.update({
+        new_day = await Schedule.update({
             open:  parseInt(open),
             close: parseInt(close),
         },{ where: {
             restID: parseInt(restID),
             day:    parseInt(day),
         }});
-        return new_day;
     }
+    return new_day;
 }
 
 // Query: Delete a day
