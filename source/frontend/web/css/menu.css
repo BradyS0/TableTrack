@@ -1,0 +1,150 @@
+#owner-menu,
+.menu-list {
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 800px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* Section title */
+#owner-menu h2,
+#restaurant-content h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #222;
+  text-align: center;
+}
+
+/* Public menu items */
+.menu-list {
+  list-style: none;
+  padding: 0;
+}
+
+.menu-list li {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #eee;
+  transition: background 0.2s ease;
+}
+
+.menu-list li:hover {
+  background-color: #f9f9f9;
+}
+
+.menu-list h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.3rem;
+}
+
+.menu-list p {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 0.4rem;
+}
+
+.menu-list strong {
+  color: #2e7d32;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.owner-menu-list {
+  list-style: none;
+  margin: 1rem 0 2rem 0;
+  padding: 0;
+}
+
+.owner-menu-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid #eee;
+}
+
+.owner-menu-list li span {
+  flex: 1;
+  margin-left: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.owner-menu-list li button.delete-item {
+  background: #ff5252;
+  border: none;
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.owner-menu-list li button.delete-item:hover {
+  background: #d32f2f;
+}
+
+.menu-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.menu-form h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.2rem;
+  color: #333;
+}
+
+.menu-form input {
+  padding: 0.7rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.menu-form input:focus {
+  border-color: #2e7d32;
+}
+
+.menu-form .btn {
+  background: #2e7d32;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.menu-form .btn:hover {
+  background: #1b5e20;
+}
+
+@media (max-width: 600px) {
+  #owner-menu,
+  .menu-list {
+    padding: 1.2rem;
+  }
+
+  .owner-menu-list li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .owner-menu-list li button.delete-item {
+    align-self: flex-end;
+  }
+}

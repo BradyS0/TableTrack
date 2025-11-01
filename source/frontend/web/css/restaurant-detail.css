@@ -1,11 +1,13 @@
-
-#restaurant-info{
-    height: 80vh;
-    display: flexbox;
+#restaurant-info {
+    display: flex;
+    flex-direction: column;
     background: rgba(255, 255, 255, 0.85);
     border-radius: 1rem;
     padding: 2rem;
     margin: 1rem 5rem;
+    height: auto;        
+    min-height: 80vh;    
+    box-sizing: border-box;
 }
 
 #restaurant-info hr{

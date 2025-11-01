@@ -1,4 +1,5 @@
 import { api } from "../global.js"
+import { loadPublicMenu } from './menu.js';
 
 
 if (window.location.pathname.includes("restaurantDetail")){
@@ -21,6 +22,7 @@ export async function loadRestaurant(restID){
     }else{
       app.append(createRestaurantInfo({}));
     }
+    await loadPublicMenu(restID);
 }
 
 function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], rating, address, hours, phone}) {

@@ -157,3 +157,4 @@ export const mockRestaurantAPI = {getRestaurants,createRestaurant,
     changeRestaurantName,changeRestaurantAddress,
     changeRestaurantPhone,changeRestaurantTags
 };
+

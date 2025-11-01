@@ -96,3 +96,25 @@ export const restaurants = [
 export function restById (id){
     return restaurants[id-1];
 }
+
+export async function getMenuItems(restID) {
+  return {
+    code: 200,
+    data: [
+      { itemID: 1, name: "Margherita Pizza", price: 14.99, description: "Classic with basil and mozzarella" },
+      { itemID: 2, name: "Spaghetti Carbonara", price: 12.50, description: "Creamy sauce with pancetta" },
+      { itemID: 3, name: "Tiramisu", price: 7.50, description: "Coffee-soaked ladyfingers with mascarpone" }
+    ]
+  };
+}
+
+export async function addMenuItem(restID, userID, item) {
+  console.log("Adding item:", item);
+  return { code: 200, message: `Item '${item.name}' added successfully!` };
+}
+
+export async function deleteMenuItem(restID, userID, itemID) {
+  console.log("Deleting item:", itemID);
+  return { code: 200, message: `Item #${itemID} deleted successfully!` };
+}
+

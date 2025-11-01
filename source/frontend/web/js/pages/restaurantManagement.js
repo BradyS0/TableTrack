@@ -3,15 +3,21 @@ import { getUserState } from '../utils.js';
 import { loadRestaurant } from './restaurantDetail.js';
 import { editPopup } from '../components/edit-popup.js';
 import { formatPhoneNumber } from '../logic/format-utils.js';
+import { loadOwnerMenu } from './menu.js';
+
 
 document.addEventListener("DOMContentLoaded", async () => {
   const owner = getUserState()
   if(owner.restID){
     await loadRestaurant(owner.restID)
     const reservationBtn = document.querySelector(".reservation-btn");
+    if (reservationBtn && reservationBtn.parentElement) {
+      reservationBtn.parentElement.removeChild(reservationBtn);
+    }
     reservationBtn.parentElement.removeChild(reservationBtn);
 
     loadEditableFields(owner);
+    await loadOwnerMenu(owner);
   }
   //load edit icons
 });
