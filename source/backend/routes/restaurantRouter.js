@@ -179,12 +179,11 @@ router.get("/user/:id", async (req, res) => {
 router.patch("/change", async (req, res) => {
     try {
         // Retrieve and validate information from body
-        const { restID, name, address, phone, desc, hours } = req.body;
+        const { restID, name, address, phone, desc } = req.body;
         if (RestaurantLogic.validate_name(name) &&
             RestaurantLogic.validate_address(address) &&
             RestaurantLogic.validate_phone(phone) &&
-            RestaurantLogic.validate_description(desc) &&
-            RestaurantLogic.validate_hours(hours)
+            RestaurantLogic.validate_description(desc)
         ) {
             // Validate restID to make changes to
             const restaurant = await Restaurant.findByPk(parseInt(restID));
@@ -197,7 +196,6 @@ router.patch("/change", async (req, res) => {
                     address: address,
                     phone_num: phone,
                     description: desc,
-                    open_hours: hours
                 }, {
                     where: {
                         restID: parseInt(restID)
