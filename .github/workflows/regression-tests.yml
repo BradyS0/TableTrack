@@ -17,10 +17,16 @@ jobs:
       with:
         node-version: 18  # Use the Node.js version compatible with your project
 
-    # Step 3: Install dependencies
+    # Step 3: Install Docker Compose
+    - name: Install Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
+
+    # Step 4: Install dependencies
     - name: Install dependencies
       run: npm install
 
-    # Step 4: Run the regression script
+    # Step 5: Run the regression script
     - name: Run regression script
       run: node regression.js
