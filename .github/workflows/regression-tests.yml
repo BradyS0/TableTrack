@@ -1,0 +1,26 @@
+name: Run Regression Script
+
+on: [push, pull_request]
+
+jobs:
+  run-regression:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18  # Use the Node.js version compatible with your project
+
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Step 4: Run the regression script
+    - name: Run regression script
+      run: node regression.js

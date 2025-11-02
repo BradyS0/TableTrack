@@ -1,3 +1,9 @@
 babel.config.cjs
+changed_files.sh
+changed_files.txt
+documentation/Run_Instructions.md
 package-lock.json
 package.json
+regression.js
+source/backend/logic/userLogic.js
+source/backend/routes/user.js

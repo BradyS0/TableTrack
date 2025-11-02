@@ -7,31 +7,44 @@ import { promisify } from 'util';
 const execPromise = promisify(exec);
 
 let fileList = []
-fs.readFile('changed_files.txt', 'utf8', (err, data) => {
-    if (err) {
+
+await cmd("./changed_files.sh --mode since-branch --base dev")
+
+fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
+    if(err){
       console.error('Error reading file:', err);
       return;
     }
-    console.log('File content:\n',data);
     fileList = data.split('\n');
     console.log(fileList);
 
-    for (const file of fileList){
-        console.log(file);
-        if(file === "source/backend/logic/userLogic.js"){
-            cmd('npx jest --coverage --testPathPatterns=source/backend/tests/unit/user.test.js');
+    let npm_installed = false;
+    let db_running = false;
+
+    if(fileList.includes("source/backend/logic/userLogic.js")){
+        if(npm_installed == false){
+            await cmd('npm install')
+            npm_installed = true
         }
-        let db_running = false;
-        if(file === "source/backend/routes/user.js"){
-            cmd('docker-compose -f /source/backend/docker-compose.test.yml up -d');
+        await cmd('npx jest --coverage --testPathPatterns=source/backend/tests/unit/user.test.js');
+    }
+    
+    if(fileList.includes("source/backend/routes/user.js") 
+        || fileList.includes('source/backend/testSetup.js')){
+        if(npm_installed == false){
+            await cmd('npm install')
+            npm_installed = true
+        }
+        if(db_running == false){
+            await cmd('docker-compose -f source/backend/docker-compose.test.yml up -d');
             db_running = true;
-            cmd('jest --config=source/backend/jest.integration.config.js --coverage --testPathPattern=tests/integration/user.test.js');
         }
-        
-        if(db_running){
-            cmd('docker-compose -f /source/backend/docker-compose.test.yml down -v');
-            db_running = false;
-        }
+        await cmd('npx jest --config=source/backend/jest.integration.config.js --testPathPatterns=tests/integration/user.test.js');
+    }
+
+    if(db_running){
+        await cmd('docker-compose -f source/backend/docker-compose.test.yml down -v');
+        db_running = false;
     }
   });
 
