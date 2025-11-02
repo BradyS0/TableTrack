@@ -1,16 +1,7 @@
-// Converts float (e.g. 2.5 -> "2:30am", 14.5 -> "2:30pm")
-function formatFloatTime(timeFloat) {
-  if (timeFloat === "" || timeFloat == null) return "";
-  const hour = Math.floor(timeFloat);
-  const minute = (timeFloat % 1) * 60;
-  const period = hour >= 12 ? "pm" : "am";
-  const adjustedHour = ((hour + 11) % 12) + 1;
-  const minuteStr = minute === 0 ? "" : ":" + String(minute).padStart(2, "0");
-  return `${adjustedHour}${minuteStr}${period}`;
-}
+import { floatToTime } from "../logic/format-utils.js ";
 
 // Creates the full schedule card
-function createScheduleCard(scheduleData) {
+export function createScheduleCard(scheduleData) {
 const head = document.querySelector('head');
   if(!head.innerHTML.includes('schedule.css'))
     head.innerHTML+='<link rel="stylesheet" href="css/components/schedule.css">'
@@ -45,7 +36,12 @@ const head = document.querySelector('head');
       timeLabel.textContent = "closed";
       timeLabel.classList.add("closed");
     } else {
-      timeLabel.textContent = `${formatFloatTime(open)} - ${formatFloatTime(close)}`;
+      timeLabel.textContent = `${floatToTime(open)} - ${floatToTime(close)}`;
+    }
+
+    title.onclick = ()=>{
+      title.classList.toggle('active')
+      list.classList.toggle('active')
     }
 
     item.append(dayLabel,timeLabel);
@@ -57,18 +53,18 @@ const head = document.querySelector('head');
 }
 
 // Example usage:
-const schedule = {
+export const schedule = {
   Sunday: { open: 8, close: 21 },
   Monday: { open: "", close: "" },
   Tuesday: { open: 10, close: 22 },
   Wednesday: { open: 10, close: 22 },
-  Thursday: { open: 10, close: 22 },
+  Thursday: { open: '', close: '' },
   Friday: { open: 10, close: 22 },
   Saturday: { open: 10, close: 22 },
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById("app");
-  const scheduleCard = createScheduleCard(schedule);
-  container.append(scheduleCard);
-});
+// document.addEventListener("DOMContentLoaded", () => {
+//   const container = document.getElementById("app");
+//   const scheduleCard = createScheduleCard(schedule);
+//   container.append(scheduleCard);
+// });

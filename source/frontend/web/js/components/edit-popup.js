@@ -1,3 +1,5 @@
+import { floatToTime,timeToFloat } from "../logic/format-utils.js";
+
 export const editPopup = function (heading) {
   const overlay = document.createElement("div");
   overlay.className = "popup overlay overlay-active";
@@ -123,21 +125,6 @@ export const editPopup = function (heading) {
         const scheduleContainer = document.createElement("div");
         scheduleContainer.className = "schedule-edit";
 
-        // Converts float -> readable HH:MM for input type=time
-        const floatToTime = (f) => {
-            if (!f && f !== 0) return "";
-            const hour = Math.floor(f);
-            const minute = Math.round((f % 1) * 60);
-            return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
-        };
-
-        // Converts back to float
-        const timeToFloat = (val) => {
-            if (!val) return "";
-            const [h, m] = val.split(":").map(Number);
-            return h + m / 60;
-        };
-
         const inputs = [];
 
         days.forEach(day => {
@@ -191,7 +178,7 @@ export const editPopup = function (heading) {
                 row.classList.toggle("closed", !isOpen);
             });
 
-            // Checkbox visual and state
+            // Checkbox state change
             checkbox.addEventListener("change", () => {
                 row.classList.toggle("selected", checkbox.checked);
                 statusToggle.disabled= !checkbox.checked
