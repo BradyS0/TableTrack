@@ -43,7 +43,7 @@ async function populateRestaurants(restaurants) {
 
 
 function implementSearch(search,restaurants,mainContainer){
-  search.search.placeholder = 'Search by Restaruant names or tag'
+  search.search.placeholder = 'Search by Restaurant names or tag'
   let restContainer = mainContainer
   search.search.addEventListener('input', async () => {
       if (search.search.value.length >= 2) {
