@@ -29,4 +29,8 @@ jobs:
 
     # Step 5: Run the regression script
     - name: Run regression script
+      env:
+        DB_PASS: ${{ secrets.DBPASS }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_NAME: ${{ secrets.DB_NAME }}
       run: node regression.js
