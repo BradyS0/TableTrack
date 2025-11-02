@@ -1,4 +1,4 @@
-//this file contains any string formatting logic fucntions
+//this file contains any input formatting logic fucntions
 
 
 //generated using gemini -- 
@@ -16,3 +16,19 @@ export function formatPhoneNumber(input){
 
   return formatted
 }
+
+
+// Converts float -> readable HH:MM for input type=time
+export const floatToTime = (f) => {
+    if (!f && f !== 0) return "";
+    const hour = Math.floor(f);
+    const minute = Math.round((f % 1) * 60);
+    return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+};
+
+// Converts back to float
+export const timeToFloat = (val) => {
+    if (!val) return "";
+    const [h, m] = val.split(":").map(Number);
+    return h + m / 60;
+};

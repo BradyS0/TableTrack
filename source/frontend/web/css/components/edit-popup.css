@@ -13,7 +13,7 @@
     gap: 1rem;
     font-family:Arial, Helvetica, sans-serif;
     margin: 1%;
-    top: 25%;
+    top: 15%;
     z-index: 10;
 }
 
@@ -135,4 +135,59 @@
 
 .feedback-fail{
     background: rgba(143, 1, 1, 0.65);
+}
+
+
+/* stuff for schedule editing styles */
+
+.schedule-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 350px;
+  overflow-y: scroll;
+}
+
+
+.schedule-row {
+  display: grid;
+  grid-template-columns: 25px 40px 90px 1fr 1fr;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  background-color: #fafafa71;
+  transition: background-color 0.3s ease, opacity .2s ease;
+  opacity: .35;
+  user-select: none;
+}
+
+.schedule-row.selected {
+  background-color: rgba(255, 209, 169, 0.25);
+  opacity: 1;
+}
+
+
+
+.day-label {
+  font-weight: 500;
+  color: #444;
+}
+
+.time-input {
+  padding: 0.3re;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.day-check {
+  accent-color: rgb(211, 118, 42);
+}
+
+.status-toggle {
+  padding: 0.25rem 0.4rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
 }
