@@ -208,8 +208,11 @@ export const editPopup = function (heading) {
         });
             onSubmit(updated);
         };
-
-        createEditScreen([scheduleContainer], handleSubmit, special);
+        
+        const usabilityMsg = document.createElement('p')
+        usabilityMsg.innerHTML = '<i>Only changes in fields with the checkbox checked will be saved.</i>'
+        setTimeout(()=>{usabilityMsg.remove()}, 6000)
+        createEditScreen([usabilityMsg,scheduleContainer], handleSubmit, special);
     };
 };
     
