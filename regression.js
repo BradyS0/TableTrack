@@ -25,8 +25,8 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
 
     //user unit tests
     if(fileList.includes('source/backend/logic/userLogic.js')
-        || fileList.includes('source/backen/tests/unit/user.test.js')){
-        if(npm_installed == false){
+        || fileList.includes('source/backend/tests/unit/user.test.js')){
+        if(npm_installed === false){
             await cmd('npm install')
             npm_installed = true
         }
@@ -34,8 +34,8 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
     }
     //restaurant unit tests
     if(fileList.includes('source/backend/logic/restaurantLogic.js')
-        || fileList.includes('source/backen/tests/unit/restaurantLogic.test.js')){
-        if(npm_installed == false){
+        || fileList.includes('source/backend/tests/unit/restaurantLogic.test.js')){
+        if(npm_installed === false){
             await cmd('npm install')
             npm_installed = true
         }
@@ -52,15 +52,15 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
         || fileList.includes('source/backend/docker-compose.test.yml')
         || fileList.includes('source/backend/models/User.js')){
 
-        if(npm_installed == false){
+        if(npm_installed === false){
             await cmd('npm install')
             npm_installed = true
         }
-        if(db_running == false){
+        if(db_running === false){
             await cmd('docker-compose -f source/backend/docker-compose.test.yml up -d');
             db_running = true;
         }
-        await cmd('npx jest --config=source/backend/jest.integration.config.js --testPathPatterns=tests/integration/user.test.js');
+        await cmd('npx jest --config=source/backend/jest.integration.config.js --testPathPatterns=source/backend/tests/integration/user.test.js');
     }
     // restaurant integration tests
     if(fileList.includes("source/backend/routes/restaurantRouter.js") 
@@ -73,19 +73,19 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
     || fileList.includes('source/backend/docker-compose.test.yml')
     || fileList.includes('source/backend/models/Restaurant.js')){
 
-        if(npm_installed == false){
+        if(npm_installed === false){
             await cmd('npm install')
             npm_installed = true
         }
-        if(db_running == false){
+        if(db_running === false){
             await cmd('docker-compose -f source/backend/docker-compose.test.yml up -d');
             db_running = true;
         }
-        await cmd('npx jest --config=source/backend/jest.integration.config.js --testPathPatterns=tests/integration/restaurantIntegration.test.js');
+        await cmd('npx jest --config=source/backend/jest.integration.config.js --testPathPatterns=source/backend/tests/integration/restaurantIntegration.test.js');
 
     }
 
-    if(db_running){
+    if(db_running === true){
         await cmd('docker-compose -f source/backend/docker-compose.test.yml down -v');
         db_running = false;
     }
