@@ -55,21 +55,21 @@ test("validate_schedule: overfull", () => {
 
 test("parse_schedule: normal", () => {
     const parsed = ScheduleLogic.parse_schedule(schedule_normal);
-    expect((parsed[0])[0]).toBe(0.0);
-    expect((parsed[1])[0]).toBe(8.5);
-    expect((parsed[2])[0]).toBe(8.5);
+    expect((parsed[0])[0]).toEqual(0.0);
+    expect((parsed[1])[0]).toEqual(8.5);
+    expect((parsed[2])[0]).toEqual(8.5);
 });
 
 test("parse_schedule: no days", () => {
     const parsed = ScheduleLogic.parse_schedule(schedule_no_days);
-    expect((parsed[0])[0]).toBe(0.0);
-    expect((parsed[1])[0]).toBe(0.0);
-    expect((parsed[1])[0]).toBe(0.0);
+    expect((parsed[0])[0]).toEqual(0.0);
+    expect((parsed[1])[0]).toEqual(0.0);
+    expect((parsed[1])[0]).toEqual(0.0);
 });
 
 test("parse_schedule: bad day", () => {
     const parsed = ScheduleLogic.parse_schedule(schedule_normal);
-    expect((parsed[0])[0]).toBe(0.0);
-    expect((parsed[1])[0]).toBe(8.5);
-    expect((parsed[2])[0]).toBe(0.0);
+    expect((parsed[0])[0]).toEqual(0.0);
+    expect((parsed[1])[0]).toEqual(8.5);
+    expect((parsed[2])[0]).toEqual(0.0);
 });

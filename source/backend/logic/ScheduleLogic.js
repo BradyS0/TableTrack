@@ -32,13 +32,13 @@ function parse_schedule(input)
 
     // Get each day from schedule
     var days = [];
-    days.push(json.sunday);
-    days.push(json.monday);
-    days.push(json.tuesday);
-    days.push(json.wednesday);
-    days.push(json.thursday);
-    days.push(json.friday);
-    days.push(json.saturday);
+    days.push(json["sunday"]);
+    days.push(json["monday"]);
+    days.push(json["tuesday"]);
+    days.push(json["wednesday"]);
+    days.push(json["thursday"]);
+    days.push(json["friday"]);
+    days.push(json["saturday"]);
 
     // Loop through days and add to schedule
     var schedule = [];
@@ -48,7 +48,7 @@ function parse_schedule(input)
         if (days[i] === undefined) schedule.push([0.0, 0.0]);
         
         // CASE 2: Defined, Set to given schedule
-        else schedule.push(days[i].open, days[i].close);
+        else schedule.push([(days[i])["open"], (days[i])["close"]]);
     }
     return schedule;
 }
