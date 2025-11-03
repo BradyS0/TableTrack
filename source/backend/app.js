@@ -10,5 +10,6 @@ app.use(cors());
 app.use(express.json());
 app.use("/v1/user", userRouter);
 app.use("/v1/restaurant", restaurantRouter);
+app.use("/v1/menu", menuRouter)
 
 export { app };
