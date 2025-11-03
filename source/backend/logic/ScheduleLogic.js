@@ -28,7 +28,7 @@ function validate_schedule(input)
 // Convert json schedule to array
 function parse_schedule(input)
 {
-    var json = JSON.parse(input)
+    var json = (JSON.parse(input))["schedule"];
 
     // Get each day from schedule
     var days = [];
