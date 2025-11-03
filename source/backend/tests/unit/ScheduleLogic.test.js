@@ -68,7 +68,7 @@ test("parse_schedule: no days", () => {
 });
 
 test("parse_schedule: bad day", () => {
-    const parsed = ScheduleLogic.parse_schedule(schedule_normal);
+    const parsed = ScheduleLogic.parse_schedule(schedule_bad_day);
     expect((parsed[0])[0]).toEqual(0.0);
     expect((parsed[1])[0]).toEqual(8.5);
     expect((parsed[2])[0]).toEqual(0.0);
