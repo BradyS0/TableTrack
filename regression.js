@@ -18,7 +18,7 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
       return;
     }
     fileList = data.split('\n');
-    console.log(fileList);
+    // console.log(fileList);
 
     let npm_installed = false;
     let db_running = false;
