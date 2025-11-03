@@ -76,15 +76,17 @@ function validate_hours(hours) {
 function validate_tags(tags){
     const MIN_LEN = 3
     const MAX_LEN = 30
-    //regex only accepts hyphens and alphabets
-    const tags_regex = "^[A-Za-z-]+$" 
+    //regex only accepts hyphens and alphabets , cannopt start or end with a hyphen
+    const tags_regex = /^[A-Za-z]+(?:-[A-Za-z]+)*$/
 
     if(!Array.isArray(tags))
         return false
 
-    const regex = new RegExp(tags_regex)
-    const isValid = tags.every(tag => tag.length>=MIN_LEN &&
-        tag.length<=MAX_LEN && regex.test(tag));
+    const isValid = tags.every(tag =>
+        typeof(tag) === 'string' && 
+        tag.length>=MIN_LEN &&
+        tag.length<=MAX_LEN && 
+        tags_regex.test(tag));
 
     return isValid
 }

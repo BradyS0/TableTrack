@@ -10,7 +10,7 @@ export const Restaurant = sequelize.define("Restaurant", {
     name:        { type: DataTypes.STRING,  allowNull: false },
     address:     { type: DataTypes.STRING,  allowNull: false, unique: true },
     phone_num:   { type: DataTypes.STRING,  allowNull: false, unique: true },
-    tags:        { type: DataTypes.ARRAY(DataTypes.STRING), allowNull:false, defaultValue: []},
+    tags:        { type: DataTypes.ARRAY(DataTypes.STRING),  defaultValue: ["no-tags-created"]},
     description: { type: DataTypes.TEXT },
     open_hours:  { type: DataTypes.TEXT },
     logo:        { type: DataTypes.STRING }, // Filepath to image

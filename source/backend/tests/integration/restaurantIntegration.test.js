@@ -163,10 +163,12 @@ describe("Restaurant API", () => {
             userID:  user2id,
             name:    "Burger Queen",
             address: "100 Burger street",
-            phone:   "(204) 234-5678"
+            phone:   "(204) 234-5678",
+            tags: ['new-restaurant','tester']
         });
         expect(res.statusCode).toBe(201);
         expect(res.body.name).toBe("Burger Queen");
+        expect(res.body.tags).toBe(['new-restaurant','tester'])
     });
 
     // -------------------------------------------------- PATCH /restaurant/description
@@ -201,7 +203,60 @@ describe("Restaurant API", () => {
         });
         expect(res.statusCode).toBe(404);
     });
+
+
+    // -------------------------------------------------- PATCH /restaurant/tags
+    it("Change Restaurant tags - valid", async () => {
+        const test_tag =["food", "vegan", "dessert", 'valid-tag']
+        const res = await request(app)
+        .patch("/v1/restaurant/tags")
+        .send({
+            restID: rest1id,
+            tags: test_tag
+        });
+        expect(res.statusCode).toBe(200);
+        expect(res.body.description).toBe(test_tag);
+    });
+
+    it("Clearing Restaurant tags - valid", async () => {
+        const test_tag =[]
+        const res = await request(app)
+        .patch("/v1/restaurant/tags")
+        .send({
+            restID: rest1id,
+            tags: test_tag
+        });
+        expect(res.statusCode).toBe(200);
+        expect(res.body.description).toBe(test_tag);
+    });
+
+    it("Restaurant tags - invalid, undefined value", async () => {
+        const test_tag = undefined
+        const res = await request(app)
+        .patch("/v1/restaurant/tags")
+        .send({
+            restID: rest1id,
+            tags: test_tag
+        });
+        expect(res.statusCode).toBe(406);
+        expect(res.body.error).toBe("Tags are expected as Arrays of strings but [object Undefined] provided");
+    });
+
+    it("Restaurant tags - invalid value", async () => {
+        const test_tag = ["hello", "fai1ed-test"]
+        const res = await request(app)
+        .patch("/v1/restaurant/tags")
+        .send({
+            restID: rest1id,
+            tags: test_tag
+        });
+        expect(res.statusCode).toBe(400);
+        expect(res.body.error).toBe("invalid syntax, only alphabets and hyphen accepted between 3-30 characters long");
+    });
+
 });
+
+
 
 
 

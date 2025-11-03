@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
             res.status(400).json({ error: "Invalid address" });
         else if ( !RestaurantLogic.validate_phone(phone) )
             res.status(400).json({ error: "Invalid phone" })
-        else if ( !RestaurantLogic.validate_tags(tags))
+        else if (tags && !RestaurantLogic.validate_tags(tags))
             res.status(400).json({error: "invalid syntax for tags only aplphabets allowed"})
         else
         {
@@ -116,7 +116,8 @@ router.patch("/tags", async (req, res) => {
             else
             {
                 // Update the restaurants value
-                await rest.update({tags})
+                let input = tags.length===0 || !tags ? [] : tags
+                await rest.update({tags:input})
 
                 //return the updated restaurant
                 return res.status(200).json(rest);
