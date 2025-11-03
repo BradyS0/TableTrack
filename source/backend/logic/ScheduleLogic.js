@@ -14,7 +14,7 @@ function validate_schedule(input)
 {
     // Create regular expression to check formatting of the schedule
     const day_regex  = "(sunday|monday|tuesday|wednesday|thursday|friday|saturday)";
-    const time_regex = "([0-9]{1}\.[0-9]{2}|1[0-9]{1}\.[0-9]{2}|2[0-3]{1}\.[0-9]{1}|24\.00)";
+    const time_regex = "([0-9]{1}\\.[0-9]{2}|1[0-9]{1}\\.[0-9]{2}|2[0-3]{1}\\.[0-9]{1}|24\\.00)";
     const line_regex = "\""+day_regex+"\":\\{\"open\":"+time_regex+", \"close\":"+time_regex+"\\}";
     const list_regex = "\\{\"schedule\":\\{("+line_regex+"(, ){0,1}){0,7}\\}\\}";
 
@@ -52,5 +52,12 @@ function parse_schedule(input)
 }
 
 
+
+export default
+{
+    check_open,
+    validate_schedule,
+    parse_schedule
+};
 
 
