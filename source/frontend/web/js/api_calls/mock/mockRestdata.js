@@ -97,24 +97,37 @@ export function restById (id){
     return restaurants[id-1];
 }
 
+const menus = {
+  1: [
+    { itemID: 1, name: "Margherita Pizza", price: 14.99, description: "Classic with basil and mozzarella", category: "Pizza" },
+    { itemID: 2, name: "Spaghetti Carbonara", price: 12.50, description: "Creamy pasta", category: "Pasta" },
+    { itemID: 3, name: "Tiramisu", price: 7.50, description: "Dessert", category: "Desserts" },
+    { itemID: 4, name: "Garlic Bread", price: 4.99, description: "Toasted side dish", category: "Sides" }
+  ],
+  2: [],
+  3: [],
+  4: []
+};
+
+
 export async function getMenuItems(restID) {
-  return {
-    code: 200,
-    data: [
-      { itemID: 1, name: "Margherita Pizza", price: 14.99, description: "Classic with basil and mozzarella" },
-      { itemID: 2, name: "Spaghetti Carbonara", price: 12.50, description: "Creamy sauce with pancetta" },
-      { itemID: 3, name: "Tiramisu", price: 7.50, description: "Coffee-soaked ladyfingers with mascarpone" }
-    ]
-  };
+  const data = menus[restID] || [];
+  return { code: 200, data };
 }
 
 export async function addMenuItem(restID, userID, item) {
-  console.log("Adding item:", item);
+  const newItem = { ...item, itemID: Date.now() };
+  if (!menus[restID]) menus[restID] = [];
+  menus[restID].push(newItem);
+  console.log(`Added to restaurant ${restID}:`, newItem);
   return { code: 200, message: `Item '${item.name}' added successfully!` };
 }
 
 export async function deleteMenuItem(restID, userID, itemID) {
-  console.log("Deleting item:", itemID);
-  return { code: 200, message: `Item #${itemID} deleted successfully!` };
+  const id = parseInt(itemID);
+  if (menus[restID]) {
+    menus[restID] = menus[restID].filter(i => i.itemID !== id);
+    console.log(`Deleted item ID ${id} from restaurant ${restID}`);
+  }
+  return { code: 200, message: `Item #${id} deleted successfully!` };
 }
-

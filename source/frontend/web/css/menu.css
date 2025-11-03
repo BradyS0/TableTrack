@@ -1,150 +1,248 @@
-#owner-menu,
-.menu-list {
-  margin: 2rem auto;
-  padding: 2rem;
-  max-width: 800px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-}
 
-/* Section title */
-#owner-menu h2,
-#restaurant-content h2 {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: #222;
-  text-align: center;
-}
-
-/* Public menu items */
-.menu-list {
-  list-style: none;
-  padding: 0;
-}
-
-.menu-list li {
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #eee;
-  transition: background 0.2s ease;
-}
-
-.menu-list li:hover {
-  background-color: #f9f9f9;
-}
-
-.menu-list h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.3rem;
-}
-
-.menu-list p {
-  font-size: 0.95rem;
-  color: #666;
-  margin-bottom: 0.4rem;
-}
-
-.menu-list strong {
-  color: #2e7d32;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.owner-menu-list {
-  list-style: none;
-  margin: 1rem 0 2rem 0;
-  padding: 0;
-}
-
-.owner-menu-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.9rem 1.2rem;
-  border-bottom: 1px solid #eee;
-}
-
-.owner-menu-list li span {
-  flex: 1;
-  margin-left: 1rem;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.owner-menu-list li button.delete-item {
-  background: #ff5252;
-  border: none;
-  color: #fff;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.owner-menu-list li button.delete-item:hover {
-  background: #d32f2f;
-}
-
-.menu-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  padding-top: 1rem;
-  border-top: 1px solid #eee;
-}
-
-.menu-form h3 {
-  font-size: 1.2rem;
-  margin-bottom: 0.2rem;
-  color: #333;
-}
-
-.menu-form input {
-  padding: 0.7rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-.menu-form input:focus {
-  border-color: #2e7d32;
-}
-
-.menu-form .btn {
-  background: #2e7d32;
-  color: #fff;
-  border: none;
-  padding: 0.7rem 1rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.menu-form .btn:hover {
-  background: #1b5e20;
-}
-
-@media (max-width: 600px) {
-  #owner-menu,
-  .menu-list {
-    padding: 1.2rem;
-  }
-
-  .owner-menu-list li {
+#restaurant-content {
+    margin-top: 1.5rem;
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    gap: 2.5rem;
+    padding-bottom: 2rem;
+  }
+  
+  
+  .menu-category {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 1rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem 2rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .menu-category:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  /* Category header */
+  .menu-category h3 {
+    font-size: 1.4rem;
+    color: #2e2e2e;
+    border-left: 4px solid #eec05c;
+    padding-left: 0.75rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  
+  /* List container inside category */
+  .menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.2rem;
+  }
+  
+  /* Individual item card */
+  .menu-list li {
+    background: #ffffff;
+    border-radius: 0.75rem;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.25s ease, transform 0.2s ease;
+  }
+  
+  .menu-list li:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+  
+  /* Item title */
+  .menu-list h4 {
+    font-size: 1.1rem;
+    color: #1a1a1a;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+  
+  /* Item description */
+  .menu-list p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  
+  /* Price styling */
+  .menu-list strong {
+    color: #2e7d32;
+    font-size: 1rem;
+    font-weight: 600;
   }
 
-  .owner-menu-list li button.delete-item {
-    align-self: flex-end;
+  
+  /* ============================
+   OWNER MENU (Manager View)
+   ============================ */
+
+#owner-menu {
+    margin-top: 2rem;
+    background: transparent;
+    max-width: 1000px;
+    font-family: 'Inter', system-ui, sans-serif;
   }
-}
+  
+  #owner-menu h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #222;
+    border-bottom: 2px solid #eec05c;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.3rem;
+  }
+  
+  /* ============================
+     MENU LIST
+     ============================ */
+  
+  .owner-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .owner-menu-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 0.9rem 1.3rem;
+    transition: all 0.2s ease;
+  }
+  
+  .owner-menu-list li:hover {
+    border-color: #eec05c;
+    background: #fffdf3;
+  }
+  
+  .owner-menu-list b {
+    font-weight: 600;
+    color: #333;
+    font-size: 1rem;
+  }
+  
+  .owner-menu-list span {
+    flex: 1;
+    margin: 0 1rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .owner-menu-list .price {
+    color: #2e7d32;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-right: 1rem;
+  }
+  
+  /* Action buttons */
+  .owner-menu-list .delete-item {
+    border: none;
+    background: transparent;
+    color: #d9534f;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  
+  .owner-menu-list .delete-item:hover {
+    color: #b22222;
+    text-decoration: underline;
+  }
+  
+  /* ============================
+     ADD MENU FORM
+     ============================ */
+  
+  .menu-form {
+    display: flex;
+    flex-direction: column;
+    background: #fafafa;
+    border: 1px solid #e4e4e4;
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+  
+  .menu-form h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+    border-left: 4px solid #eec05c;
+    padding-left: 0.6rem;
+  }
+  
+  .menu-form input {
+    padding: 0.8rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    margin-bottom: 0.9rem;
+    transition: border-color 0.2s ease;
+  }
+  
+  .menu-form input:focus {
+    border-color: #eec05c;
+    outline: none;
+    background: #fffef8;
+  }
+  
+  /* Add button */
+  .menu-form .btn {
+    align-self: flex-end;
+    width: fit-content;
+    background: #eec05c;
+    color: #000;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  
+  .menu-form .btn:hover {
+    background: #f2d58a;
+    transform: translateY(-1px);
+  }
+  
+  @media (max-width: 700px) {
+    #owner-menu {
+      padding: 0 1rem;
+    }
+  
+    .owner-menu-list li {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.4rem;
+    }
+  
+    .owner-menu-list span {
+      margin: 0;
+    }
+  
+    .menu-form {
+      padding: 1rem;
+    }
+  
+    .menu-form .btn {
+      width: 100%;
+    }
+  }
+  

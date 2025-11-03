@@ -22,7 +22,10 @@ export async function loadRestaurant(restID){
     }else{
       app.append(createRestaurantInfo({}));
     }
-    await loadPublicMenu(restID);
+    if (!window.location.pathname.includes("restaurantManagement")) {
+      await loadPublicMenu(restID);
+    }
+    
 }
 
 function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], rating, address, hours, phone}) {

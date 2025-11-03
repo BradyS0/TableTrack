@@ -14,10 +14,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (reservationBtn && reservationBtn.parentElement) {
       reservationBtn.parentElement.removeChild(reservationBtn);
     }
-    reservationBtn.parentElement.removeChild(reservationBtn);
 
     loadEditableFields(owner);
-    await loadOwnerMenu(owner);
+    // Wait a short moment before loading owner menu
+    setTimeout(() => loadOwnerMenu(owner), 200);
   }
   //load edit icons
 });
