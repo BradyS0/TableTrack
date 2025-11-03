@@ -16,7 +16,7 @@ The name of the menu item to be added. (1 - _ characters)
 The price of the menu item. ()
 
 #### **description** (*String*) 
-A description of the menu item. (1 - 200 characters)
+A description of the menu item. (0 - 200 characters)
 
 #### **category** (*String*)
 A category of the menu item. (1 - 20 characters)
@@ -25,7 +25,7 @@ A category of the menu item. (1 - 20 characters)
 
 #### 201: Menu Item created successfully.
 Returns the created menu item:
-{ restID: (*Int*), itemID: (*Int*), name: (*String*), price(*Int*), description (*String*)}
+{ itemID: (*Int*), restID: (*Int*), itemID: (*Int*), name: (*String*), price(*Int*), description (*String*)}
 
 #### 400: Invalid parameters, menu item was not created.
 #### 404: Restaurant cannot be found.
@@ -43,7 +43,7 @@ Returns the list of menu items of the restaurant.
 { menuItems: []}
 #### 404: Restaurant cannot be found
 
-## GET v1/menu/{restID}/{itemID}
+## GET v1/menu/{restID}/
 Get a single menu item
 
 ### Parameters:
@@ -58,9 +58,9 @@ The ID of the specified menu item.
 Returns the specified menu item.
 { itemID: (*Int*) }
 #### 400: Invalid item in request
-#### 404: Menu item cannot be found
+#### 404: Restaurant cannot be found
 
-## PATCH /v1/menu/{restID}/{itemID}/change/name
+## PATCH /v1/menu/{restID}/change/name
 Update the name of the menu item.
 
 ### Parameters:
@@ -81,7 +81,7 @@ The new name of the menu item.
 
 #### 404: item not found
 
-## PATCH /v1/menu/{restID}/{itemID}/change/price
+## PATCH /v1/menu/{restID}/change/price
 Update the price of the menu item.
 
 ### Parameters:
@@ -102,7 +102,7 @@ New price of the menu item.
 
 #### 404: item not found
 
-## PATCH /v1/menu/{restID}/{itemID}/change/description
+## PATCH /v1/menu/{restID}/change/description
 Update the description of the menu item.
 
 ### Parameters:
@@ -123,7 +123,7 @@ The new description of the menu item.
 
 #### 404: item not found
 
-## PATCH /v1/menu/{restID}/{itemID}/change/category
+## PATCH /v1/menu/{restID}/change/category
 Update the category of the menu item.
 
 ### Parameters:
@@ -156,8 +156,6 @@ The ID of the restaurant the menu item belongs to.
 The ID of the specified menu item.
 
 ### Responses:
-#### 200: success
-
-#### 400: invalid item
+#### 204: success
 
 #### 404: item not found
