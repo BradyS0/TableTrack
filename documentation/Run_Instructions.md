@@ -20,4 +20,3 @@ DB_PASS=testpassword
   - npm run local:dev:start
   - npm run local:dev:test
   - npm run local:dev:stop
-1
