@@ -45,7 +45,7 @@ function parse_schedule(input)
     for (var i = 0; i < days.length; i++)
     {
         // CASE 1: Undefined, no schedule given
-        if (days[i] === undefined) schedule.push([0.0, 0.0]);
+        if (days[i] === undefined) schedule.push([-1.0, -1.0]);
         
         // CASE 2: Defined, Set to given schedule
         else schedule.push([(days[i])["open"], (days[i])["close"]]);
