@@ -13,13 +13,15 @@ const router = express.Router();
 router.post("/", async (req, res) => {
     try {
         // Retrieve and validate information from body
-        const { userID, name, address, phone, } = req.body;
+        const { userID, name, address, phone, tags } = req.body;
         if ( !RestaurantLogic.validate_name(name) )
             res.status(400).json({ error: "Invalid name" });
         else if ( !RestaurantLogic.validate_address(address) )
             res.status(400).json({ error: "Invalid address" });
         else if ( !RestaurantLogic.validate_phone(phone) )
             res.status(400).json({ error: "Invalid phone" })
+        else if ( !RestaurantLogic.validate_tags(tags))
+            res.status(400).json({error: "invalid syntax for tags only aplphabets allowed"})
         else
         {
             // Check that owner of restaurant exists
@@ -40,11 +42,11 @@ router.post("/", async (req, res) => {
                         name: name,
                         address: address,
                         phone_num: phone,
+                        tags : tags,
                         description: "",
                         open_hours: "",
                         logo: ""
                     });
-                    new_restaurant.tags = ["temp_tag"]; // <---------- REMOVE ONCE TAGS HAVE BEEN ADDED
                     res.status(201).json(new_restaurant);
                 }
             }
@@ -84,7 +86,6 @@ router.patch("/description", async (req, res) => {
 
                 // Return the updated restaurant
                 var upd_restaurant = await Restaurant.findByPk(parseInt(restID));
-                upd_restaurant.tags = ["temp_tag"]; // <---------- REMOVE ONCE TAGS HAVE BEEN ADDED
                 res.status(200).json(upd_restaurant);
             }
         }
@@ -95,6 +96,38 @@ router.patch("/description", async (req, res) => {
     }
 });
 
+// PATCH /restaurant/tags
+// Edit tags of a restaurant
+router.patch("/tags", async (req, res) => {
+    try {
+        // Retrieve and validate information from body
+        const { restID, tags, } = req.body;
+        if ( !Array.isArray(tags) )
+            res.status(406).json({ error: `Tags are expected as Arrays of strings but ${Object.prototype.toString.call(tags)} provided` });
+        else if(!RestaurantLogic.validate_tags(tags)){
+            res.status(400).json({error: 'invalid syntax, only alphabets and hyphen accepted between 3-30 characters long'})
+        }
+        else
+        {
+            // Check that restaurant exists
+            const rest = await Restaurant.findByPk(parseInt(restID));
+            if (!rest)
+                res.status(404).json({ error: "Restaurant cannot be found" });
+            else
+            {
+                // Update the restaurants value
+                await rest.update({tags})
+
+                //return the updated restaurant
+                return res.status(200).json(rest);
+            }
+        }
+    }
+    catch (err) {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
 
 
 // ================================================================================ GET
@@ -110,8 +143,6 @@ router.get("/", async (req, res) => {
         var rest_list = { restaurants: [] };
         for (const rest of db_restaurants)
         {
-            // Add tags, then add to list
-            rest.tags = ["temp_tag"]; // <---------- REMOVE ONCE TAGS HAVE BEEN ADDED
             rest_list.restaurants.push(rest);
         }
         // Return result
@@ -136,7 +167,6 @@ router.get("/:id", async (req, res) => {
         if (restaurant == null)
             res.status(404).json({ error: "Restaurant not found" });
         else {
-            restaurant.tags = ["temp_tag"]; // <---------- REMOVE ONCE TAGS HAVE BEEN ADDED
             res.status(200).json(restaurant);
         }
     }
@@ -160,7 +190,6 @@ router.get("/user/:id", async (req, res) => {
         if (restaurant === null)
             res.status(404).json({ error: "Restaurant not found" });
         else {
-            restaurant.tags = ["temp_tag"]; // <---------- REMOVE ONCE TAGS HAVE BEEN ADDED
             res.status(200).json(restaurant);
         }
     }
@@ -204,7 +233,6 @@ router.patch("/change", async (req, res) => {
                     },
                 },);
                 var new_restaurant = await Restaurant.findByPk(parseInt(restID));
-                new_restaurant.tags = ["temp_tag"]; // <---------- REMOVE ONCE TAGS HAVE BEEN ADDED
                 res.status(200).json(new_restaurant);
             }
         }

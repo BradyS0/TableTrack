@@ -73,6 +73,22 @@ function validate_hours(hours) {
     return regex.test(hours);
 }
 
+function validate_tags(tags){
+    const MIN_LEN = 3
+    const MAX_LEN = 30
+    //regex only accepts hyphens and alphabets
+    const tags_regex = "^[A-Za-z-]+$" 
+
+    if(!Array.isArray(tags))
+        return false
+
+    const regex = new RegExp(tags_regex)
+    const isValid = tags.every(tag => tag.length>=MIN_LEN &&
+        tag.length<=MAX_LEN && regex.test(tag));
+
+    return isValid
+}
+
 
 
 // Export functions
@@ -81,5 +97,6 @@ export default {
     validate_phone,
     validate_name,
     validate_description,
-    validate_hours
+    validate_hours,
+    validate_tags
 };
