@@ -168,7 +168,7 @@ describe("Restaurant API", () => {
         });
         expect(res.statusCode).toBe(201);
         expect(res.body.name).toBe("Burger Queen");
-        expect(res.body.tags).toBe(['new-restaurant','tester'])
+        expect(res.body.tags).toStrictEqual(['new-restaurant','tester'])
     });
 
     // -------------------------------------------------- PATCH /restaurant/description
@@ -215,7 +215,7 @@ describe("Restaurant API", () => {
             tags: test_tag
         });
         expect(res.statusCode).toBe(200);
-        expect(res.body.tags).toBe(test_tag);
+        expect(res.body.tags).toStrictEqual(test_tag);
     });
 
     it("Clearing Restaurant tags - valid", async () => {
@@ -227,7 +227,7 @@ describe("Restaurant API", () => {
             tags: test_tag
         });
         expect(res.statusCode).toBe(200);
-        expect(res.body.tags).toBe(test_tag);
+        expect(res.body.tags).toStrictEqual(test_tag);
     });
 
     it("Restaurant tags - invalid, undefined value", async () => {
