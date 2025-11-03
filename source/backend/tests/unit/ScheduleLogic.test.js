@@ -4,7 +4,7 @@ import ScheduleLogic from '../../logic/ScheduleLogic.js';
 const schedule_normal   = "{\"schedule\":{\"monday\":{\"open\":8.5, \"close\":20.0}, \"tuesday\":{\"open\":8.5, \"close\":20.0}}}";
 const schedule_no_days  = "{\"schedule\":{}}";
 const schedule_bad_day  = "{\"schedule\":{\"monday\":{\"open\":8.5, \"close\":20.0}, \"badday\":{\"open\":8.5, \"close\":20.0}}}";
-const schedule_overfull = "{\"schedule\":{\"sunday\":{\"open\":8.5, \"close\":20.0}, \"monday\":{\"open\":8.5, \"close\":20.0}, \"tuesday\":{\"open\":8.5, \"close\":20.0}, \"wednesday\":{\"open\":8.5, \"close\":20.0}, \"thursday\":{\"open\":8.5, \"close\":20.0}, \"friday\":{\"open\":8.5, \"close\":20.0}, \"saturday\":{\"open\":8.5, \"close\":20.0}, \"extraday\":{\"open\":8.5, \"close\":20.0}, }}";
+const schedule_overfull = "{\"schedule\":{\"sunday\":{\"open\":8.5, \"close\":20.0}, \"monday\":{\"open\":8.5, \"close\":20.0}, \"tuesday\":{\"open\":8.5, \"close\":20.0}, \"wednesday\":{\"open\":8.5, \"close\":20.0}, \"thursday\":{\"open\":8.5, \"close\":20.0}, \"friday\":{\"open\":8.5, \"close\":20.0}, \"saturday\":{\"open\":8.5, \"close\":20.0}, \"sunday\":{\"open\":8.5, \"close\":20.0}, }}";
 
 
 
@@ -41,12 +41,12 @@ test("validate_schedule: no days", () => {
 
 test("validate_schedule: bad day", () => {
     const valid = ScheduleLogic.validate_schedule(schedule_bad_day);
-    expect(valid).toBe(true);
+    expect(valid).toBe(false);
 });
 
 test("validate_schedule: overfull", () => {
     const valid = ScheduleLogic.validate_schedule(schedule_overfull);
-    expect(valid).toBe(true);
+    expect(valid).toBe(false);
 });
 
 
