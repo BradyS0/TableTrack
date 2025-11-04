@@ -8,7 +8,7 @@
         +---api_calls   # holds code for api adapters to be used by front-end
         |   +---live  # adapters that make call to backend
         |   \---mock  # mimics backend messages used primarily to test layouts and design
-        +---components  # logic to dynamically create reuable dom components
+        +---components  # logic to dynamically create reusable dom components
         +---logic   #contains reusable logic
         \---pages # logic for a specific page goes here (index,userProfile etc.)
 ```
