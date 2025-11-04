@@ -2,7 +2,7 @@
 
 ```bash
 \---backend
-    +---logic # conatins all logic code used in routes, one file for each route
+    +---logic # contains all logic code used in routes, one file for each route
     +---models # contains Sequelize model definitions
     +---routes # contains api route files, where all backend components come together
     \---tests
