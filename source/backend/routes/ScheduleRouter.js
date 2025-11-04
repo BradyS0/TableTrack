@@ -23,9 +23,9 @@ router.put("/", async (req, res) => {
 
         // Parse days into easier to use format
         var parsed = null;
-        try { parsed = ScheduleLogic.parse_schedule(schedule);
-        } catch { res.status(400).json({ error: "Invalid schedule format" });
-        } if (parsed != null) {
+        try { parsed = ScheduleLogic.parse_schedule(schedule); } catch {}
+        if (parsed == null) res.status(400).json({ error: "Invalid schedule format" });
+        else {
 
             // Update all days specified by request
             for (var i = 0; i < 7; i++)
