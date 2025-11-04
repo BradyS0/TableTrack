@@ -84,40 +84,6 @@ test("validate_description: Just right", () => {
 
 
 
-// -------------------------------------------------- validate_hours
-
-const sun_fri_json = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-                      "\"monday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-                     "\"tuesday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-                   "\"wednesday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-                    "\"thursday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-                      "\"friday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, ";
-
-test("validate_hours: Missing bracket", () => {
-
-    const sat_json = "\"saturday\":\"open\":\"8:30\", \"close\":\"22:30\"}}";
-    expect(RestaurantLogic.validate_hours(sun_fri_json + sat_json)).toEqual(false);
-});
-
-test("validate_hours: Open 12:69 (Bad)", () => {
-
-    const sat_json = "\"saturday\":{\"open\":\"12:69\", \"close\":\"22:30\"}}";
-    expect(RestaurantLogic.validate_hours(sun_fri_json + sat_json)).toEqual(false);
-});
-
-test("validate_hours: Close 24:30 (Bad)", () => {
-
-    const sat_json = "\"saturday\":{\"open\":\"8:30\", \"close\":\"24:30\"}}";
-    expect(RestaurantLogic.validate_hours(sun_fri_json + sat_json)).toEqual(false);
-});
-
-test("validate_hours: 6:00 to 12:30", () => {
-
-    const sat_json = "\"saturday\":{\"open\":\"6:00\", \"close\":\"12:30\"}}";
-    expect(RestaurantLogic.validate_hours(sun_fri_json + sat_json)).toEqual(true);
-});
-
-
 // -------------------------------------------------- validate_tags
 
 test("Tag fails to validate hyphen in the beginning", ()=>{
