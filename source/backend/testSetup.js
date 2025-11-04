@@ -4,6 +4,7 @@ import sequelize from './db.js';
 import { User } from "./models/User.js";
 import { Restaurant } from "./models/Restaurant.js";
 import Schedule from "./models/Schedule.js";
+import { MenuItem } from './models/MenuItem.js';
 
 // Load environment variables from .env.test
 dotenv.config({ path: './.env' });
@@ -51,6 +52,14 @@ beforeAll(async () => {
         await Schedule.set_day(rest1.restID, 0, 0.0, 24.0); // Always open Sunday
         await Schedule.set_day(rest1.restID, 1, 0.0, 0.0);  // Always closed Monday
 
+        console.log("[TEST SETUP] Creating test menu item");
+        await MenuItem.create({
+            restID:         parseInt(rest1.restID),
+            name:           "TestItem",
+            price:          "1.00",
+            description:    "Test Description",
+            category:       "Test Category"
+        });
         //for future use
         // console.log('[TEST SETUP] Running migrations...');
         // If you're using Sequelize migrations, you can run them here
