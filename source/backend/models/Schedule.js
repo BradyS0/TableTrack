@@ -51,6 +51,7 @@ async function del_day(restID, day)
         restID: parseInt(restID),
         day:    parseInt(day),
     }});
+    return 0;
 }
 
 // Query: Get the opening hour
