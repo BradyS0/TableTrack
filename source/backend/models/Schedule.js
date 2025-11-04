@@ -26,15 +26,15 @@ async function set_day(restID, day, open, close)
         new_day = await Schedule.create({
             restID: parseInt(restID),
             day:    parseInt(day),
-            open:   parseInt(open),
-            close:  parseInt(close),
+            open:   parseFloat(open),
+            close:  parseFloat(close),
         });
     }
     else // ------------ CASE 2: Schedule already exists -> update day
     {
         new_day = await Schedule.update({
-            open:  parseInt(open),
-            close: parseInt(close),
+            open:  parseFloat(open),
+            close: parseFloat(close),
         },{ where: {
             restID: parseInt(restID),
             day:    parseInt(day),
