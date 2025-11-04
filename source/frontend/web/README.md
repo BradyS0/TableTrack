@@ -3,7 +3,7 @@
 \---web
     +---assets  # stores shared assets mainly images/svg to be used by the frontend
     +---css   # all frontend styles go here
-    |   \---components  # styles for individual componenets goes here
+    |   \---components  # styles for individual components goes here
     \---js  
         +---api_calls   # holds code for api adapters to be used by front-end
         |   +---live  # adapters that make call to backend
