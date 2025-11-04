@@ -38,7 +38,6 @@ function parse_schedule(input)
 export default
 {
     check_open,
-    validate_schedule,
     parse_schedule
 };
 
