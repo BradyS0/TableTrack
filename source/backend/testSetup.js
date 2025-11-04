@@ -60,6 +60,14 @@ beforeAll(async () => {
             description:    "Test Description",
             category:       "Test Category"
         });
+
+        await MenuItem.create({
+            restID: rest1.restID,
+            name: "To Delete",
+            price: "0",
+            description: "To Delete",
+            category: "To Delete"
+        });
         //for future use
         // console.log('[TEST SETUP] Running migrations...');
         // If you're using Sequelize migrations, you can run them here

@@ -1,7 +1,6 @@
 
 import request from "supertest";
 import { app } from "../../app.js";
-import { MenuItem } from "../../models/MenuItem.js";
 
 const restID = 1;
 const itemID = 1;
@@ -319,14 +318,7 @@ describe("Menu Item API", () => {
     // ================================================================================ DELETE
     // valid case
     it("delete, valid", async () => {
-        const toDelete = await MenuItem.create({
-            restID: restID,
-            name: "To Delete",
-            price: "0",
-            description: "To Delete",
-            category: "To Delete"
-        });
-        const res = await request(app).delete("v1/menu/" + String(restID) + "/" + toDelete.itemID)
+        const res = await request(app).delete("v1/menu/" + String(restID) + "/2")
         expect(res.statusCode).toBe(204)
     });
 
