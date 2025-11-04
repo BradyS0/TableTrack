@@ -209,3 +209,5 @@ router.delete("/:restID/:itemID", async (req, res) => {
     else
         res.status(404).json({ error: "Menu item was not found."})
 });
+
+export default router;

@@ -54,7 +54,7 @@ beforeAll(async () => {
 
         console.log("[TEST SETUP] Creating test menu item");
         await MenuItem.create({
-            restID:         parseInt(rest1.restID),
+            restID:         rest1.restID,
             name:           "TestItem",
             price:          "1.00",
             description:    "Test Description",
