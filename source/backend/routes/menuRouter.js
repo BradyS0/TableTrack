@@ -62,7 +62,7 @@ router.get("/:restID", async (req, res) => {
 // Get a single menu item
 router.get("/:restID", async (req, res) => {
     const restID = parseInt(req.params.restID);
-    const itemID = parseInt(req.body.itemID);
+    const itemID = parseInt(req.params.itemID);
     const restaurant = await Restaurant.findByPk(restID)
     
 
