@@ -14,7 +14,7 @@ describe("Menu Item API", () => {
     // valid case
     it("valid item", async () => {
         const res = await request(app)
-            .post("v1/menu/" + restID)
+            .post("v1/menu/" + String(restID))
             .send({
                 name: "Food",
                 price: "1.00",
@@ -31,7 +31,7 @@ describe("Menu Item API", () => {
     // edge case
     it("invalid restaurant", async () => {
         const res = await request(app)
-            .post("v1/menu/" + invalidID)
+            .post("v1/menu/" + String(invalidID))
             .send({
                 name: "Food",
                 price: "1.00",
@@ -55,7 +55,7 @@ describe("Menu Item API", () => {
 
     it("invalid name", async () => {
         const res = await request(app)
-            .post("v1/menu/" + restID)
+            .post("v1/menu/" + String(restID))
             .send({
                 name: "",
                 price: "1.00",
@@ -67,7 +67,7 @@ describe("Menu Item API", () => {
 
     it("invalid price", async () => {
         const res = await request(app)
-            .post("v1/menu/" + restID)
+            .post("v1/menu/" + String(restID))
             .send({
                 name: "Food",
                 price: "abc",
@@ -79,7 +79,7 @@ describe("Menu Item API", () => {
 
     it("invalid description", async () => {
         const res = await request(app)
-            .post("v1/menu/" + restID)
+            .post("v1/menu/" + String(restID))
             .send({
                 name: "Food",
                 price: "1.00",
@@ -91,7 +91,7 @@ describe("Menu Item API", () => {
 
     it("invalid category", async () => {
         const res = await request(app)
-            .post("v1/menu/" + restID)
+            .post("v1/menu/" + String(restID))
             .send({
                 name: "Food",
                 price: "1.00",
@@ -105,7 +105,7 @@ describe("Menu Item API", () => {
     // valid cases
     it("get all", async () => {
         const res = await request(app)
-            .get("/v1/menu/" + restID)
+            .get("/v1/menu/" + String(restID))
             .send();
         expect(res.statusCode).toBe(200);
         let menu = res.body.menu;
@@ -115,7 +115,7 @@ describe("Menu Item API", () => {
     
     it("get one, valid restaurant", async () => {
         const res = await request(app)
-            .get("v1/menu/" + restID)
+            .get("v1/menu/" + String(restID))
             .send({ itemID: itemID });
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("TestItem");
@@ -124,21 +124,21 @@ describe("Menu Item API", () => {
     // edge cases
     it("get all, invalid restaurant", async () => {
         const res = await request(app)
-            .get("v1/menu/" + invalidID)
+            .get("v1/menu/" + String(invalidID))
             .send();
         expect(res.statusCode).toBe(404);
     });
     
     it("get one, invalid restaurant", async () => {
         const res = await request(app)
-            .get("v1/menu/" + invalidID)
+            .get("v1/menu/" + String(invalidID))
             .send({ itemID: itemID });
         expect(res.statusCode).toBe(404);
     });
 
     it("get one, invalid item", async () => {
         const res = await request(app)
-            .get("v1/menu/" + restID)
+            .get("v1/menu/" + String(restID))
             .send({ itemID: invalidID });
         expect(res.statusCode).toBe(404);
     });
@@ -148,7 +148,7 @@ describe("Menu Item API", () => {
     // valid case
     it("change name, valid", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + restID + "/change/name")
+            .patch("v1/menu/" + String(restID) + "/change/name")
             .send({
                 itemID: itemID,
                 name: "Test"
@@ -159,7 +159,7 @@ describe("Menu Item API", () => {
     // edge cases
     it("change name, invalid name", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + restID + "/change/name")
+            .patch("v1/menu/" + String(restID) + "/change/name")
             .send({
                 itemID: itemID,
                 name: ""
@@ -169,7 +169,7 @@ describe("Menu Item API", () => {
         
     it("change name, invalid restaurant", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + invalidID + "/change/name")
+            .patch("v1/menu/" + String(invalidID) + "/change/name")
             .send({
                 itemID: itemID,
                 name: "Test"
@@ -179,7 +179,7 @@ describe("Menu Item API", () => {
 
     it("change name, invalid item", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + restID + "/change/name")
+            .patch("v1/menu/" + String(restID) + "/change/name")
             .send({
                 itemID: invalidID,
                 name: "Test"
@@ -191,7 +191,7 @@ describe("Menu Item API", () => {
     // valid case
     it("change price, valid", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + restID + "/change/price")
+            .patch("v1/menu/" + String(restID) + "/change/price")
             .send({
                 itemID: itemID,
                 price: "$10.00"
@@ -202,7 +202,7 @@ describe("Menu Item API", () => {
     // edge cases
     it("change price, invalid price", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + restID + "/change/price")
+            .patch("v1/menu/" + String(restID) + "/change/price")
             .send({
                 itemID: itemID,
                 price: ""
@@ -212,7 +212,7 @@ describe("Menu Item API", () => {
  
     it("change price, invalid restaurant", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + invalidID + "/change/price")
+            .patch("v1/menu/" + String(invalidID) + "/change/price")
             .send({
                 itemID: itemID,
                 price: "$10.00"
@@ -222,7 +222,7 @@ describe("Menu Item API", () => {
         
     it("change price, invalid item", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + restID + "/change/price")
+            .patch("v1/menu/" + String(restID) + "/change/price")
             .send({
                 itemID: invalidID,
                 price: "$10.00"
@@ -234,7 +234,7 @@ describe("Menu Item API", () => {
     // valid case 
     it("change description, valid", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + restID + "/change/description")
+            .patch("v1/menu/" + String(restID) + "/change/description")
             .send({
                 itemID: itemID,
                 description: "Test"
@@ -245,7 +245,7 @@ describe("Menu Item API", () => {
     //edge cases
     it("change description, invalid description", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + restID + "/change/description")
+            .patch("v1/menu/" + String(restID) + "/change/description")
             .send({
                 itemID: itemID,
                 description: invalidDesc
@@ -255,7 +255,7 @@ describe("Menu Item API", () => {
     
     it("change description, invalid restaurant", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + invalidID + "/change/description")
+            .patch("v1/menu/" + String(invalidID) + "/change/description")
             .send({
                 itemID: itemID,
                 description: "Test"
@@ -265,7 +265,7 @@ describe("Menu Item API", () => {
     
     it("change description, invalid item", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + restID + "/change/description")
+            .patch("v1/menu/" + String(restID) + "/change/description")
             .send({
                 itemID: invalidID,
                 description: "Test"
@@ -277,7 +277,7 @@ describe("Menu Item API", () => {
     // valid case
     it("change category, valid", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + restID + "/change/category")
+            .patch("v1/menu/" + String(restID) + "/change/category")
             .send({
                 itemID: itemID,
                 category: "Test"
@@ -288,7 +288,7 @@ describe("Menu Item API", () => {
     // edge cases
     it("change category, invalid category", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + restID + "/change/category")
+            .patch("v1/menu/" + String(restID) + "/change/category")
             .send({
                 itemID: itemID,
                 category: invalidCat
@@ -298,7 +298,7 @@ describe("Menu Item API", () => {
     
     it("change category, invalid restaurant", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + invalidID + "/change/category")
+            .patch("v1/menu/" + String(invalidID) + "/change/category")
             .send({
                 itemID: itemID,
                 category: "Test"
@@ -308,7 +308,7 @@ describe("Menu Item API", () => {
     
     it("change category, invalid item", async () => {
         const res = await request(app)
-            .patch("v1/menu/" + restID + "/change/category")
+            .patch("v1/menu/" + String(restID) + "/change/category")
             .send({
                 itemID: invalidID,
                 category: "Test"
@@ -326,18 +326,18 @@ describe("Menu Item API", () => {
             description: "To Delete",
             category: "To Delete"
         });
-        const res = await request(app).delete("v1/menu/" + restID + "/" + toDelete.itemID)
+        const res = await request(app).delete("v1/menu/" + String(restID) + "/" + toDelete.itemID)
         expect(res.statusCode).toBe(204)
     });
 
     // edge cases
     it("delete, invalid restaurant", async () => {
-        const res = await request(app).delete("v1/menu/" + invalidID + "/" + itemID);
+        const res = await request(app).delete("v1/menu/" + String(invalidID) + "/" + itemID);
         expect(res.statusCode).toBe(404)
     });
     
     it("delete, invalid item", async () => {
-        const res = await request(app).delete("v1/menu/" + restID + "/" + invalidID);
+        const res = await request(app).delete("v1/menu/" + String(restID) + "/" + String(invalidID));
         expect(res.statusCode).toBe(404);
     });
 });
