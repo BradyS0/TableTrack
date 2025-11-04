@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import sequelize from './db.js';
 import { User } from "./models/User.js";
 import { Restaurant } from "./models/Restaurant.js";
+import Schedule from "./models/Schedule.js";
 
 // Load environment variables from .env.test
 dotenv.config({ path: './.env' });
@@ -39,12 +40,16 @@ beforeAll(async () => {
         });
 
         console.log("[TEST SETUP] Creating test restaurants");
-        await Restaurant.create({
+        const rest1 = await Restaurant.create({
             userID:    parseInt(user1.userID),
             name:      "TestRestaurant1",
             address:   "100 Test Street",
             phone_num: "(204) 123-4567"
         });
+
+        console.log("[TEST SETUP] Creating test schedule");
+        await Schedule.set_day(rest1.restID, 0, 0.0, 24.0); // Always open Sunday
+        await Schedule.set_day(rest1.restID, 1, 0.0, 0.0);  // Always closed Monday
 
         //for future use
         // console.log('[TEST SETUP] Running migrations...');

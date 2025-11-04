@@ -7,8 +7,8 @@ import sequelize from "../db.js";
 const Schedule = sequelize.define("Schedule", {
     restID:  { type: DataTypes.INTEGER, primaryKey: true },
     day:     { type: DataTypes.INTEGER, primaryKey: true },
-    open:    { type: DataTypes.INTEGER, allowNull: false },
-    close:   { type: DataTypes.INTEGER, allowNull: false },
+    open:    { type: DataTypes.FLOAT, allowNull: false },
+    close:   { type: DataTypes.FLOAT, allowNull: false },
 });
 
 // Query: Add / update a day
@@ -26,15 +26,15 @@ async function set_day(restID, day, open, close)
         new_day = await Schedule.create({
             restID: parseInt(restID),
             day:    parseInt(day),
-            open:   parseInt(open),
-            close:  parseInt(close),
+            open:   parseFloat(open),
+            close:  parseFloat(close),
         });
     }
     else // ------------ CASE 2: Schedule already exists -> update day
     {
         new_day = await Schedule.update({
-            open:  parseInt(open),
-            close: parseInt(close),
+            open:  parseFloat(open),
+            close: parseFloat(close),
         },{ where: {
             restID: parseInt(restID),
             day:    parseInt(day),
@@ -51,6 +51,7 @@ async function del_day(restID, day)
         restID: parseInt(restID),
         day:    parseInt(day),
     }});
+    return 0;
 }
 
 // Query: Get the opening hour
