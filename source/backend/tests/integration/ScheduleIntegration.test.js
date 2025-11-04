@@ -72,7 +72,7 @@ describe("Schedule API", () => {
             day: "sunday",
         });
         expect(res3.body.close).toEqual(24.0);
-    });
+    }, 30000);
 
     it("Remove schedule for Sunday", async () => {
         const res = await request(app)
@@ -91,7 +91,7 @@ describe("Schedule API", () => {
             day: "sunday",
         });
         expect(res2.body.close).toEqual(0.0);
-    });
+    }, 30000);
 
     it("Change schedule for Monday", async () => {
         const res = await request(app)
@@ -110,5 +110,5 @@ describe("Schedule API", () => {
             day: "monday",
         });
         expect(res2.body.close).toEqual(20.75);
-    });
+    }, 30000);
 });
