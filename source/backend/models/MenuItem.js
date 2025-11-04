@@ -8,7 +8,7 @@ export const MenuItem = sequelize.define("MenuItem", {
     itemID:      { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true},
     restID:      { type: DataTypes.INTEGER, allowNull: false }, //Restaurant / Foreign Key
     name:        { type: DataTypes.STRING,  allowNull: false },
-    price:       { type: DataTypes.INTEGER, allowNull: false },
+    price:       { type: DataTypes.DECIMAL(10,2), allowNull: false },
     description: { type: DataTypes.TEXT },
     category:    { type: DataTypes.STRING },
 });
