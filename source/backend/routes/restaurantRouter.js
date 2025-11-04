@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
                         userID: userID,
                         name: name,
                         address: address,
-                        phone_num: phone,
+                        phone: phone,
                         tags : tags,
                         description: "",
                         open_hours: "",
@@ -59,6 +59,87 @@ router.post("/", async (req, res) => {
 });
 
 
+// PATCH /restaurant/name
+// Edit name of a restaurant
+router.patch("/name", async (req, res) => {
+    try {
+        // Retrieve and validate information from body
+        const { restID, name, } = req.body;
+        const rest = await Restaurant.findByPk(parseInt(restID));
+
+        if ( !rest )
+            return res.status(404).json({error: "restaurant not found!"})
+
+        if (rest.name === name)
+            return res.status(400).json({error: `${name} is already the name of this restaurant`})
+       
+        if ( !RestaurantLogic.validate_name(name))
+            return res.status(400).json({ error: "Invalid name" });
+      
+        await rest.update({name})
+        return res.status(201).json({message:"Restaurant name updated"})
+    }
+    catch (err) {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// PATCH /restaurant/address
+// Edit address of a restaurant
+router.patch("/address", async (req, res) => {
+    try {
+        // Retrieve and validate information from body
+        const { restID, address, } = req.body;
+        const duplicateRest = await Restaurant.findOne({where: {address:address}})
+        
+        if(duplicateRest)
+            return res.status(400).json({error: "Restaurant address in use"})
+
+        const rest = await Restaurant.findByPk(parseInt(restID));
+
+        if ( !rest )
+            return res.status(404).json({error: "restaurant not found!"})
+
+        if ( !RestaurantLogic.validate_address(address))
+            return res.status(400).json({ error: "Invalid address or address format" });
+      
+        await rest.update({address})
+        return res.status(201).json({message:"Restaurant address updated"})
+    }
+    catch (err) {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// PATCH /restaurant/phone
+// Edit address of a restaurant
+router.patch("/phone", async (req, res) => {
+    try {
+        // Retrieve and validate information from body
+        const { restID, phone, } = req.body;
+        const duplicateRest = await Restaurant.findOne({where: {phone:phone}})
+        
+        if(duplicateRest)
+            return res.status(400).json({error: "Restaurant phone number already in use"})
+
+        const rest = await Restaurant.findByPk(parseInt(restID));
+
+        if ( !rest )
+            return res.status(404).json({error: "restaurant not found!"})
+
+        if ( !RestaurantLogic.validate_phone(phone))
+            return res.status(400).json({ error: "Invalid phone number" });
+      
+        await rest.update({phone:phone})
+        return res.status(201).json({message:"Restaurant phone number updated"})
+    }
+    catch (err) {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
 
 // PATCH /restaurant/description
 // Edit description of a restaurant
@@ -224,7 +305,7 @@ router.patch("/change", async (req, res) => {
                 await Restaurant.update({
                     name: name,
                     address: address,
-                    phone_num: phone,
+                    phone: phone,
                     description: desc,
                 }, {
                     where: {

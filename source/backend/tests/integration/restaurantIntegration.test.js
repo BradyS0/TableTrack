@@ -245,6 +245,149 @@ describe("Restaurant API", () => {
 });
 
 
+// -------------------------------------------------- PATCH /restaurant/name
+
+    it("Change name - bad call status 500", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: rest1id
+        });
+        expect(res.statusCode).toBe(500);
+    });
+
+    it("Change name - invalid trying to change the name into current name", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: rest1id,
+            name: "Bob's Dairy"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change name - invalid name", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: rest1id,
+            name: ""
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change name - invalid restaurant", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: 65,
+            name: "Bobbies Pizza"
+        });
+        expect(res.statusCode).toBe(404);
+    });
+
+
+    it("Change name - valid", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: rest1id,
+            name: "Bobs Pizzaria"
+        });
+        expect(res.statusCode).toBe(201);
+    });
+
+
+
+// -------------------------------------------------- PATCH /restaurant/phone
+
+    it("Change phone - phone num already in use", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/phone")
+        .send({
+            restID: rest1id,
+            phone: "(204) 234-5678"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change phone - invalid phone number", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/phone")
+        .send({
+            restID: rest1id,
+            phone: "2042345678"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change phone - invalid restaurant", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/phone")
+        .send({
+            restID: 65,
+            phone: "(205) 236-5678"
+        });
+        expect(res.statusCode).toBe(404);
+    });
+
+    it("Change phone - valid", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/phone")
+        .send({
+            restID: rest1id,
+            phone: "(204) 236-6678"
+        });
+        expect(res.statusCode).toBe(201);
+    });
+
+
+    // -------------------------------------------------- PATCH /restaurant/address 
+
+    it("Change address - address already in use", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/address")
+        .send({
+            restID: rest1id,
+            address: "100 Burger street"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change address - invalid address", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/address")
+        .send({
+            restID: rest1id,
+            address: "(204) 234-5678"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change address - invalid restaurant", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/address")
+        .send({
+            restID: 65,
+            address: "100 New street, Winnipeg, NYC"
+        });
+        expect(res.statusCode).toBe(404);
+    });
+
+    it("Change address - valid", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/address")
+        .send({
+            restID: rest1id,
+            address: "100 New street, Winnipeg, NYC"
+        });
+        expect(res.statusCode).toBe(201);
+    });
+
+
+
+
+
 
 
 
