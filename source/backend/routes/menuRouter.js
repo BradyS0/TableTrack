@@ -15,7 +15,7 @@ router.post("/:restID", async (req, res) => {
     const restaurant = await Restaurant.findByPk(parseInt(restID));
 
     if (restaurant !== null) {
-        const { restID, name, price, description, category } = req.body;
+        const { name, price, description, category } = req.body;
         const money = MenuLogic.parse_money(price)
         if ( MenuLogic.validate_name(name) &&
              !isNaN(money) &&
@@ -46,12 +46,12 @@ router.get("/:restID", async (req, res) => {
     const restaurant = await Restaurant.findByPk(restID)
     
     if (restaurant) {
-        const menu = await MenuItem.findAll({
+        const menuList = await MenuItem.findAll({
             attributes: ['name', 'price', 'description', 'category'],
             where: { restID: restID }
         });
         
-        res.status(200).json(menu)
+        res.status(200).json({menu: menuList})
     } else {
         res.status(404).json({ message: "Restaurant could not be found."})
     }
