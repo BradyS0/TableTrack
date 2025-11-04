@@ -54,24 +54,6 @@ describe("Schedule API", () => {
             schedule: sched_wed,
         });
         expect(res.status).toBe(201);
-
-        // Ensure changes made
-        //const res2 = await request(app)
-        //.get("/v1/restaurant/schedule")
-        //.send({
-        //    restID: restID,
-        //    day: "wednesday",
-        //});
-        //expect(res2.body.close).toEqual(18.3);
-
-        // Ensure sunday unaffected
-        //const res3 = await request(app)
-        //.get("v1/restaurant/schedule")
-        //.send({
-        //    restID: restID,
-        //    day: "sunday",
-        //});
-        //expect(res3.body.close).toEqual(24.0);
     });
 
     it("Remove schedule for Sunday", async () => {
@@ -82,15 +64,6 @@ describe("Schedule API", () => {
             schedule: sched_sun,
         });
         expect(res.status).toBe(201);
-
-        // Ensure changes made
-        //const res2 = await request(app)
-        //.get("/v1/restaurant/schedule")
-        //.send({
-        //    restID: restID,
-        //    day: "sunday",
-        //});
-        //expect(res2.body.close).toEqual(0.0);
     });
 
     it("Change schedule for Monday", async () => {
@@ -101,14 +74,37 @@ describe("Schedule API", () => {
             schedule: sched_mon,
         });
         expect(res.status).toBe(201);
+    });
 
-        // Ensure changes made
-        //const res2 = await request(app)
-        //.get("/v1/restaurant/schedule")
-        //.send({
-        //    restID: restID,
-        //    day: "monday",
-        //});
-        //expect(res2.body.close).toEqual(20.75);
+    // -------------------------------------------------- Verify changes from PUT
+
+    it("Verify new Sunday schedule", async () => {
+        const res = await request(app)
+        .get("/v1/restaurant/schedule")
+        .send({
+            restID: restID,
+            day: "sunday",
+        });
+        expect(res.body.close).toEqual(0.0);
+    });
+
+    it("Verify new Monday schedule", async () => {
+        const res = await request(app)
+        .get("/v1/restaurant/schedule")
+        .send({
+            restID: restID,
+            day: "monday",
+        });
+        expect(res.body.close).toEqual(20.75);
+    });
+
+    it("Verify new Wednesday schedule", async () => {
+        const res = await request(app)
+        .get("/v1/restaurant/schedule")
+        .send({
+            restID: restID,
+            day: "wednesday",
+        });
+        expect(res.body.close).toEqual(18.3);
     });
 });
