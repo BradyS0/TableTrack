@@ -245,6 +245,61 @@ describe("Restaurant API", () => {
 });
 
 
+// -------------------------------------------------- PATCH /restaurant/name
+
+    it("Change name - bad call status 500", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: rest1id
+        });
+        expect(res.statusCode).toBe(500);
+    });
+
+    it("Change name - invalid trying to change the name into current name", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: rest1id,
+            name: "Bob's Dairy"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change name - invalid name", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: rest1id,
+            name: "B"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change name - invalid restaurant", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: 65,
+            name: "Bobs"
+        });
+        expect(res.statusCode).toBe(404);
+    });
+
+    it("Change name - valid", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: rest1id,
+            name: "Bobs Pizzaria"
+        });
+        expect(res.statusCode).toBe(404);
+    });
+
+
+
+
+
 
 
 
