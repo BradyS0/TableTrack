@@ -22,7 +22,7 @@ function parse_money(price) {
     //partially made using ChatGPT
     const cleaned = price.replace('$', '').trim();
     try {
-        return new Decimal(cleaned)
+        return new Decimal(cleaned).toFixed(2);
     } catch {
         return null;
     }
