@@ -1,12 +1,11 @@
-
-#restaurant-content {
+   #restaurant-content {
     margin-top: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 2rem;
     padding-bottom: 2rem;
+    font-family: 'Inter', system-ui, sans-serif;
   }
-  
   
   .menu-category {
     background: rgba(255, 255, 255, 0.9);
@@ -21,73 +20,74 @@
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   }
   
-  /* Category header */
   .menu-category h3 {
     font-size: 1.4rem;
     color: #2e2e2e;
     border-left: 4px solid #eec05c;
     padding-left: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
     font-weight: 600;
   }
   
-  /* List container inside category */
   .menu-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
   
-  /* Individual item card */
-  .menu-list li {
+  /* Menu item card (shared for both owner & customer) */
+  .menu-list li,
+  .owner-menu-list li {
+    display: flex;
+    flex-direction: column;
     background: #ffffff;
     border-radius: 0.75rem;
-    padding: 1rem 1.2rem;
+    padding: 1.2rem 1.5rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: box-shadow 0.25s ease, transform 0.2s ease;
+    transition: all 0.25s ease;
+    border: 1px solid #eee;
   }
   
-  .menu-list li:hover {
+  .menu-list li:hover,
+  .owner-menu-list li:hover {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
+    border-color: #eec05c;
   }
   
   /* Item title */
-  .menu-list h4 {
+  .menu-list h4,
+  .owner-menu-list b {
     font-size: 1.1rem;
     color: #1a1a1a;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.3rem;
     font-weight: 600;
   }
   
   /* Item description */
-  .menu-list p {
+  .menu-list p,
+  .owner-menu-list span {
     font-size: 0.9rem;
     color: #666;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     line-height: 1.3;
   }
   
   /* Price styling */
-  .menu-list strong {
+  .menu-list strong,
+  .owner-menu-list .price {
     color: #2e7d32;
     font-size: 1rem;
     font-weight: 600;
   }
-
   
-  /* ============================
-   OWNER MENU (Manager View)
-   ============================ */
-
-#owner-menu {
+  #owner-menu {
     margin-top: 2rem;
     background: transparent;
     max-width: 1000px;
-    font-family: 'Inter', system-ui, sans-serif;
   }
   
   #owner-menu h2 {
@@ -100,61 +100,25 @@
     padding-bottom: 0.3rem;
   }
   
-  /* ============================
-     MENU LIST
-     ============================ */
-  
+  /* Unified style for owner list */
   .owner-menu-list {
     list-style: none;
     padding: 0;
-    margin: 1rem 0 2rem 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1rem;
   }
   
-  .owner-menu-list li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 0.9rem 1.3rem;
-    transition: all 0.2s ease;
-  }
-  
-  .owner-menu-list li:hover {
-    border-color: #eec05c;
-    background: #fffdf3;
-  }
-  
-  .owner-menu-list b {
-    font-weight: 600;
-    color: #333;
-    font-size: 1rem;
-  }
-  
-  .owner-menu-list span {
-    flex: 1;
-    margin: 0 1rem;
-    font-size: 0.9rem;
-    color: #666;
-  }
-  
-  .owner-menu-list .price {
-    color: #2e7d32;
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-right: 1rem;
-  }
-  
-  /* Action buttons */
+  /* Delete button styled subtly inside same card */
   .owner-menu-list .delete-item {
+    align-self: flex-end;
+    margin-top: 0.5rem;
     border: none;
     background: transparent;
     color: #d9534f;
     font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: color 0.2s ease;
   }
@@ -163,10 +127,6 @@
     color: #b22222;
     text-decoration: underline;
   }
-  
-  /* ============================
-     ADD MENU FORM
-     ============================ */
   
   .menu-form {
     display: flex;
@@ -221,20 +181,19 @@
     background: #f2d58a;
     transform: translateY(-1px);
   }
-  
+
   @media (max-width: 700px) {
     #owner-menu {
       padding: 0 1rem;
     }
   
-    .owner-menu-list li {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.4rem;
+    .menu-category {
+      padding: 1rem 1.2rem;
     }
   
-    .owner-menu-list span {
-      margin: 0;
+    .menu-list li,
+    .owner-menu-list li {
+      padding: 1rem;
     }
   
     .menu-form {

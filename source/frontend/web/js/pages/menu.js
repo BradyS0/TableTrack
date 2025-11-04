@@ -49,9 +49,7 @@ export async function loadPublicMenu(restID) {
   }
 }
 
-/* ============================================================
-   OWNER-FACING MENU MANAGER
-   ============================================================ */
+
 export async function loadOwnerMenu(owner) {
   const app = document.getElementById('restaurant-content') || document.getElementById('app');
 
@@ -136,6 +134,7 @@ export async function loadOwnerMenu(owner) {
 
     if (res.code < 300) {
       await loadOwnerMenu(owner); // Re-render with updated data
+      await loadPublicMenu(owner.restID); // Refresh customer menu immediately
     }
   });
 

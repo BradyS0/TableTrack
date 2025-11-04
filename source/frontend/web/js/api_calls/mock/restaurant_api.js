@@ -3,7 +3,11 @@ const MOCK = "mockRest"
 
 function init(){
     if (!sessionStorage.getItem(MOCK)){
-        sessionStorage.setItem(MOCK,JSON.stringify(restaurants))
+      const data = restaurants.map(r => ({
+        ...r,
+        menu: r.menu || []
+      }));
+      sessionStorage.setItem(MOCK, JSON.stringify(data));
     }
 }
 
@@ -11,6 +15,15 @@ function init(){
 //place holder for random rating for sprint1
 function getRandomRating(min, max) {
   return (Math.random() * (max - min) + min).toFixed(1);
+}
+
+function getAllData() {
+  init();
+  return JSON.parse(sessionStorage.getItem(MOCK)) || [];
+}
+
+function saveAllData(data) {
+  sessionStorage.setItem(MOCK, JSON.stringify(data));
 }
 
 
@@ -23,7 +36,6 @@ async function getRestaurants() {
 
   return {code:404, message:"No restaurants found"}
 }
-
 
 
 const createRestaurant = async (userID, name, tags, address, phone) => {
@@ -70,18 +82,19 @@ const getRestaurantByOwner = async(userID) => {
 };
 
 
-const getRestaurantByID = async(restID) => {
+const getRestaurantByID = async (restID) => {
   init();
+  const data = getAllData();
+  const restaurant = data.find(r => r.restID == restID);
 
-  let data = JSON.parse(sessionStorage.getItem(MOCK));
-  const rest = data.find(r => r.restID == restID);
-  console.log(rest, data, restID)
-
-  if (!rest) {
+  if (!restaurant) {
     return { code: 404, message: "Restaurant not found" };
   }
 
-  return { code: 200, message: "Restaurant found", data: rest };
+  // Ensure menu always exists and reflects latest state
+  if (!restaurant.menu) restaurant.menu = [];
+
+  return { code: 200, message: "Restaurant found", data: restaurant };
 };
 
 
@@ -148,13 +161,50 @@ const changeRestaurantTags = async(restID, userID, tags) => {
   return { code: 200, message: "Tags updated successfully" };
 };
 
+export async function getMenuItems(restID) {
+  const data = getAllData();
+  const restaurant = data.find(r => r.restID === parseInt(restID));
 
+  if (!restaurant) return { code: 404, message: "Restaurant not found" };
 
+  // Always return current menu state
+  return { code: 200, data: restaurant.menu || [] };
+}
 
+export async function addMenuItem(restID, userID, item) {
+  const data = getAllData();
+  const restaurant = data.find(r => r.restID === parseInt(restID));
 
-export const mockRestaurantAPI = {getRestaurants,createRestaurant,
-  getRestaurantByOwner,getRestaurantByID,
-    changeRestaurantName,changeRestaurantAddress,
-    changeRestaurantPhone,changeRestaurantTags
+  if (!restaurant) return { code: 404, message: "Restaurant not found" };
+  if (!restaurant.menu) restaurant.menu = [];
+  if (restaurant.userID !== userID) return { code: 403, message: "Unauthorized" };
+
+  const newItem = { ...item, itemID: Date.now() };
+  restaurant.menu.push(newItem);
+  saveAllData(data);
+
+  return { code: 200, message: `Item '${item.name}' added successfully!`, data: restaurant.menu };
+}
+
+export async function deleteMenuItem(restID, userID, itemID) {
+  const data = getAllData();
+  const restaurant = data.find(r => r.restID === restID);
+
+  if (!restaurant) return { code: 404, message: "Restaurant not found" };
+  if (restaurant.userID !== userID) return { code: 403, message: "Unauthorized" };
+
+  restaurant.menu = restaurant.menu.filter(i => i.itemID !== parseInt(itemID));
+  saveAllData(data);
+
+  return { code: 200, message: `Item #${itemID} deleted successfully!` };
+}
+
+export const mockRestaurantAPI = {
+  getRestaurants,
+  createRestaurant,
+  getMenuItems,
+  getRestaurantByID,
+  addMenuItem,
+  deleteMenuItem
 };
 
