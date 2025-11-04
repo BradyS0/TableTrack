@@ -15,13 +15,13 @@ router.post("/:restID", async (req, res) => {
     const restaurant = await Restaurant.findByPk(parseInt(restID));
 
     if (restaurant !== null) {
+        const money = MenuLogic.parse_money(price)
         const { restID, name, price, desc, category } = req.body;
         if ( MenuLogic.validate_name(name) &&
-             MenuLogic.validate_price(price) &&
+             !isNaN(money) &&
              MenuLogic.validate_description(desc) &&
              MenuLogic.validate_category(category)
         ) {
-            const money = MenuLogic.parse_money(price)
             // all parameters valid, creating new menu item
             const new_item = await MenuItem.create({
                 restID: restID,
@@ -117,8 +117,8 @@ router.patch("/:restID/change/price", async (req, res) => {
     const restID = parseInt(req.params.restID);
     const {itemID, price} = req.body;
 
-    if (MenuItem.validate_price(price)) {
-        const money = MenuLogic.parse_money(price)
+    const money = MenuLogic.parse_money(price)
+    if (!isNaN(money)) {
         const updated = await MenuItem.update({ price: money },
             {
                 where: { 
