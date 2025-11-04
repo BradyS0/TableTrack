@@ -2,7 +2,6 @@
 import express from "express";
 import { Restaurant } from "../models/Restaurant.js";
 import { MenuItem } from "../models/MenuItem.js";
-import RestaurantLogic from "../logic/restaurantLogic.js";
 import MenuLogic from "../logic/menuLogic.js";
 
 const router = express.Router();
@@ -22,11 +21,12 @@ router.post("/:restID", async (req, res) => {
              MenuLogic.validate_description(desc) &&
              MenuLogic.validate_category(category)
         ) {
+            const money = MenuLogic.parse_money(price)
             // all parameters valid, creating new menu item
             const new_item = await MenuItem.create({
                 restID: restID,
                 name: name,
-                price: price,
+                price: money,
                 description: desc,
                 category: category
             });
@@ -118,7 +118,8 @@ router.patch("/:restID/change/price", async (req, res) => {
     const {itemID, price} = req.body;
 
     if (MenuItem.validate_price(price)) {
-        const updated = await MenuItem.update({ price: parseInt(price) },
+        const money = MenuLogic.parse_money(price)
+        const updated = await MenuItem.update({ price: money.toFixed(2) },
             {
                 where: { 
                     itemID: itemID,
@@ -191,6 +192,7 @@ router.patch("/:restID/change/category", async (req, res) => {
         res.status(400).json({ error: "Invalid menu item name."})
     }
 });
+
 // DELETE /v1/menu/{restID}/{itemID}
 // Delete menu item
 router.delete("/:restID/:itemID", async (req, res) => {
