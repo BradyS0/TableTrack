@@ -47,6 +47,10 @@ test("price without decimals", () => {
 
 // edge cases
 
+test("empty price", () => {
+    expect(MenuLogic.validate_price("")).toEqual(false);
+})
+
 test("price with only one decimal spot", () => {
     expect(MenuLogic.validate_price("$1.1")).toEqual(true);
 });
@@ -148,6 +152,9 @@ test("price without decimals", () => {
 });
 
 // edge cases
+test("empty price", () => {
+    expect(MenuLogic.parse_money("")).toEqual(NaN);
+});
 
 test("price with only one decimal spot", () => {
     expect(MenuLogic.parse_money("$1.1")).toEqual(1.10);
