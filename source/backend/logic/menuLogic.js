@@ -6,7 +6,7 @@ function validate_name(name) {
 //optional $ at start of string, optional thousand separators (commas) and 0-2 decimals.
 function validate_price(price) {
     //partially made using ChatGPT
-    const PRICE_REGEX = /^\$?(?:\d+(?:\.\d{0,2})?|\d{1,3}(?:,\d{3})+(?:\.\d{0,2})?)$/
+    const PRICE_REGEX = /^\$?(?:\d+(?:\.\d{1,2})?|\d{1,3}(?:,\d{3})+(?:\.\d{1,2})?)$/
     return (typeof price == "string" && PRICE_REGEX.test(price));
 }
 
@@ -21,15 +21,11 @@ function validate_category(category) {
 // converts string into a variable could be saved as a decimal
 function parse_money(price) {
     //partially made using ChatGPT
-    if (typeof price == "string") {
-        const cleaned = price.replace('$', '');
-        try {
-            return parseFloat(cleaned).toFixed(2);
-        } catch {
-            return null;
-        }    
+    if (typeof price == "string" && validate_price(price)) {
+        const cleaned = price.replace(/[^0-9.]/g, '').trim();
+        return parseFloat(cleaned);
     } else {
-        return null;
+        return NaN;
     }
 }
 

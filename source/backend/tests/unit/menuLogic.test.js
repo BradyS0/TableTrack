@@ -52,7 +52,7 @@ test("price with only one decimal spot", () => {
 });
 
 test("price with period, but no decimals", () => {
-    expect(MenuLogic.validate_price("$100.")).toEqual(true);
+    expect(MenuLogic.validate_price("$100.")).toEqual(false);
 });
 
 test("price with only digits after decimal spot", () => {
@@ -154,29 +154,29 @@ test("price with only one decimal spot", () => {
 });
 
 test("price with period, but no decimals", () => {
-    expect(MenuLogic.parse_money("$100.")).toEqual(100.00);
+    expect(MenuLogic.parse_money("$100.")).toEqual(NaN);
 });
 
 test("price with only digits after decimal spot", () => {
-    expect(MenuLogic.parse_money("$.12")).toEqual(null);
+    expect(MenuLogic.parse_money("$.12")).toEqual(NaN);
 });
 
 test("starting with multiple $", () => {
-    expect(MenuLogic.parse_money("$$10")).toEqual(null);
+    expect(MenuLogic.parse_money("$$10")).toEqual(NaN);
 });
 
 test("price ending with $", () => {
-    expect(MenuLogic.parse_money("100.10$")).toEqual(null);
+    expect(MenuLogic.parse_money("100.10$")).toEqual(NaN);
 });
 
 test("only $", () => {
-    expect(MenuLogic.parse_money("$")).toEqual(null);
+    expect(MenuLogic.parse_money("$")).toEqual(NaN);
 });
 
 test("price with letters", () => {
-    expect(MenuLogic.parse_money("$10a.11")).toEqual(null);
+    expect(MenuLogic.parse_money("$10a.11")).toEqual(NaN);
 });
 
 test("price that is not a string", () => {
-    expect(MenuLogic.parse_money(1)).toEqual(null);
+    expect(MenuLogic.parse_money(1)).toEqual(NaN);
 });
