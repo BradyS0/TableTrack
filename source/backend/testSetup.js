@@ -44,7 +44,7 @@ beforeAll(async () => {
             userID:    parseInt(user1.userID),
             name:      "TestRestaurant1",
             address:   "100 Test Street",
-            phone_num: "(204) 123-4567"
+            phone: "(204) 123-4567"
         });
 
         console.log("[TEST SETUP] Creating test schedule");
