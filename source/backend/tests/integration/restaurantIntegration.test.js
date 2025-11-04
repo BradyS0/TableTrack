@@ -342,6 +342,49 @@ describe("Restaurant API", () => {
     });
 
 
+    // -------------------------------------------------- PATCH /restaurant/address 
+
+    it("Change address - address already in use", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/address")
+        .send({
+            restID: rest1id,
+            address: "100 Burger street"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change address - invalid address", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/address")
+        .send({
+            restID: rest1id,
+            address: "(204) 234-5678"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change address - invalid restaurant", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/address")
+        .send({
+            restID: 65,
+            address: "100 New street, Winnipeg, NYC"
+        });
+        expect(res.statusCode).toBe(404);
+    });
+
+    it("Change address - valid", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/address")
+        .send({
+            restID: rest1id,
+            address: "100 New street, Winnipeg, NYC"
+        });
+        expect(res.statusCode).toBe(201);
+    });
+
+
 
 
 
