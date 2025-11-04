@@ -4,9 +4,9 @@ import { app } from "../../app.js";
 
 // Data for testing
 const restID = 1;
-const sched_wed = "{\"schedule\":{\"wednesday\":{\"open\":9.0, \"close\":18.3}}}";
-const sched_sun = "{\"schedule\":{\"sunday\":{\"open\":0.0, \"close\":0.0}}}";
-const sched_mon = "{\"schedule\":{\"monday\":{\"open\":14.0, \"close\":20.75}}}";
+const sched_wed =  {wednesday: { open: 9, close: 18.3 }}
+const sched_sun =  {sunday: { open: 0, close: 0 }}
+const sched_mon = {monday: { open: 14, close: 20.75 }}
 
 describe("Schedule API", () => {
 
