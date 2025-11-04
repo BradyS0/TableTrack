@@ -36,10 +36,10 @@ router.put("/", async (req, res) => {
                     const close = (parsed[i])[1];
 
                     // CASE 1: Restaurant is open today
-                    if (open < close) ScheduleModel.set_day(restID, i, open, close);
+                    if (open < close) await ScheduleModel.set_day(restID, i, open, close);
 
                     // CASE 2: Restaurant is closed today
-                    else ScheduleModel.del_day(restID, i);
+                    else await ScheduleModel.del_day(restID, i);
                 }
             }
             res.status(201);
@@ -75,8 +75,8 @@ router.get("/", async (req, res) => {
         else {
 
             // Get opening and closing hours
-            var open  = ScheduleModel.get_open(restID, day_num);
-            var close = ScheduleModel.get_close(restID, day_num);
+            var open  = await ScheduleModel.get_open(restID, day_num);
+            var close = await ScheduleModel.get_close(restID, day_num);
 
             // Restaurant closed today
             if (open == -1) {
