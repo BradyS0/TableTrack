@@ -8,23 +8,6 @@ function check_open(time, open, close)
 }
 
 
-
-// Validate the schedule for a day
-function validate_schedule(input)
-{
-    // Create regular expression to check formatting of the schedule
-    const day_regex  = "(sunday|monday|tuesday|wednesday|thursday|friday|saturday)";
-    const time_regex = "([0-9]{1}\\.[0-9]{1,2}|1[0-9]{1}\\.[0-9]{1,2}|2[0-3]{1}\\.[0-9]{1,2}|24\\.(0|00))";
-    const line_regex = "\""+day_regex+"\":\\{\"open\":"+time_regex+", \"close\":"+time_regex+"\\}";
-    const list_regex = "^\\{\"schedule\":\\{("+line_regex+"(, ){0,1}){0,7}\\}\\}$";
-
-    // Compare input to regex
-    const reg = new RegExp(list_regex);
-    return reg.test(input);
-}
-
-
-
 // Convert json schedule to array
 function parse_schedule(input)
 {   
