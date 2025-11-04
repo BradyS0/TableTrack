@@ -119,7 +119,7 @@ router.patch("/:restID/change/price", async (req, res) => {
 
     if (MenuItem.validate_price(price)) {
         const money = MenuLogic.parse_money(price)
-        const updated = await MenuItem.update({ price: money.toFixed(2) },
+        const updated = await MenuItem.update({ price: money },
             {
                 where: { 
                     itemID: itemID,
