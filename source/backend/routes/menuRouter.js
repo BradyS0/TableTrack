@@ -90,7 +90,7 @@ router.patch("/:restID/change/name", async (req, res) => {
     const restID = parseInt(req.params.restID);
     const {itemID, name} = req.body;
 
-    if (MenuItem.validate_name(name)) {
+    if (MenuLogic.validate_name(name)) {
         const updated = await MenuItem.update({ name: name },
             {
                 where: { 
@@ -145,7 +145,7 @@ router.patch("/:restID/change/description", async (req, res) => {
     const restID = parseInt(req.params.restID);
     const {itemID, description} = req.body;
 
-    if (MenuItem.validate_description(description)) {
+    if (MenuLogic.validate_description(description)) {
         const updated = await MenuItem.update({ description: description },
             {
                 where: { 
@@ -172,7 +172,7 @@ router.patch("/:restID/change/category", async (req, res) => {
     const restID = parseInt(req.params.restID);
     const {itemID, category} = req.body;
 
-    if (MenuItem.validate_category(category)) {
+    if (MenuLogic.validate_category(category)) {
         const updated = await MenuItem.update({ category: category },
             {
                 where: { 
