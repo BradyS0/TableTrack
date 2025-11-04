@@ -16,10 +16,10 @@ router.post("/:restID", async (req, res) => {
 
     if (restaurant !== null) {
         const money = MenuLogic.parse_money(price)
-        const { restID, name, price, desc, category } = req.body;
+        const { restID, name, price, description, category } = req.body;
         if ( MenuLogic.validate_name(name) &&
              !isNaN(money) &&
-             MenuLogic.validate_description(desc) &&
+             MenuLogic.validate_description(description) &&
              MenuLogic.validate_category(category)
         ) {
             // all parameters valid, creating new menu item
@@ -27,7 +27,7 @@ router.post("/:restID", async (req, res) => {
                 restID: restID,
                 name: name,
                 price: money,
-                description: desc,
+                description: description,
                 category: category
             });
             res.status(201).json(new_item.toJSON);
@@ -58,9 +58,9 @@ router.get("/:restID", async (req, res) => {
 
 });
 
-// GET /v1/menu/{restID}/{itemID}
+// GET /v1/menu/{restID}
 // Get a single menu item
-router.get("/:restID/", async (req, res) => {
+router.get("/:restID", async (req, res) => {
     const restID = parseInt(req.params.restID);
     const itemID = parseInt(req.body.itemID);
     const restaurant = await Restaurant.findByPk(restID)
@@ -143,10 +143,10 @@ router.patch("/:restID/change/price", async (req, res) => {
 // Update menu item name
 router.patch("/:restID/change/description", async (req, res) => {
     const restID = parseInt(req.params.restID);
-    const {itemID, desc} = req.body;
+    const {itemID, description} = req.body;
 
-    if (MenuItem.validate_description(desc)) {
-        const updated = await MenuItem.update({ description: desc },
+    if (MenuItem.validate_description(description)) {
+        const updated = await MenuItem.update({ description: description },
             {
                 where: { 
                     itemID: itemID,
@@ -173,7 +173,7 @@ router.patch("/:restID/change/category", async (req, res) => {
     const {itemID, category} = req.body;
 
     if (MenuItem.validate_category(category)) {
-        const updated = await MenuItem.update({ name: name },
+        const updated = await MenuItem.update({ category: category },
             {
                 where: { 
                     itemID: itemID,
@@ -205,7 +205,7 @@ router.delete("/:restID/:itemID", async (req, res) => {
         }
     });
     if (deleted)
-        res.status(204).send();
+        res.status(204).send({ message: "Menu item successfully deleted."});
     else
         res.status(404).json({ error: "Menu item was not found."})
 });

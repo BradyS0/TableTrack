@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import sequelize from './db.js';
 import { User } from "./models/User.js";
 import { Restaurant } from "./models/Restaurant.js";
+import { MenuItem } from './models/MenuItem.js';
 
 // Load environment variables from .env.test
 dotenv.config({ path: './.env' });
@@ -39,13 +40,21 @@ beforeAll(async () => {
         });
 
         console.log("[TEST SETUP] Creating test restaurants");
-        await Restaurant.create({
+        const rest = await Restaurant.create({
             userID:    parseInt(user1.userID),
             name:      "TestRestaurant1",
             address:   "100 Test Street",
             phone_num: "(204) 123-4567"
         });
 
+        console.log("[TEST SETUP] Creating test menu item");
+        await MenuItem.create({
+            restID:         parseInt(rest.restID),
+            name:           "TestItem",
+            price:          "1.00",
+            description:    "Test Description",
+            category:       "Test Category"
+        });
         //for future use
         // console.log('[TEST SETUP] Running migrations...');
         // If you're using Sequelize migrations, you can run them here
