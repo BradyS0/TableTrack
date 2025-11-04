@@ -7,8 +7,8 @@ import sequelize from "../db.js";
 const Schedule = sequelize.define("Schedule", {
     restID:  { type: DataTypes.INTEGER, primaryKey: true },
     day:     { type: DataTypes.INTEGER, primaryKey: true },
-    open:    { type: DataTypes.INTEGER, allowNull: false },
-    close:   { type: DataTypes.INTEGER, allowNull: false },
+    open:    { type: DataTypes.FLOAT, allowNull: false },
+    close:   { type: DataTypes.FLOAT, allowNull: false },
 });
 
 // Query: Add / update a day
