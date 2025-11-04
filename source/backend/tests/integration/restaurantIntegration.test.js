@@ -271,7 +271,7 @@ describe("Restaurant API", () => {
         .patch("/v1/restaurant/name")
         .send({
             restID: rest1id,
-            name: "B"
+            name: ""
         });
         expect(res.statusCode).toBe(400);
     });
@@ -281,10 +281,11 @@ describe("Restaurant API", () => {
         .patch("/v1/restaurant/name")
         .send({
             restID: 65,
-            name: "Bobs"
+            name: "Bobbies Pizza"
         });
         expect(res.statusCode).toBe(404);
     });
+
 
     it("Change name - valid", async () => {
         const res = await request(app)
@@ -293,8 +294,62 @@ describe("Restaurant API", () => {
             restID: rest1id,
             name: "Bobs Pizzaria"
         });
-        expect(res.statusCode).toBe(404);
+        expect(res.statusCode).toBe(201);
     });
+
+
+    
+// // -------------------------------------------------- PATCH /restaurant/phone
+
+//     it("Change name - bad call status 500", async () => {
+//         const res = await request(app)
+//         .patch("/v1/restaurant/name")
+//         .send({
+//             restID: rest1id,
+//             phone:
+//         });
+//         expect(res.statusCode).toBe(500);
+//     });
+
+//     it("Change name - invalid trying to change the name into current name", async () => {
+//         const res = await request(app)
+//         .patch("/v1/restaurant/name")
+//         .send({
+//             restID: rest1id,
+//             name: "Bob's Dairy"
+//         });
+//         expect(res.statusCode).toBe(400);
+//     });
+
+//     it("Change name - invalid name", async () => {
+//         const res = await request(app)
+//         .patch("/v1/restaurant/name")
+//         .send({
+//             restID: rest1id,
+//             name: "B"
+//         });
+//         expect(res.statusCode).toBe(400);
+//     });
+
+//     it("Change name - invalid restaurant", async () => {
+//         const res = await request(app)
+//         .patch("/v1/restaurant/name")
+//         .send({
+//             restID: 65,
+//             name: "Bobs"
+//         });
+//         expect(res.statusCode).toBe(404);
+//     });
+
+//     it("Change name - valid", async () => {
+//         const res = await request(app)
+//         .patch("/v1/restaurant/name")
+//         .send({
+//             restID: rest1id,
+//             name: "Bobs Pizzaria"
+//         });
+//         expect(res.statusCode).toBe(201);
+//     });
 
 
 
