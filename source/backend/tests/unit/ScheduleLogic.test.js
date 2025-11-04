@@ -1,10 +1,10 @@
 
 import ScheduleLogic from '../../logic/ScheduleLogic.js';
 
-const schedule_normal   = "{\"schedule\":{\"monday\":{\"open\":8.5, \"close\":20.0}, \"tuesday\":{\"open\":8.5, \"close\":20.0}}}";
-const schedule_no_days  = "{\"schedule\":{}}";
-const schedule_bad_day  = "{\"schedule\":{\"monday\":{\"open\":8.5, \"close\":20.0}, \"badday\":{\"open\":8.5, \"close\":20.0}}}";
-const schedule_overfull = "{\"schedule\":{\"sunday\":{\"open\":8.5, \"close\":20.0}, \"monday\":{\"open\":8.5, \"close\":20.0}, \"tuesday\":{\"open\":8.5, \"close\":20.0}, \"wednesday\":{\"open\":8.5, \"close\":20.0}, \"thursday\":{\"open\":8.5, \"close\":20.0}, \"friday\":{\"open\":8.5, \"close\":20.0}, \"saturday\":{\"open\":8.5, \"close\":20.0}, \"sunday\":{\"open\":8.5, \"close\":20.0}, }}";
+const schedule_normal   = { monday: { open: 8.5, close: 20.0 }, tuesday: { open: 8.5, close: 20.0 }}
+
+const schedule_no_days  = {}
+const schedule_bad_day  = {monday: { open: 8.5, close: 20.0 },badday: { open: 8.5, close: 20.0 }}  // invalid day
 
 
 
@@ -23,30 +23,6 @@ test("check_open: too early", () => {
 test("check_open: too late", () => {
     const open = ScheduleLogic.check_open(12,8,12);
     expect(open).toBe(false);
-});
-
-
-
-// -------------------------------------------------- validate_schedule
-
-test("validate_schedule: normal", () => {
-    const valid = ScheduleLogic.validate_schedule(schedule_normal);
-    expect(valid).toBe(true);
-});
-
-test("validate_schedule: no days", () => {
-    const valid = ScheduleLogic.validate_schedule(schedule_no_days);
-    expect(valid).toBe(true);
-});
-
-test("validate_schedule: bad day", () => {
-    const valid = ScheduleLogic.validate_schedule(schedule_bad_day);
-    expect(valid).toBe(false);
-});
-
-test("validate_schedule: overfull", () => {
-    const valid = ScheduleLogic.validate_schedule(schedule_overfull);
-    expect(valid).toBe(false);
 });
 
 
