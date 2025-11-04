@@ -1,9 +1,9 @@
-const Decimal = require('decimal.js');
-
 function validate_name(name) {
     return (typeof name == "string" && name.length > 0 && name.length <= 20);
 }
 
+//checks if string is a valid price
+//optional $ at start of string, optional thousand separators (commas) and 0-2 decimals.
 function validate_price(price) {
     //partially made using ChatGPT
     const PRICE_REGEX = /^\$?(?:\d+(?:\.\d{0,2})?|\d{1,3}(?:,\d{3})+(?:\.\d{0,2})?)$/
@@ -18,12 +18,17 @@ function validate_category(category) {
     return (typeof category == "string" && category.length <= 20);
 }
 
+// converts string into a variable could be saved as a decimal
 function parse_money(price) {
     //partially made using ChatGPT
-    const cleaned = price.replace('$', '').trim();
-    try {
-        return new Decimal(cleaned).toFixed(2);
-    } catch {
+    if (typeof price == "string") {
+        const cleaned = price.replace('$', '');
+        try {
+            return parseFloat(cleaned).toFixed(2);
+        } catch {
+            return null;
+        }    
+    } else {
         return null;
     }
 }
