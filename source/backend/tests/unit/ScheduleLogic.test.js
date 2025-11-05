@@ -1,8 +1,7 @@
 
-import ScheduleLogic from '../../logic/ScheduleLogic.js';
+import ScheduleLogic from '../../logic/scheduleLogic.js';
 
 const schedule_normal   = { monday: { open: 8.5, close: 20.0 }, tuesday: { open: 8.5, close: 20.0 }}
-
 const schedule_no_days  = {}
 const schedule_bad_day  = {monday: { open: 8.5, close: 20.0 },badday: { open: 8.5, close: 20.0 }}  // invalid day
 
