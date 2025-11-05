@@ -24,7 +24,7 @@ describe("Menu Item API", () => {
         expect(res.statusCode).toBe(201);
         console.log(res.body);
         expect(res.body.name).toBe("Food");
-        expect(res.body.price).toEqual(1);
+        expect(res.body.price).toBe("1.00");
         expect(res.body.description).toBe("description");
         expect(res.body.category).toBe("category");
     });
@@ -115,7 +115,12 @@ describe("Menu Item API", () => {
     });
     
     it("get one, valid restaurant", async () => {
-        const res = await request(app).get(`/v1/menu/${restID}/${itemID}`);
+        const toGet = await MenuItem.create({
+            restID: restID,
+            name: "To Get",
+            price: "0"
+        });
+        const res = await request(app).get(`/v1/menu/${restID}/${toGet.itemID}`);
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("TestItem");
     });
