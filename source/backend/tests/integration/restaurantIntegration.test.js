@@ -163,7 +163,7 @@ describe("Restaurant API", () => {
 
     it("Change description - valid", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/description")
+        .patch("/v1/restaurant/change/description")
         .send({
             restID: rest1id,
             description: "edited restaurant description 1"
@@ -174,7 +174,7 @@ describe("Restaurant API", () => {
 
     it("Change description - invalid description", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/description")
+        .patch("/v1/restaurant/change/description")
         .send({
             restID: rest1id,
             description: "bad"
@@ -184,7 +184,7 @@ describe("Restaurant API", () => {
 
     it("Change description - restaurant DNE", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/description")
+        .patch("/v1/restaurant/change/description")
         .send({
             restID: 100,
             description: "edited restaurant description 2"
@@ -197,7 +197,7 @@ describe("Restaurant API", () => {
     it("Change Restaurant tags - valid", async () => {
         const test_tag =["food", "vegan", "dessert", 'valid-tag']
         const res = await request(app)
-        .patch("/v1/restaurant/tags")
+        .patch("/v1/restaurant/change/tags")
         .send({
             restID: rest1id,
             tags: test_tag
@@ -209,7 +209,7 @@ describe("Restaurant API", () => {
     it("Clearing Restaurant tags - valid", async () => {
         const test_tag =[]
         const res = await request(app)
-        .patch("/v1/restaurant/tags")
+        .patch("/v1/restaurant/change/tags")
         .send({
             restID: rest1id,
             tags: test_tag
@@ -221,7 +221,7 @@ describe("Restaurant API", () => {
     it("Restaurant tags - invalid, undefined value", async () => {
         const test_tag = undefined
         const res = await request(app)
-        .patch("/v1/restaurant/tags")
+        .patch("/v1/restaurant/change/tags")
         .send({
             restID: rest1id,
             tags: test_tag
@@ -233,7 +233,7 @@ describe("Restaurant API", () => {
     it("Restaurant tags - invalid value", async () => {
         const test_tag = ["hello", "fai1ed-test"]
         const res = await request(app)
-        .patch("/v1/restaurant/tags")
+        .patch("/v1/restaurant/change/tags")
         .send({
             restID: rest1id,
             tags: test_tag
@@ -249,7 +249,7 @@ describe("Restaurant API", () => {
 
     it("Change name - bad call status 500", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/name")
+        .patch("/v1/restaurant/change/name")
         .send({
             restID: rest1id
         });
@@ -258,7 +258,7 @@ describe("Restaurant API", () => {
 
     it("Change name - invalid trying to change the name into current name", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/name")
+        .patch("/v1/restaurant/change/name")
         .send({
             restID: rest1id,
             name: "Bob's Dairy"
@@ -268,7 +268,7 @@ describe("Restaurant API", () => {
 
     it("Change name - invalid name", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/name")
+        .patch("/v1/restaurant/change/name")
         .send({
             restID: rest1id,
             name: ""
@@ -278,7 +278,7 @@ describe("Restaurant API", () => {
 
     it("Change name - invalid restaurant", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/name")
+        .patch("/v1/restaurant/change/name")
         .send({
             restID: 65,
             name: "Bobbies Pizza"
@@ -289,7 +289,7 @@ describe("Restaurant API", () => {
 
     it("Change name - valid", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/name")
+        .patch("/v1/restaurant/change/name")
         .send({
             restID: rest1id,
             name: "Bobs Pizzaria"
@@ -303,7 +303,7 @@ describe("Restaurant API", () => {
 
     it("Change phone - phone num already in use", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/phone")
+        .patch("/v1/restaurant/change/phone")
         .send({
             restID: rest1id,
             phone: "(204) 234-5678"
@@ -313,7 +313,7 @@ describe("Restaurant API", () => {
 
     it("Change phone - invalid phone number", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/phone")
+        .patch("/v1/restaurant/change/phone")
         .send({
             restID: rest1id,
             phone: "2042345678"
@@ -323,7 +323,7 @@ describe("Restaurant API", () => {
 
     it("Change phone - invalid restaurant", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/phone")
+        .patch("/v1/restaurant/change/phone")
         .send({
             restID: 65,
             phone: "(205) 236-5678"
@@ -333,7 +333,7 @@ describe("Restaurant API", () => {
 
     it("Change phone - valid", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/phone")
+        .patch("/v1/restaurant/change/phone")
         .send({
             restID: rest1id,
             phone: "(204) 236-6678"
@@ -346,7 +346,7 @@ describe("Restaurant API", () => {
 
     it("Change address - address already in use", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/address")
+        .patch("/v1/restaurant/change/address")
         .send({
             restID: rest1id,
             address: "100 Burger street"
@@ -356,7 +356,7 @@ describe("Restaurant API", () => {
 
     it("Change address - invalid address", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/address")
+        .patch("/v1/restaurant/change/address")
         .send({
             restID: rest1id,
             address: "(204) 234-5678"
@@ -366,7 +366,7 @@ describe("Restaurant API", () => {
 
     it("Change address - invalid restaurant", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/address")
+        .patch("/v1/restaurant/change/address")
         .send({
             restID: 65,
             address: "100 New street, Winnipeg, NYC"
@@ -376,7 +376,7 @@ describe("Restaurant API", () => {
 
     it("Change address - valid", async () => {
         const res = await request(app)
-        .patch("/v1/restaurant/address")
+        .patch("/v1/restaurant/change/address")
         .send({
             restID: rest1id,
             address: "100 New street, Winnipeg, NYC"
