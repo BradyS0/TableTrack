@@ -32,11 +32,18 @@ describe("Restaurant API", () => {
         expect(res.body.name).toBe("TestRestaurant1");
     });
 
-    it("Get the restaurant with id 5 (Should not exist)", async () => {
+    it("Get the restaurant with id 100 (Should not exist)", async () => {
         const res = await request(app)
         .get("/v1/restaurant/100")
         .send();
         expect(res.statusCode).toBe(404);
+    });
+
+    it("Get the restaurant with id 'a' (Should error)", async () => {
+        const res = await request(app)
+        .get("/v1/restaurant/a")
+        .send();
+        expect(res.statusCode).toBe(500);
     });
 
     // -------------------------------------------------- GET /restaurant/user/{id}
@@ -61,6 +68,13 @@ describe("Restaurant API", () => {
         .get("/v1/restaurant/user/" + String(user2id))
         .send();
         expect(res.statusCode).toBe(404);
+    });
+
+    it("Get the restaurant by owner - bad id", async () => {
+        const res = await request(app)
+        .get("/v1/restaurant/user/a")
+        .send();
+        expect(res.statusCode).toBe(500);
     });
 
     // -------------------------------------------------- PATCH /restaurant
@@ -107,6 +121,18 @@ describe("Restaurant API", () => {
     });
 
     // -------------------------------------------------- POST /restaurant
+
+    it("Create restaurant with existing unique value", async () => {
+        const res = await request(app)
+        .post("/v1/restaurant")
+        .send({
+            userID:  user2id,
+            name:    "Macdonald",
+            address: "100 Test Street",
+            phone:   "(204) 123-4567"
+        });
+        expect(res.statusCode).toBe(500);
+    });
 
     it("Create restaurant with invalid data", async () => {
         const res = await request(app)

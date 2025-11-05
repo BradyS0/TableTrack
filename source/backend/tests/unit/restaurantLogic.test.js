@@ -49,9 +49,24 @@ test("validate_phone: Valid number", () => {
 
 // -------------------------------------------------- validate_name
 
-// Same implementation as validate_description
+test("validate_name: Too short", () => {
 
+    const str = ""; // 0
+    expect(RestaurantLogic.validate_name(str)).toEqual(false);
+});
 
+test("validate_name: Too long", () => {
+
+    const str = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + // 50
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";  // 100
+    expect(RestaurantLogic.validate_name(str)).toEqual(false);
+});
+
+test("validate_name: Just right", () => {
+
+    const str = "aaaaaaaaaa"; // 10
+    expect(RestaurantLogic.validate_name(str)).toEqual(true);
+});
 
 // -------------------------------------------------- validate_description
 

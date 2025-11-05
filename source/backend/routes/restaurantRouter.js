@@ -217,22 +217,18 @@ router.patch("/change/tags", async (req, res) => {
 // GET /restaurant
 // Get a list of restaurants
 router.get("/", async (req, res) => {
-    try {
-        // Get a list of available restaurants
-        const db_restaurants = await Restaurant.findAll();
+    
+    // Get a list of available restaurants
+    const db_restaurants = await Restaurant.findAll();
 
-        // Process data
-        var rest_list = { restaurants: [] };
-        for (const rest of db_restaurants)
-        {
-            rest_list.restaurants.push(rest);
-        }
-        // Return result
-        res.status(200).json(rest_list);
-    } catch (err) {
-        // Unexpected internal error occured
-        res.status(500).json({ error: err.message });
+    // Process data
+    var rest_list = { restaurants: [] };
+    for (const rest of db_restaurants)
+    {
+        rest_list.restaurants.push(rest);
     }
+    // Return result
+    res.status(200).json(rest_list);
 });
 
 
@@ -254,7 +250,7 @@ router.get("/:id", async (req, res) => {
     }
     catch (err) {
         // Unexpected internal error occured
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: "Internal server error, ID may be invalid" });
     }
 });
 
@@ -277,7 +273,7 @@ router.get("/user/:id", async (req, res) => {
     }
     catch (err) {
         // Unexpected internal error occured
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: "Internal server error, ID may be invalid" });
     }
 });
 
