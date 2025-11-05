@@ -197,14 +197,15 @@ async function addMenuItem(restID, userID, item) {
 }
 
 async function deleteMenuItem(restID, userID, itemID) {
-  const data = getAllData();
-  const restaurant = data.find(r => r.restID === restID);
+  const data = getMenus();
+  let menu = data[restID-1] || []
 
-  if (!restaurant) return { code: 404, message: "Restaurant not found" };
+  if (!menus) return { code: 404, message: "Menus not found" };
   // if (restaurant.userID !== userID) return { code: 403, message: "Unauthorized" };
 
-  restaurant.menu = restaurant.menu.filter(i => i.itemID !== parseInt(itemID));
-  saveAllData(data);
+  menu = menu.filter(item => item.itemID !== parseInt(itemID))
+  data[restID-1] = menu
+  saveAllMenus(data)
 
   return { code: 200, message: `Item #${itemID} deleted successfully!` };
 }

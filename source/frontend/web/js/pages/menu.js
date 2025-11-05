@@ -133,8 +133,7 @@ export async function loadOwnerMenu(owner) {
     alert(res.message);
 
     if (res.code < 300) {
-      await loadOwnerMenu(owner); // Re-render with updated data
-      await loadPublicMenu(owner.restID); // Refresh customer menu immediately
+      location.reload();
     }
   });
 
