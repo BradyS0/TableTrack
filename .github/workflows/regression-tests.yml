@@ -1,0 +1,36 @@
+name: Run Regression Script
+
+on: [push, pull_request]
+
+jobs:
+  run-regression:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18  # Use the Node.js version compatible with your project
+
+    # Step 3: Install Docker Compose
+    - name: Install Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
+
+    # Step 4: Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # Step 5: Run the regression script
+    - name: Run regression script
+      env:
+        DB_PASS: ${{ secrets.DB_PASS }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+      run: node regression.js

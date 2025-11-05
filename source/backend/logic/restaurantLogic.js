@@ -51,26 +51,22 @@ function validate_description(desc) {
 
 
 
-// Test open hours
-function validate_hours(hours) {
+function validate_tags(tags){
+    const MIN_LEN = 3
+    const MAX_LEN = 30
+    //regex only accepts hyphens and alphabets , cannopt start or end with a hyphen
+    const tags_regex = /^[A-Za-z]+(?:-[A-Za-z]+)*$/
 
-    // Time regex:          x:--    1x:--     2(1-3):--    --:(0-59)         24:00
-    const time_regex = "((([0-9]{1}|1[0-9]{1}|2[0-3]{1}):([0-5]{1}[0-9]{1}))|24:00)"
+    if(!Array.isArray(tags))
+        return false
 
-    // Days regex:
-    const days_regex = "^{\"sunday\":{\"open\":\"" + time_regex + "\", \"close\":\"" + time_regex + "\"}, " +
-        "\"monday\":{\"open\":\"" + time_regex + "\", \"close\":\"" + time_regex + "\"}, " +
-        "\"tuesday\":{\"open\":\"" + time_regex + "\", \"close\":\"" + time_regex + "\"}, " +
-        "\"wednesday\":{\"open\":\"" + time_regex + "\", \"close\":\"" + time_regex + "\"}, " +
-        "\"thursday\":{\"open\":\"" + time_regex + "\", \"close\":\"" + time_regex + "\"}, " +
-        "\"friday\":{\"open\":\"" + time_regex + "\", \"close\":\"" + time_regex + "\"}, " +
-        "\"saturday\":{\"open\":\"" + time_regex + "\", \"close\":\"" + time_regex + "\"}}$";
+    const isValid = tags.every(tag =>
+        typeof(tag) === 'string' && 
+        tag.length>=MIN_LEN &&
+        tag.length<=MAX_LEN && 
+        tags_regex.test(tag));
 
-    // Final regex:
-    const regex = new RegExp(days_regex);
-
-    // Ensure formatting is correct
-    return regex.test(hours);
+    return isValid
 }
 
 
@@ -81,5 +77,5 @@ export default {
     validate_phone,
     validate_name,
     validate_description,
-    validate_hours
+    validate_tags
 };

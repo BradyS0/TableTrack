@@ -164,5 +164,5 @@ router.patch("/change/password", async (req, res) => {
     } catch (err) {
         res.status(404).json({ error: err.message });
     }
-});
+}); 
 export default router;

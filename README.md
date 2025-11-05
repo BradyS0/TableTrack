@@ -12,11 +12,10 @@ Ever been too lazy to call for a reservation? How about being seated right by th
 
 
 ## Run Instructions
-- [backend](./source/backend/README.md)
-- [frontend](./source/frontend/web/README.md#front-end-start-instructions)
+- [backend](./documentation/Run_Instructions.md)
+- [frontend](./source/frontend/web/README.md)
+- [regression tests](./documentation/Regression_Test_Instructions.md)
 
 ## Standards
 - Programming Standards *$_{TBA}$*
 - Workflow / Contribution Standards *$_{TBA}$*
-
-

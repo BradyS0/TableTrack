@@ -120,6 +120,21 @@ async function createEditPopup(owner){
         });
   
     
+    const schedule = {
+  Sunday: { open: 8, close: 21 },
+  Monday: { open: "", close: "" },
+  Tuesday: { open: 10, close: 22 },
+  Wednesday: { open: 10, close: 22 },
+  Thursday: { open: 10, close: 22 },
+  Friday: { open: 10, close: 22 },
+  Saturday: { open: 10, close: 22 },
+};
+
+    rest_edit.add('Weekly Schedule').editSchedule(schedule,(updates)=>{
+      console.log("Schedule Updates:")
+      console.log(updates)
+    })
+    
     document.querySelector('#app').append(rest_edit.overlay)
   }
 }
