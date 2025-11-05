@@ -24,7 +24,7 @@ describe("Menu Item API", () => {
         expect(res.statusCode).toBe(201);
         console.log(res.body);
         expect(res.body.name).toBe("Food");
-        expect(res.body.price).toBe(1);
+        expect(res.body.price).toEqual(1);
         expect(res.body.description).toBe("description");
         expect(res.body.category).toBe("category");
     });
