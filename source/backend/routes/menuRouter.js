@@ -30,7 +30,14 @@ router.post("/:restID", async (req, res) => {
                 description: description,
                 category: category
             });
-            res.status(201).json(new_item.toJSON);
+            res.status(201).json({
+                itemID: new_item.itemID,
+                restID: new_item.restID,
+                name: new_item.name,
+                price: new_item.price,
+                description: new_item.description,
+                category: new_item.category
+            });
         } else {
             res.status(400).json({ error: "Invalid parameters."})
         }
@@ -45,7 +52,7 @@ router.get("/:restID", async (req, res) => {
     const restID = parseInt(req.params.restID);
     const restaurant = await Restaurant.findByPk(restID)
     
-    if (restaurant) {
+    if (restaurant !== null) {
         const menuList = await MenuItem.findAll({
             attributes: ['name', 'price', 'description', 'category'],
             where: { restID: restID }
