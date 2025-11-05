@@ -61,7 +61,7 @@ router.post("/", async (req, res) => {
 
 // PATCH /restaurant/name
 // Edit name of a restaurant
-router.patch("/name", async (req, res) => {
+router.patch("/change/name", async (req, res) => {
     try {
         // Retrieve and validate information from body
         const { restID, name, } = req.body;
@@ -87,7 +87,7 @@ router.patch("/name", async (req, res) => {
 
 // PATCH /restaurant/address
 // Edit address of a restaurant
-router.patch("/address", async (req, res) => {
+router.patch("/change/address", async (req, res) => {
     try {
         // Retrieve and validate information from body
         const { restID, address, } = req.body;
@@ -115,7 +115,7 @@ router.patch("/address", async (req, res) => {
 
 // PATCH /restaurant/phone
 // Edit address of a restaurant
-router.patch("/phone", async (req, res) => {
+router.patch("/change/phone", async (req, res) => {
     try {
         // Retrieve and validate information from body
         const { restID, phone, } = req.body;
@@ -143,7 +143,7 @@ router.patch("/phone", async (req, res) => {
 
 // PATCH /restaurant/description
 // Edit description of a restaurant
-router.patch("/description", async (req, res) => {
+router.patch("/change/description", async (req, res) => {
     try {
         // Retrieve and validate information from body
         const { restID, description, } = req.body;
@@ -179,7 +179,7 @@ router.patch("/description", async (req, res) => {
 
 // PATCH /restaurant/tags
 // Edit tags of a restaurant
-router.patch("/tags", async (req, res) => {
+router.patch("/change/tags", async (req, res) => {
     try {
         // Retrieve and validate information from body
         const { restID, tags, } = req.body;
