@@ -85,7 +85,7 @@ const getRestaurantByOwner = async(userID) => {
   }catch{
       console.log("ERROR:::",result)
       result = {code:9001, message:"api backend cannot be reached"};
-  }
+  } 
 
   return result;
 };
@@ -121,7 +121,7 @@ const changeRestaurantName = async(restID, userID, name) => {
   let result = {code:9001, message:"api backend cannot be reached"};
 
     try{
-    const req = await fetch(`${API}/name`, {method: 'PATCH',
+    const req = await fetch(`${API}/change/name`, {method: 'PATCH',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({restID:restID, name:name})}
     )
@@ -147,7 +147,7 @@ const changeRestaurantAddress = async(restID, userID, address) => {
   let result = {code:9001, message:"api backend cannot be reached"};
 
     try{
-    const req = await fetch(`${API}/address`, {method: 'PATCH',
+    const req = await fetch(`${API}/change/address`, {method: 'PATCH',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({restID,address})}
     )
@@ -173,7 +173,7 @@ const changeRestaurantPhone = async(restID, userID, phone) => {
  let result = {code:9001, message:"api backend cannot be reached"};
 
     try{
-    const req = await fetch(`${API}/phone`, {method: 'PATCH',
+    const req = await fetch(`${API}/change/phone`, {method: 'PATCH',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({restID:restID, phone:phone})}
     )
@@ -205,7 +205,7 @@ let result = {code:9001, message:"api backend cannot be reached"};
 
     try{
     console.log(tags)
-    const req = await fetch(`${API}/tags`, {method: 'PATCH',
+    const req = await fetch(`${API}/change/tags`, {method: 'PATCH',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({restID, tags})}
     )
