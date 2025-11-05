@@ -8,6 +8,10 @@
     height: auto;        
     min-height: 80vh;    
     box-sizing: border-box;
+    max-width: 1300px;
+    width:85vw;
+    align-self: center;
+
 }
 
 #restaurant-info hr{

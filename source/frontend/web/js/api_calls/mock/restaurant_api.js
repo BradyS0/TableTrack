@@ -1,15 +1,14 @@
-import {restaurants} from './mockRestdata.js'
+import {restaurants,menus} from './mockRestdata.js'
 const MOCK = "mockRest"
+const MOCK_MENU = 'mockMenu'
 
 function init(){
     if (!sessionStorage.getItem(MOCK)){
-      const data = restaurants.map(r => ({
-        ...r,
-        menu: r.menu || []
-      }));
-      sessionStorage.setItem(MOCK, JSON.stringify(data));
+      sessionStorage.setItem(MOCK, JSON.stringify(restaurants));
+      sessionStorage.setItem(MOCK_MENU, JSON.stringify(menus)); 
     }
 }
+
 
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random#getting_a_random_number_between_two_values
 //place holder for random rating for sprint1
@@ -24,6 +23,17 @@ function getAllData() {
 
 function saveAllData(data) {
   sessionStorage.setItem(MOCK, JSON.stringify(data));
+}
+
+function getMenus(){
+  if(!sessionStorage.getItem(MOCK_MENU))
+    sessionStorage.setItem(MOCK_MENU, JSON.stringify([])); 
+  return JSON.parse(sessionStorage.getItem(MOCK_MENU));
+}
+
+
+function saveAllMenus(data) {
+  sessionStorage.setItem(MOCK_MENU, JSON.stringify(data));
 }
 
 
@@ -161,37 +171,37 @@ const changeRestaurantTags = async(restID, userID, tags) => {
   return { code: 200, message: "Tags updated successfully" };
 };
 
-export async function getMenuItems(restID) {
-  const data = getAllData();
-  const restaurant = data.find(r => r.restID === parseInt(restID));
+async function getMenuItems(restID) {
+  const data = getMenus() || [];
+  const menu = data[restID-1]
 
-  if (!restaurant) return { code: 404, message: "Restaurant not found" };
+  if (!menu) return { code: 404, message: "Menu not found" };
 
   // Always return current menu state
-  return { code: 200, data: restaurant.menu || [] };
+  return { code: 200, data: menu || [] };
 }
 
-export async function addMenuItem(restID, userID, item) {
-  const data = getAllData();
-  const restaurant = data.find(r => r.restID === parseInt(restID));
+async function addMenuItem(restID, userID, item) {
+  const data = getMenus();
+  const menu = data[restID-1] || []
 
-  if (!restaurant) return { code: 404, message: "Restaurant not found" };
-  if (!restaurant.menu) restaurant.menu = [];
-  if (restaurant.userID !== userID) return { code: 403, message: "Unauthorized" };
+  if (!menu) return { code: 404, message: "Restaurant not found" };
+  // if (restaurant.userID !== userID) return { code: 403, message: "Unauthorized" };
 
   const newItem = { ...item, itemID: Date.now() };
-  restaurant.menu.push(newItem);
-  saveAllData(data);
+  menu.push(newItem);
+  data[restID-1] = menu
+  saveAllMenus(data);
 
-  return { code: 200, message: `Item '${item.name}' added successfully!`, data: restaurant.menu };
+  return { code: 200, message: `Item '${item.name}' added successfully!`, data: menu };
 }
 
-export async function deleteMenuItem(restID, userID, itemID) {
+async function deleteMenuItem(restID, userID, itemID) {
   const data = getAllData();
   const restaurant = data.find(r => r.restID === restID);
 
   if (!restaurant) return { code: 404, message: "Restaurant not found" };
-  if (restaurant.userID !== userID) return { code: 403, message: "Unauthorized" };
+  // if (restaurant.userID !== userID) return { code: 403, message: "Unauthorized" };
 
   restaurant.menu = restaurant.menu.filter(i => i.itemID !== parseInt(itemID));
   saveAllData(data);
@@ -199,12 +209,20 @@ export async function deleteMenuItem(restID, userID, itemID) {
   return { code: 200, message: `Item #${itemID} deleted successfully!` };
 }
 
-export const mockRestaurantAPI = {
+export  const mockRestaurantAPI = {
   getRestaurants,
   createRestaurant,
-  getMenuItems,
   getRestaurantByID,
-  addMenuItem,
-  deleteMenuItem
+  getRestaurantByOwner,
+  changeRestaurantName,
+  changeRestaurantAddress,
+  changeRestaurantPhone,
+  changeRestaurantTags,
 };
+
+export const mockMenusAPI = {
+  addMenuItem,
+  getMenuItems,
+  deleteMenuItem
+}
 
