@@ -70,7 +70,7 @@ const createRestaurant = async (userID, name, tags, address, phone) => {
   };
 
   data.push(newRest);
-  sessionStorage.setItem(MOCK,JSON.stringify(data))
+  saveAllData(data)
 
   return {code: 201, message: "Restaurant created successfully", restID:newRest.restID};
 };
@@ -118,7 +118,7 @@ const changeRestaurantName = async(restID, userID, name) => {
 
   rest.name = name;
   data[restID-1] = rest
-  sessionStorage.setItem(MOCK,JSON.stringify(data))
+  saveAllData(data)
   
   return { code: 200, message: "Name updated successfully" };
 };
@@ -134,7 +134,7 @@ const changeRestaurantAddress = async(restID, userID, address) => {
 
   rest.address = address;
   data[restID-1] = rest
-  sessionStorage.setItem(MOCK,JSON.stringify(data))
+  saveAllData(data)
 
   return { code: 200, message: "Address updated successfully" };
 };
@@ -149,7 +149,7 @@ const changeRestaurantPhone = async(restID, userID, phone) => {
 
   rest.phone = phone;
   data[restID-1] = rest
-  sessionStorage.setItem(MOCK,JSON.stringify(data))
+  saveAllData(data)
 
   return { code: 200, message: "Phone updated successfully" };
 };
@@ -166,7 +166,7 @@ const changeRestaurantTags = async(restID, userID, tags) => {
 
   rest.tags = tags;
   data[restID-1] = rest
-  sessionStorage.setItem(MOCK,JSON.stringify(data))
+  saveAllData(data)
 
   return { code: 200, message: "Tags updated successfully" };
 };
