@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "type": "module",
     "scripts": {
-        "test:regression": "jest --onlyChanged --coverage --runInBand --testPathPatterns=source/backend/tests/unit"
+        "test:regression": "node ./regression.js"
     },
     "dependencies": {
         "cors": "^2.8.5",

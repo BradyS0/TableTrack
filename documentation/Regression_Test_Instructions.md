@@ -1,4 +1,14 @@
 # Regression test run instructions
+
+First create a .env file that has the folowing variables defined:
+
+```bash
+# .env file in root directory
+
+DB_NAME=testdb
+DB_USER=testuser
+DB_PASS=testpassword
+```
 To figure out what commit/branch to compare changes to enter into the command line:
 
 ```bash
