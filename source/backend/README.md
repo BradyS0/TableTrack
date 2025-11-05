@@ -55,7 +55,45 @@ To start the backend server from the command line run:
 ```bash
 # from ./source/backend
 
-npm run local:dev:start   # this will initialize the docker container
-npm run local:dev:test    # this will start the backend server
-npm run local:dev:stop    # this will stop the backend and clear the docker container
+npm run local:start   # this will initialize the docker container
+npm run test:endpoints:all    # this will test the API endpoints
+npm run local:stop    # this will stop the backend and clear the docker container
+```
+
+To run the profiler on the dev API create or edit a `.env` file in the **backend** directory with the following credentials:
+
+```bash
+
+
+DB_USER=user
+DB_PASS=password
+DB_NAME=tabletrackdb
+DB_HOST=localhost
+DB_PORT=5432
+API_PORT=3001
+ENABLE_PROFILING=true
+```
+
+Then run the following commands:
+```bash
+# from ./source/backend
+
+npm run local:start   # this will initialize the docker container
+npm run start:profile
+```
+
+In another command line move to the backend directory again and run the endpoint tester with:
+
+```bash
+# from ./
+cd source/backend
+
+# from ./source/backend
+npm run test:endpoints:all    # this will test the API endpoints
+```
+
+Go back to the first command line and hit Ctrl-c, then run:
+
+```bash
+npm run local:stop    # this will stop the backend and clear the docker container
 ```

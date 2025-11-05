@@ -26,5 +26,5 @@ await cmd("./changed_files.sh --mode since-branch --base dev")
 After you're happy with your change or lack-there-of, enter into the command line:
 
 ```bash
- ./regression.js
+npm run test:regression
 ```
