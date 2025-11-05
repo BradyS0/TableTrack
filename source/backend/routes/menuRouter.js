@@ -67,7 +67,7 @@ router.get("/:restID", async (req, res) => {
 
 // GET /v1/menu/{restID}/{itemID}
 // Get a single menu item
-router.get("/:restID", async (req, res) => {
+router.get("/:restID/:itemID", async (req, res) => {
     const restID = parseInt(req.params.restID);
     const itemID = parseInt(req.params.itemID);
     const restaurant = await Restaurant.findByPk(restID)
