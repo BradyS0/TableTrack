@@ -3,15 +3,6 @@ import request from "supertest";
 import { app } from "../../app.js";
 // import sequelize from "../../db.js";
 
-// Hours string to use for restaurants
-const hours = "{\"sunday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-               "\"monday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-              "\"tuesday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-            "\"wednesday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-             "\"thursday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-               "\"friday\":{\"open\":\"8:30\", \"close\":\"22:30\"}, " +
-             "\"saturday\":{\"open\":\"6:00\", \"close\":\"12:30\"}}";
-
 // Data used in testing
 const user1id = 1
 const user2id = 2
@@ -83,7 +74,6 @@ describe("Restaurant API", () => {
             address: "205 Dairy road",
             phone:   "(204) 456-7890",
             desc:    "Ice cream and burgers.",
-            hours:   hours
         });
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("Bob's Dairy");
@@ -99,7 +89,6 @@ describe("Restaurant API", () => {
             address: "nope",
             phone:   "(204) 123-4567",
             desc:    "Burgers made by a queen",
-            hours:   hours
         });
         expect(res.statusCode).toBe(400);
     });
@@ -113,7 +102,6 @@ describe("Restaurant API", () => {
             address: "70 Flavor town",
             phone:   "(204) 345-6789",
             desc:    "Try our new 3000 calorie meal",
-            hours:   hours
         });
         expect(res.statusCode).toBe(404);
     });
@@ -163,10 +151,12 @@ describe("Restaurant API", () => {
             userID:  user2id,
             name:    "Burger Queen",
             address: "100 Burger street",
-            phone:   "(204) 234-5678"
+            phone:   "(204) 234-5678",
+            tags: ['new-restaurant','tester']
         });
         expect(res.statusCode).toBe(201);
         expect(res.body.name).toBe("Burger Queen");
+        expect(res.body.tags).toStrictEqual(['new-restaurant','tester'])
     });
 
     // -------------------------------------------------- PATCH /restaurant/description
@@ -201,7 +191,203 @@ describe("Restaurant API", () => {
         });
         expect(res.statusCode).toBe(404);
     });
+
+
+    // -------------------------------------------------- PATCH /restaurant/tags
+    it("Change Restaurant tags - valid", async () => {
+        const test_tag =["food", "vegan", "dessert", 'valid-tag']
+        const res = await request(app)
+        .patch("/v1/restaurant/tags")
+        .send({
+            restID: rest1id,
+            tags: test_tag
+        });
+        expect(res.statusCode).toBe(200);
+        expect(res.body.tags).toStrictEqual(test_tag);
+    });
+
+    it("Clearing Restaurant tags - valid", async () => {
+        const test_tag =[]
+        const res = await request(app)
+        .patch("/v1/restaurant/tags")
+        .send({
+            restID: rest1id,
+            tags: test_tag
+        });
+        expect(res.statusCode).toBe(200);
+        expect(res.body.tags).toStrictEqual(test_tag);
+    });
+
+    it("Restaurant tags - invalid, undefined value", async () => {
+        const test_tag = undefined
+        const res = await request(app)
+        .patch("/v1/restaurant/tags")
+        .send({
+            restID: rest1id,
+            tags: test_tag
+        });
+        expect(res.statusCode).toBe(406);
+        expect(res.body.error).toBe("Tags are expected as Arrays of strings but [object Undefined] provided");
+    });
+
+    it("Restaurant tags - invalid value", async () => {
+        const test_tag = ["hello", "fai1ed-test"]
+        const res = await request(app)
+        .patch("/v1/restaurant/tags")
+        .send({
+            restID: rest1id,
+            tags: test_tag
+        });
+        expect(res.statusCode).toBe(400);
+        expect(res.body.error).toBe("invalid syntax, only alphabets and hyphen accepted between 3-30 characters long");
+    });
+
 });
+
+
+// -------------------------------------------------- PATCH /restaurant/name
+
+    it("Change name - bad call status 500", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: rest1id
+        });
+        expect(res.statusCode).toBe(500);
+    });
+
+    it("Change name - invalid trying to change the name into current name", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: rest1id,
+            name: "Bob's Dairy"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change name - invalid name", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: rest1id,
+            name: ""
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change name - invalid restaurant", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: 65,
+            name: "Bobbies Pizza"
+        });
+        expect(res.statusCode).toBe(404);
+    });
+
+
+    it("Change name - valid", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/name")
+        .send({
+            restID: rest1id,
+            name: "Bobs Pizzaria"
+        });
+        expect(res.statusCode).toBe(201);
+    });
+
+
+
+// -------------------------------------------------- PATCH /restaurant/phone
+
+    it("Change phone - phone num already in use", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/phone")
+        .send({
+            restID: rest1id,
+            phone: "(204) 234-5678"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change phone - invalid phone number", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/phone")
+        .send({
+            restID: rest1id,
+            phone: "2042345678"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change phone - invalid restaurant", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/phone")
+        .send({
+            restID: 65,
+            phone: "(205) 236-5678"
+        });
+        expect(res.statusCode).toBe(404);
+    });
+
+    it("Change phone - valid", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/phone")
+        .send({
+            restID: rest1id,
+            phone: "(204) 236-6678"
+        });
+        expect(res.statusCode).toBe(201);
+    });
+
+
+    // -------------------------------------------------- PATCH /restaurant/address 
+
+    it("Change address - address already in use", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/address")
+        .send({
+            restID: rest1id,
+            address: "100 Burger street"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change address - invalid address", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/address")
+        .send({
+            restID: rest1id,
+            address: "(204) 234-5678"
+        });
+        expect(res.statusCode).toBe(400);
+    });
+
+    it("Change address - invalid restaurant", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/address")
+        .send({
+            restID: 65,
+            address: "100 New street, Winnipeg, NYC"
+        });
+        expect(res.statusCode).toBe(404);
+    });
+
+    it("Change address - valid", async () => {
+        const res = await request(app)
+        .patch("/v1/restaurant/address")
+        .send({
+            restID: rest1id,
+            address: "100 New street, Winnipeg, NYC"
+        });
+        expect(res.statusCode).toBe(201);
+    });
+
+
+
+
+
 
 
 

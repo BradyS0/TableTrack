@@ -1,5 +1,6 @@
 import { api } from "../global.js"
 import { loadPublicMenu } from './menu.js';
+import { createScheduleCard, schedule } from "../components/schedule.js";
 
 
 if (window.location.pathname.includes("restaurantDetail")){
@@ -60,8 +61,11 @@ function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], rating
 
   contentSection.appendChild(comingSoon);
 
+  // --- weekly schedule ----
+  const weeklySchedule = createScheduleCard(schedule)
+
   // --- Combine All ---
-  container.append(nameHeader, tagsSpan, detailSection, hr_break,contentSection);
+  container.append(nameHeader, tagsSpan, detailSection, weeklySchedule, hr_break,contentSection);
 
   return container;
 }
@@ -88,7 +92,7 @@ function createDetailSection({restID,rating,hours,address,phone}){
   phoneNumP.id = 'restaurant-phone';
   phoneNumP.innerHTML = `Phone: <span>${phone || "204 - 111 - 1111"}</span>`;
 
-  detailsDiv.append(ratingP, locationP, phoneNumP, hoursP);
+  detailsDiv.append(ratingP, locationP, phoneNumP);
 
   // --- Reservation Button ---
   const reservationBtn = createReservationButton(restID)
