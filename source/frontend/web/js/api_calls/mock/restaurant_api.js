@@ -1,16 +1,39 @@
-import {restaurants} from './mockRestdata.js'
+import {restaurants,menus} from './mockRestdata.js'
 const MOCK = "mockRest"
+const MOCK_MENU = 'mockMenu'
 
 function init(){
     if (!sessionStorage.getItem(MOCK)){
-        sessionStorage.setItem(MOCK,JSON.stringify(restaurants))
+      sessionStorage.setItem(MOCK, JSON.stringify(restaurants));
+      sessionStorage.setItem(MOCK_MENU, JSON.stringify(menus)); 
     }
 }
+
 
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random#getting_a_random_number_between_two_values
 //place holder for random rating for sprint1
 export function getRandomRating(min, max) {
   return (Math.random() * (max - min) + min).toFixed(1);
+}
+
+function getAllData() {
+  init();
+  return JSON.parse(sessionStorage.getItem(MOCK)) || [];
+}
+
+function saveAllData(data) {
+  sessionStorage.setItem(MOCK, JSON.stringify(data));
+}
+
+function getMenus(){
+  if(!sessionStorage.getItem(MOCK_MENU))
+    sessionStorage.setItem(MOCK_MENU, JSON.stringify([])); 
+  return JSON.parse(sessionStorage.getItem(MOCK_MENU));
+}
+
+
+function saveAllMenus(data) {
+  sessionStorage.setItem(MOCK_MENU, JSON.stringify(data));
 }
 
 
@@ -23,7 +46,6 @@ async function getRestaurants() {
 
   return {code:404, message:"No restaurants found"}
 }
-
 
 
 const createRestaurant = async (userID, name, tags, address, phone) => {
@@ -48,7 +70,7 @@ const createRestaurant = async (userID, name, tags, address, phone) => {
   };
 
   data.push(newRest);
-  sessionStorage.setItem(MOCK,JSON.stringify(data))
+  saveAllData(data)
 
   return {code: 201, message: "Restaurant created successfully", restID:newRest.restID};
 };
@@ -70,18 +92,19 @@ const getRestaurantByOwner = async(userID) => {
 };
 
 
-const getRestaurantByID = async(restID) => {
+const getRestaurantByID = async (restID) => {
   init();
+  const data = getAllData();
+  const restaurant = data.find(r => r.restID == restID);
 
-  let data = JSON.parse(sessionStorage.getItem(MOCK));
-  const rest = data.find(r => r.restID == restID);
-  console.log(rest, data, restID)
-
-  if (!rest) {
+  if (!restaurant) {
     return { code: 404, message: "Restaurant not found" };
   }
 
-  return { code: 200, message: "Restaurant found", data: rest };
+  // Ensure menu always exists and reflects latest state
+  if (!restaurant.menu) restaurant.menu = [];
+
+  return { code: 200, message: "Restaurant found", data: restaurant };
 };
 
 
@@ -95,7 +118,7 @@ const changeRestaurantName = async(restID, userID, name) => {
 
   rest.name = name;
   data[restID-1] = rest
-  sessionStorage.setItem(MOCK,JSON.stringify(data))
+  saveAllData(data)
   
   return { code: 200, message: "Name updated successfully" };
 };
@@ -111,7 +134,7 @@ const changeRestaurantAddress = async(restID, userID, address) => {
 
   rest.address = address;
   data[restID-1] = rest
-  sessionStorage.setItem(MOCK,JSON.stringify(data))
+  saveAllData(data)
 
   return { code: 200, message: "Address updated successfully" };
 };
@@ -126,7 +149,7 @@ const changeRestaurantPhone = async(restID, userID, phone) => {
 
   rest.phone = phone;
   data[restID-1] = rest
-  sessionStorage.setItem(MOCK,JSON.stringify(data))
+  saveAllData(data)
 
   return { code: 200, message: "Phone updated successfully" };
 };
@@ -143,17 +166,64 @@ const changeRestaurantTags = async(restID, userID, tags) => {
 
   rest.tags = tags;
   data[restID-1] = rest
-  sessionStorage.setItem(MOCK,JSON.stringify(data))
+  saveAllData(data)
 
   return { code: 200, message: "Tags updated successfully" };
 };
 
+async function getMenuItems(restID) {
+  const data = getMenus() || [];
+  const menu = data[restID-1]
 
+  if (!menu) return { code: 404, message: "Menu not found" };
 
+  // Always return current menu state
+  return { code: 200, data: menu || [] };
+}
 
+async function addMenuItem(restID, userID, item) {
+  const data = getMenus();
+  const menu = data[restID-1] || []
 
-export const mockRestaurantAPI = {getRestaurants,createRestaurant,
-  getRestaurantByOwner,getRestaurantByID,
-    changeRestaurantName,changeRestaurantAddress,
-    changeRestaurantPhone,changeRestaurantTags
+  if (!menu) return { code: 404, message: "Restaurant not found" };
+  // if (restaurant.userID !== userID) return { code: 403, message: "Unauthorized" };
+
+  const newItem = { ...item, itemID: Date.now() };
+  menu.push(newItem);
+  data[restID-1] = menu
+  saveAllMenus(data);
+
+  return { code: 200, message: `Item '${item.name}' added successfully!`, data: menu };
+}
+
+async function deleteMenuItem(restID, userID, itemID) {
+  const data = getMenus();
+  let menu = data[restID-1] || []
+
+  if (!menus) return { code: 404, message: "Menus not found" };
+  // if (restaurant.userID !== userID) return { code: 403, message: "Unauthorized" };
+
+  menu = menu.filter(item => item.itemID !== parseInt(itemID))
+  data[restID-1] = menu
+  saveAllMenus(data)
+
+  return { code: 200, message: `Item #${itemID} deleted successfully!` };
+}
+
+export  const mockRestaurantAPI = {
+  getRestaurants,
+  createRestaurant,
+  getRestaurantByID,
+  getRestaurantByOwner,
+  changeRestaurantName,
+  changeRestaurantAddress,
+  changeRestaurantPhone,
+  changeRestaurantTags,
 };
+
+export const mockMenusAPI = {
+  addMenuItem,
+  getMenuItems,
+  deleteMenuItem
+}
+

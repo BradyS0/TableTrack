@@ -1,11 +1,13 @@
 import { api } from "../global.js"
+import { loadPublicMenu } from './menu.js';
 import { createScheduleCard, schedule } from "../components/schedule.js";
 
 
 if (window.location.pathname.includes("restaurantDetail")){
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", async()=>{
      const params = new URLSearchParams(window.location.search);
-     loadRestaurant(params.get('restID'))
+     await loadRestaurant(params.get('restID'))
+     await loadPublicMenu(params.get('restID'));
     })
 }
 
@@ -50,11 +52,6 @@ function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], rating
   // --- Content Section ---
   const contentSection = document.createElement('section');
   contentSection.id = 'restaurant-content';
-
-  const comingSoon = document.createElement('h2');
-  comingSoon.textContent = 'Menu coming soon';
-
-  contentSection.appendChild(comingSoon);
 
   // --- weekly schedule ----
   const weeklySchedule = createScheduleCard(schedule)
