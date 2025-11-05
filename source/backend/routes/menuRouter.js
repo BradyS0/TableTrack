@@ -73,7 +73,7 @@ router.get("/:restID", async (req, res) => {
     const restaurant = await Restaurant.findByPk(restID)
     
 
-    if (restaurant) {
+    if (restaurant !== null) {
         const item = await MenuItem.findOne({
             attributes: ['name', 'price', 'description', 'category'],
             where: {

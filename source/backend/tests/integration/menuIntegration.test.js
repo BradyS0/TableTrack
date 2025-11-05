@@ -115,12 +115,7 @@ describe("Menu Item API", () => {
     });
     
     it("get one, valid restaurant", async () => {
-        const toGet = await MenuItem.create({
-            restID: restID,
-            name: "To Get",
-            price: "0"
-        });
-        const res = await request(app).get(`/v1/menu/${restID}/${toGet.itemID}`);
+        const res = await request(app).get(`/v1/menu/${restID}/${itemID}`);
         expect(res.statusCode).toBe(200);
         expect(res.body.name).toBe("TestItem");
     });
