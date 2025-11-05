@@ -82,7 +82,12 @@ router.get("/:restID/:itemID", async (req, res) => {
             }
         });
         if (item !== null) {
-            res.status(200).json({item})
+            res.status(200).json({
+                name: item.name,
+                price: item.price,
+                description: item.description,
+                category: item.category
+            })
         } else {
             res.status(400).json({ error: "Invalid item in request."})
         }

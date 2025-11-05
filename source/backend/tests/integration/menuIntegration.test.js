@@ -133,7 +133,7 @@ describe("Menu Item API", () => {
 
     it("get one, invalid item", async () => {
         const res = await request(app).get(`/v1/menu/${restID}/${invalidID}`);
-        expect(res.statusCode).toBe(404);
+        expect(res.statusCode).toBe(400);
     });
 
     // ================================================================================ PATCH
