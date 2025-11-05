@@ -9,7 +9,7 @@ function init(){
 
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random#getting_a_random_number_between_two_values
 //place holder for random rating for sprint1
-function getRandomRating(min, max) {
+export function getRandomRating(min, max) {
   return (Math.random() * (max - min) + min).toFixed(1);
 }
 
