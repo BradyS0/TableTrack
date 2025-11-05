@@ -81,8 +81,8 @@ router.get("/:restID", async (req, res) => {
                 restID: restID
             }
         });
-        if (item) {
-            res.status(200).json(item.toJSON)
+        if (item !== null) {
+            res.status(200).json({item})
         } else {
             res.status(400).json({ error: "Invalid item in request."})
         }
