@@ -10,7 +10,7 @@ let fileList = []
 
 // edit this command to change what commit/branch you want to compare with
 // in terminal type './changed_files.sh --help' to see options
-await cmd("./changed_files.sh --mode since-branch --base dev")
+await cmd("./changed_files.sh --mode since-branch --base main")
 
 fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
     if(err){
@@ -40,6 +40,24 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
             npm_installed = true
         }
         await cmd('npx jest --coverage --testPathPatterns=source/backend/tests/unit/restaurantLogic.test.js');
+    }
+    //schedule unit tests
+    if(fileList.includes('source/backend/logic/ScheduleLogic.js')
+        || fileList.includes('source/backend/tests/unit/ScheduleLogic.test.js')){
+        if(npm_installed === false){
+            await cmd('npm install')
+            npm_installed = true
+        }
+        await cmd('npx jest --coverage --testPathPatterns=source/backend/tests/unit/ScheduleLogic.test.js');
+    }
+    //menu unit tests  
+    if(fileList.includes('source/backend/logic/menuLogic.js')
+        || fileList.includes('source/backend/tests/unit/menuLogic.test.js')){
+        if(npm_installed === false){
+            await cmd('npm install')
+            npm_installed = true
+        }
+        await cmd('npx jest --coverage --testPathPatterns=source/backend/tests/unit/menuLogic.test.js');
     }
     //user integration tests
     if(fileList.includes("source/backend/routes/user.js") 
@@ -83,6 +101,48 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
         }
         await cmd('npx jest --config=source/backend/jest.integration.config.js --testPathPatterns=source/backend/tests/integration/restaurantIntegration.test.js');
 
+    }
+    // schedule integration tests
+    if(fileList.includes("source/backend/routes/ScheduleRouter.js") 
+    || fileList.includes('source/backend/testSetup.js')
+    || fileList.includes('source/backend/tests/integration/ScheduleIntegration.test.js')
+    || fileList.includes('source/backend/babel.config.js')
+    || fileList.includes('source/backend/jest.integration.config.js')
+    || fileList.includes('source/backend/app.js')
+    || fileList.includes('source/backend/db.js')
+    || fileList.includes('source/backend/docker-compose.test.yml')
+    || fileList.includes('source/backend/models/Schedule.js')){
+
+        if(npm_installed === false){
+            await cmd('npm install')
+            npm_installed = true
+        }
+        if(db_running === false){
+            await cmd('docker-compose -f source/backend/docker-compose.test.yml up -d');
+            db_running = true;
+        }
+        await cmd('npx jest --config=source/backend/jest.integration.config.js --testPathPatterns=source/backend/tests/integration/ScheduleIntegration.test.js');
+    }
+    // menu integration tests
+    if(fileList.includes("source/backend/routes/menuRouter.js") 
+    || fileList.includes('source/backend/testSetup.js')
+    || fileList.includes('source/backend/tests/integration/menuIntegration.test.js')
+    || fileList.includes('source/backend/babel.config.js')
+    || fileList.includes('source/backend/jest.integration.config.js')
+    || fileList.includes('source/backend/app.js')
+    || fileList.includes('source/backend/db.js')
+    || fileList.includes('source/backend/docker-compose.test.yml')
+    || fileList.includes('source/backend/models/MenuItem.js')){
+
+        if(npm_installed === false){
+            await cmd('npm install')
+            npm_installed = true
+        }
+        if(db_running === false){
+            await cmd('docker-compose -f source/backend/docker-compose.test.yml up -d');
+            db_running = true;
+        }
+        await cmd('npx jest --config=source/backend/jest.integration.config.js --testPathPatterns=source/backend/tests/integration/menuIntegration.test.js');
     }
 
     if(db_running === true){
