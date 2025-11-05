@@ -135,28 +135,28 @@ describe("User API", () => {
             });
         const res = await request(app)
             .patch("/v1/user/change/firstname")
-            .send({ userID: 2, first_name: "Jane" });
+            .send({ userID: 4, first_name: "Jane" });
         expect(res.statusCode).toBe(200);
     });
         
     it("update an existing user's last name with a valid name", async () => {
         const res = await request(app)
             .patch("/v1/user/change/lastname")
-            .send({ userID: 2, last_name: "Roe" });
+            .send({ userID: 4, last_name: "Roe" });
         expect(res.statusCode).toBe(200);
     });
     
     it("update an existing user's email with a valid email", async () => {
         const res = await request(app)
             .patch("/v1/user/change/email")
-            .send({ userID: 2, email: "janeroe@example.com" });
+            .send({ userID: 4, email: "janeroe@example.com" });
         expect(res.statusCode).toBe(200);
     });
     
     it("update an existing user's password with the correct old password and a valid new password", async () => {
         const res = await request(app)
             .patch("/v1/user/change/password")
-            .send({ userID: 2, old_password: "Password1!", new_password: "Password2@" });
+            .send({ userID: 4, old_password: "Password1!", new_password: "Password2@" });
         expect(res.statusCode).toBe(200);
     });
     //now is
@@ -170,7 +170,7 @@ describe("User API", () => {
     it("update an existing user's first name with an invalid name", async () => {
         const res = await request(app)
             .patch("/v1/user/change/firstname")
-            .send({ userID: 2, first_name: "" });
+            .send({ userID: 4, first_name: "" });
         expect(res.statusCode).toBe(400);
     });
 
@@ -185,7 +185,7 @@ describe("User API", () => {
     it("update an existing user's last name with an invalid name", async () => {
         const res = await request(app)
             .patch("/v1/user/change/lastname")
-            .send({ userID: 2, last_name: "" });
+            .send({ userID: 4, last_name: "" });
         expect(res.statusCode).toBe(400);
     });
 
@@ -200,7 +200,7 @@ describe("User API", () => {
     it("update an existing user's email with an invalid email", async () => {
         const res = await request(app)
             .patch("/v1/user/change/email")
-            .send({ userID: 2, email: "" });
+            .send({ userID: 4, email: "" });
         expect(res.statusCode).toBe(400);
     });
 
@@ -214,7 +214,7 @@ describe("User API", () => {
     it("update an existing user's email to an email already being used", async () => {
         const res = await request(app)
             .patch("/v1/user/change/email")
-            .send({ userID: 2, email: "johndoe@example.com" });
+            .send({ userID: 4, email: "johndoe@example.com" });
         expect(res.statusCode).toBe(400);
     });
 
@@ -222,21 +222,21 @@ describe("User API", () => {
     it("update an existing user's password with an invalid old password and a valid new password", async () => {
         const res = await request(app)
             .patch("/v1/user/change/password")
-            .send({ userID: 2, old_password: "", new_password: "Password1!" });
+            .send({ userID: 4, old_password: "", new_password: "Password1!" });
         expect(res.statusCode).toBe(400);
     });
     
     it("update an existing user's password, but old passwords don't match", async () => {
         const res = await request(app)
             .patch("/v1/user/change/password")
-            .send({ userID: 2, old_password: "Password3!", new_password: "Password1!" });
+            .send({ userID: 4, old_password: "Password3!", new_password: "Password1!" });
         expect(res.statusCode).toBe(401);
     });
 
     it("update an existing user's password with the correct old password and an invalid new password", async () => {
         const res = await request(app)
             .patch("/v1/user/change/password")
-            .send({ userID: 2, old_password: "Password2@", new_password: "" });
+            .send({ userID: 4, old_password: "Password2@", new_password: "" });
         expect(res.statusCode).toBe(400);
     });
 

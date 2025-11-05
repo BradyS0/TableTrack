@@ -1,10 +1,13 @@
 import { api } from "../global.js"
+import { loadPublicMenu } from './menu.js';
+import { createScheduleCard, schedule } from "../components/schedule.js";
 
 
 if (window.location.pathname.includes("restaurantDetail")){
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", async()=>{
      const params = new URLSearchParams(window.location.search);
-     loadRestaurant(params.get('restID'))
+     await loadRestaurant(params.get('restID'))
+     await loadPublicMenu(params.get('restID'));
     })
 }
 
@@ -34,7 +37,7 @@ function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], rating
   nameHeader.id = 'restaurant-name';
 
   const img = document.createElement('img');
-  img.src = "https://media.istockphoto.com/id/1038356020/vector/restaurant-icon.jpg?s=612x612&w=0&k=20&c=Tk_v3JuJA4lz_8ZRJi78xS4p75Idqt97uEtYJciVtFI=";
+  img.src = logo || "https://media.istockphoto.com/id/1038356020/vector/restaurant-icon.jpg?s=612x612&w=0&k=20&c=Tk_v3JuJA4lz_8ZRJi78xS4p75Idqt97uEtYJciVtFI=";
 
   nameHeader.appendChild(img);
   nameHeader.innerHTML = nameHeader.innerHTML + `<h1>${name || "No name found"} </h1>`; 
@@ -50,13 +53,11 @@ function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], rating
   const contentSection = document.createElement('section');
   contentSection.id = 'restaurant-content';
 
-  const comingSoon = document.createElement('h2');
-  comingSoon.textContent = 'Menu coming soon';
-
-  contentSection.appendChild(comingSoon);
+  // --- weekly schedule ----
+  const weeklySchedule = createScheduleCard(schedule)
 
   // --- Combine All ---
-  container.append(nameHeader, tagsSpan, detailSection, hr_break,contentSection);
+  container.append(nameHeader, tagsSpan, detailSection, weeklySchedule, hr_break,contentSection);
 
   return container;
 }
@@ -83,7 +84,7 @@ function createDetailSection({restID,rating,hours,address,phone}){
   phoneNumP.id = 'restaurant-phone';
   phoneNumP.innerHTML = `Phone: <span>${phone || "204 - 111 - 1111"}</span>`;
 
-  detailsDiv.append(ratingP, locationP, phoneNumP, hoursP);
+  detailsDiv.append(ratingP, locationP, phoneNumP);
 
   // --- Reservation Button ---
   const reservationBtn = createReservationButton(restID)
@@ -100,6 +101,7 @@ function createReservationButton(restID){
   
   reservationBtn.addEventListener("click",()=>{
     alert("feature coming soon!")
+    restID //use this to make a call to reservation logic
   })
 
   return reservationBtn;

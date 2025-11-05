@@ -36,7 +36,7 @@ function validate_password(password) {
 
 function hash_password(password) {
     let hashed_password = password;
-    //hash password
+    //hash password 
 
     return hashed_password;
 }

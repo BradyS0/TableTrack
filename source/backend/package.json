@@ -4,21 +4,25 @@
     "type": "module",
     "scripts": {
         "test:integration": "jest --config=jest.integration.config.js --coverage --runInBand --testPathPattern=tests/integration",
-        "test:unit": "jest --coverage --testPathPattern=tests/unit",
+        "test:unit": "jest --onlyChanged --coverage --testPathPattern=tests/unit",
         "start": "node server.js",
+        "start:profile": "clinic flame -- node server.js",
         "test:integration:start": "docker-compose -f docker-compose.test.yml up -d",
         "test:integration:logs": "docker-compose -f docker-compose.test.yml logs",
         "test:integration:stop": "docker-compose -f docker-compose.test.yml down -v",
-        "local:dev:start": "docker-compose -f docker-compose.yml up -d",
-        "local:dev:stop": "docker-compose -f docker-compose.yml down -v",
-        "local:dev:test": "node testUserFlow.cjs"
+        "local:start": "docker-compose -f docker-compose.yml up -d --build",
+        "local:logs": "docker-compose -f docker-compose.yml logs",
+        "local:stop": "docker-compose -f docker-compose.yml down -v",
+        "test:endpoints:all": "node ./testAllEndpoints.js"
     },
     "dependencies": {
+        "clinic": "^13.0.0",
         "cors": "^2.8.5",
         "dotenv": "^17.2.3",
         "express": "^4.18.2",
         "pg": "^8.11.1",
         "pg-hstore": "^2.3.4",
+        "response-time": "^2.3.4",
         "sequelize": "^6.35.0"
     },
     "devDependencies": {

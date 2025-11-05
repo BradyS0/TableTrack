@@ -1,2 +1,0 @@
-any logic can be stored here for reusability
-(e.g) (any front end validation code and such)

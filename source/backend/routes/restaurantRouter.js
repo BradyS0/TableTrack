@@ -6,49 +6,50 @@ import RestaurantLogic from "../logic/restaurantLogic.js";
 
 const router = express.Router();
 
-
+// ================================================================================ POST / PATCH
 
 // POST /restaurant
 // Create a new restaurant
 router.post("/", async (req, res) => {
     try {
         // Retrieve and validate information from body
-        const { userID, name, address, phone, desc, hours } = req.body;
-        if (RestaurantLogic.validate_name(name) &&
-            RestaurantLogic.validate_address(address) &&
-            RestaurantLogic.validate_phone(phone) &&
-            RestaurantLogic.validate_description(desc) &&
-            RestaurantLogic.validate_hours(hours)
-        ) {
-            // Validate ownerID for new restaurant exists
-            const users = await User.findAll({ where: { userID: parseInt(userID) } });
-            if (users === undefined || users.length == 0) {
+        const { userID, name, address, phone, tags } = req.body;
+        if ( !RestaurantLogic.validate_name(name) )
+            res.status(400).json({ error: "Invalid name" });
+        else if ( !RestaurantLogic.validate_address(address) )
+            res.status(400).json({ error: "Invalid address" });
+        else if ( !RestaurantLogic.validate_phone(phone) )
+            res.status(400).json({ error: "Invalid phone" })
+        else if (tags && !RestaurantLogic.validate_tags(tags))
+            res.status(400).json({error: "invalid syntax for tags only aplphabets allowed"})
+        else
+        {
+            // Check that owner of restaurant exists
+            const user = await User.findByPk(parseInt(userID));
+            if ( user === null )
                 res.status(404).json({ error: "User cannot be found" });
-            }
-            else {
-                // Check if this user already owns a restaurant
-                const restaurants = await Restaurant.findAll({ where: { userID: parseInt(userID) } })
-                if (restaurants === undefined || restaurants.length == 0) {
+            else
+            {
+                // Check that owner doesnt already have a restaurant
+                const prev_restaurant = await Restaurant.findOne({ where: { userID: parseInt(userID) } });
+                if ( prev_restaurant !== null )
+                    res.status(409).json({ error: "User already has restaurant" });
+                else
+                {
                     // Create the new restaurant
-                    const restaurant = await Restaurant.create({
+                    var new_restaurant = await Restaurant.create({
                         userID: userID,
                         name: name,
                         address: address,
-                        phone_num: phone,
-                        description: desc,
-                        open_hours: hours,
+                        phone: phone,
+                        tags : tags,
+                        description: "",
+                        open_hours: "",
                         logo: ""
                     });
-                    res.status(201).json(restaurant);
-                }
-                else {
-                    res.status(409).json({ error: "User already has a restaurant" });
+                    res.status(201).json(new_restaurant);
                 }
             }
-        }
-        else // Non-ownerID item is invalid
-        {
-            res.status(400).json({ error: "Invalid item in request" });
         }
     }
     catch (err) {
@@ -58,6 +59,160 @@ router.post("/", async (req, res) => {
 });
 
 
+// PATCH /restaurant/name
+// Edit name of a restaurant
+router.patch("/change/name", async (req, res) => {
+    try {
+        // Retrieve and validate information from body
+        const { restID, name, } = req.body;
+        const rest = await Restaurant.findByPk(parseInt(restID));
+
+        if ( !rest )
+            return res.status(404).json({error: "restaurant not found!"})
+
+        if (rest.name === name)
+            return res.status(400).json({error: `${name} is already the name of this restaurant`})
+       
+        if ( !RestaurantLogic.validate_name(name))
+            return res.status(400).json({ error: "Invalid name" });
+      
+        await rest.update({name})
+        return res.status(201).json({message:"Restaurant name updated"})
+    }
+    catch (err) {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// PATCH /restaurant/address
+// Edit address of a restaurant
+router.patch("/change/address", async (req, res) => {
+    try {
+        // Retrieve and validate information from body
+        const { restID, address, } = req.body;
+        const duplicateRest = await Restaurant.findOne({where: {address:address}})
+        
+        if(duplicateRest)
+            return res.status(400).json({error: "Restaurant address in use"})
+
+        const rest = await Restaurant.findByPk(parseInt(restID));
+
+        if ( !rest )
+            return res.status(404).json({error: "restaurant not found!"})
+
+        if ( !RestaurantLogic.validate_address(address))
+            return res.status(400).json({ error: "Invalid address or address format" });
+      
+        await rest.update({address})
+        return res.status(201).json({message:"Restaurant address updated"})
+    }
+    catch (err) {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// PATCH /restaurant/phone
+// Edit address of a restaurant
+router.patch("/change/phone", async (req, res) => {
+    try {
+        // Retrieve and validate information from body
+        const { restID, phone, } = req.body;
+        const duplicateRest = await Restaurant.findOne({where: {phone:phone}})
+        
+        if(duplicateRest)
+            return res.status(400).json({error: "Restaurant phone number already in use"})
+
+        const rest = await Restaurant.findByPk(parseInt(restID));
+
+        if ( !rest )
+            return res.status(404).json({error: "restaurant not found!"})
+
+        if ( !RestaurantLogic.validate_phone(phone))
+            return res.status(400).json({ error: "Invalid phone number" });
+      
+        await rest.update({phone:phone})
+        return res.status(201).json({message:"Restaurant phone number updated"})
+    }
+    catch (err) {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// PATCH /restaurant/description
+// Edit description of a restaurant
+router.patch("/change/description", async (req, res) => {
+    try {
+        // Retrieve and validate information from body
+        const { restID, description, } = req.body;
+        if ( !RestaurantLogic.validate_description(description) )
+            res.status(400).json({ error: "Invalid description" });
+        else
+        {
+            // Check that restaurant exists
+            const rest = await Restaurant.findByPk(parseInt(restID));
+            if ( rest === null )
+                res.status(404).json({ error: "Restaurant cannot be found" });
+            else
+            {
+                // Update the restaurants value
+                await Restaurant.update({
+                    description: description,
+                },{
+                    where: {
+                        restID: parseInt(restID)
+                }});
+
+                // Return the updated restaurant
+                var upd_restaurant = await Restaurant.findByPk(parseInt(restID));
+                res.status(200).json(upd_restaurant);
+            }
+        }
+    }
+    catch (err) {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// PATCH /restaurant/tags
+// Edit tags of a restaurant
+router.patch("/change/tags", async (req, res) => {
+    try {
+        // Retrieve and validate information from body
+        const { restID, tags, } = req.body;
+        if ( !Array.isArray(tags) )
+            res.status(406).json({ error: `Tags are expected as Arrays of strings but ${Object.prototype.toString.call(tags)} provided` });
+        else if(!RestaurantLogic.validate_tags(tags)){
+            res.status(400).json({error: 'invalid syntax, only alphabets and hyphen accepted between 3-30 characters long'})
+        }
+        else
+        {
+            // Check that restaurant exists
+            const rest = await Restaurant.findByPk(parseInt(restID));
+            if (!rest)
+                res.status(404).json({ error: "Restaurant cannot be found" });
+            else
+            {
+                // Update the restaurants value
+                let input = tags.length===0 || !tags ? [] : tags
+                await rest.update({tags:input})
+
+                //return the updated restaurant
+                return res.status(200).json(rest);
+            }
+        }
+    }
+    catch (err) {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+// ================================================================================ GET
 
 // GET /restaurant
 // Get a list of restaurants
@@ -67,21 +222,13 @@ router.get("/", async (req, res) => {
         const db_restaurants = await Restaurant.findAll();
 
         // Process data
-        var formatted_json = { restaurants: [] };
-        for (const rest of db_restaurants) {
-            // Add needed values to restaurant json
-            var rest_json = {};
-            rest_json.id = rest.restID;
-            rest_json.name = rest.name;
-            rest_json.address = rest.address;
-            rest_json.phone_num = rest.phone_num;
-            rest_json.description = rest.description;
-            rest_json.tags = ["temp_tag"]; // <-------------------------------------------------- REMOVE ONCE TAGS HAVE BEEN ADDED
-
-            // Add this object to the formatted json
-            formatted_json.restaurants.push(rest_json);
+        var rest_list = { restaurants: [] };
+        for (const rest of db_restaurants)
+        {
+            rest_list.restaurants.push(rest);
         }
-        res.status(200).json(formatted_json);
+        // Return result
+        res.status(200).json(rest_list);
     } catch (err) {
         // Unexpected internal error occured
         res.status(500).json({ error: err.message });
@@ -90,7 +237,7 @@ router.get("/", async (req, res) => {
 
 
 
-// GET /restaurant/{id}
+// GET /restaurant/<id>
 // Get a specific restaurant
 router.get("/:id", async (req, res) => {
     try {
@@ -102,7 +249,6 @@ router.get("/:id", async (req, res) => {
         if (restaurant == null)
             res.status(404).json({ error: "Restaurant not found" });
         else {
-            restaurant.tags = ["temp_tag"]; // <-------------------------------------------------- REMOVE ONCE TAGS HAVE BEEN ADDED
             res.status(200).json(restaurant);
         }
     }
@@ -114,17 +260,41 @@ router.get("/:id", async (req, res) => {
 
 
 
+// GET /restaurant/user/<id>
+// Get restaurant owned by a user
+router.get("/user/:id", async (req, res) => {
+    try {
+        // Get user id from URL
+        const userID = req.params.id;
+
+        // Get restaurant from user
+        const restaurant = await Restaurant.findOne({ where: { userID: parseInt(userID) } });
+        if (restaurant === null)
+            res.status(404).json({ error: "Restaurant not found" });
+        else {
+            res.status(200).json(restaurant);
+        }
+    }
+    catch (err) {
+        // Unexpected internal error occured
+        res.status(500).json({ error: err.message });
+    }
+});
+
+
+
+// ================================================================================ Other
+
 // PATCH /restaurant/change
 // Makes changes to a restaurant
 router.patch("/change", async (req, res) => {
     try {
         // Retrieve and validate information from body
-        const { restID, name, address, phone, desc, hours } = req.body;
+        const { restID, name, address, phone, desc } = req.body;
         if (RestaurantLogic.validate_name(name) &&
             RestaurantLogic.validate_address(address) &&
             RestaurantLogic.validate_phone(phone) &&
-            RestaurantLogic.validate_description(desc) &&
-            RestaurantLogic.validate_hours(hours)
+            RestaurantLogic.validate_description(desc)
         ) {
             // Validate restID to make changes to
             const restaurant = await Restaurant.findByPk(parseInt(restID));
@@ -135,16 +305,14 @@ router.patch("/change", async (req, res) => {
                 await Restaurant.update({
                     name: name,
                     address: address,
-                    phone_num: phone,
+                    phone: phone,
                     description: desc,
-                    open_hours: hours
                 }, {
                     where: {
                         restID: parseInt(restID)
                     },
                 },);
                 var new_restaurant = await Restaurant.findByPk(parseInt(restID));
-                new_restaurant.tags = ["temp_tag"]; // <-------------------------------------------------- REMOVE ONCE TAGS HAVE BEEN ADDED
                 res.status(200).json(new_restaurant);
             }
         }
