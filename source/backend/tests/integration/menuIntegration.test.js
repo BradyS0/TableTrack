@@ -42,17 +42,17 @@ describe("Menu Item API", () => {
         expect(res.statusCode).toBe(404);
     });
 
-    // it("restaurant NaN", async () => {
-    //     const res = await request(app)
-    //         .post("/v1/menu/abc")
-    //         .send({
-    //             name: "Food",
-    //             price: "1.00",
-    //             description: "description",
-    //             category: "category"
-    //         });
-    //     expect(res.statusCode).toBe(400);
-    // });
+    it("restaurant NaN", async () => {
+        const res = await request(app)
+            .post("/v1/menu/abc")
+            .send({
+                name: "Food",
+                price: "1.00",
+                description: "description",
+                category: "category"
+            });
+        expect(res.statusCode).toBe(400);
+    });
 
     it("invalid name", async () => {
         const res = await request(app)
