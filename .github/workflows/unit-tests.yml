@@ -20,4 +20,5 @@ jobs:
         run: cd source/backend && npm ci
       - name: tests
         run: cd source/backend && npm run test:unit
+      - name: tests-frontend
         run: cd source/frontend/web && npm ci && npm run test
