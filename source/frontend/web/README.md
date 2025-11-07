@@ -15,6 +15,7 @@
     |   +---logic # tests for reusable logic functions used in the frontend
     |   \---ui
             \---components  # tests for dom element creation and manipulation for the components
+            #change addded for test
 
 ```
 
