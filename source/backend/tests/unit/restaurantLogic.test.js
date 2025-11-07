@@ -110,76 +110,81 @@ test("validate_description: Just right", () => {
 // -------------------------------------------------- validate_tags
 
 test("Tag fails to validate hyphen in the beginning", ()=>{
-const test_tag =["ValidTag", "-start", "valid-tag"] //should fail hyphen in the beginning
-expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
-})
+    const test_tag =["ValidTag", "-start", "valid-tag"]; //should fail hyphen in the beginning
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
+});
 
 test("Tag fails to validate hyphen in the end", ()=>{
-const test_tag =["ValidTag", "valid-tag", "end-"] //should fail hyphen in the end
-expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
-})
+    const test_tag =["ValidTag", "valid-tag", "end-"]; //should fail hyphen in the end
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
+});
 
 test("Tag fails to validate a tag is too short", ()=>{
-const test_tag =["ValidTag", "valid-tag", "en"] //should fail a tag is too short
-expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
-})
+    const test_tag =["ValidTag", "valid-tag", "en"]; //should fail a tag is too short
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
+});
 
 test("Tag fails to validate a tag is too long", ()=>{
-const test_tag =["SuuuuuuuuuuuuuuuuuuuuuuperLOoooooooongTag"] //should fail a tag is too long
-expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
-})
+    const test_tag =["SuuuuuuuuuuuuuuuuuuuuuuperLOoooooooongTag"]; //should fail a tag is too long
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
+});
 
 test("Tag fails to validate numbers in the string", ()=>{
-const test_tag =["123tag"] //no numbers allowed in the string
-expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
-})
+    const test_tag =["123tag"]; //no numbers allowed in the string
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
+});
 
 test("Tag fails to validate numbers in tags", ()=>{
-const test_tag =["validtag",1234,"another-valid-tag"] //no numbers allowed in tags
-expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
+    const test_tag =["validtag",1234,"another-valid-tag"]; //no numbers allowed in tags
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
 })
 
 test("Tag fails to validate special characters", ()=>{
-    const test_tag =["valid!tag"] //should fail special characters not allowed
-    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
-})
+    const test_tag =["valid!tag"]; //should fail special characters not allowed
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
+});
 
 test("Tag fails to validate underscore", ()=>{
-    const test_tag =["valid_tag"] //should fail underscore possibly not allowed (assuming only letters and hyphens)
-    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
-})
+    const test_tag =["valid_tag"]; //should fail underscore possibly not allowed (assuming only letters and hyphens)
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
+});
 
 test("Tag fails to validate multiple hyphens", ()=>{
-    const test_tag =["valid--tag"] //should fail consecutive hyphens
-    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
-})
+    const test_tag =["valid--tag"]; //should fail consecutive hyphens
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
+});
 
 test("Tag fails to validate empty string tag", ()=>{
-    const test_tag =[""] //should fail empty string
-    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
-})
+    const test_tag =[""]; //should fail empty string
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
+});
 
 test("Tag fails to validate leading/trailing spaces", ()=>{
-    const test_tag =[" food "] //should fail spaces even if trimmed or not
-    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
-})
+    const test_tag =[" food "]; //should fail spaces even if trimmed or not
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
+});
 
 test("Tag fails to validate non-ASCII characters", ()=>{
-    const test_tag =["café"] //should fail accented or non-ASCII letters
-    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
-})
+    const test_tag =["café"]; //should fail accented or non-ASCII letters
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
+});
 
 test("Tag fails to validate non-string tag like boolean", ()=>{
-    const test_tag =[true] //should fail non-string types
-    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false)
-})
+    const test_tag =[true]; //should fail non-string types
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
+});
+
+test("Tag fails to validate non-array input", () => {
+    const test_tag = "test";
+    expect(RestaurantLogic.validate_tags(string)).toEqual(false);
+});
 
 test("Tag validates empty array", ()=>{
-const test_tag =[] //empty array is valid
-expect(RestaurantLogic.validate_tags(test_tag)).toEqual(true)
-})
+    const test_tag =[]; //empty array is valid
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(true);
+});
 
 test("Tag validates all valid tags", ()=>{
-const test_tag =["food", "vegan", "dessert", 'valid-tag'] //all valid
-expect(RestaurantLogic.validate_tags(test_tag)).toEqual(true)
-})
+    const test_tag =["food", "vegan", "dessert", 'valid-tag']; //all valid
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(true);
+});
