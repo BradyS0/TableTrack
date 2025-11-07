@@ -24,6 +24,7 @@
   - npm (comes with Node.js)
 
 *In a Terminal/Bash:*  
+
 ```bash
  # from repos root directory
  cd ./source/frontend/web
@@ -35,13 +36,11 @@
 ```
 
 ## Front end start instructions
-  The css styling has been tested for google chrome only so far, other browsers may or may not look as expected  
 
 ### Prerequisites
   - [Node.js](https://nodejs.org/) (v18.0 or higher)
   - npm (comes with Node.js)
-
-*In a Terminal/Bash:*  
+  
 ```bash
  # from repos root directory
  cd ./source/frontend/web
