@@ -11,8 +11,6 @@ const API_PORT = process.env.API_PORT || 3000;
 const BASE_URL = 'http://localhost:'+API_PORT;
 
 const sched_wed =  {wednesday: { open: 9, close: 18.3 }}
-const sched_sun =  {sunday: { open: 0, close: 0 }}
-const sched_mon = {monday: { open: 14, close: 20.75 }}
 
 // Define all endpoints and their configurations
 const ENDPOINTS = [
@@ -277,7 +275,9 @@ function requestJson(method, urlString, bodyObj, timeout = 10000) {
                 let parsed = null;
                 try {
                     parsed = raw ? JSON.parse(raw) : null;
-                } catch (_) {}
+                } catch (e) {
+                    console.log(e.message)
+                }
                 resolve({ status: res.statusCode, headers: res.headers, raw, json: parsed });
             });
         });
