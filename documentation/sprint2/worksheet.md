@@ -22,6 +22,9 @@ Currently most of the time spent in our tests is performing setup.
 Increase in Unit Test time from pull 53 to 83: 1.36s - 1.12s = 0.24s  
 Increase in Integration Test time from pull 53 to 83: 2.5s - 1.8s = 0.7s  
 As a reference our integration tests take around 40s-70s to run fully.  
+
+For Unit tests click "Unit Tests" then click "tests" and see the time under the table.  
+For Integration tests click "Integration Tests" then click "Run cd source/backend && npm run test:integration" and see the time under the table.  
 - [New commit](https://github.com/BradyS0/TableTrack/pull/83/checks)  
 - [Old commit](https://github.com/BradyS0/TableTrack/pull/53/checks)  
 
