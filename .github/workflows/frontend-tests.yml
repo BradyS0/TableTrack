@@ -12,6 +12,10 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: source/frontend/web
+
     strategy:
       matrix:
         node-version: [22.x]
@@ -24,9 +28,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: source/frontend/web/package-lock.json
 
       - name: npm install
         run:  npm ci
         
       - name: frontend-test
-        run:  pwd & npm run test
+        run:  npm run test
