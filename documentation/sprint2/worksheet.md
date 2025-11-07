@@ -127,7 +127,7 @@ I had set it up so in the same JavaScript file (index.js) the app was being crea
 
 So, I followed a similar setup to the article of making the app in one file (app.js) and then the server in another (server.js). This along with creating a jest config and integration test setup fixed the issue and made our code better. 
 
-[Link to Pull Request of test fix](https://github.com/BradyS0/TableTrack/pull/53)
+- [Link to Pull Request of test fix](https://github.com/BradyS0/TableTrack/pull/53)
 
 ### Matthew:
 Some code I am proud of from this sprint is the Schedule Model and its queries. This file handles all queries for the schedule table, and keeps that table private. This not only protects the Schedule table from improper use elsewhere, but also ensures troubleshooting queries for this table must only be done in one location. This file demonstrates the single responsibility principle and information hiding.  
@@ -138,5 +138,5 @@ Honorable mention from sprint 1: Our glorious logo.
 ### Mohammad:
 I believe my best work in this project has been the implementation of the Menu Management feature on the front end. This was one of the most complex systems we built because it required the UI, session-based persistence, API mocks, and restaurant detail pages to all communicate seamlessly. Building it forced me to understand and unify multiple parts of our codebase: dynamic DOM rendering, category grouping, real-time state updates, and syncing owner and customer views without refreshing the page. I had to solve issues around stale sessionStorage data, race conditions during menu re-renders, and ensuring that added or deleted items updated consistently across the entire application. It was also one of the few features that required designing both a public-facing view and an administrator/owner panel using shared styling but different behaviors. While I still have room to grow in writing more modular UI logic, this feature pushed me to debug deeply, architect cleanly, and design a user experience that felt cohesive. Overall, the menu system showcases the strongest representation of my technical skills so far, from debugging and state flow to UI/UX integration and front-end architecture.
 
-[Link to Pull Request of menu feature](https://github.com/BradyS0/TableTrack/pull/83)
+- [Link to Pull Request of menu feature](https://github.com/BradyS0/TableTrack/pull/83)
 
