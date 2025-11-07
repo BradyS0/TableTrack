@@ -176,7 +176,7 @@ test("Tag fails to validate non-string tag like boolean", ()=>{
 
 test("Tag fails to validate non-array input", () => {
     const test_tag = "test";
-    expect(RestaurantLogic.validate_tags(string)).toEqual(false);
+    expect(RestaurantLogic.validate_tags(test_tag)).toEqual(false);
 });
 
 test("Tag validates empty array", ()=>{
