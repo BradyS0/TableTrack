@@ -12,16 +12,18 @@ As you can see, the endpoint that takes the longest is creating a user. After di
 
 Below is the link to the html flame graph. This shows us the code that runs the longest. If you display all code like it has setup when you first open it, it will show everything that runs including dependencies (from node_modules) and internal Node JS code. Within all of the code, The internal Node JS code is taking the longest time, then dependencies like validator and sequelize. 
 
-[Link to flame graph](5008.clinic-flame.html)
+**Warning**: It doesn't seem like you can remove the dependencies and Node JS from the graph with the checkboxes like I say below. If you want to try that out, you will have to download it and open it in a browser.
 
-In order to analyze our code, go along the bottom to the run function (shown below). All the time before this is for setup and all time after is system closing. The run is fairly small fraction of the time the code spent running.
+[Link to flame graph](https://htmlpreview.github.io/?https://github.com/BradyS0/TableTrack/blob/dev/documentation/sprint2/profiler/5008.clinic-flame.html)
+
+In order to analyze our code, go along the bottom to the processTicksAndRejections and run functions (shown below). All the time before these is for setup and all time after is system closing. The run is fairly small fraction of the time the code spent running.
 
 
 ![Run function](Run_function.png)
 
-If you hover over run and click expand, this will give a better view of hoe much time the code in our running program takes. You can see, more than 80% of the time is setting up Sequleize in db.js. After that it looks like defining our models takes some time. Then we finally get to some of the routes. Within all of this code, almost all of the time is spend running code in dependencies. 
+If you hover over processTicksAndRejections or run and click expand, this will give a better view of how much time the code in our running program takes. ProcessTicksAndRejections seems to be more of the endpoint run-though. You can see it has a lot of sequelize code including a big findAll, then a bunch of the endpoints, including a much smaller findOne. Run seems to be more of the testSetup. You can see, quite a bit of the time is setting up Sequleize in db.js. In After that it looks like defining our models takes some time. Then it also has some of the routes. Within all of this code, almost all of the time is spend running code in dependencies. 
 
-If you remove dependencies and Node JS by unchecking them, you get a more high def view of our running code but it is slighhtly misleading in the sense that for example, the code we wrote in db.js isn't running that long, its calling lots of dependencies/Node jS which take up a little time each but all together lots.
+If you remove dependencies and Node JS by unchecking them, you get a more high def view of our running code but it is slightly misleading in the sense that for example, the code we wrote in db.js isn't running that long, its calling lots of dependencies/Node jS which take up a little time each but all together lots.
 
 ## Takeaway
 
