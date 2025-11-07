@@ -10,9 +10,12 @@ module.exports = {
 
   moduleDirectories: ['node_modules', 'js'],
 
+  collectCoverage: true,
   collectCoverageFrom: [
     'js/components/*.js',
     'js/logic/*.js',
     '!js/**/*.test.js',
   ],
+
+  verbose: true,
 };
