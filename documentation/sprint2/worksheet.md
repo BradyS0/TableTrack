@@ -48,7 +48,7 @@ Lastly, our frontend has relied on manual testing up until now, and we are worki
 - Logic: (Unit: 100%) (Integration: 95.52%)  
 - Database: (No unit tests) (Integration: 100%)  
 
-*Our integration test coverage is acceptable, however we need to get better unit test coverage of logic, and create unit tests for other parts of the system where we can.*  
+*Our integration test coverage is acceptable and we have worked to improve coverage of our unit tests to 100%.*  
 
 *As for our frontend tests, we are currently fully testing any logic that is implemented within our frontend, but the ui for components isn't fully implemented, as jest tests were set up towards the end of the sprint. We do plan to test individual ui components to see if their dom element creation and manipulation is being done as expected*
 
