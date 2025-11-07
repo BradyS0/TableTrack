@@ -1,12 +1,3 @@
-function validate_all(first_name, last_name, email, password) {
-    const VALID_FIRST = validate_name(first_name)
-    const VALID_LAST = validate_name(last_name)
-    const VALID_EMAIL = validate_email(email);
-    const VALID_PASS = validate_password(password);
-
-    return VALID_FIRST && VALID_LAST && VALID_EMAIL && VALID_PASS;
-}
-
 //function validate_name(first_name, last_name)
 
 //name validation regex derived from https://stackoverflow.com/a/66910482
@@ -41,4 +32,4 @@ function hash_password(password) {
     return hashed_password;
 }
 
-export default { validate_all, validate_email, validate_name, validate_password, hash_password };
+export default { validate_email, validate_name, validate_password, hash_password };
