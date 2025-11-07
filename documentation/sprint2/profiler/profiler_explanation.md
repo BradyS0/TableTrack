@@ -25,6 +25,8 @@ If you hover over processTicksAndRejections or run and click expand, this will g
 
 If you remove dependencies and Node JS by unchecking them, you get a more high def view of our running code but it is slightly misleading in the sense that for example, the code we wrote in db.js isn't running that long, its calling lots of dependencies/Node jS which take up a little time each but all together lots.
 
+If you want to fun the profiler for yourself the instructions can be found [here](../../../source/backend/README.md) though like I mention in there, it doesn't come out the same as on windows as mac. Clinic has also caused some issues with our dependencie. Since adding it, when we install dependencies, it says a bunch are deprecated and some are vulnerable. We plan on checking this out in sprint 3.
+
 ## Takeaway
 
 While there's not a lot we can do about dependencies, I think it shows us how our choices to simplify some stuff like database interaction affect our project's speed. In the future we will think a bit more about what dependencies we truly need or what is just nice to have. 
