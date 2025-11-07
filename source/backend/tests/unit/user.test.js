@@ -125,3 +125,9 @@ test("password is length 15", () => {
 test("password is length 16", () => {
     expect(UserLogic.validate_password("Password1234567!")).toEqual(false);
 });
+
+//hash_password
+//currently output = input
+test("password entered is hashed", () => {
+    expect(UserLogic.hash_password("Password1!")).toEqual("Password1!");
+});

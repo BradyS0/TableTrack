@@ -8,7 +8,7 @@ We chose to get a list of changed files (either comparing to the last commit or 
 - A bash script to compile all changed files relative to last commit or specified branch and put them into a text file
 - A Node JS script that takes the list file, then for each unit and regression test, checks if certain file paths are in the changes and runs those tests. For integration tests it will spin up the docker test database with the docker-compose.test.yml
 ### Link to regression testing script:
-- [Bash script to get changed file list](../../changed_file.sh)
+- [Bash script to get changed file list](../../changed_files.sh)
 - [Node JS script to choose and run unit/integration tests](../../regression.js)
 
 #### Snapshot of execution results:
@@ -22,6 +22,9 @@ Currently most of the time spent in our tests is performing setup.
 Increase in Unit Test time from pull 53 to 83: 1.36s - 1.12s = 0.24s  
 Increase in Integration Test time from pull 53 to 83: 2.5s - 1.8s = 0.7s  
 As a reference our integration tests take around 40s-70s to run fully.  
+
+For Unit tests click "Unit Tests" then click "tests" and see the time under the table.  
+For Integration tests click "Integration Tests" then click "Run cd source/backend && npm run test:integration" and see the time under the table.  
 - [New commit](https://github.com/BradyS0/TableTrack/pull/83/checks)  
 - [Old commit](https://github.com/BradyS0/TableTrack/pull/53/checks)  
 
@@ -45,15 +48,15 @@ Lastly, our frontend has relied on manual testing up until now, and we are worki
 ### Level of testing for each layer:
 - Frontend: (logic 100%) (components 42.5%)  
 - API: (No unit tests) (Integration: 92.94%)  
-- Logic: (Unit: 78.33%) (Integration: 95.52%)  
+- Logic: (Unit: 100%) (Integration: 95.52%)  
 - Database: (No unit tests) (Integration: 100%)  
 
-*Our integration test coverage is acceptable, however we need to get better unit test coverage of logic, and create unit tests for other parts of the system where we can.*  
+*Our integration test coverage is acceptable and we have worked to improve coverage of our unit tests to 100%.*  
 
 *As for our frontend tests, we are currently fully testing any logic that is implemented within our frontend, but the ui for components isn't fully implemented, as jest tests were set up towards the end of the sprint. We do plan to test individual ui components to see if their dom element creation and manipulation is being done as expected*
 
 ### Coverage reports for testing:
-- [Recent run of Unit Tests](https://github.com/BradyS0/TableTrack/actions/runs/19108227634/job/54597912644) *Click on “tests”.*  
+- [Recent run of Unit Tests](https://github.com/BradyS0/TableTrack/actions/runs/19182230931/job/54841486243) *Click on “tests”.*  
 - [Recent run of Integration Tests](https://github.com/BradyS0/TableTrack/actions/runs/19108227659/job/54597913251) *Click on “Run cd source/backend && npm run test:integration”.*  
 - [Recent run of frontend tests](https://github.com/BradyS0/TableTrack/actions/runs/19179892389/job/54833837349) *Click on “frontend-test”*
 
