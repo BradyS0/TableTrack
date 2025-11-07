@@ -1,10 +1,16 @@
 {
-  "devDependencies": {
-    "five-server": "^0.4.4"
-  },
+  "type": "module",
   "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js test/*",
     "serve": "five-server --port=8484 --root=./",
     "build": "npm ci",
     "start": "npm run build && npm run serve"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/user-event": "^14.6.1",
+    "five-server": "^0.4.4",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^30.2.0"
   }
 }

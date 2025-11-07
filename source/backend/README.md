@@ -21,12 +21,15 @@ To do all the backend running, go to backend folder with command:
 ```bash
 cd ./source/backend
 ```
-To run the unit and integration tests you will need to install all necessary dependencies. Our package-lock contains all the details so all you need to do is to run the command:
+To run the unit and integration tests, the test:all:endpoints script, and the profiler, you will need to install all necessary dependencies. Our package-lock contains all the details so all you need to do is to run the command:
 ```bash
 # from ./source/backend
 
 npm ci
 ```
+### Tests
+
+#### Unit
 
 To run the unit tests:
 ```bash
@@ -41,6 +44,7 @@ DB_NAME=testdb
 DB_USER=testuser
 DB_PASS=testpassword
 ```
+#### Integration
 
 For Integration Tests from the command line run:
 ```bash
@@ -50,6 +54,7 @@ npm run test:integration:start  # this will initialize the docker container
 npm run test:integration        # this will start the tests
 npm run test:integration:stop   # this will clear the docker container
 ```
+### API Server + Database
 
 To start the backend server from the command line run:
 ```bash
@@ -59,6 +64,9 @@ npm run local:start   # this will initialize the docker container
 npm run test:endpoints:all    # this will test the API endpoints
 npm run local:stop    # this will stop the backend and clear the docker container
 ```
+### Profiler
+
+**Note**: We found running the profiler on windows doesn't seem to show as much detail compared to running it with mac.
 
 To run the profiler on the dev API create or edit a `.env` file in the **backend** directory with the following credentials:
 

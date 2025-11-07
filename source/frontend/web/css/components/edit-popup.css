@@ -127,6 +127,7 @@
     box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.5);
     opacity: 0.05;
     transition: opacity 600ms ease;
+    z-index: 11;
 }
 
 .feedback-transition{
