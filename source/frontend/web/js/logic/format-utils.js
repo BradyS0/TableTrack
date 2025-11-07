@@ -21,8 +21,12 @@ export function formatPhoneNumber(input){
 // Converts float -> readable HH:MM for input type=time
 export const floatToTime = (f) => {
     if (!f && f !== 0) return "";
-    const hour = Math.floor(f);
-    const minute = Math.round((f % 1) * 60);
+    let hour = Math.floor(f) >23 ? 0 : Math.floor(f);
+    let minute = Math.round((f % 1) * 60);
+    if(minute>59){
+      hour = hour+1>=23 ? 0 : hour+1
+      minute = 0
+    }
     return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 };
 

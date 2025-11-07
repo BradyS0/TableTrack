@@ -9,8 +9,12 @@
         |   +---live  # adapters that make call to backend
         |   \---mock  # mimics backend messages used primarily to test layouts and design
         +---components  # logic to dynamically create reusable dom components
-        +---logic   #contains reusable logic
+        +---logic   # contains reusable logic
         \---pages # logic for a specific page goes here (index,userProfile etc.)
+    +---test
+    |   +---logic # tests for reusable logic functions used in the frontend
+    |   \---ui
+            \---components  # tests for dom element creation and manipulation for the components
 ```
 
 
