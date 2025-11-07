@@ -45,7 +45,7 @@ Lastly, our frontend has relied on manual testing up until now, and we are worki
 ### Level of testing for each layer:
 - Frontend: (logic 100%) (components 42.5%)  
 - API: (No unit tests) (Integration: 92.94%)  
-- Logic: (Unit: 78.33%) (Integration: 95.52%)  
+- Logic: (Unit: 100%) (Integration: 95.52%)  
 - Database: (No unit tests) (Integration: 100%)  
 
 *Our integration test coverage is acceptable, however we need to get better unit test coverage of logic, and create unit tests for other parts of the system where we can.*  
@@ -53,7 +53,7 @@ Lastly, our frontend has relied on manual testing up until now, and we are worki
 *As for our frontend tests, we are currently fully testing any logic that is implemented within our frontend, but the ui for components isn't fully implemented, as jest tests were set up towards the end of the sprint. We do plan to test individual ui components to see if their dom element creation and manipulation is being done as expected*
 
 ### Coverage reports for testing:
-- [Recent run of Unit Tests](https://github.com/BradyS0/TableTrack/actions/runs/19108227634/job/54597912644) *Click on “tests”.*  
+- [Recent run of Unit Tests](https://github.com/BradyS0/TableTrack/actions/runs/19182230931/job/54841486243) *Click on “tests”.*  
 - [Recent run of Integration Tests](https://github.com/BradyS0/TableTrack/actions/runs/19108227659/job/54597913251) *Click on “Run cd source/backend && npm run test:integration”.*  
 - [Recent run of frontend tests](https://github.com/BradyS0/TableTrack/actions/runs/19179892389/job/54833837349) *Click on “frontend-test”*
 
