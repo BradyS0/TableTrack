@@ -13,7 +13,8 @@ router.post("/", async (req, res) => {
         }
     });
 
-    const valid_params = UserLogic.validate_all(first_name, last_name, email, password);
+    const valid_params = UserLogic.validate_name(first_name) && UserLogic.validate_name(last_name) 
+                        && UserLogic.validate_email(email) && UserLogic.validate_password(password);
 
     if ((email_list === undefined || email_list.length == 0) && valid_params) {
         try {
