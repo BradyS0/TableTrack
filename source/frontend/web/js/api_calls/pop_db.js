@@ -21,7 +21,7 @@ async function populateDB(){
         if(res1.code<300){
             let rest = restaurants[userID-1]
             console.log("creating restaurant: ", rest.name )
-            const res2 = await api.createRestaurant(userID,rest.name,rest.tags, rest.address, `(20${i}) ${i}11-${i}234`)
+            await api.createRestaurant(userID,rest.name,rest.tags, rest.address, `(20${i}) ${i}11-${i}234`)
         }
     }
 }
