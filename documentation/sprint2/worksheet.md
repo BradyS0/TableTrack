@@ -8,7 +8,7 @@ We chose to get a list of changed files (either comparing to the last commit or 
 - A bash script to compile all changed files relative to last commit or specified branch and put them into a text file
 - A Node JS script that takes the list file, then for each unit and regression test, checks if certain file paths are in the changes and runs those tests. For integration tests it will spin up the docker test database with the docker-compose.test.yml
 ### Link to regression testing script:
-- [Bash script to get changed file list](../../changed_file.sh)
+- [Bash script to get changed file list](../../changed_files.sh)
 - [Node JS script to choose and run unit/integration tests](../../regression.js)
 
 #### Snapshot of execution results:
