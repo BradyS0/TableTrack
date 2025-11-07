@@ -49,7 +49,30 @@ test("validate_phone: Valid number", () => {
 
 // -------------------------------------------------- validate_name
 
-// Same implementation as validate_description
+test("validate_name: Empty name", () => {
+    const str = "";
+    expect(RestaurantLogic.validate_name(str)).toEqual(false);
+});
+
+test("validate_name: Name length 1", () => {
+    const str = "a";
+    expect(RestaurantLogic.validate_name(str)).toEqual(true);
+});
+
+test("validate_name: Name length 50", () => {
+    const str = "a".repeat(50);
+    expect(RestaurantLogic.validate_name(str)).toEqual(true);
+});
+
+test("validate_name: Name length 51", () => {
+    const str = "a".repeat(51);
+    expect(RestaurantLogic.validate_name(str)).toEqual(false);
+});
+
+test("validate_name: Valid name", () => {
+    const str = "John";
+    expect(RestaurantLogic.validate_name(str)).toEqual(true);
+});
 
 
 
