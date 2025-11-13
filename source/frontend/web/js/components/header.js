@@ -32,13 +32,5 @@ export function createHeader() {
   header.children[1].addEventListener('click', goToHome);
   header.children[2].addEventListener('click', goToHome);
 
-  window.addEventListener("scroll",()=>{
-    if(document.querySelector('.search-group'))
-      header.classList.toggle("sticky", window.scrollY>135)
-    else
-      header.classList.toggle("sticky", window.scrollY>50)
-  })
-
-
   return header;
 }
