@@ -7,7 +7,6 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f9e8d0;
-    padding: 20px;
 }
 
 #app{
@@ -21,9 +20,13 @@ body {
 
 header {
     display: flex;
+    position: sticky;
+    top: 0;
     justify-content: start;
     align-items: center;
     margin-bottom: 20px;
+    margin-top: 5px;
+    transition: 200ms height ease, 300ms background ease;
 }
 
 header > *{
@@ -38,7 +41,7 @@ header h1 span{
 nav {
     display: flex;
     flex-direction: column;
-    position: absolute;
+    position: fixed;
     font-size: larger;
     row-gap: 10px;
     top: 0;
@@ -78,18 +81,19 @@ nav .user-options{
 }
 
 #hamburger{
+    margin-left: 20px;
     padding: .35rem .80rem;
+    transition: 200ms all ease-in;
 }
 
 #hamburger:hover{
-    background-color: #fff5d5;
+    background-color: rgba(255, 218, 185, 0.4);
     border-radius: 100%;
-    transition: all ease-in 200ms;
 }
 
 .overlay{
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     backdrop-filter: blur(1px);
@@ -214,4 +218,21 @@ form input {
     padding: 1rem;
     margin: 1rem;
 }
+}
+
+/* adding sticky behaviour to the header */
+/* When the header is “stuck” */
+header.sticky{
+  z-index: 2;
+  background-color: #fff6e9;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin: 0;
+}
+
+header.sticky .logo{
+  height: 65px;
+}
+
+header.sticky h1{
+  font-size: x-large;
 }

@@ -3,7 +3,7 @@
     min-width: 10px;
     width: fit-content;
     position:sticky;
-    top:5%;
+    top:8%;
     bottom: 80%;
     margin: 1rem 0;
     align-self: center;
@@ -19,11 +19,11 @@
 .search-group:hover,  .search-group:focus-within{
     opacity: 1;
     z-index: 3;
-    transition: .1s transform ease-in, .2s border ease;
+    transition: 300ms transform ease-out, 300ms border ease;
 }
 
 .search-group:focus-within{
-    transform: scale(1.1);
+    transform: scale(1.05);
     border: 1px solid #222;
 }
 
@@ -34,17 +34,18 @@
     padding: 0.7rem;
     min-width: 5px;
     width: 0px;
-    max-width: 500px;
+    max-width: min(500px,75vw);
     border-radius: 1.2rem 0 0 1.2rem;
     border: none;
     background-color: #222;
     backdrop-filter: blur(3px) brightness(1.4) ;
-    transition: .4s width ease;
+    transition: 450ms width ease-out;
 }
 
 .search-input:focus, .search-group:hover .search-input{
     background-color: rgba(255, 255, 255,.5);
-    width:50vw;
+    min-width: 200px;
+    width:75vw;
     outline: none;
 }
 
