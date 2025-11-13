@@ -3,7 +3,7 @@
     min-width: 10px;
     width: fit-content;
     position:sticky;
-    top:8%;
+    top:max(8%,75px);
     bottom: 80%;
     margin: 1rem 0;
     align-self: center;
@@ -38,7 +38,7 @@
     border-radius: 1.2rem 0 0 1.2rem;
     border: none;
     background-color: #222;
-    backdrop-filter: blur(3px) brightness(1.4) ;
+    backdrop-filter: blur(3px) brightness(1.25) ;
     transition: 450ms width ease-out;
 }
 
@@ -47,6 +47,7 @@
     min-width: 200px;
     width:75vw;
     outline: none;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
 }
 
 .search-btn{ 
