@@ -19,6 +19,7 @@ export async function loadRestaurant(restID){
 
     if (response.code==200){
       const rest = response.data
+      document.querySelector('title').innerText = `TableTrack | ${rest.name}`
       app.append(createRestaurantInfo(rest));
       console.log("populated the restaurant")
     }else{

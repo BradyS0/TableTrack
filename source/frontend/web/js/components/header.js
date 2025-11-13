@@ -36,8 +36,9 @@ export function createHeader() {
     if(document.querySelector('.search-group'))
       header.classList.toggle("sticky", window.scrollY>135)
     else
-      header.classList.toggle("sticky", window.scrollY>100)
+      header.classList.toggle("sticky", window.scrollY>50)
   })
+
 
   return header;
 }
