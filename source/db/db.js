@@ -10,7 +10,7 @@ const sequelize = new Sequelize(
     config['production']['username'],
     config['production']['password'],
     {
-        host: config['production']['host'] || "localhost",  
+        host: config['production']['host'] || "localhost",
         dialect: config['production']['dialect'] || "postgres",
         logging: false, // can change to console.log to see raw SQL queries
     }
