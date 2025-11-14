@@ -1,10 +1,10 @@
 //this file was partially created using copilot
 import dotenv from 'dotenv';
-import sequelize from './db.js';
-import { User } from "./models/User.js";
-import { Restaurant } from "./models/Restaurant.js";
-import Schedule from "./models/Schedule.js";
-import { MenuItem } from './models/MenuItem.js';
+// import sequelize from './db.js';
+import {sequelize, User , Restaurant, Schedule, MenuItem} from "./models";
+// import { Restaurant } from "./models/Restaurant.js";
+// import Schedule from "./models/Schedule.js";
+// import { MenuItem } from './models/MenuItem.js';
 
 // Load environment variables from .env.test
 dotenv.config({ path: './.env' });

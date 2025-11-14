@@ -1,6 +1,5 @@
 import request from "supertest";
 import { app } from "../../app.js";
-// import sequelize from "../../db.js";
 
 // Data used in testing
 const user1id = 1;

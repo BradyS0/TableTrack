@@ -1,7 +1,6 @@
 
 import express from "express";
-import ScheduleModel from "../models/Schedule.js";
-import { Restaurant } from "../models/Restaurant.js";
+import { Schedule, Restaurant } from "../models";
 import ScheduleLogic from "../logic/ScheduleLogic.js";
 import TimeLogic from "../logic/TimeLogic.js";
 
@@ -36,10 +35,10 @@ router.put("/", async (req, res) => {
                     const close = (parsed[i])[1];
 
                     // CASE 1: Restaurant is open today
-                    if (open < close) await ScheduleModel.set_day(restID, i, open, close);
+                    if (open < close) await Schedule.set_day(restID, i, open, close);
 
                     // CASE 2: Restaurant is closed today
-                    else await ScheduleModel.del_day(restID, i);
+                    else await Schedule.del_day(restID, i);
                 }
             }
             res.status(201).json({});
@@ -75,8 +74,8 @@ router.get("/", async (req, res) => {
         else {
 
             // Get opening and closing hours
-            var open  = await ScheduleModel.get_open(restID, day_num);
-            var close = await ScheduleModel.get_close(restID, day_num);
+            var open  = await Schedule.get_open(restID, day_num);
+            var close = await Schedule.get_close(restID, day_num);
 
             // Restaurant closed today
             if (open == -1) {

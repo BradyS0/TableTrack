@@ -1,7 +1,7 @@
 
 import express from "express";
-import { Restaurant } from "../models/Restaurant.js";
-import { MenuItem } from "../models/MenuItem.js";
+import { Restaurant, MenuItem } from "../models";
+// import { MenuItem } from "../models/MenuItem.js";
 import MenuLogic from "../logic/menuLogic.js";
 
 const router = express.Router();

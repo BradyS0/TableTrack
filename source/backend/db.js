@@ -17,14 +17,14 @@ const sequelize = new Sequelize(
     }
 );
 
-// Test the database connection
-(async () => {
-    try {
-        await sequelize.authenticate();
-        console.log("[INFO] Database connection has been established successfully.");
-    } catch (error) {
-        console.error("[ERROR] Unable to connect to the database:", error);
-    }
-})();
+// // Test the database connection
+// (async () => {
+//     try {
+//         await sequelize.authenticate();
+//         console.log("[INFO] Database connection has been established successfully.");
+//     } catch (error) {
+//         console.error("[ERROR] Unable to connect to the database:", error);
+//     }
+// })();
 
 export default sequelize;
