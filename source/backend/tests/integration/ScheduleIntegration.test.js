@@ -110,20 +110,22 @@ describe("Schedule API", () => {
 
     it("Verify invalid restID", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
+        .get("/v1/restaurant/schedule/weekly")
         .send({
             restID: 9999,
         });
         expect(res.status).toBe(404);
     });
 
-    it("Verify invalid restID", async () => {
+     it("Verify valid restID", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
+        .get("/v1/restaurant/schedule/weekly")
         .send({
-            restID: restID,
+            restID
         });
         expect(res.status).toBe(200);
+        const days = Object.keys(await res.body.schedule)
+        expect(days.length).toBe(7)
     });
 
 });

@@ -58,7 +58,8 @@ router.get("/", async (req, res) => {
 
     // Ensure restaurant exists
     const rest = await Restaurant.findByPk(parseInt(restID));
-    if ( rest === null ) res.status(404).json({ error: "Restaurant cannot be found" });
+    if ( rest === null ) return res.status(404).json({ error: "Restaurant cannot be found" });
+    else if(!day || day.length==0)  return res.status(400).json({ error: "Day cannot be an empty value" });
     else {
 
         // Get number for given day
@@ -89,11 +90,11 @@ router.get("/", async (req, res) => {
 
 
 // GET /restaurant/schedule/weekly
-router.get("/", async (req, res) => {
+router.get("/weekly", async (req, res) => {
 
     // Get restaurant Id from body
     const {restID} = req.body;
-    const schedule = {}
+    let schedule = {}
 
     // Ensure restaurant exists
     const rest = await Restaurant.findByPk(parseInt(restID));
@@ -106,7 +107,10 @@ router.get("/", async (req, res) => {
         schedule[ScheduleLogic.DAYS[i]] = {open,close}
     }
 
-    return res.status(200).json({restID,schedule})
+    return res.status(200).json({
+        restID: restID,
+        schedule: schedule
+    })
 });
 
 
