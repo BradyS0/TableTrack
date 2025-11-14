@@ -22,13 +22,13 @@ router.put("/", async (req, res) => {
     else {
 
         // Parse days into easier to use format
-        var parsed = null;
+        let parsed = null;
         try { parsed = ScheduleLogic.parse_schedule(schedule); } 
         catch { res.status(400).json({ error: "Invalid schedule format" }); }
         if (parsed != null) {
 
             // Update all days specified by request
-            for (var i = 0; i < 7; i++)
+            for (let i = 0; i < ScheduleLogic.DAYS.length; i++)
             {
                 if ((parsed[i])[0] >= 0 && (parsed[i])[0] <= 24)
                 {
@@ -62,21 +62,16 @@ router.get("/", async (req, res) => {
     else {
 
         // Get number for given day
-        var day_num = -1;
-        if      (day == "sunday")    day_num = 0;
-        else if (day == "monday")    day_num = 1;
-        else if (day == "tuesday")   day_num = 2;
-        else if (day == "wednesday") day_num = 3;
-        else if (day == "thursday")  day_num = 4;
-        else if (day == "friday")    day_num = 5;
-        else if (day == "saturday")  day_num = 6;
+        //returns -1 for invalid day
+        //returns 0-6 for sunday-saturday
+        let day_num = ScheduleLogic.DAYS.indexOf(day.toLowerCase())
 
         if ( day_num == -1 ) res.status(400).json({ error: "Invalid day" });
         else {
 
             // Get opening and closing hours
-            var open  = await ScheduleModel.get_open(restID, day_num);
-            var close = await ScheduleModel.get_close(restID, day_num);
+            let open  = await ScheduleModel.get_open(restID, day_num);
+            let close = await ScheduleModel.get_close(restID, day_num);
 
             // Restaurant closed today
             if (open == -1) {
@@ -85,13 +80,34 @@ router.get("/", async (req, res) => {
             else {
 
                 // Check if currently open
-                var time = TimeLogic.get_time();
+                let time = TimeLogic.get_time();
                 res.status(200).json({ open:open, close:close, currently_open:ScheduleLogic.check_open(time,open,close) })
             }
         }
     }
 });
 
+
+// GET /restaurant/schedule/weekly
+router.get("/", async (req, res) => {
+
+    // Get restaurant Id from body
+    const {restID} = req.body;
+    const schedule = {}
+
+    // Ensure restaurant exists
+    const rest = await Restaurant.findByPk(parseInt(restID));
+    if (!rest) 
+        return res.status(404).json({ error: "Restaurant cannot be found" });
+
+    for (let i=0; i < ScheduleLogic.DAYS.length; i++){
+        let open  = await ScheduleModel.get_open(restID, day_num);
+        let close = await ScheduleModel.get_close(restID, day_num);
+        schedule[ScheduleLogic.DAYS[i]] = {open,close}
+    }
+
+    return res.status(200).json({restID,schedule})
+});
 
 
 export default router;
