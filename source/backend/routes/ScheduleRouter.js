@@ -101,8 +101,8 @@ router.get("/", async (req, res) => {
         return res.status(404).json({ error: "Restaurant cannot be found" });
 
     for (let i=0; i < ScheduleLogic.DAYS.length; i++){
-        let open  = await ScheduleModel.get_open(restID, day_num);
-        let close = await ScheduleModel.get_close(restID, day_num);
+        let open  = await ScheduleModel.get_open(restID, i);
+        let close = await ScheduleModel.get_close(restID, i);
         schedule[ScheduleLogic.DAYS[i]] = {open,close}
     }
 
