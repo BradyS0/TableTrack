@@ -1,6 +1,6 @@
 
 import express from "express";
-import { Restaurant, MenuItem } from "../models";
+import { Restaurant, MenuItem } from "../../db/models";
 // import { MenuItem } from "../models/MenuItem.js";
 import MenuLogic from "../logic/menuLogic.js";
 

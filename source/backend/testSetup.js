@@ -1,7 +1,7 @@
 //this file was partially created using copilot
 import dotenv from 'dotenv';
 // import sequelize from './db.js';
-import {sequelize, User , Restaurant, Schedule, MenuItem} from "./models";
+import {sequelize, User , Restaurant, Schedule, MenuItem} from "../db/models";
 // import { Restaurant } from "./models/Restaurant.js";
 // import Schedule from "./models/Schedule.js";
 // import { MenuItem } from './models/MenuItem.js';

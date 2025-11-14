@@ -9,6 +9,7 @@ export const MenuItem = sequelize.define("MenuItem", {
     restID:      { 
         type: DataTypes.INTEGER,
         allowNull: false,
+        primaryKey: true,
         references: { model: 'Restaurants', key: "restID" },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
