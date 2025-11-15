@@ -107,4 +107,25 @@ describe("Schedule API", () => {
         });
         expect(res.body.close).toEqual(18.3);
     });
+
+    it("Verify invalid restID", async () => {
+        const res = await request(app)
+        .get("/v1/restaurant/schedule/weekly")
+        .send({
+            restID: 9999,
+        });
+        expect(res.status).toBe(404);
+    });
+
+     it("Verify valid restID", async () => {
+        const res = await request(app)
+        .get("/v1/restaurant/schedule/weekly")
+        .send({
+            restID
+        });
+        expect(res.status).toBe(200);
+        const days = Object.keys(await res.body.schedule)
+        expect(days.length).toBe(7)
+    });
+
 });

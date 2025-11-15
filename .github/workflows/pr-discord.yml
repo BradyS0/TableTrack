@@ -1,0 +1,60 @@
+name: PR to Discord
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send to Discord
+        uses: actions/github-script@v7
+        env:
+          WEBHOOK_URL: "https://discord.com/api/webhooks/1439028156391755869/EohlujS0sudaAtj6krL_tDaJEHoZ8XWoiSghO6fTT-Hn55bpTm59H9OXPaQ3HuY46WJH"
+        with:
+          script: |
+            const webhook = process.env.WEBHOOK_URL;
+            const action = context.payload.action;
+            const pr = context.payload.pull_request;
+            const user = pr.user.login;
+            const url = pr.html_url;
+            const merged = pr.merged;
+
+            let title = '';
+            let color = 0;
+
+            if (action === 'opened') {
+              title = `New PR Created`;
+              color = 3447003; // Blue
+            } else if (action === 'synchronize') {
+              title = `PR Updated!`;
+              color = 16763955; // Gold
+            } else if (action === 'reopened') {
+              title = `PR Reopened!`;
+              color = 10181046; // Purple
+            } else if (action === 'closed' && merged) {
+              title = `PR Merged!`;
+              color = 5763719; // Green
+            } else if (action === 'closed') {
+              title = `PR Closed (not merged)`;
+              color = 15158332; // Red
+            } else {
+              return; // Ignore other actions
+            }
+
+            const body = {
+              embeds: [{
+                title: `${title} #${pr.number} by ${user}`,
+                description: pr.title,
+                url: url,
+                color: color,
+                timestamp: new Date().toISOString()
+              }]
+            };
+
+            await fetch(webhook, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(body)
+            });
