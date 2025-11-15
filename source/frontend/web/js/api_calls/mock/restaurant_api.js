@@ -212,18 +212,19 @@ async function deleteMenuItem(restID, userID, itemID) {
 
 
 // -----------------------------------------------Schedule functions
-async function updateSchedule(restID,schedule){
+async function updateSchedule(restID){ //live will have 'schedule' passed in as a parameter as well
   const data = getAllData();
   const restaurant = data.find(r => r.restID == restID);
 
   if(!restaurant)
     return { code: 404, message: "Restaurant not found" };
 
-  return {code: 201, message:"changes accpted"}
+  return {code: 201, message:"changes accepted"}
 
 }
 
-async function getDaySchedule(restID,day){
+
+async function getDaySchedule(restID){ //live will have `day` passed as a parameter aswell
   const data = getAllData();
   const restaurant = data.find(r => r.restID == restID);
 
@@ -232,6 +233,7 @@ async function getDaySchedule(restID,day){
 
   return {code:200, hours:{open:8.5, close:20.5}}
 }
+
 
 async function getFullSchedule(restID){
   const data = getAllData();

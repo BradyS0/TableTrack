@@ -254,6 +254,26 @@ async function updateSchedule(restID,schedule){
 }
 
 async function getDaySchedule(restID,day){
+  let result = {code:9001, message:"api backend cannot be reached"};
+
+  try{
+    const req = await fetch(`${API}/schedule?restID=${restID}&day=${day}`, 
+      {method: 'GET'})
+
+    result.code = req.status
+    const data = await req.json();
+
+    if(result.code<300){
+      result.message = 'Schedule changes accepted'
+    }else
+      result.message = data.error
+    
+  }catch{
+      console.log("ERROR:::",result)
+      result = {code:9001, message:"api backend cannot be reached"};
+  }
+
+  return result
 
 }
 
