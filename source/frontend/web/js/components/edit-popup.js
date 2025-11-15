@@ -160,7 +160,7 @@ export const editPopup = function (heading) {
 
             // Initialize from existing schedule
             const { open, close } = existingSchedule[day] || { open: -1, close: -1 };
-            if (open>=0 && close>=0) {
+            if (open>=0 && close>=0 && open!=close) {
                 statusToggle.value = "open";
                 openInput.value = floatToTime(open);
                 closeInput.value = floatToTime(close);

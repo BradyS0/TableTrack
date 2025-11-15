@@ -32,7 +32,7 @@ const head = document.querySelector('head');
     const open = scheduleData[day]?.open;
     const close = scheduleData[day]?.close;
 
-    if (open<0 || close<0) {
+    if (open<0 || close<0 || open===close) {
       timeLabel.textContent = "closed";
       timeLabel.classList.add("closed");
     } else {
@@ -49,22 +49,6 @@ const head = document.querySelector('head');
   });
 
   card.appendChild(list);
+  card.schedule = scheduleData;
   return card;
 }
-
-// Example usage:
-export const schedule = {
-  sunday: { open: 8, close: 21 },
-  monday: { open: -1, close: -1 },
-  tuesday: { open: 10, close: 22 },
-  wednesday: { open: 10, close: 22 },
-  thursday: { open: -1, close: -1 },
-  friday: { open: 10, close: 22 },
-  saturday: { open: 10, close: 22 },
-};
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   const container = document.getElementById("app");
-//   const scheduleCard = createScheduleCard(schedule);
-//   container.append(scheduleCard);
-// });

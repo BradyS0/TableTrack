@@ -227,11 +227,63 @@ let result = {code:9001, message:"api backend cannot be reached"};
 };
 
 
+// -----------------------------------------------Schedule functions
+async function updateSchedule(restID,schedule){
+  let result = {code:9001, message:"api backend cannot be reached"};
 
+  try{
+    const req = await fetch(`${API}/schedule`, {method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({restID, schedule})}
+    )
+
+    result.code = req.status
+    const data = await req.json();
+
+    if(result.code<300){
+      result.message = 'Schedule changes accepted'
+    }else
+      result.message = data.error
+    
+  }catch{
+      console.log("ERROR:::",result)
+      result = {code:9001, message:"api backend cannot be reached"};
+  }
+
+  return result
+}
+
+async function getDaySchedule(restID,day){
+
+}
+
+async function getFullSchedule(restID){
+  let result = {code:9001, message:"api backend cannot be reached"};
+
+  try{
+    const req = await fetch(`${API}/schedule/weekly/${restID}`, {method: 'GET'} )
+
+    result.code = req.status
+    const data = await req.json();
+
+    if(result.code<300)
+      result.schedule = data.schedule
+    else
+      result.message = data.error
+    
+  }catch(e){
+      console.log("ERROR:::",e.message)
+      result = {code:9001, message:"api backend cannot be reached"};
+  }
+
+  return result
+
+}
 
 
 export const restaurantAPI = {getRestaurants,createRestaurant,
   getRestaurantByOwner,getRestaurantByID,
     changeRestaurantName,changeRestaurantAddress,
-    changeRestaurantPhone,changeRestaurantTags
+    changeRestaurantPhone,changeRestaurantTags,
+    updateSchedule,getDaySchedule,getFullSchedule
 };
