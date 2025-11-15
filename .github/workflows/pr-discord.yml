@@ -25,19 +25,19 @@ jobs:
             let color = 0;
 
             if (action === 'opened') {
-              title = `New PR Created: `;
+              title = `New PR Created`;
               color = 3447003; // Blue
             } else if (action === 'synchronize') {
-              title = `PR Updated!: `;
+              title = `PR Updated!`;
               color = 16763955; // Gold
             } else if (action === 'reopened') {
-              title = `PR Reopened!: `;
+              title = `PR Reopened!`;
               color = 10181046; // Purple
             } else if (action === 'closed' && merged) {
-              title = `PR Merged!: `;
+              title = `PR Merged!`;
               color = 5763719; // Green
             } else if (action === 'closed') {
-              title = `PR Closed (not merged): `;
+              title = `PR Closed (not merged)`;
               color = 15158332; // Red
             } else {
               return; // Ignore other actions
@@ -45,13 +45,10 @@ jobs:
 
             const body = {
               embeds: [{
-                title: `${title}${pr.title}`,
+                title: `${title} #${pr.number} by ${user}`,
+                description: pr.title,
                 url: url,
                 color: color,
-                fields: [
-                  { name: 'PR', value: `[#${pr.number}](${url})`, inline: true },
-                  { name: 'Author', value: user, inline: true }
-                ],
                 timestamp: new Date().toISOString()
               }]
             };
