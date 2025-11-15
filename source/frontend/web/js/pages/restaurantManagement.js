@@ -4,6 +4,7 @@ import { loadRestaurant } from './restaurantDetail.js';
 import { editPopup } from '../components/edit-popup.js';
 import { formatPhoneNumber } from '../logic/format-utils.js';
 import { loadOwnerMenu } from './menu.js';
+import { schedule } from '../components/schedule.js';
 
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -125,16 +126,6 @@ async function createEditPopup(owner){
           phoneInput.addEventListener("input",()=>{phoneInput.value=formatPhoneNumber(phoneInput.value)})
         });
   
-    
-    const schedule = {
-  Sunday: { open: 8, close: 21 },
-  Monday: { open: "", close: "" },
-  Tuesday: { open: 10, close: 22 },
-  Wednesday: { open: 10, close: 22 },
-  Thursday: { open: 10, close: 22 },
-  Friday: { open: 10, close: 22 },
-  Saturday: { open: 10, close: 22 },
-};
 
     rest_edit.add('Weekly Schedule').editSchedule(schedule,(updates)=>{
       console.log("Schedule Updates:")

@@ -120,7 +120,7 @@ export const editPopup = function (heading) {
 
       editButton.editSchedule = function (existingSchedule, onSubmit) {
     editButton.onclick = () => {
-        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
         const scheduleContainer = document.createElement("div");
         scheduleContainer.className = "schedule-edit";
@@ -159,8 +159,8 @@ export const editPopup = function (heading) {
             closeInput.className = "time-input";
 
             // Initialize from existing schedule
-            const { open, close } = existingSchedule[day] || { open: "", close: "" };
-            if (open || close) {
+            const { open, close } = existingSchedule[day] || { open: -1, close: -1 };
+            if (open>=0 && close>=0) {
                 statusToggle.value = "open";
                 openInput.value = floatToTime(open);
                 closeInput.value = floatToTime(close);
@@ -201,8 +201,8 @@ export const editPopup = function (heading) {
                 
                 if (update){
                 updated[day] = {
-                    open: isOpen ? timeToFloat(openInput.value) : "",
-                    close: isOpen ? timeToFloat(closeInput.value) : ""
+                    open: isOpen ? timeToFloat(openInput.value) : -1,
+                    close: isOpen ? timeToFloat(closeInput.value) : -1
                 };
                 }
         });
