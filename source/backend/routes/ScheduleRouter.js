@@ -54,7 +54,7 @@ router.put("/", async (req, res) => {
 router.get("/", async (req, res) => {
 
     // Get restaurant and day from body
-    const { restID, day } = req.body;
+    const { restID, day } = req.query;
 
     // Ensure restaurant exists
     const rest = await Restaurant.findByPk(parseInt(restID));
@@ -90,10 +90,10 @@ router.get("/", async (req, res) => {
 
 
 // GET /restaurant/schedule/weekly
-router.get("/weekly", async (req, res) => {
+router.get("/weekly/:restID", async (req, res) => {
 
     // Get restaurant Id from body
-    const {restID} = req.body;
+    const restID = req.params.restID;
     let schedule = {}
 
     // Ensure restaurant exists

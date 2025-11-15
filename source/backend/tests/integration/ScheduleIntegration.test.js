@@ -14,33 +14,24 @@ describe("Schedule API", () => {
 
     it("Get restaurant schedule: open", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
-        .send({
-            restID: restID,
-            day: "sunday",
-        });
+        .get(`/v1/restaurant/schedule?restID=${restID}&day=sunday`)
+
         expect(res.body.close).toEqual(24.0);
         expect(res.body.currently_open).toBe(true);
     });
 
     it("Get restaurant schedule: closed", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
-        .send({
-            restID: restID,
-            day: "monday",
-        });
+        .get(`/v1/restaurant/schedule?restID=${restID}&day=monday`)
+
         expect(res.body.close).toEqual(0.0);
         expect(res.body.currently_open).toBe(false);
     });
 
     it("Get schedule on invalid day", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
-        .send({
-            restID: restID,
-            day: "badday",
-        });
+        .get(`/v1/restaurant/schedule?restID=${restID}&day=badday`)
+
         expect(res.status).toBe(400);
     });
 
@@ -80,49 +71,36 @@ describe("Schedule API", () => {
 
     it("Verify new Sunday schedule", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
-        .send({
-            restID: restID,
-            day: "sunday",
-        });
+        .get(`/v1/restaurant/schedule?restID=${restID}&day=sunday`)
+
         expect(res.body.close).toEqual(0.0);
     });
 
     it("Verify new Monday schedule", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
-        .send({
-            restID: restID,
-            day: "monday",
-        });
+        .get(`/v1/restaurant/schedule?restID=${restID}&day=monday`)
+
         expect(res.body.close).toEqual(20.75);
     });
 
     it("Verify new Wednesday schedule", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
-        .send({
-            restID: restID,
-            day: "wednesday",
-        });
+        .get(`/v1/restaurant/schedule?restID=${restID}&day=wednesday`)
+
         expect(res.body.close).toEqual(18.3);
     });
 
     it("Verify invalid restID", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule/weekly")
-        .send({
-            restID: 9999,
-        });
+        .get(`/v1/restaurant/schedule/weekly/${9999}`)
+
         expect(res.status).toBe(404);
     });
 
      it("Verify valid restID", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule/weekly")
-        .send({
-            restID
-        });
+        .get(`/v1/restaurant/schedule/weekly/${restID}`)
+
         expect(res.status).toBe(200);
         const days = Object.keys(await res.body.schedule)
         expect(days.length).toBe(7)
