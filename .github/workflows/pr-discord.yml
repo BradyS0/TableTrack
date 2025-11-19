@@ -17,43 +17,57 @@ jobs:
             const webhook = process.env.WEBHOOK_URL;
             const action = context.payload.action;
             const pr = context.payload.pull_request;
-            const user = pr.user.login;
+            let user = pr.user;
             const url = pr.html_url;
             const merged = pr.merged;
 
-            let title = '';
+            let msg = '';
             let color = 0;
 
             if (action === 'opened') {
-              title = `New PR Created`;
+              msg = `New PR Created`;
               color = 3447003; // Blue
-            } else if (action === 'synchronize') {
-              title = `PR Updated!`;
-              color = 16763955; // Gold
             } else if (action === 'reopened') {
-              title = `PR Reopened!`;
+              msg = `PR Reopened!`;
               color = 10181046; // Purple
             } else if (action === 'closed' && merged) {
-              title = `PR Merged!`;
+              msg = `PR Merged!`;
+              user = pr.merged_by
               color = 5763719; // Green
             } else if (action === 'closed') {
-              title = `PR Closed (not merged)`;
+              msg = `PR Closed (not merged)`;
               color = 15158332; // Red
             } else {
               return; // Ignore other actions
             }
 
             const body = {
+              username: user.login,
+              avatar_url: user.avatar_url,
+              content: msg,
               embeds: [{
-                title: `${title} #${pr.number} by ${user}`,
-                description: pr.title,
+                title: pr.title,
                 url: url,
                 color: color,
+                fields: [
+                  {name: `Base`,
+                  value: `[${pr.base.ref}](${pr.base.repo.html_url}/tree/${pr.base.ref})`,
+                  inline : true
+                  },
+                  {name: `<---`,
+                  value: ` `,
+                  inline : true
+                  },
+                  {name: `Compare`,
+                  value: `[${pr.head.ref}](${pr.head.repo.html_url}/tree/${pr.head.ref})`,
+                  inline : true
+                  }
+                ],
                 timestamp: new Date().toISOString()
               }]
             };
 
-            await fetch(webhook, {
+            const res = await fetch(webhook, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(body)
