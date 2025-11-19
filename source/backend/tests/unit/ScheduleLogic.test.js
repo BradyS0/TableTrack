@@ -1,4 +1,4 @@
-import ScheduleLogic from '../../logic/ScheduleLogic.js';
+import ScheduleLogic from '../../logic/scheduleLogic.js';
 
 // -------------------------------------------------- check_open
 
