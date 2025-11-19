@@ -1,4 +1,3 @@
-
 import express from "express";
 import { Restaurant } from "../models/Restaurant.js";
 import { MenuItem } from "../models/MenuItem.js";
@@ -11,252 +10,211 @@ const router = express.Router();
 // POST /v1/menu/{restID}
 // Creates a new item for a restaurant item
 router.post("/:restID", async (req, res) => {
-    const restID = req.params.restID;
-    if (!isNaN(parseInt(restID))) {
-        
-        const restaurant = await Restaurant.findByPk(parseInt(restID));
+  const restID = parseInt(req.params.restID);
 
-        if (restaurant !== null) {
-            const { name, price, description, category } = req.body;
-            const money = MenuLogic.parse_money(price)
-            if ( MenuLogic.validate_name(name) &&
-                !isNaN(money) &&
-                MenuLogic.validate_description(description) &&
-                MenuLogic.validate_category(category)
-            ) {
-                // all parameters valid, creating new menu item
-                const new_item = await MenuItem.create({
-                    restID: restID,
-                    name: name,
-                    price: money,
-                    description: description,
-                    category: category
-                });
-                res.status(201).json({
-                    itemID: new_item.itemID,
-                    restID: new_item.restID,
-                    name: new_item.name,
-                    price: new_item.price,
-                    description: new_item.description,
-                    category: new_item.category
-                });
-            } else {
-                res.status(400).json({ error: "Invalid parameters."})
-            }
-        } else {
-            res.status(404).json({ error: "Restaurant was not found."})
-        }
-    } else{
-        res.status(400).json({ error: "Invalid restaurant ID."})
-    }
+  if (isNaN(restID))
+    return res.status(400).json({ error: "Invalid restaurant ID." });
+
+  const restaurant = await Restaurant.findByPk(restID);
+  if (!restaurant)
+    return res.status(404).json({ error: "Restaurant was not found." });
+
+  // Validate menu item fields
+  const { name, price, description, category } = req.body;
+  const money = MenuLogic.parse_money(price);
+
+  const valid =
+    MenuLogic.validate_name(name) &&
+    !isNaN(money) &&
+    MenuLogic.validate_description(description) &&
+    MenuLogic.validate_category(category);
+
+  if (!valid) return res.status(400).json({ error: "Invalid parameters." });
+
+  // Create new menu item
+  const new_item = await MenuItem.create({
+    restID,
+    name,
+    price: money,
+    description,
+    category,
+  });
+
+  return res.status(201).json(new_item);
 });
 
 // GET /v1/menu/{restID}/
 // Get entire list of menu items
 router.get("/:restID", async (req, res) => {
-    const restID = parseInt(req.params.restID);
-    if (!isNaN(restID)) {
-        const restaurant = await Restaurant.findByPk(restID)
-        
-        if (restaurant !== null) {
-            const menuList = await MenuItem.findAll({
-                attributes: ['name', 'price', 'description', 'category'],
-                where: { restID: restID }
-            });
-            
-            res.status(200).json({menu: menuList})
-        } else {
-            res.status(404).json({ message: "Restaurant could not be found."})
-        }
-    } else {
-        res.status(400).json({ error: "Invalid restaurant ID."})
-    }
+  const restID = parseInt(req.params.restID);
+  if (isNaN(restID))
+    return res.status(400).json({ error: "Invalid restaurant ID." });
+
+  // Check restaurant exists
+  const restaurant = await Restaurant.findByPk(restID);
+  if (!restaurant)
+    return res.status(404).json({ message: "Restaurant could not be found." });
+
+  // Fetch menu list
+  const menuList = await MenuItem.findAll({
+    attributes: ["name", "price", "description", "category"],
+    where: { restID },
+  });
+
+  return res.status(200).json({ menu: menuList });
 });
 
 // GET /v1/menu/{restID}/{itemID}
 // Get a single menu item
 router.get("/:restID/:itemID", async (req, res) => {
-    const restID = parseInt(req.params.restID);
-    const itemID = parseInt(req.params.itemID);
-    if (!(isNaN(restID) || (isNaN(itemID)))) {
-        const restaurant = await Restaurant.findByPk(restID)
-        
+  const restID = parseInt(req.params.restID);
+  const itemID = parseInt(req.params.itemID);
 
-        if (restaurant !== null) {
-            const item = await MenuItem.findOne({
-                attributes: ['name', 'price', 'description', 'category'],
-                where: {
-                    itemID: itemID,
-                    restID: restID
-                }
-            });
-            if (item !== null) {
-                res.status(200).json({
-                    name: item.name,
-                    price: item.price,
-                    description: item.description,
-                    category: item.category
-                })
-            } else {
-                res.status(400).json({ error: "Invalid item in request."})
-            }
-        } else {
-            res.status(404).json({ message: "Restaurant could not be found."})
-        }
-    } else {
-        res.status(400).json({ error: "Invalid restaurant or item ID."})
-    }
+  // Validate IDs
+  if (isNaN(restID) || isNaN(itemID))
+    return res.status(400).json({ error: "Invalid restaurant or item ID." });
+
+  // Check restaurant exists
+  const restaurant = await Restaurant.findByPk(restID);
+  if (!restaurant)
+    return res.status(404).json({ message: "Restaurant could not be found." });
+
+  // Fetch item
+  const item = await MenuItem.findOne({
+    attributes: ["name", "price", "description", "category"],
+    where: { itemID, restID },
+  });
+
+  if (!item) return res.status(400).json({ error: "Invalid item in request." });
+
+  // Success
+  return res.status(200).json(item);
 });
 
 // PATCH /v1/menu/{restID}/change/name
 // Update menu item name
 router.patch("/:restID/change/name", async (req, res) => {
-    const restID = parseInt(req.params.restID);
-    const {itemID, name} = req.body;
+  const restID = parseInt(req.params.restID);
+  const itemID = parseInt(req.body.itemID);
+  const { name } = req.body;
 
-    if(!(isNaN(itemID) || isNaN(restID))) {
-      
-        if (MenuLogic.validate_name(name)) {
-            const updated = await MenuItem.update({ name: name },
-                {
-                    where: { 
-                        itemID: itemID,
-                        restID: restID
-                    }
-                }
-            );
-            
-            if (updated[0]) {
-                //menu item exists
-                res.status(200).json({ message: "Name updated."})
-            } else {
-                res.status(404).json({ error: "Menu item not found."})
-            }
-        } else {
-            res.status(400).json({ error: "Invalid menu item name."})
-        }
-    } else {
-        res.status(400).json({ error: "Invalid restaurant or item ID."})
-    }
+  if (isNaN(restID) || isNaN(itemID))
+    return res.status(400).json({ error: "Invalid restaurant or item ID." });
+
+  if (!MenuLogic.validate_name(name))
+    return res.status(400).json({ error: "Invalid menu item name." });
+
+  // Attempt update
+  const updated = await MenuItem.update(
+    { name },
+    { where: { itemID, restID } }
+  );
+
+  if (!updated[0])
+    return res.status(404).json({ error: "Menu item not found." });
+
+  // Success
+  return res.status(200).json({ message: "Name updated." });
 });
 
 // PATCH /v1/menu/{restID}/change/price
 // Update menu item name
 router.patch("/:restID/change/price", async (req, res) => {
-    const restID = parseInt(req.params.restID);
-    const {itemID, price} = req.body;
+  const restID = parseInt(req.params.restID);
+  const itemID = parseInt(req.body.itemID);
+  const { price } = req.body;
 
-    if (!(isNaN(itemID) || isNaN(restID))) {
-        const money = MenuLogic.parse_money(price)
-        if (!isNaN(money)) {
-            const updated = await MenuItem.update({ price: money },
-                {
-                    where: { 
-                        itemID: itemID,
-                        restID: restID
-                    }
-                }
-            );
-            
-            if (updated[0]) {
-                //menu item exists
-                res.status(200).json({ message: "Price updated."})
-            } else {
-                res.status(404).json({ error: "Menu item not found."})
-            }
-        } else {
-            res.status(400).json({ error: "Invalid menu item name."})
-        }
-    } else {
-        res.status(400).json({ error: "Invalid restaurant or item ID."})
-    }
+  // Validate IDs
+  if (isNaN(restID) || isNaN(itemID))
+    return res.status(400).json({ error: "Invalid restaurant or item ID." });
+
+  // Parse and validate price
+  const money = MenuLogic.parse_money(price);
+  if (isNaN(money))
+    return res.status(400).json({ error: "Invalid price value." });
+
+  const updated = await MenuItem.update(
+    { price: money },
+    { where: { itemID, restID } }
+  );
+
+  if (!updated[0])
+    return res.status(404).json({ error: "Menu item not found." });
+
+  // Success
+  return res.status(200).json({ message: "Price updated." });
 });
 
 // PATCH /v1/menu/{restID}/change/description
 // Update menu item name
 router.patch("/:restID/change/description", async (req, res) => {
-    const restID = parseInt(req.params.restID);
-    const {itemID, description} = req.body;
+  const restID = parseInt(req.params.restID);
+  const itemID = parseInt(req.body.itemID);
+  const { description } = req.body;
 
-    if(!(isNaN(itemID) || isNaN(restID))) {
+  if (isNaN(restID) || isNaN(itemID))
+    return res.status(400).json({ error: "Invalid restaurant or item ID." });
 
-        if (MenuLogic.validate_description(description)) {
-            const updated = await MenuItem.update({ description: description },
-                {
-                    where: { 
-                        itemID: itemID,
-                        restID: restID
-                    }
-                }
-            );
-            
-            if (updated[0]) {
-                //menu item exists
-                res.status(200).json({ message: "description updated."})
-            } else {
-                res.status(404).json({ error: "Menu item not found."})
-            }
-        } else {
-            res.status(400).json({ error: "Invalid menu item name."})
-        }
-    } else {
-        res.status(400).json({ error: "Invalid restaurant or item ID."})
-    }
+  if (!MenuLogic.validate_description(description))
+    return res.status(400).json({ error: "Invalid description." });
+
+  // Attempt update
+  const updated = await MenuItem.update(
+    { description },
+    { where: { itemID, restID } }
+  );
+
+  if (!updated[0])
+    return res.status(404).json({ error: "Menu item not found." });
+
+  // Success
+  return res.status(200).json({ message: "Description updated." });
 });
 
 // PATCH /v1/menu/{restID}/change/category
 // Update menu item name
 router.patch("/:restID/change/category", async (req, res) => {
-    const restID = parseInt(req.params.restID);
-    const {itemID, category} = req.body;
+  const restID = parseInt(req.params.restID);
+  const itemID = parseInt(req.body.itemID);
+  const { category } = req.body;
 
-    if(!(isNaN(itemID) || isNaN(restID))) {
+  if (isNaN(restID) || isNaN(itemID))
+    return res.status(400).json({ error: "Invalid restaurant or item ID." });
 
-        if (MenuLogic.validate_category(category)) {
-            const updated = await MenuItem.update({ category: category },
-                {
-                    where: { 
-                        itemID: itemID,
-                        restID: restID
-                    }
-                }
-            );
-            
-            if (updated[0]) {
-                //menu item exists
-                res.status(200).json({ message: "Category updated."})
-            } else {
-                res.status(404).json({ error: "Menu item not found."})
-            }
-        } else {
-            res.status(400).json({ error: "Invalid menu item name."})
-        }
-    } else {
-        res.status(400).json({ error: "Invalid restaurant or item ID."})
-    }
+  if (!MenuLogic.validate_category(category))
+    return res.status(400).json({ error: "Invalid category." });
+
+  const updated = await MenuItem.update(
+    { category },
+    { where: { itemID, restID } }
+  );
+
+  if (!updated[0])
+    return res.status(404).json({ error: "Menu item not found." });
+
+  // Success
+  return res.status(200).json({ message: "Category updated." });
 });
 
 // DELETE /v1/menu/{restID}/{itemID}
 // Delete menu item
 router.delete("/:restID/:itemID", async (req, res) => {
-    const restID = parseInt(req.params.restID);
-    const itemID = parseInt(req.params.itemID);
+  const restID = parseInt(req.params.restID);
+  const itemID = parseInt(req.params.itemID);
 
-    if (!(isNaN(restID) || isNaN(itemID))) {
+  if (isNaN(restID) || isNaN(itemID))
+    return res.status(400).json({ error: "Invalid restaurant or item ID." });
 
-        const deleted = await MenuItem.destroy({
-            where: {
-                itemID: itemID,
-                restID: restID
-            }
-        });
-        if (deleted)
-            res.status(204).send({ message: "Menu item successfully deleted."});
-        else
-            res.status(404).json({ error: "Menu item was not found."})
-    } else {
-        res.status(400).json({ error: "Invalid restaurant or item ID."})
-    }
+  // Attempt delete
+  const deleted = await MenuItem.destroy({
+    where: { itemID, restID },
+  });
+
+  if (!deleted)
+    return res.status(404).json({ error: "Menu item was not found." });
+
+  // Success
+  return res.status(204).json({ message: "Menu item successfully deleted." });
 });
 
 export default router;
