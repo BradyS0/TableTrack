@@ -1,6 +1,6 @@
 import { api } from "../global.js"
 import { loadPublicMenu } from './menu.js';
-import { createScheduleCard, schedule } from "../components/schedule.js";
+import { createScheduleCard} from "../components/schedule.js";
 
 
 if (window.location.pathname.includes("restaurantDetail")){
@@ -19,15 +19,14 @@ export async function loadRestaurant(restID){
 
     if (response.code==200){
       const rest = response.data
-      document.querySelector('title').innerText = `TableTrack | ${rest.name}`
-      app.append(createRestaurantInfo(rest));
+      app.append(await createRestaurantInfo(rest));
       console.log("populated the restaurant")
     }else{
-      app.append(createRestaurantInfo({}));
+      app.append(await createRestaurantInfo({}));
     }
 }
 
-function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], rating, address, hours, phone}) {
+async function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], rating, address, hours, phone}) {
   // Create main container
   const hr_break = document.createElement('hr')
   const container = document.createElement('div');
@@ -54,11 +53,18 @@ function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], rating
   const contentSection = document.createElement('section');
   contentSection.id = 'restaurant-content';
 
+  
+  container.append(nameHeader, tagsSpan, detailSection);
+  
   // --- weekly schedule ----
-  const weeklySchedule = createScheduleCard(schedule)
+  const schedule_req = await api.getFullSchedule(restID)
+  if (schedule_req.code<300){
+    const weeklySchedule = createScheduleCard(schedule_req.schedule)
+    container.append(weeklySchedule)
+  }
 
-  // --- Combine All ---
-  container.append(nameHeader, tagsSpan, detailSection, weeklySchedule, hr_break,contentSection);
+  // --- populate  ----
+  container.append(hr_break,contentSection)
 
   return container;
 }

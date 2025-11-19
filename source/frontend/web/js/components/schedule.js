@@ -16,7 +16,7 @@ const head = document.querySelector('head');
   const list = document.createElement("ul");
   list.className = "schedule-list";
 
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
   days.forEach(day => {
     const item = document.createElement("li");
@@ -32,7 +32,7 @@ const head = document.querySelector('head');
     const open = scheduleData[day]?.open;
     const close = scheduleData[day]?.close;
 
-    if (!open || !close) {
+    if (open<0 || close<0 || open===close) {
       timeLabel.textContent = "closed";
       timeLabel.classList.add("closed");
     } else {
@@ -49,22 +49,6 @@ const head = document.querySelector('head');
   });
 
   card.appendChild(list);
+  card.schedule = scheduleData;
   return card;
 }
-
-// Example usage:
-export const schedule = {
-  Sunday: { open: 8, close: 21 },
-  Monday: { open: "", close: "" },
-  Tuesday: { open: 10, close: 22 },
-  Wednesday: { open: 10, close: 22 },
-  Thursday: { open: '', close: '' },
-  Friday: { open: 10, close: 22 },
-  Saturday: { open: 10, close: 22 },
-};
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   const container = document.getElementById("app");
-//   const scheduleCard = createScheduleCard(schedule);
-//   container.append(scheduleCard);
-// });
