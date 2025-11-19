@@ -7,54 +7,52 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
     const { first_name, last_name, email, password } = req.body;
-    const email_list = await User.findAll({
-        where: {
-            email: email
-        }
+    const email_list = await User.findOne({
+        where: { email: email }
     });
 
-    const valid_params = UserLogic.validate_name(first_name) && UserLogic.validate_name(last_name) 
-                        && UserLogic.validate_email(email) && UserLogic.validate_password(password);
+    const valid_params = UserLogic.validate_name(first_name) && UserLogic.validate_name(last_name)
+        && UserLogic.validate_email(email) && UserLogic.validate_password(password);
 
-    if ((email_list === undefined || email_list.length == 0) && valid_params) {
-        try {
-            const hashed_password = UserLogic.hash_password(password);
-            const user = await User.create({
-                first_name: first_name,
-                last_name: last_name,
-                email: email,
-                password: hashed_password
-            });
-            res.status(201).json({
-                first_name: user.first_name,
-                last_name: user.last_name,
-                email: user.email
-            });
-        } catch (err) {
-            res.status(400).json({ error: err.message });
-        }
-    } else {
-        res.status(400).json({ error: "Invalid parameters" });
+    if (email_list || !valid_params)
+        return res.status(400).json({ error: "Invalid parameters" });
+
+    try {
+        const hashed_password = UserLogic.hash_password(password);
+        const user = await User.create({
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+            password: hashed_password
+        });
+        res.status(201).json({
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email
+        });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
     }
+
 });
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({
-        attributes: ['userID','first_name','last_name','email'],
+        attributes: ['userID', 'first_name', 'last_name', 'email'],
         where: {
             email: email,
-            password : UserLogic.hash_password(password)
+            password: UserLogic.hash_password(password)
         }
     });
-    
-    if (user) {
-        res.status(200).json({ 
-            user,
-            message: "Login successful!" });
-    } else {
-        res.status(401).json({ error: "Invalid email or password" });
-    }
+
+    if (!user)
+        return res.status(401).json({ error: "Invalid email or password" });
+
+    return res.status(200).json({
+        user,
+        message: "Login successful!"
+    });
 });
 
 router.delete("/:userID", async (req, res) => {
@@ -68,72 +66,60 @@ router.delete("/:userID", async (req, res) => {
 router.patch("/change/firstname", async (req, res) => {
     const { userID, first_name } = req.body;
 
-    if (UserLogic.validate_name(first_name)) {
-        const updated = await User.update({ first_name: first_name },
-            {
-                where: {
-                    userID: userID
-                }
-            });
+    if (!UserLogic.validate_name(first_name))
+        return res.status(400).json({ error: "Invalid first name" })
 
-        if (updated[0]) {
-            //user exists
-            res.status(200).json({ message: "First name updated" });
-        } else {
-            res.status(404).json({ error: "User not found" });
-        }
+    const updated = await User.update({ first_name: first_name },
+        {
+            where: { userID: userID }
+        });
+
+    if (updated[0]) {
+        //user exists
+        res.status(200).json({ message: "First name updated" });
     } else {
-        res.status(400).json({ error: "Invalid first name" })
+        res.status(404).json({ error: "User not found" });
     }
 });
 
 router.patch("/change/lastname", async (req, res) => {
     const { userID, last_name } = req.body;
 
-    if (UserLogic.validate_name(last_name)) {
-        const updated = await User.update({ last_name: last_name },
-            {
-                where: {
-                    userID: userID
-                }
-            });
+    if (!UserLogic.validate_name(last_name))
+        return res.status(400).json({ error: "Invalid last name" })
 
-        if (updated[0]) {
-            //user exists
-            res.status(200).json({ message: "Last name updated" });
-        } else {
-            res.status(404).json({ error: "User not found" });
-        }
+    const updated = await User.update({ last_name: last_name },
+        {
+            where: { userID: userID }
+        });
+
+    if (updated[0]) {
+        //user exists
+        res.status(200).json({ message: "Last name updated" });
     } else {
-        res.status(400).json({ error: "Invalid last name" })
+        res.status(404).json({ error: "User not found" });
     }
+
 });
 
 router.patch("/change/email", async (req, res) => {
     const { userID, email } = req.body;
-    if (UserLogic.validate_email(email)) {
-        const emailList = await User.findAll({
-            where: {
-                email: email
-            }
-        });
+    if (!UserLogic.validate_email(email))
+        return res.status(400).json({ error: "Invalid email syntax" });
 
-        if (emailList === undefined || emailList.length == 0) {
-            //email is not a duplicate
-            const updated = await User.update({ email: email }, { where: { userID } });
-            if (updated[0]) {
-                res.status(200).json({ message: "Email updated" });
-            } else {
-                res.status(404).json({ error: "User not found" });
-            }
-        } else {
-            //email is a duplicate (already in database)
-            res.status(400).json({ error: "Invalid parameter" });
-        }
+    const emailList = await User.findOne({ where: { email: email } });
+
+    if (emailList)
+        return res.status(400).json({ error: "Invalid parameter" });
+
+    //email is not a duplicate
+    const updated = await User.update({ email: email }, { where: { userID:userID } });
+    if (updated[0]) {
+        res.status(200).json({ message: "Email updated" });
     } else {
-        //invalid email
-        res.status(400).json({ error: "Invalid parameter" });
+        res.status(404).json({ error: "User not found" });
     }
+
 });
 
 router.patch("/change/password", async (req, res) => {
@@ -165,5 +151,5 @@ router.patch("/change/password", async (req, res) => {
     } catch (err) {
         res.status(404).json({ error: err.message });
     }
-}); 
+});
 export default router;
