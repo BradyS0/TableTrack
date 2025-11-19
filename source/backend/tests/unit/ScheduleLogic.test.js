@@ -1,12 +1,4 @@
-
 import ScheduleLogic from '../../logic/ScheduleLogic.js';
-
-const schedule_normal   = { monday: { open: 8.5, close: 20.0 }, tuesday: { open: 8.5, close: 20.0 }}
-
-const schedule_no_days  = {}
-const schedule_bad_day  = {monday: { open: 8.5, close: 20.0 },badday: { open: 8.5, close: 20.0 }}  // invalid day
-
-
 
 // -------------------------------------------------- check_open
 
@@ -25,27 +17,35 @@ test("check_open: too late", () => {
     expect(open).toBe(false);
 });
 
-
-
-// -------------------------------------------------- parse_schedule
-
-test("parse_schedule: normal", () => {
-    const parsed = ScheduleLogic.parse_schedule(schedule_normal);
-    expect((parsed[0])[0]).toEqual(-1.0);
-    expect((parsed[1])[0]).toEqual(8.5);
-    expect((parsed[2])[0]).toEqual(8.5);
+test("check_open: open cant be equal to close", () => {
+    const open = ScheduleLogic.check_open(5,8,8);
+    expect(open).toBe(false);
 });
 
-test("parse_schedule: no days", () => {
-    const parsed = ScheduleLogic.parse_schedule(schedule_no_days);
-    expect((parsed[0])[0]).toEqual(-1.0);
-    expect((parsed[1])[0]).toEqual(-1.0);
-    expect((parsed[1])[0]).toEqual(-1.0);
+
+// -------------------------------------------------- get_day_index
+
+test("get_day_index: valid day", () => {
+    let result = ScheduleLogic.get_day_index('Monday')
+    expect(result).toBe(1);
+
+    result = ScheduleLogic.get_day_index('monday')
+    expect(result).toBe(1);
+
+    result = ScheduleLogic.get_day_index('MONDAY')
+    expect(result).toBe(1);
 });
 
-test("parse_schedule: bad day", () => {
-    const parsed = ScheduleLogic.parse_schedule(schedule_bad_day);
-    expect((parsed[0])[0]).toEqual(-1.0);
-    expect((parsed[1])[0]).toEqual(8.5);
-    expect((parsed[2])[0]).toEqual(-1.0);
+test("get_day_index: invalid day or format", () => {
+    let result = ScheduleLogic.get_day_index('some_day')
+    expect(result).toBe(-1);
+
+    result = ScheduleLogic.get_day_index(5)
+    expect(result).toBe(-1);
+
+    result = ScheduleLogic.get_day_index({json:"wrong format"})
+    expect(result).toBe(-1);
+
+    result = ScheduleLogic.get_day_index(null)
+    expect(result).toBe(-1);
 });

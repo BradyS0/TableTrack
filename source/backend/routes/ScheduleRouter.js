@@ -12,80 +12,84 @@ const router = express.Router();
 // PUT /restaurant/schedule
 // Update the schedule of a restaurant
 router.put("/", async (req, res) => {
-
     // Get changed days from request body
     const { restID, schedule } = req.body;
 
-    // Ensure restaurant exists
-    const rest = await Restaurant.findByPk(parseInt(restID));
-    if ( rest === null ) res.status(404).json({ error: "Restaurant cannot be found" });
-    else {
+    try {
+        // Ensure restaurant exists
+        const rest = await Restaurant.findByPk(parseInt(restID));
+        if (!rest)
+            return res.status(404).json({ error: "Restaurant cannot be found" });
 
-        // Parse days into easier to use format
-        let parsed = null;
-        try { parsed = ScheduleLogic.parse_schedule(schedule); } 
-        catch { res.status(400).json({ error: "Invalid schedule format" }); }
-        if (parsed != null) {
+        if (!(schedule instanceof Object))
+            return res.status(400).json({ error: "Invalid schedule format" });
 
-            // Update all days specified by request
-            for (let i = 0; i < ScheduleLogic.DAYS.length; i++)
-            {
-                if ((parsed[i])[0] >= 0 && (parsed[i])[0] <= 24)
-                {
-                    const open  = (parsed[i])[0];
-                    const close = (parsed[i])[1];
+        let changes = 0
+        for (let day in schedule) {
+            let day_index = ScheduleLogic.get_day_index(day)// get 0-6 or -1 for invalid day
+            const { open, close } = schedule[day]
 
-                    // CASE 1: Restaurant is open today
-                    if (open < close) await ScheduleModel.set_day(restID, i, open, close);
+            //skip invalid days or when open or close value exceed 24hrs
+            if (day_index < 0 || open > 24 || close > 24) continue //skip this iteration
 
-                    // CASE 2: Restaurant is closed today
-                    else await ScheduleModel.del_day(restID, i);
-                }
+            if (open > close || open == close || open == -1 || close == -1)
+                await ScheduleModel.del_day(restID, day_index)
+            else {
+                await ScheduleModel.set_day(restID, day_index, open, close);
+                changes++;
             }
-            res.status(201).json({});
         }
+
+        return res.status(201).json({ message: `${changes} change${changes > 1 ? 's' : ''} accepted` })
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
     }
+
 });
+
+
 
 // ================================================================================ GET
 
 // GET /restaurant/schedule
 // Get schedule and if open or closed
 router.get("/", async (req, res) => {
-
     // Get restaurant and day from body
     const { restID, day } = req.query;
+    try {
+        // Ensure restaurant exists
+        const rest = await Restaurant.findByPk(parseInt(restID));
+        if (rest === null)
+            return res.status(404).json({ error: "Restaurant cannot be found" });
 
-    // Ensure restaurant exists
-    const rest = await Restaurant.findByPk(parseInt(restID));
-    if ( rest === null ) return res.status(404).json({ error: "Restaurant cannot be found" });
-    else if(!day || day.length==0)  return res.status(400).json({ error: "Day cannot be an empty value" });
-    else {
+        // Get number for given day (0–6) or -1 if invalid
+        const day_num = ScheduleLogic.get_day_index(day)
+        if (day_num === -1)
+            return res.status(400).json({ error: "Invalid day" });
 
-        // Get number for given day
-        //returns -1 for invalid day
-        //returns 0-6 for sunday-saturday
-        let day_num = ScheduleLogic.DAYS.indexOf(day.toLowerCase())
+        // Get opening and closing hours
+        const open = await ScheduleModel.get_open(restID, day_num);
+        const close = await ScheduleModel.get_close(restID, day_num);
 
-        if ( day_num == -1 ) res.status(400).json({ error: "Invalid day" });
-        else {
+        // Restaurant closed today
+        if (open === -1)
+            return res.status(200).json({
+                open: 0,
+                close: 0,
+                currently_open: false
+            });
 
-            // Get opening and closing hours
-            let open  = await ScheduleModel.get_open(restID, day_num);
-            let close = await ScheduleModel.get_close(restID, day_num);
-
-            // Restaurant closed today
-            if (open == -1) {
-                res.status(200).json({ open:0, close:0, currently_open:false });
-            }
-            else {
-
-                // Check if currently open
-                let time = TimeLogic.get_time();
-                res.status(200).json({ open:open, close:close, currently_open:ScheduleLogic.check_open(time,open,close) })
-            }
-        }
+        // Restaurant open — determine if it is currently open
+        const time = TimeLogic.get_time();
+        return res.status(200).json({
+            open,
+            close,
+            currently_open: ScheduleLogic.check_open(time, open, close)
+        });
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
     }
+
 });
 
 
@@ -96,21 +100,24 @@ router.get("/weekly/:restID", async (req, res) => {
     const restID = req.params.restID;
     let schedule = {}
 
-    // Ensure restaurant exists
-    const rest = await Restaurant.findByPk(parseInt(restID));
-    if (!rest) 
-        return res.status(404).json({ error: "Restaurant cannot be found" });
+    try {
+        // Ensure restaurant exists
+        const rest = await Restaurant.findByPk(parseInt(restID));
+        if (!rest)
+            return res.status(404).json({ error: "Restaurant cannot be found" });
 
-    for (let i=0; i < ScheduleLogic.DAYS.length; i++){
-        let open  = await ScheduleModel.get_open(restID, i);
-        let close = await ScheduleModel.get_close(restID, i);
-        schedule[ScheduleLogic.DAYS[i]] = {open,close}
+        for (let i = 0; i < ScheduleLogic.DAYS.length; i++) {
+            let day = await ScheduleModel.get_day(restID, i);
+            schedule[ScheduleLogic.DAYS[i]] = day
+        }
+
+        return res.status(200).json({
+            restID: restID,
+            schedule: schedule
+        })
+    } catch (error) {
+        return res.status(500).json({ error: error.message })
     }
-
-    return res.status(200).json({
-        restID: restID,
-        schedule: schedule
-    })
 });
 
 

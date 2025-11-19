@@ -8,30 +8,18 @@ function check_open(time, open, close)
     else                    return true;
 }
 
-
-// Convert json schedule to array
-function parse_schedule(input)
-{  
-   let schedule = [];
-   for (let day of DAYS){
-        let day_schedule = input[day]
-        // CASE 1: Undefined, no schedule given
-        if (!day_schedule) schedule.push([-1.0, -1.0]);
-        
-        // CASE 2: Defined, Set to given schedule
-        else schedule.push([day_schedule["open"], day_schedule["close"]]);
-   }      
-    
-    return schedule;
+//returns sunday-saturday 0-6
+function get_day_index(day){
+    if (typeof day != "string") return -1
+    return DAYS.indexOf(day.toLowerCase())
 }
-
 
 
 export default
 {   
     DAYS,
-    check_open,
-    parse_schedule
+    get_day_index,
+    check_open
 };
 
 
