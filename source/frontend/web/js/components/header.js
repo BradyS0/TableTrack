@@ -31,5 +31,6 @@ export function createHeader() {
 
   header.children[1].addEventListener('click', goToHome);
   header.children[2].addEventListener('click', goToHome);
+
   return header;
 }
