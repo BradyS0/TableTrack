@@ -29,10 +29,21 @@ describe("Schedule API", () => {
     });
 
     it("Get schedule on invalid day", async () => {
-        const res = await request(app)
+        let res = await request(app)
         .get(`/v1/restaurant/schedule?restID=${restID}&day=badday`)
 
         expect(res.status).toBe(400);
+    });
+
+    it("Get schedule on invalid restaurant", async () => {
+        let res = await request(app)
+        .get(`/v1/restaurant/schedule?restID=${9999}&day=monday`)
+
+        expect(res.status).toBe(404);
+
+        res = await request(app)
+        .get(`/v1/restaurant/schedule`)
+        expect(res.status).toBe(500);
     });
 
     // -------------------------------------------------- PUT /restaurant/schedule
@@ -67,6 +78,30 @@ describe("Schedule API", () => {
         expect(res.status).toBe(201);
     });
 
+     it("Change schedule for invalid restaurant", async () => {
+        let res = await request(app)
+        .put("/v1/restaurant/schedule")
+        .send({
+            restID: 596,
+            schedule: sched_mon,
+        });
+        expect(res.status).toBe(404);
+
+         res = await request(app)
+        .put("/v1/restaurant/schedule")
+        expect(res.status).toBe(500);
+    });
+
+     it("Change schedule for invalid schedule type", async () => {
+        const res = await request(app)
+        .put("/v1/restaurant/schedule")
+        .send({
+            restID: restID,
+            schedule: "hello world",
+        });
+        expect(res.status).toBe(400);
+    });
+
     // -------------------------------------------------- Verify changes from PUT
 
     it("Verify new Sunday schedule", async () => {
@@ -88,6 +123,13 @@ describe("Schedule API", () => {
         .get(`/v1/restaurant/schedule?restID=${restID}&day=wednesday`)
 
         expect(res.body.close).toEqual(18.3);
+    });
+
+    it("invalid request syntax", async () => {
+        const res = await request(app)
+        .get(`/v1/restaurant/schedule/weekly/newWorld`)
+
+        expect(res.status).toBe(500);
     });
 
     it("Verify invalid restID", async () => {
