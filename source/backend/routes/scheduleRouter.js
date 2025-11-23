@@ -1,7 +1,7 @@
 
 import express from "express";
 import ScheduleModel from "../models/Schedule.js";
-import { Restaurant } from "../models/Restaurant.js";
+import Restaurant from "../models/Restaurant.js";
 import ScheduleLogic from "../logic/scheduleLogic.js";
 import TimeLogic from "../logic/timeLogic.js";
 

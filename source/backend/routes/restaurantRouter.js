@@ -1,7 +1,7 @@
 
 import express from "express";
-import { User } from "../models/User.js";
-import { Restaurant } from "../models/Restaurant.js";
+import User from "../models/User.js";
+import Restaurant from "../models/Restaurant.js";
 import RestaurantLogic from "../logic/restaurantLogic.js";
 
 const router = express.Router();
