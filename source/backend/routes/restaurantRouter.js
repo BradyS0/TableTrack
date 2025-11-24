@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
             return res.status(409).json({ error: "User already has restaurant" });
 
         // Create the new restaurant
-        const new_restaurant = await Restaurant.create(userID, name, address, phone, tags)
+        const new_restaurant = await Restaurant.create_new(userID, name, address, phone, tags)
         res.status(201).json(new_restaurant);
 
     } catch (err) {

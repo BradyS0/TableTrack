@@ -14,7 +14,7 @@ export const MenuItem = sequelize.define("MenuItem", {
 });
 
 // Query: Create a new menu item
-async function create(restID, name, price, desc, category)
+async function create_new(restID, name, price, desc, category)
 {
     try{ // Attempt to create new menu item
 
@@ -117,7 +117,7 @@ async function destroy(restID, itemID)
 
 export default
 {
-    create,
+    create_new,
     get_by_restaurant,
     get_by_id,
     change_name,

@@ -16,7 +16,7 @@ export const Restaurant = sequelize.define("Restaurant", {
 });
 
 // Query: Create a new restaurant
-async function create(ownerID, name, address, phone, tags)
+async function create_new(ownerID, name, address, phone, tags)
 {
     try{ // Attempt to create the restaurant
 
@@ -128,7 +128,7 @@ async function get_by_phone(phone)
 
 export default
 {
-    create,
+    create_new,
     change_name,
     change_address,
     change_phone,

@@ -11,13 +11,13 @@ router.post("/", async (req, res) => {
     const valid_params = UserLogic.validate_name(first_name) && UserLogic.validate_name(last_name)
         && UserLogic.validate_email(email) && UserLogic.validate_password(password);
 
-    email_list = await User.get_by_email(email)
+    let email_list = await User.get_by_email(email)
     if (email_list || !valid_params)
         return res.status(400).json({ error: "Invalid parameters" });
 
     try {
         const hashed_password = UserLogic.hash_password(password);
-        const user = await User.create(first_name, last_name, email, hashed_password)
+        const user = await User.create_new(first_name, last_name, email, hashed_password)
         res.status(201).json(user);
     } catch (err) {
         res.status(400).json({ error: err.message });
@@ -39,7 +39,7 @@ router.post("/login", async (req, res) => {
 
 router.delete("/:userID", async (req, res) => {
     const id = parseInt(req.params.userID);
-    const deleted = await User.destroy(id);
+    const deleted = await User.destroy_user(id);
     if (deleted) res.status(204).send();
     else res.status(404).json({ error: "User not found" });
 });

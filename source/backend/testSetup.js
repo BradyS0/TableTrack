@@ -27,14 +27,14 @@ beforeAll(async () => {
         // });
 
         console.log("[TEST SETUP] Creating test users");
-        const user1 = await User.create("TestUserA", "LastnameA", "testusera@example.com", "Password1");
+        const user1 = await User.create_new("TestUserA", "LastnameA", "testusera@example.com", "Password1");
         //const user1 = await User.create({
         //    first_name: "TestUserA",
         //    last_name:  "LastnameA",
         //    email:      "testusera@example.com",
         //    password:   "Password1"
         //});
-        await User.create("TestUserB", "LastnameB", "testuserb@example.com", "Password2");
+        await User.create_new("TestUserB", "LastnameB", "testuserb@example.com", "Password2");
         //await User.create({
         //    first_name: "TestUserB",
         //    last_name:  "LastnameB",
@@ -43,7 +43,7 @@ beforeAll(async () => {
         //});
 
         console.log("[TEST SETUP] Creating test restaurants");
-        const rest1 = await Restaurant.create(parseInt(user1.userID), "TestRestaurant1", "100 Test Street", "(204) 123-4567", ["testtag"]);
+        const rest1 = await Restaurant.create_new(parseInt(user1.userID), "TestRestaurant1", "100 Test Street", "(204) 123-4567", ["testtag"]);
         //const rest1 = await Restaurant.create({
         //    userID:    parseInt(user1.userID),
         //    name:      "TestRestaurant1",
@@ -56,7 +56,7 @@ beforeAll(async () => {
         await Schedule.set_day(rest1.restID, 1, 0.0, 0.0);  // Always closed Monday
 
         console.log("[TEST SETUP] Creating test menu item");
-        await MenuItem.create(rest1.restID, "TestItem", "1.00", "Test Description", "Test Category");
+        await MenuItem.create_new(rest1.restID, "TestItem", "1.00", "Test Description", "Test Category");
         //await MenuItem.create({
         //    restID:         rest1.restID,
         //    name:           "TestItem",
@@ -64,7 +64,7 @@ beforeAll(async () => {
         //    description:    "Test Description",
         //    category:       "Test Category"
         //});
-        await MenuItem.create(rest1.restID, "To Delete", "0", "To Delete", "To Delete");
+        await MenuItem.create_new(rest1.restID, "To Delete", "0", "To Delete", "To Delete");
         //await MenuItem.create({
         //    restID: rest1.restID,
         //    name: "To Delete",

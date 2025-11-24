@@ -32,7 +32,7 @@ router.post("/:restID", async (req, res) => {
   if (!valid) return res.status(400).json({ error: "Invalid parameters." });
 
   // Create new menu item
-  const new_item = await MenuItem.create(restID, name, money, description, category);
+  const new_item = await MenuItem.create_new(restID, name, money, description, category);
 
   return res.status(201).json(new_item);
 });

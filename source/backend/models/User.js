@@ -11,7 +11,7 @@ export const User = sequelize.define("User", {
 });
 
 // Query: Create a new user
-async function create(first_name, last_name, email, password)
+async function create_new(first_name, last_name, email, password)
 {
     try{ // Attempt to create the user
 
@@ -45,7 +45,7 @@ async function login(email, password)
 }
 
 // Query: Delete a user
-async function destroy(userID)
+async function destroy_user(userID)
 {
     return await User.destroy({
         where: {
@@ -134,9 +134,9 @@ async function change_password(id, pass)
 
 export default
 {
-    create,
+    create_new,
     login,
-    destroy,
+    destroy_user,
     get_by_id,
     get_by_email,
     change_firstname,
