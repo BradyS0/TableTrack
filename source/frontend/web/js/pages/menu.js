@@ -36,7 +36,8 @@ export async function loadPublicMenu(restID) {
         li.innerHTML = `
           <h4>${item.name}</h4>
           <p>${item.description}</p>
-          <strong>$${item.price.toFixed(2)}</strong>
+          <strong>$${parseFloat(item.price).toFixed(2)}</strong>
+
         `;
         list.appendChild(li);
       });
@@ -86,7 +87,8 @@ export async function loadOwnerMenu(owner) {
       items.forEach(item => {
         const li = document.createElement('li');
         li.innerHTML = `
-          <b>${item.name}</b> — $${item.price.toFixed(2)}
+          <b>${item.name}</b> — $${(parseFloat(item.price) || 0).toFixed(2)}
+
           <span>${item.description}</span>
           <button class="btn delete-item" data-id="${item.itemID}">Delete</button>
         `;
@@ -117,20 +119,22 @@ export async function loadOwnerMenu(owner) {
   form.addEventListener('submit', async e => {
     e.preventDefault();
 
+    const rawPrice = document.getElementById('newItemPrice').value.trim();
+
     const item = {
       name: document.getElementById('newItemName').value.trim(),
       description: document.getElementById('newItemDesc').value.trim(),
-      price: parseFloat(document.getElementById('newItemPrice').value),
+      price: rawPrice,
       category: document.getElementById('newItemCategory').value.trim() || "Miscellaneous"
     };
 
-    if (!item.name || !item.description || isNaN(item.price)) {
+    if (!item.name || !item.description || !rawPrice) {
       alert("Please fill out all fields correctly.");
       return;
     }
 
     const res = await api.addMenuItem(owner.restID, owner.userID, item);
-    alert(res.message);
+
 
     if (res.code < 300) {
       location.reload();
@@ -142,7 +146,7 @@ export async function loadOwnerMenu(owner) {
     if (e.target.classList.contains('delete-item')) {
       const id = e.target.dataset.id;
       const res = await api.deleteMenuItem(owner.restID, owner.userID, id);
-      alert(res.message);
+      //alert(res.message);
 
       if (res.code < 300) {
         await loadOwnerMenu(owner); // Refresh after deletion

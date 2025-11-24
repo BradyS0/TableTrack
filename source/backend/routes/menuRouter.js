@@ -53,11 +53,11 @@ router.get("/:restID", async (req, res) => {
   // Check restaurant exists
   const restaurant = await Restaurant.findByPk(restID);
   if (!restaurant)
-    return res.status(404).json({ message: "Restaurant could not be found." });
+    return res.status(404).json({ error: "Restaurant could not be found." });
 
   // Fetch menu list
   const menuList = await MenuItem.findAll({
-    attributes: ["name", "price", "description", "category"],
+    attributes: ["itemID","name", "price", "description", "category"],
     where: { restID },
   });
 
@@ -81,7 +81,7 @@ router.get("/:restID/:itemID", async (req, res) => {
 
   // Fetch item
   const item = await MenuItem.findOne({
-    attributes: ["name", "price", "description", "category"],
+    attributes: ["itemID","name", "price", "description", "category"],
     where: { itemID, restID },
   });
 
