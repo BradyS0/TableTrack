@@ -27,14 +27,14 @@ beforeAll(async () => {
         // });
 
         console.log("[TEST SETUP] Creating test users");
-        const user1 = await User.create_new("TestUserA", "LastnameA", "testusera@example.com", "Password1");
+        const user1 = await User.create_new("TestUserA", "LastnameA", "testusera@example.com", "Password2!");
         //const user1 = await User.create({
         //    first_name: "TestUserA",
         //    last_name:  "LastnameA",
         //    email:      "testusera@example.com",
         //    password:   "Password1"
         //});
-        await User.create_new("TestUserB", "LastnameB", "testuserb@example.com", "Password2");
+        await User.create_new("TestUserB", "LastnameB", "testuserb@example.com", "Password3@");
         //await User.create({
         //    first_name: "TestUserB",
         //    last_name:  "LastnameB",
