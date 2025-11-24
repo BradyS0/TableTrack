@@ -4,7 +4,7 @@ import { DataTypes } from "sequelize";
 import sequelize from "../db.js";
 
 // Model Definition
-export const Restaurant = sequelize.define("Restaurant", {
+const Restaurant = sequelize.define("Restaurant", {
     restID:      { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     userID:      { type: DataTypes.INTEGER, allowNull: false }, // Owner / Foreign key
     name:        { type: DataTypes.STRING,  allowNull: false },

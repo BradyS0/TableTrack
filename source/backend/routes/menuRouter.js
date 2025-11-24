@@ -118,7 +118,7 @@ router.patch("/:restID/change/price", async (req, res) => {
     return res.status(400).json({ error: "Invalid price value." });
 
   // Attempt update
-  const updated = await MenuItem.change_price(restID, itemID, price);
+  const updated = await MenuItem.change_price(restID, itemID, money);
 
   if (!updated[0])
     return res.status(404).json({ error: "Menu item not found." });
@@ -183,7 +183,7 @@ router.delete("/:restID/:itemID", async (req, res) => {
     return res.status(400).json({ error: "Invalid restaurant or item ID." });
 
   // Attempt delete
-  const deleted = await MenuItem.destroy(restID, itemID);
+  const deleted = await MenuItem.destroy_item(restID, itemID);
 
   if (!deleted)
     return res.status(404).json({ error: "Menu item was not found." });

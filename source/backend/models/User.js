@@ -2,7 +2,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db.js"; // updated import
 
-export const User = sequelize.define("User", {
+const User = sequelize.define("User", {
     userID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     first_name: { type: DataTypes.STRING, allowNull: false },
     last_name: { type: DataTypes.STRING, allowNull: false },
@@ -144,4 +144,4 @@ export default
     change_email,
     get_password,
     change_password
-}
+};

@@ -4,7 +4,7 @@ import { DataTypes } from  "sequelize";
 import sequelize from "../db.js";
 
 //Model Definition
-export const MenuItem = sequelize.define("MenuItem", {
+const MenuItem = sequelize.define("MenuItem", {
     itemID:      { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true},
     restID:      { type: DataTypes.INTEGER, allowNull: false }, //Restaurant / Foreign Key
     name:        { type: DataTypes.STRING,  allowNull: false },
@@ -106,7 +106,7 @@ async function change_category(restID, itemID, category)
 }
 
 // Query: Destroy a menu item
-async function destroy(restID, itemID)
+async function destroy_item(restID, itemID)
 {
     return await MenuItem.destroy({
         where: { 
@@ -124,5 +124,5 @@ export default
     change_price,
     change_description,
     change_category,
-    destroy
+    destroy_item
 }
