@@ -58,7 +58,7 @@ router.get("/", async (req, res) => {
     const { restID, day } = req.query;
     try {
         // Ensure restaurant exists
-        const rest = await Restaurant.findByPk(parseInt(restID));
+        const rest = await Restaurant.get_by_id(parseInt(restID));
         if (rest === null)
             return res.status(404).json({ error: "Restaurant cannot be found" });
 
@@ -102,7 +102,7 @@ router.get("/weekly/:restID", async (req, res) => {
 
     try {
         // Ensure restaurant exists
-        const rest = await Restaurant.findByPk(parseInt(restID));
+        const rest = await Restaurant.get_by_id(parseInt(restID));
         if (!rest)
             return res.status(404).json({ error: "Restaurant cannot be found" });
 
