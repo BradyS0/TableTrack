@@ -66,9 +66,9 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
         || fileList.includes('source/backend/babel.config.js')
         || fileList.includes('source/backend/jest.integration.config.js')
         || fileList.includes('source/backend/app.js')
-        || fileList.includes('source/backend/db.js')
+        || fileList.includes('source/backend/db/db.js')
         || fileList.includes('source/backend/docker-compose.test.yml')
-        || fileList.includes('source/backend/models/User.js')){
+        || fileList.includes('source/backend/db/models/User.js')){
 
         if(npm_installed === false){
             await cmd('npm install')
@@ -87,7 +87,7 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
     || fileList.includes('source/backend/babel.config.js')
     || fileList.includes('source/backend/jest.integration.config.js')
     || fileList.includes('source/backend/app.js')
-    || fileList.includes('source/backend/db.js')
+    || fileList.includes('source/backend/db/db.js')
     || fileList.includes('source/backend/docker-compose.test.yml')
     || fileList.includes('source/backend/models/Restaurant.js')){
 
@@ -109,9 +109,9 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
     || fileList.includes('source/backend/babel.config.js')
     || fileList.includes('source/backend/jest.integration.config.js')
     || fileList.includes('source/backend/app.js')
-    || fileList.includes('source/backend/db.js')
+    || fileList.includes('source/backend/db/db.js')
     || fileList.includes('source/backend/docker-compose.test.yml')
-    || fileList.includes('source/backend/models/Schedule.js')){
+    || fileList.includes('source/backend/db/models/Schedule.js')){
 
         if(npm_installed === false){
             await cmd('npm install')
@@ -130,9 +130,9 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
     || fileList.includes('source/backend/babel.config.js')
     || fileList.includes('source/backend/jest.integration.config.js')
     || fileList.includes('source/backend/app.js')
-    || fileList.includes('source/backend/db.js')
+    || fileList.includes('source/backend/db/db.js')
     || fileList.includes('source/backend/docker-compose.test.yml')
-    || fileList.includes('source/backend/models/MenuItem.js')){
+    || fileList.includes('source/backend/db/models/MenuItem.js')){
 
         if(npm_installed === false){
             await cmd('npm install')

@@ -1,6 +1,6 @@
 // file partly created using chatGPT
 import express from "express";
-import { User } from "../../db/models";
+import { User } from "../db/models/index.js";
 import UserLogic from "../logic/userLogic.js";
 
 const router = express.Router();

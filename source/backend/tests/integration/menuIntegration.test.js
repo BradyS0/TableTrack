@@ -1,7 +1,7 @@
 
 import request from "supertest";
 import { app } from "../../app.js";
-import { MenuItem } from "../../../db/models";
+import { MenuItem } from "../../db/models/index.js";
 
 const restID = 1;
 const itemID = 1;
