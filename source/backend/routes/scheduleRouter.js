@@ -17,7 +17,7 @@ router.put("/", async (req, res) => {
 
     try {
         // Ensure restaurant exists
-        const rest = await Restaurant.findByPk(parseInt(restID));
+        const rest = await Restaurant.get_by_id(parseInt(restID));
         if (!rest)
             return res.status(404).json({ error: "Restaurant cannot be found" });
 
