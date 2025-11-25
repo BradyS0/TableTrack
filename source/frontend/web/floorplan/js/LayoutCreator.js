@@ -10,6 +10,16 @@ function segmentsProperlyIntersect(a1, a2, b1, b2) {
     return false;
   }
 
+  const between = (a, b, c) =>
+    Math.max(a, b) + eps >= c && c + eps >= Math.min(a, b);
+
+  if (
+    (between(a1.x, a2.x, b1.x) && between(a1.y, a2.y, b1.y)) ||
+    (between(a1.x, a2.x, b2.x) && between(a1.y, a2.y, b2.y))
+  ) {
+    return false;
+  }
+
   const orient = (p, q, r) =>
     (q.x - p.x) * (r.y - p.y) - (q.y - p.y) * (r.x - p.x);
 

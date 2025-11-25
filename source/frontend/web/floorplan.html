@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Floor Plan Editor</title>
-  <link rel="stylesheet" href="../css/global.css">
-  <link rel="stylesheet" href="floorplan.css">
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./floorplan/floorplan.css">
 </head>
 <body>
     <nav></nav>
@@ -17,7 +17,7 @@
         <button class="tab disabled" id="tab-editor">Layout editor</button>
       </div>
       <div class="toolbar">
-        <button class="btn small" id="btn-clear">Clear floor plan</button>
+        <button class="btn2 small" id="btn-clear">Clear floor plan</button>
       </div>
     </header>
 
@@ -43,16 +43,30 @@
         </div>
 
         <div class="side-footer">
-          <div class="side-section-title">Controls</div>
+          <p class="side-section-title">Shared Controls</p>
           <ul class="controls-list">
-            <li>Click to add wall points</li>
-            <li>Shift = straight segment</li>
-            <li>Click near first point to close</li>
-            <li>Wheel = zoom</li>
-            <li>LMB+RMB drag = pan</li>
-            <li>Drag item outside = delete</li>
-            <li>Right-click item = menu</li>
+            <li><b>Wheel</b> = zoom</li>
+            <li><b>LMB+RMB</b>+drag = pan</li>
           </ul>
+
+          <section class="controls-list">
+          <p class="side-section-title">Layout Creator Controls </p>
+          <ul class="controls-list">
+            <li><b>Left-Click</b> = to add wall points</li>
+            <li><b>Right-Click</b> = to remove latest point</li>
+            <li><b>Shift</b> = straight segment</li>
+            <li><b>Left-Click</b> first point to complete floor plan after placing atleast 3 points</li>
+          </ul>
+          </section>
+          
+          <section class="controls-list" style="display:none">
+          <p class="side-section-title">Layout Editor Controls </p>
+          <ul class="controls-list">
+            <li>Select item from the options, point and click inside the floor plan to place the item</li>
+            <li>Drag item outside = delete</li>
+            <li><b>Right-click</b> item = context menu</li>
+          </ul>
+          </section>
         </div>
       </aside>
 
@@ -64,8 +78,8 @@
     </main>
   </div>
 
-  <script type="module" src="../js/global.js"></script>
+  <script type="module" src="./js/global.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/konva@9.3.0/konva.min.js"></script>
-  <script type="module" src="js/floorplan.js"></script>
+  <script type="module" src="floorplan/js/floorplan.js"></script>
 </body>
 </html>

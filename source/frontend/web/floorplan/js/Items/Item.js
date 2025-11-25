@@ -6,11 +6,11 @@ export class Item {
   constructor(editor, type) {
     this.editor = editor;
     this.type = type;
-    this.id = crypto.randomUUID();
+    this.id =  this._idGen();
     this.data = {};
 
     this.group = new Konva.Group({
-      draggable: true
+      draggable: true,
     });
 
     this._attachBaseEvents();
@@ -67,8 +67,21 @@ export class Item {
 
   getContextMenuItems() {
     return [
-      { label: "Delete", action: () => this.editor.confirmDeleteItem(this), danger: true }
+      {
+        label: "Delete",
+        action: () => this.editor.confirmDeleteItem(this),
+        danger: true,
+      },
     ];
+  }
+
+  _idGen() {
+    return (
+      crypto.randomUUID?.() ||
+      ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+        (c ^(crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+        ).toString(16)
+      ));
   }
 
   serialize() {
@@ -78,7 +91,7 @@ export class Item {
       type: this.type,
       x: pos.x,
       y: pos.y,
-      data: this.data
+      data: this.data,
     };
   }
 }

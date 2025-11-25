@@ -12,25 +12,8 @@ export class WindowItem extends SnappingItem {
 
   _buildVisuals() {
     const length = this.data.length;
-    const thickness = 10;
     const half = length / 2;
     const inset = 4;
-
-    this.leftBlock = new Konva.Rect({
-      x: -half,
-      y: -thickness / 2,
-      width: half,
-      height: thickness,
-      fill: "#333"
-    });
-
-    this.rightBlock = new Konva.Rect({
-      x: 0,
-      y: -thickness / 2,
-      width: half,
-      height: thickness,
-      fill: "#333"
-    });
 
     this.glassLine = new Konva.Line({
       points: [
@@ -38,11 +21,14 @@ export class WindowItem extends SnappingItem {
         half - inset,  0
       ],
       stroke: "#00aaff",
-      strokeWidth: 2
+      strokeWidth: 4
     });
 
-    this.group.add(this.leftBlock);
-    this.group.add(this.rightBlock);
     this.group.add(this.glassLine);
   }
+
+  onDragMove(){
+    super.onDragMove()
+    this.glassLine.stroke(this.hostSegment ? "#00aaff" : "#8b1e2b");
+    }
 }

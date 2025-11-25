@@ -206,15 +206,18 @@ export class FloorPlanEditor {
     const tabCreator = this.rootEl.querySelector("#tab-creator");
     const tabEditor = this.rootEl.querySelector("#tab-editor");
     const toolsSection = this.rootEl.querySelector("#editor-tools");
-
+    const toolTips = document.querySelectorAll('section.controls-list')
+    
     tabCreator.classList.toggle("active", mode === "creator");
     tabEditor.classList.toggle("active", mode === "editor");
-
+    
     if (mode === "editor") {
-      toolsSection.style.display = "block";
+      toolTips[0].style.display = 'none'
+      toolTips[1].style.display= toolsSection.style.display = "block";
       this.editor.setMode(true);
     } else {
-      toolsSection.style.display = "none";
+      toolTips[1].style.display=toolsSection.style.display = "none";
+      toolTips[0].style.display = 'block'
       this.editor.setMode(false);
     }
   }

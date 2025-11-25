@@ -57,7 +57,7 @@ router.get("/:restID", async (req, res) => {
 
   // Fetch menu list
   const menuList = await MenuItem.findAll({
-    attributes: ["name", "price", "description", "category"],
+    attributes: ["itemID","name", "price", "description", "category"],
     where: { restID },
   });
 
@@ -81,7 +81,7 @@ router.get("/:restID/:itemID", async (req, res) => {
 
   // Fetch item
   const item = await MenuItem.findOne({
-    attributes: ["name", "price", "description", "category"],
+    attributes: ["itemID","name", "price", "description", "category"],
     where: { itemID, restID },
   });
 

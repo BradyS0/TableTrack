@@ -23,11 +23,11 @@ export class SnappingItem extends Item {
     const pos = this.editor.stage.getPointerPosition();
     if (!pos) return;
     const seg = findNearestSegment(pos, this.editor.state.polygonPoints);
+    this.hostSegment = seg;
     if (!seg) {
-      this.group.opacity(0.35);
+      this.group.opacity(0.7);
       return;
     }
-    this.hostSegment = seg;
     this.group.position(seg.projPoint);
     this.group.rotation(seg.angleDeg);
     this.group.opacity(1);

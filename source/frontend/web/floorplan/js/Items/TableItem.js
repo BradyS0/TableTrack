@@ -3,33 +3,37 @@ import { Item } from "./Item.js";
 import { pointInPolygon } from "../geometry.js";
 
 export class TableItem extends Item {
-  constructor(editor, pos) {
-    super(editor, "table");
+    static i = 0;
 
-    this.data.capacity = 4;
-    this.data.reservable = true;
-    this.data.rotation = 0;
-
-    this._buildVisuals();
-    this.group.position(pos);
-  }
+    constructor(editor, pos) {
+        super(editor, "table");
+        TableItem.i++;
+        
+        this.data.capacity = 4;
+        this.data.reservable = true;
+        this.data.rotation = 0;
+        
+        this._buildVisuals();
+        this.group.position(pos);
+    }
+    
 
   _buildVisuals() {
-    const size = 60;
+    const size = 35;
 
     this.rect = new Konva.Rect({
       x: -size / 2,
       y: -size / 2,
-      width: size,
+      width: size+5,
       height: size,
-      cornerRadius: 10,
+      cornerRadius: 2,
       fill: "#2e7d5b",
       stroke: "#111",
       strokeWidth: 2
     });
 
     const label = new Konva.Text({
-      text: "T",
+      text: `T${TableItem.i}`,
       fontSize: 16,
       fill: "#f5f5f5",
       align: "center",

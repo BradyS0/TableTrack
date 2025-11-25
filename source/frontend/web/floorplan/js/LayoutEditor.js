@@ -242,14 +242,14 @@ drawGrid() {
     footer.className = "modal-footer";
 
     const cancel = document.createElement("button");
-    cancel.className = "btn small";
+    cancel.className = "btn2 small";
     cancel.textContent = "Cancel";
     cancel.addEventListener("click", () => {
       backdrop.remove();
     });
 
     const del = document.createElement("button");
-    del.className = "btn small primary";
+    del.className = "btn2 small danger";
     del.textContent = "Delete";
     del.addEventListener("click", () => {
       item.delete();
@@ -306,14 +306,14 @@ drawGrid() {
     footer.className = "modal-footer";
 
     const cancel = document.createElement("button");
-    cancel.className = "btn small";
+    cancel.className = "btn2 small";
     cancel.textContent = "Cancel";
     cancel.addEventListener("click", () => {
       backdrop.remove();
     });
 
     const save = document.createElement("button");
-    save.className = "btn small primary";
+    save.className = "btn2 small primary";
     save.textContent = "Save";
     save.addEventListener("click", () => {
       tableItem.data.capacity = parseInt(capInput.value, 10) || 4;
