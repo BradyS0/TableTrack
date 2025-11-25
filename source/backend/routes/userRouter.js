@@ -11,14 +11,18 @@ router.post("/", async (req, res) => {
     const valid_params = UserLogic.validate_name(first_name) && UserLogic.validate_name(last_name)
         && UserLogic.validate_email(email) && UserLogic.validate_password(password);
 
-    let email_list = await User.get_by_email(email)
+    let email_list = await User.get_by_email(email);
     if (email_list || !valid_params)
         return res.status(400).json({ error: "Invalid parameters" });
 
     try {
         const hashed_password = UserLogic.hash_password(password);
-        const user = await User.create_new(first_name, last_name, email, hashed_password)
-        res.status(201).json(user);
+        const user = await User.create_new(first_name, last_name, email, hashed_password);
+        res.status(201).json({
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email
+        });
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
@@ -26,7 +30,8 @@ router.post("/", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.login(email, password)
+    const hashed_password = UserLogic.hash_password(password);
+    const user = await User.login(email, hashed_password);
 
     if (!user)
         return res.status(401).json({ error: "Invalid email or password" });
@@ -64,7 +69,7 @@ router.patch("/change/lastname", async (req, res) => {
     const { userID, last_name } = req.body;
 
     if (!UserLogic.validate_name(last_name))
-        return res.status(400).json({ error: "Invalid last name" })
+        return res.status(400).json({ error: "Invalid last name" });
 
     const updated = await User.change_lastname(userID, last_name);
 
@@ -101,7 +106,7 @@ router.patch("/change/password", async (req, res) => {
     const { userID, old_password, new_password } = req.body;
     try {
         //account password stored in database
-        const user = await User.get_password(userID)
+        const user = await User.get_password(userID);
 
         const old_hashed = UserLogic.hash_password(old_password);
 
