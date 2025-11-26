@@ -1,5 +1,6 @@
 import { LayoutCreator } from "./LayoutCreator.js";
 import { LayoutEditor } from "./LayoutEditor.js";
+import Konva from './konva.js'
 
 export class FloorPlanEditor {
   constructor(rootEl) {
@@ -177,12 +178,14 @@ export class FloorPlanEditor {
     });
 
     clearBtn.addEventListener("click", () => {
-      this.creator.reset();
-      this.state.items.forEach(it => it.delete());
-      this.state.items = [];
-      tabEditor.classList.add("disabled");
-      toolsSection.style.display = "none";
-      this.setMode("creator");
+       
+        this.state.items.forEach(it => it.delete());
+        this.state.items = [];
+
+        if(this.state.mode ==='creator'){
+          this.creator.reset();
+          tabEditor.classList.add("disabled");
+        }
     });
 
     this.rootEl.querySelectorAll(".tool-btn").forEach(btn => {
@@ -225,11 +228,46 @@ export class FloorPlanEditor {
   _onPolygonComplete() {
     const tabEditor = this.rootEl.querySelector("#tab-editor");
     tabEditor.classList.remove("disabled");
-    this.setMode("editor");
+    // this.setMode("editor");
   }
 
   _updateStatus() {
     this.statusBar.textContent =
       `Mode: ${this.state.mode} • Scale: ${this.state.worldScale.toFixed(2)}x`;
+  }
+
+  //populate logic
+  loadFloorplanPolygon(polygon){
+    this.state.polygonPoints = polygon.map(p => ({ x: p.x, y: p.y }));
+    this.state.polygonClosed = true;
+    this.state.isDrawing = false;
+    this.creator._redrawPolygon();
+    this._onPolygonComplete()
+  }
+
+  loadItems(itemList){
+    for(let table of itemList.tables){
+      this.editor.addItem(table)
+    }
+
+    for(let item of itemList.misc){
+      this.editor.addItem(item)
+    }
+  }
+
+  //return logic
+  getFloorLayout(){
+    return {floorplan: this.state.polygonPoints}
+  }
+
+  getItems(){
+    let output = {tables:[], misc:[]}
+    for (let item of this.state.items){
+      if (item.type === 'table')
+        output.tables.push(item.serialize())
+      else
+        output.misc.push(item.serialize())
+    }
+    return output
   }
 }

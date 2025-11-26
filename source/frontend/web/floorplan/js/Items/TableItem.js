@@ -1,18 +1,16 @@
 // js/items/TableItem.js
 import { Item } from "./Item.js";
 import { pointInPolygon } from "../geometry.js";
+import Konva from "../konva.js"
 
 export class TableItem extends Item {
     static i = 0;
 
-    constructor(editor, pos) {
+    constructor(editor, pos, data={capacity:4, reservable:true, rotation:0}) {
         super(editor, "table");
         TableItem.i++;
         
-        this.data.capacity = 4;
-        this.data.reservable = true;
-        this.data.rotation = 0;
-        
+        this.data = {...this.data, ...data}
         this._buildVisuals();
         this.group.position(pos);
     }
@@ -24,7 +22,7 @@ export class TableItem extends Item {
     this.rect = new Konva.Rect({
       x: -size / 2,
       y: -size / 2,
-      width: size+5,
+      width: size,
       height: size,
       cornerRadius: 2,
       fill: "#2e7d5b",

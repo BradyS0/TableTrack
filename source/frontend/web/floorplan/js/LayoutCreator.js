@@ -1,4 +1,4 @@
-// js/LayoutCreator.js
+import Konva from './konva.js'
 import { distance, constrainToAxis, formatFeetInches } from "./geometry.js";
 
 // Detect real segment intersection (excluding shared endpoints)
@@ -116,7 +116,7 @@ export class LayoutCreator {
     this.polygonLine.points(pts);
     this.polygonLine.closed(this.state.polygonClosed);
     this.polygonLine.stroke(this.state.polygonClosed ? "#333" : "#444");
-    this.polygonLine.strokeWidth(this.state.polygonClosed ? 4 : 3);
+    this.polygonLine.strokeWidth(this.state.polygonClosed ? 5 : 3);
 
     this.floorLayer.draw();
     this.uiLayer.draw();

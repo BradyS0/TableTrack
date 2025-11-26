@@ -1,4 +1,4 @@
-// js/items/DividerItem.js
+import Konva from "../konva.js"
 import { Item } from "./Item.js";
 
 export class DividerItem extends Item {

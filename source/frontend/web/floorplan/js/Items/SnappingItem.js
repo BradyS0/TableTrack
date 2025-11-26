@@ -1,4 +1,3 @@
-// js/items/SnappingItem.js
 import { Item } from "./Item.js";
 import { findNearestSegment } from "../geometry.js";
 
@@ -8,8 +7,8 @@ export class SnappingItem extends Item {
     this.hostSegment = null;
   }
 
-  snapToNearestWall() {
-    const pos = this.group.position();
+  snapToNearestWall(position) {
+    const pos = this.group.position() || position;
     const seg = findNearestSegment(pos, this.editor.state.polygonPoints);
     if (!seg) return false;
 

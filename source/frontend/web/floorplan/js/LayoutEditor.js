@@ -1,3 +1,4 @@
+import Konva from './konva.js'
 import { pointInPolygon } from "./geometry.js";
 import { TableItem } from "./items/TableItem.js";
 import { DoorItem } from "./items/DoorItem.js";
@@ -57,6 +58,26 @@ export class LayoutEditor {
     if (item) item.onSelect();
     this.itemLayer.draw();
     this.uiLayer.draw();
+  }
+
+  addItem(newItem){
+    const {pos,type,rotation} = newItem
+    let item = null
+    if(type ==='table' && this.isInsideFloor(pos)){
+      item = new TableItem(this, pos, newItem.data)
+    }else if (type==='door'){
+      item = new DoorItem(this,pos) 
+      item = item.snapToNearestWall(pos) ? item : null
+    }else if (type ==='window'){
+      item = new WindowItem(this,pos) 
+      item = item.snapToNearestWall(pos) ? item : null
+    }
+
+    if (item){
+      this.registerItem(item)
+      item.group.rotation(rotation)
+    }
+    return item
   }
 
 drawGrid() {
@@ -159,6 +180,14 @@ drawGrid() {
         this.uiLayer.add(this._dividerPreview);
       }
     }
+
+    const shift= evt.evt.shiftKey
+    if(!shift){
+    this.state.tool= 'select'
+    document.querySelectorAll(".tool-btn").forEach(btn =>
+          btn.classList.toggle("active", btn.dataset.tool ==='select')
+        );
+      }
   }
 
   onMouseMove(evt, pos) {

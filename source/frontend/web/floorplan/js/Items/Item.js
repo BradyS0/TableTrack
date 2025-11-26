@@ -1,3 +1,4 @@
+import Konva from "../konva.js"
 export class Item {
   /**
    * @param {LayoutEditor} editor
@@ -85,12 +86,11 @@ export class Item {
   }
 
   serialize() {
-    const pos = this.group.position();
     return {
       id: this.id,
       type: this.type,
-      x: pos.x,
-      y: pos.y,
+      pos: this.group.position(),
+      rotation : this.group.rotation(),
       data: this.data,
     };
   }

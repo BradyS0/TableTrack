@@ -1,4 +1,4 @@
-// js/items/DoorItem.js
+import Konva from "../konva.js"
 import { SnappingItem } from "./SnappingItem.js";
 
 export class DoorItem extends SnappingItem {
