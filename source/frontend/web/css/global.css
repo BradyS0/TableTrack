@@ -7,7 +7,6 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f9e8d0;
-    padding: 20px;
 }
 
 #app{
@@ -16,14 +15,22 @@ body {
 }
 
 .logo{
-    height: 100px;
+    height: 75px;
 }
 
 header {
     display: flex;
+    position: sticky;
+    top: 0;
     justify-content: start;
     align-items: center;
     margin-bottom: 20px;
+    margin-top: 5px;
+    transition: 200ms height ease, 300ms background ease;
+    z-index: 2;
+    background: linear-gradient(to bottom,#fdeacf, #fbe4c5b2, #fbe4c500);
+    backdrop-filter: blur(5px);
+    padding-block: .25rem;
 }
 
 header > *{
@@ -31,14 +38,19 @@ header > *{
     user-select: none;
 }
 
+header h1{
+  font-size: x-large;
+}
+
 header h1 span{
     color: #cb0300;
 }
 
+
 nav {
     display: flex;
     flex-direction: column;
-    position: absolute;
+    position: fixed;
     font-size: larger;
     row-gap: 10px;
     top: 0;
@@ -78,18 +90,19 @@ nav .user-options{
 }
 
 #hamburger{
+    margin-left: 20px;
     padding: .35rem .80rem;
+    transition: 200ms all ease-in;
 }
 
 #hamburger:hover{
-    background-color: #fff5d5;
+    background-color: rgba(255, 218, 185, 0.4);
     border-radius: 100%;
-    transition: all ease-in 200ms;
 }
 
 .overlay{
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     backdrop-filter: blur(1px);
@@ -215,3 +228,6 @@ form input {
     margin: 1rem;
 }
 }
+
+
+

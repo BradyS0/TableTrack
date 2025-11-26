@@ -77,7 +77,7 @@ npm run local:stop    # this will stop the backend and clear the docker containe
 ```
 ### Local API Server + Cloud Database
 
-To set uo the local API and could database, please ask for the database credentials add or change your `env` to:
+To set up the local API and cloud database, please ask for the database credentials and add or change your `env` to:
 
 ```bash
 DB_USER=postgres
@@ -86,7 +86,6 @@ DB_NAME=postgres
 DB_HOST=[given host]
 DB_PORT=5432
 API_PORT=3000
-COULD_DB=true
 ```
 Then run:
 

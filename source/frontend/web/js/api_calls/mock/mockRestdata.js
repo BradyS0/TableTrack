@@ -400,3 +400,14 @@ export const menus = [
     },
   ],
 ];
+
+// mock schedule same for every restaurant
+export const schedule = {
+  sunday: { open: 8, close: 21 },
+  monday: { open: -1, close: -1 },
+  tuesday: { open: 10, close: 22 },
+  wednesday: { open: 10, close: 22 },
+  thursday: { open: -1, close: -1 },
+  friday: { open: 10, close: 22 },
+  saturday: { open: 10, close: 22 },
+};

@@ -2,8 +2,6 @@
 -- PostgreSQL database dump
 --
 
--- \restrict uWNwsJ3MVy0kblxDQKCVKutSwCmjaWa9AKRvhdkvRjbNfHD2C4BcwoQwHwfNMiA
-
 -- Dumped from database version 16.11 (Debian 16.11-1.pgdg13+1)
 -- Dumped by pg_dump version 16.11 (Debian 16.11-1.pgdg13+1)
 
@@ -250,6 +248,4 @@ ALTER TABLE ONLY public."Schedules"
 --
 -- PostgreSQL database dump complete
 --
-
--- \unrestrict uWNwsJ3MVy0kblxDQKCVKutSwCmjaWa9AKRvhdkvRjbNfHD2C4BcwoQwHwfNMiA
 

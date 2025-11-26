@@ -1,4 +1,4 @@
-import {restaurants,menus} from './mockRestdata.js'
+import {restaurants,menus,schedule} from './mockRestdata.js'
 const MOCK = "mockRest"
 const MOCK_MENU = 'mockMenu'
 
@@ -210,6 +210,43 @@ async function deleteMenuItem(restID, userID, itemID) {
   return { code: 200, message: `Item #${itemID} deleted successfully!` };
 }
 
+
+// -----------------------------------------------Schedule functions
+async function updateSchedule(restID){ //live will have 'schedule' passed in as a parameter as well
+  const data = getAllData();
+  const restaurant = data.find(r => r.restID == restID);
+
+  if(!restaurant)
+    return { code: 404, message: "Restaurant not found" };
+
+  return {code: 201, message:"changes accepted"}
+
+}
+
+
+async function getDaySchedule(restID){ //live will have `day` passed as a parameter aswell
+  const data = getAllData();
+  const restaurant = data.find(r => r.restID == restID);
+
+  if(!restaurant)
+    return { code: 404, message: "Restaurant not found" };
+
+  return {code:200, hours:{open:8.5, close:20.5}}
+}
+
+
+async function getFullSchedule(restID){
+  const data = getAllData();
+  const restaurant = data.find(r => r.restID == restID);
+
+  if(!restaurant)
+    return { code: 404, message: "Restaurant not found" };
+
+  return {code:200, schedule}
+}
+
+
+
 export  const mockRestaurantAPI = {
   getRestaurants,
   createRestaurant,
@@ -219,6 +256,7 @@ export  const mockRestaurantAPI = {
   changeRestaurantAddress,
   changeRestaurantPhone,
   changeRestaurantTags,
+  updateSchedule,getDaySchedule,getFullSchedule
 };
 
 export const mockMenusAPI = {

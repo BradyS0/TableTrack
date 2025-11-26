@@ -13,8 +13,8 @@ export const Schedule = sequelize.define("Schedule", {
         onUpdate: 'CASCADE',
      },
     day:     { type: DataTypes.INTEGER, primaryKey: true },
-    open:    { type: DataTypes.FLOAT, allowNull: false },
-    close:   { type: DataTypes.FLOAT, allowNull: false },
+    open:    { type: DataTypes.FLOAT, allowNull: false , defaultValue : -1},
+    close:   { type: DataTypes.FLOAT, allowNull: false, defaultValue: -1},
 });
 
 // Query: Add / update a day
@@ -58,6 +58,18 @@ Schedule.del_day = async function (restID, day)
         day:    parseInt(day),
     }});
     return 0;
+}
+
+async function get_day(restID, day){
+    // Find entry with primary key
+    const sched = await Schedule.findOne({ where: {
+        restID: parseInt(restID),
+        day:    parseInt(day),
+    }});
+
+    // If day exists return open hour
+    if (sched !== null) return {open:sched.open, close:sched.close}
+    else return {open:-1 , close:-1};
 }
 
 // Query: Get the opening hour

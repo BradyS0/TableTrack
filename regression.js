@@ -89,7 +89,7 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
     || fileList.includes('source/backend/app.js')
     || fileList.includes('source/backend/db/db.js')
     || fileList.includes('source/backend/docker-compose.test.yml')
-    || fileList.includes('source/backend/models/Restaurant.js')){
+    || fileList.includes('source/backend/db/models/Restaurant.js')){
 
         if(npm_installed === false){
             await cmd('npm install')
