@@ -1,10 +1,10 @@
 //this file was partially created using copilot
 import dotenv from 'dotenv';
 import sequelize from './db.js';
-import { User } from "./models/User.js";
-import { Restaurant } from "./models/Restaurant.js";
+import User from "./models/User.js";
+import Restaurant from "./models/Restaurant.js";
 import Schedule from "./models/Schedule.js";
-import { MenuItem } from './models/MenuItem.js';
+import MenuItem from './models/MenuItem.js';
 
 // Load environment variables from .env.test
 dotenv.config({ path: './.env' });
@@ -27,47 +27,51 @@ beforeAll(async () => {
         // });
 
         console.log("[TEST SETUP] Creating test users");
-        const user1 = await User.create({
-            first_name: "TestUserA",
-            last_name:  "LastnameA",
-            email:      "testusera@example.com",
-            password:   "Password1"
-        });
-        await User.create({
-            first_name: "TestUserB",
-            last_name:  "LastnameB",
-            email:      "testuserb@example.com",
-            password:   "Password2"
-        });
+        const user1 = await User.create_new("TestUserA", "LastnameA", "testusera@example.com", "Password2!");
+        //const user1 = await User.create({
+        //    first_name: "TestUserA",
+        //    last_name:  "LastnameA",
+        //    email:      "testusera@example.com",
+        //    password:   "Password1"
+        //});
+        await User.create_new("TestUserB", "LastnameB", "testuserb@example.com", "Password3@");
+        //await User.create({
+        //    first_name: "TestUserB",
+        //    last_name:  "LastnameB",
+        //    email:      "testuserb@example.com",
+        //    password:   "Password2"
+        //});
 
         console.log("[TEST SETUP] Creating test restaurants");
-        const rest1 = await Restaurant.create({
-            userID:    parseInt(user1.userID),
-            name:      "TestRestaurant1",
-            address:   "100 Test Street",
-            phone: "(204) 123-4567"
-        });
+        const rest1 = await Restaurant.create_new(parseInt(user1.userID), "TestRestaurant1", "100 Test Street", "(204) 123-4567", ["testtag"]);
+        //const rest1 = await Restaurant.create({
+        //    userID:    parseInt(user1.userID),
+        //    name:      "TestRestaurant1",
+        //    address:   "100 Test Street",
+        //    phone: "(204) 123-4567"
+        //});
 
         console.log("[TEST SETUP] Creating test schedule");
         await Schedule.set_day(rest1.restID, 0, 0.0, 24.0); // Always open Sunday
         await Schedule.set_day(rest1.restID, 1, 0.0, 0.0);  // Always closed Monday
 
         console.log("[TEST SETUP] Creating test menu item");
-        await MenuItem.create({
-            restID:         rest1.restID,
-            name:           "TestItem",
-            price:          "1.00",
-            description:    "Test Description",
-            category:       "Test Category"
-        });
-
-        await MenuItem.create({
-            restID: rest1.restID,
-            name: "To Delete",
-            price: "0",
-            description: "To Delete",
-            category: "To Delete"
-        });
+        await MenuItem.create_new(rest1.restID, "TestItem", "1.00", "Test Description", "Test Category");
+        //await MenuItem.create({
+        //    restID:         rest1.restID,
+        //    name:           "TestItem",
+        //    price:          "1.00",
+        //    description:    "Test Description",
+        //    category:       "Test Category"
+        //});
+        await MenuItem.create_new(rest1.restID, "To Delete", "0", "To Delete", "To Delete");
+        //await MenuItem.create({
+        //    restID: rest1.restID,
+        //    name: "To Delete",
+        //    price: "0",
+        //    description: "To Delete",
+        //    category: "To Delete"
+        //});
         //for future use
         // console.log('[TEST SETUP] Running migrations...');
         // If you're using Sequelize migrations, you can run them here
