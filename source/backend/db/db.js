@@ -13,7 +13,7 @@ let sequelize = new Sequelize(
     {
         host: config['host'] || "localhost",
         dialect: config['dialect'] || "postgres",
-        // logging: false, // can change to console.log to see raw SQL queries
+        logging: false, // can change to see raw SQL queries
     });
 
 export default sequelize;

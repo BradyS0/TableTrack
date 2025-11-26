@@ -60,7 +60,7 @@ Schedule.del_day = async function (restID, day)
     return 0;
 }
 
-async function get_day(restID, day){
+Schedule.get_day = async function (restID, day){
     // Find entry with primary key
     const sched = await Schedule.findOne({ where: {
         restID: parseInt(restID),
