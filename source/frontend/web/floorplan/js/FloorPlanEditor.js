@@ -168,7 +168,6 @@ export class FloorPlanEditor {
     const tabCreator = this.rootEl.querySelector("#tab-creator");
     const tabEditor = this.rootEl.querySelector("#tab-editor");
     const clearBtn = this.rootEl.querySelector("#btn-clear");
-    const toolsSection = this.rootEl.querySelector("#editor-tools");
 
     tabCreator.addEventListener("click", () => this.setMode("creator"));
 
