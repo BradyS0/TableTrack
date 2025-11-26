@@ -1,5 +1,5 @@
 import express from "express";
-import { Schedule, Restaurant } from "../models/index.js";
+import { Schedule, Restaurant } from "../db/models/index.js";
 import ScheduleLogic from "../logic/scheduleLogic.js";
 import TimeLogic from "../logic/timeLogic.js";
 
