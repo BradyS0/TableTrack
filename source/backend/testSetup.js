@@ -5,6 +5,7 @@ import User from "./models/User.js";
 import Restaurant from "./models/Restaurant.js";
 import Schedule from "./models/Schedule.js";
 import MenuItem from './models/MenuItem.js';
+import userLogic from './logic/userLogic.js';
 
 // Load environment variables from .env.test
 dotenv.config({ path: './.env' });
@@ -27,14 +28,16 @@ beforeAll(async () => {
         // });
 
         console.log("[TEST SETUP] Creating test users");
-        const user1 = await User.create_new("TestUserA", "LastnameA", "testusera@example.com", "Password2!");
+        const hashedPassword1 = await userLogic.hash_password("Password2!");
+        const user1 = await User.create_new("TestUserA", "LastnameA", "testusera@example.com", hashedPassword1);
         //const user1 = await User.create({
         //    first_name: "TestUserA",
         //    last_name:  "LastnameA",
         //    email:      "testusera@example.com",
         //    password:   "Password1"
         //});
-        await User.create_new("TestUserB", "LastnameB", "testuserb@example.com", "Password3@");
+        const hashedPassword2 = await userLogic.hash_password("Password3@");
+        const user2 = await User.create_new("TestUserB", "LastnameB", "testuserb@example.com", hashedPassword2);
         //await User.create({
         //    first_name: "TestUserB",
         //    last_name:  "LastnameB",

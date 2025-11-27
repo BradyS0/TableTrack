@@ -30,17 +30,13 @@ async function create_new(first_name, last_name, email, password)
 }
 
 // Query: Match email and password
-async function login(email, password)
+async function login(email)
 {
     return await User.findOne({
         attributes: [
-            'userID',
-            'first_name',
-            'last_name',
-            'email'
+            'password'
         ], where: {
             email: email,
-            password: password
     }});
 }
 
