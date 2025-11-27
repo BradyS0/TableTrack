@@ -37,7 +37,7 @@ beforeAll(async () => {
         //    password:   "Password1"
         //});
         const hashedPassword2 = await userLogic.hash_password("Password3@");
-        const user2 = await User.create_new("TestUserB", "LastnameB", "testuserb@example.com", hashedPassword2);
+        await User.create_new("TestUserB", "LastnameB", "testuserb@example.com", hashedPassword2);
         //await User.create({
         //    first_name: "TestUserB",
         //    last_name:  "LastnameB",
