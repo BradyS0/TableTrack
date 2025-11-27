@@ -45,6 +45,7 @@ MenuItem.get_by_restaurant = async function (restID)
     return await MenuItem.findAll({
         attributes: [
             "name",
+            "itemID",
             "price",
             "description",
             "category"
