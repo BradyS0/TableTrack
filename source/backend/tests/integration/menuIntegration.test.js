@@ -1,10 +1,10 @@
 
 import request from "supertest";
 import { app } from "../../app.js";
-import { MenuItem } from "../../models/MenuItem.js";
 
 const restID = 1;
 const itemID = 1;
+const itemID2 = 2;
 const invalidID = 0;
 const invalidDesc = "x".repeat(201);
 const invalidCat = "x".repeat(21);
@@ -22,7 +22,6 @@ describe("Menu Item API", () => {
                 category: "category"
             });
         expect(res.statusCode).toBe(201);
-        console.log(res.body);
         expect(res.body.name).toBe("Food");
         expect(res.body.price).toBe("1.00");
         expect(res.body.description).toBe("description");
@@ -312,14 +311,7 @@ describe("Menu Item API", () => {
     // ================================================================================ DELETE
     // valid case
     it("delete, valid", async () => {
-        const toDelete = await MenuItem.create({
-            restID: restID,
-            name: "To Delete",
-            price: "0",
-            description: "To Delete",
-            category: "To Delete"
-        });
-        const res = await request(app).delete(`/v1/menu/${restID}/${toDelete.itemID}`)
+        const res = await request(app).delete(`/v1/menu/${restID}/${itemID2}`)
         expect(res.statusCode).toBe(204)
     });
 
