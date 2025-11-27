@@ -1,10 +1,10 @@
 //this file was partially created using copilot
 import dotenv from 'dotenv';
-import sequelize from './db.js';
-import User from "./models/User.js";
-import Restaurant from "./models/Restaurant.js";
-import Schedule from "./models/Schedule.js";
-import MenuItem from './models/MenuItem.js';
+// import sequelize from './db.js';
+import { sequelize, User, Restaurant, Schedule, MenuItem } from "./db/models/index.js";
+// import { Restaurant } from "./models/Restaurant.js";
+// import Schedule from "./models/Schedule.js";
+// import { MenuItem } from './models/MenuItem.js';
 
 // Load environment variables from .env.test
 dotenv.config({ path: './.env' });
@@ -26,7 +26,7 @@ beforeAll(async () => {
         //     password: 'password123', // You can hash this if needed
         // });
 
-        console.log("[TEST SETUP] Creating test users");
+        console.log("[TEST SETUP] Creating test Users, Restaurants, Schedule, and MenuItems");
         const user1 = await User.create_new("TestUserA", "LastnameA", "testusera@example.com", "Password2!");
         //const user1 = await User.create({
         //    first_name: "TestUserA",
@@ -42,7 +42,6 @@ beforeAll(async () => {
         //    password:   "Password2"
         //});
 
-        console.log("[TEST SETUP] Creating test restaurants");
         const rest1 = await Restaurant.create_new(parseInt(user1.userID), "TestRestaurant1", "100 Test Street", "(204) 123-4567", ["testtag"]);
         //const rest1 = await Restaurant.create({
         //    userID:    parseInt(user1.userID),
@@ -51,11 +50,9 @@ beforeAll(async () => {
         //    phone: "(204) 123-4567"
         //});
 
-        console.log("[TEST SETUP] Creating test schedule");
         await Schedule.set_day(rest1.restID, 0, 0.0, 24.0); // Always open Sunday
         await Schedule.set_day(rest1.restID, 1, 0.0, 0.0);  // Always closed Monday
 
-        console.log("[TEST SETUP] Creating test menu item");
         await MenuItem.create_new(rest1.restID, "TestItem", "1.00", "Test Description", "Test Category");
         //await MenuItem.create({
         //    restID:         rest1.restID,

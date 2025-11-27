@@ -4,9 +4,16 @@ import { DataTypes } from "sequelize";
 import sequelize from "../db.js";
 
 // Model Definition
-const Restaurant = sequelize.define("Restaurant", {
+export const Restaurant = sequelize.define("Restaurant", {
     restID:      { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    userID:      { type: DataTypes.INTEGER, allowNull: false }, // Owner / Foreign key
+    userID:      { 
+        type: DataTypes.INTEGER, 
+        allowNull: false, // Owner / Foreign key — restaurant requires a user
+        // reference the users table by name to avoid importing User here
+        references: { model: 'Users', key: "userID" },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+    },
     name:        { type: DataTypes.STRING,  allowNull: false },
     address:     { type: DataTypes.STRING,  allowNull: false, unique: true },
     phone:       { type: DataTypes.STRING,  allowNull: false, unique: true },
@@ -16,7 +23,7 @@ const Restaurant = sequelize.define("Restaurant", {
 });
 
 // Query: Create a new restaurant
-async function create_new(ownerID, name, address, phone, tags)
+Restaurant.create_new = async function (ownerID, name, address, phone, tags)
 {
     try{ // Attempt to create the restaurant
 
@@ -35,7 +42,7 @@ async function create_new(ownerID, name, address, phone, tags)
 }
 
 // Query: Update column: name
-async function change_name(id, name)
+Restaurant.change_name = async function (id, name)
 {
     return await Restaurant.update({ 
             name: name 
@@ -45,7 +52,7 @@ async function change_name(id, name)
 }
 
 // Query: Update column: address
-async function change_address(id, address)
+Restaurant.change_address = async function (id, address)
 {
     return await Restaurant.update({ 
             address: address
@@ -55,7 +62,7 @@ async function change_address(id, address)
 }
 
 // Query: Update column: phone
-async function change_phone(id, phone)
+Restaurant.change_phone = async function (id, phone)
 {
     return await Restaurant.update({ 
             phone: phone
@@ -65,7 +72,7 @@ async function change_phone(id, phone)
 }
 
 // Query: Update column: description
-async function change_description(id, desc)
+Restaurant.change_description = async function (id, desc)
 {
     return await Restaurant.update({ 
             description: desc
@@ -75,7 +82,7 @@ async function change_description(id, desc)
 }
 
 // Query: Update column: tags
-async function change_tags(id, tags)
+Restaurant.change_tags = async function (id, tags)
 {
     return await Restaurant.update({ 
             tags: tags
@@ -85,13 +92,13 @@ async function change_tags(id, tags)
 }
 
 // Query: List of all restaurants
-async function get_all()
+Restaurant.get_all = async function ()
 {
     return await Restaurant.findAll();
 }
 
 // Query: Get restaurant using id
-async function get_by_id(id)
+Restaurant.get_by_id = async function (id)
 {
     return await Restaurant.findOne({ 
         where: { 
@@ -100,7 +107,7 @@ async function get_by_id(id)
 }
 
 // Query: Get restaurant using owner
-async function get_by_owner(ownerID)
+Restaurant.get_by_owner = async function (ownerID)
 {
     return await Restaurant.findOne({ 
         where: { 
@@ -109,7 +116,7 @@ async function get_by_owner(ownerID)
 }
 
 // Query: Get restaurant using address
-async function get_by_address(address)
+Restaurant.get_by_address = async function (address)
 {
     return await Restaurant.findOne({ 
         where: { 
@@ -118,25 +125,10 @@ async function get_by_address(address)
 }
 
 // Query: Get restaurant using phone
-async function get_by_phone(phone)
+Restaurant.get_by_phone = async function (phone)
 {
     return await Restaurant.findOne({ 
         where: { 
             phone: phone
     }});
-}
-
-export default
-{
-    create_new,
-    change_name,
-    change_address,
-    change_phone,
-    change_description,
-    change_tags,
-    get_all,
-    get_by_id,
-    get_by_owner,
-    get_by_address,
-    get_by_phone
 }

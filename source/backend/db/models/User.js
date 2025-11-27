@@ -2,7 +2,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db.js"; // updated import
 
-const User = sequelize.define("User", {
+export const User = sequelize.define("User", {
     userID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     first_name: { type: DataTypes.STRING, allowNull: false },
     last_name: { type: DataTypes.STRING, allowNull: false },
@@ -11,7 +11,7 @@ const User = sequelize.define("User", {
 });
 
 // Query: Create a new user
-async function create_new(first_name, last_name, email, password)
+User.create_new = async function (first_name, last_name, email, password)
 {
     try{ // Attempt to create the user
 
@@ -21,16 +21,15 @@ async function create_new(first_name, last_name, email, password)
             email: email,
             password: password
         });
-        return await get_by_email(email);
+        return await User.get_by_email(email);
 
     }catch{ // Failed to create the user
-
         throw new Error("Failed to create a new user, verify the information provided is correct.")
     }
 }
 
 // Query: Match email and password
-async function login(email, password)
+User.login = async function (email, password)
 {
     return await User.findOne({
         attributes: [
@@ -45,7 +44,7 @@ async function login(email, password)
 }
 
 // Query: Delete a user
-async function destroy_user(userID)
+User.destroy_user = async function (userID)
 {
     return await User.destroy({
         where: {
@@ -54,7 +53,7 @@ async function destroy_user(userID)
 }
 
 // Query: Get user using userID
-async function get_by_id(id)
+User.get_by_id = async function (id)
 {
     return await User.findOne({ 
         attributes: [
@@ -68,7 +67,7 @@ async function get_by_id(id)
 }
 
 // Query: Get user using email
-async function get_by_email(email)
+User.get_by_email = async function (email)
 {
     return await User.findOne({ 
         attributes: [
@@ -82,7 +81,7 @@ async function get_by_email(email)
 }
 
 // Query: Change user firstname
-async function change_firstname(id, name)
+User.change_firstname = async function (id, name)
 {
     return await User.update({ 
             first_name: name 
@@ -92,7 +91,7 @@ async function change_firstname(id, name)
 }
 
 // Query: Change user lastname
-async function change_lastname(id, name)
+User.change_lastname = async function (id, name)
 {
     return await User.update({ 
             last_name: name 
@@ -102,7 +101,7 @@ async function change_lastname(id, name)
 }
 
 // Query: Change user email
-async function change_email(id, email)
+User.change_email = async function (id, email)
 {
     return await User.update({ 
             email: email
@@ -112,7 +111,7 @@ async function change_email(id, email)
 }
 
 // Query: Get a users password
-async function get_password(id)
+User.get_password = async function (id)
 {
     return await User.findOne({ 
         attributes: [
@@ -123,7 +122,7 @@ async function get_password(id)
 }
 
 // Query: Change user password
-async function change_password(id, pass)
+User.change_password = async function (id, pass)
 {
     return await User.update({ 
             password: pass
@@ -131,17 +130,3 @@ async function change_password(id, pass)
             userID: id 
     }});
 }
-
-export default
-{
-    create_new,
-    login,
-    destroy_user,
-    get_by_id,
-    get_by_email,
-    change_firstname,
-    change_lastname,
-    change_email,
-    get_password,
-    change_password
-};
