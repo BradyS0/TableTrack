@@ -78,7 +78,7 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
             await cmd('docker-compose -f source/backend/docker-compose.test.yml up -d');
             db_running = true;
         }
-        await cmd('npx jest --config=source/backend/jest.integration.config.js --testPathPatterns=source/backend/tests/integration/user.test.js');
+        await cmd('npx jest --config=source/backend/jest.integration.config.js --testPathPatterns=source/backend/tests/integration/userIntegration.test.js');
     }
     // restaurant integration tests
     if(fileList.includes("source/backend/routes/restaurantRouter.js") 
