@@ -23,7 +23,7 @@ User.create_new = async function (first_name, last_name, email, password)
         });
         return await User.get_by_email(email);
 
-    }catch(error){ // Failed to create the user
+    }catch{ // Failed to create the user
         throw new Error("Failed to create a new user, verify the information provided is correct.")
     }
 }
