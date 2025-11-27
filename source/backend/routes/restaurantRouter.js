@@ -144,9 +144,8 @@ router.patch("/change/description", async (req, res) => {
         // Update the restaurants value
         await Restaurant.change_description(restID, description);
 
-        const updated_restaurant = await Restaurant.get_by_id(restID);
+        return res.status(201).json({ message: "Restaurant description changed" });
 
-        return res.status(200).json(updated_restaurant);
     }
     catch (err) {
         // Unexpected internal error occured
@@ -179,7 +178,7 @@ router.patch("/change/tags", async (req, res) => {
         const updated_restaurant = await Restaurant.get_by_id(restID);
 
         //return the updated restaurant
-        return res.status(200).json(updated_restaurant);
+        return res.status(201).json(updated_restaurant);
 
     } catch (err) {
         // Unexpected internal error occured
