@@ -145,8 +145,6 @@ router.patch("/change/description", async (req, res) => {
         // Update the restaurants value
         await Restaurant.change_description(restID, description);
 
-        const updated_restaurant = await Restaurant.get_by_id(restID);
-
         return res.status(201).json({ message: "Restaurant description changed" });
     }
     catch (err) {
