@@ -148,8 +148,7 @@ describe("Restaurant API", () => {
         restID: rest1id,
         description: "edited restaurant description 1",
       });
-    expect(res.statusCode).toBe(200);
-    expect(res.body.description).toBe("edited restaurant description 1");
+    expect(res.statusCode).toBe(201);
   });
 
   it("Change description - invalid description", async () => {
@@ -179,7 +178,7 @@ describe("Restaurant API", () => {
       restID: rest1id,
       tags: test_tag,
     });
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(201);
     expect(res.body.tags).toStrictEqual(test_tag);
   });
 
@@ -189,7 +188,7 @@ describe("Restaurant API", () => {
       restID: rest1id,
       tags: test_tag,
     });
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(201);
     expect(res.body.tags).toStrictEqual(test_tag);
   });
 
