@@ -1,3 +1,4 @@
+import * as argon2 from 'argon2';
 //function validate_name(first_name, last_name)
 
 //name validation regex derived from https://stackoverflow.com/a/66910482
@@ -25,11 +26,14 @@ function validate_password(password) {
     return PASS_REGEX.test(password);
 }
 
-function hash_password(password) {
-    let hashed_password = password;
-    //hash password 
-
+async function hash_password(password) {
+    let hashed_password = await argon2.hash(password);
+    
     return hashed_password;
 }
 
-export default { validate_email, validate_name, validate_password, hash_password };
+async function check_password(plain_password, hashed_password) {
+    return await argon2.verify(hashed_password, plain_password);
+}
+
+export default { validate_email, validate_name, validate_password, hash_password, check_password };

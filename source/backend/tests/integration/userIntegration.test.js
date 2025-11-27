@@ -115,7 +115,27 @@ describe("User API", () => {
             });
         expect(res.statusCode).toBe(401);
     });
-    
+
+    it("login with incorrect password", async () => {
+        const res = await request(app)
+            .post("/v1/user/login")
+            .send({
+                email: "testusera@example.com",
+                password: "WrongPassword1!"
+            });
+        expect(res.statusCode).toBe(401);
+    });
+
+    it("login with empty password", async () => {
+        const res = await request(app)
+            .post("/v1/user/login")
+            .send({
+                email: "testusera@example.com",
+                password: ""
+            });
+        expect(res.statusCode).toBe(401);
+    });
+
     //UPDATING A USER
     //VALID cases
     //following tests use the same account to test update
