@@ -25,12 +25,12 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
 
     //user unit tests
     if(fileList.includes('source/backend/logic/userLogic.js')
-        || fileList.includes('source/backend/tests/unit/user.test.js')){
+        || fileList.includes('source/backend/tests/unit/userLogic.test.js')){
         if(npm_installed === false){
             await cmd('npm install')
             npm_installed = true
         }
-        await cmd('npx jest --coverage --testPathPatterns=source/backend/tests/unit/user.test.js');
+        await cmd('npx jest --coverage --testPathPatterns=source/backend/tests/unit/userLogic.test.js');
     }
     //restaurant unit tests
     if(fileList.includes('source/backend/logic/restaurantLogic.js')
@@ -62,7 +62,7 @@ fs.readFile('changed_files.txt', 'utf8', async (err, data) => {
     //user integration tests
     if(fileList.includes("source/backend/routes/user.js") 
         || fileList.includes('source/backend/testSetup.js')
-        || fileList.includes('source/backend/tests/integration/user.test.js')
+        || fileList.includes('source/backend/tests/integration/userIntegration.test.js')
         || fileList.includes('source/backend/babel.config.js')
         || fileList.includes('source/backend/jest.integration.config.js')
         || fileList.includes('source/backend/app.js')
