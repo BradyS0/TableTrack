@@ -4,9 +4,16 @@ import { DataTypes } from  "sequelize";
 import sequelize from "../db.js";
 
 //Model Definition
-const MenuItem = sequelize.define("MenuItem", {
+export const MenuItem = sequelize.define("MenuItem", {
     itemID:      { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true},
-    restID:      { type: DataTypes.INTEGER, allowNull: false }, //Restaurant / Foreign Key
+    restID:      { 
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        references: { model: 'Restaurants', key: "restID" },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    },
     name:        { type: DataTypes.STRING,  allowNull: false },
     price:       { type: DataTypes.DECIMAL(10,2), allowNull: false },
     description: { type: DataTypes.TEXT },
@@ -14,7 +21,7 @@ const MenuItem = sequelize.define("MenuItem", {
 });
 
 // Query: Create a new menu item
-async function create_new(restID, name, price, desc, category)
+ MenuItem.create_new = async function (restID, name, price, desc, category)
 {
     try{ // Attempt to create new menu item
 
@@ -33,11 +40,12 @@ async function create_new(restID, name, price, desc, category)
 }
 
 // Query: Get all items from restaurant
-async function get_by_restaurant(restID)
+MenuItem.get_by_restaurant = async function (restID)
 {
     return await MenuItem.findAll({
         attributes: [
             "name",
+            "itemID",
             "price",
             "description",
             "category"
@@ -47,7 +55,7 @@ async function get_by_restaurant(restID)
 }
 
 // Query: Get specific item using id
-async function get_by_id(restID, itemID)
+MenuItem.get_by_id = async function (restID, itemID)
 {
     return await MenuItem.findOne({
         attributes: [
@@ -62,7 +70,7 @@ async function get_by_id(restID, itemID)
 }
 
 // Query: Update column: name
-async function change_name(restID, itemID, name)
+MenuItem.change_name = async function (restID, itemID, name)
 {
     return await MenuItem.update({ 
         name: name
@@ -73,7 +81,7 @@ async function change_name(restID, itemID, name)
 }
 
 // Query: Update column: price
-async function change_price(restID, itemID, price)
+MenuItem.change_price = async function (restID, itemID, price)
 {
     return await MenuItem.update({ 
         price: price
@@ -84,7 +92,7 @@ async function change_price(restID, itemID, price)
 }
 
 // Query: Update column: description
-async function change_description(restID, itemID, desc)
+MenuItem.change_description = async function (restID, itemID, desc)
 {
     return await MenuItem.update({ 
         description: desc
@@ -95,7 +103,7 @@ async function change_description(restID, itemID, desc)
 }
 
 // Query: Update column: category
-async function change_category(restID, itemID, category)
+MenuItem.change_category = async function (restID, itemID, category)
 {
     return await MenuItem.update({ 
         category: category
@@ -106,23 +114,11 @@ async function change_category(restID, itemID, category)
 }
 
 // Query: Destroy a menu item
-async function destroy_item(restID, itemID)
+MenuItem.destroy_item = async function (restID, itemID)
 {
     return await MenuItem.destroy({
         where: { 
             itemID: itemID,
             restID: restID 
     }});
-}
-
-export default
-{
-    create_new,
-    get_by_restaurant,
-    get_by_id,
-    change_name,
-    change_price,
-    change_description,
-    change_category,
-    destroy_item
 }

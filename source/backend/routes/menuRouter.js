@@ -1,6 +1,5 @@
 import express from "express";
-import Restaurant from "../models/Restaurant.js";
-import MenuItem from "../models/MenuItem.js";
+import { Restaurant, MenuItem } from "../db/models/index.js";
 import MenuLogic from "../logic/menuLogic.js";
 
 const router = express.Router();
@@ -47,7 +46,7 @@ router.get("/:restID", async (req, res) => {
   // Check restaurant exists
   const restaurant = await Restaurant.get_by_id(restID);
   if (!restaurant)
-    return res.status(404).json({ message: "Restaurant could not be found." });
+    return res.status(404).json({ error: "Restaurant could not be found." });
 
   // Fetch menu list
   const menuList = await MenuItem.get_by_restaurant(restID);

@@ -1,5 +1,7 @@
 # Regression test run instructions
 
+Note: this will only work in github actions or when running in linux/macOS command line.
+
 First create a .env file that has the folowing variables defined:
 
 ```bash
