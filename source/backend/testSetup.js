@@ -2,6 +2,7 @@
 import dotenv from 'dotenv';
 // import sequelize from './db.js';
 import { sequelize, User, Restaurant, Schedule, MenuItem } from "./db/models/index.js";
+import UserLogic from './logic/userLogic.js';
 // import { Restaurant } from "./models/Restaurant.js";
 // import Schedule from "./models/Schedule.js";
 // import { MenuItem } from './models/MenuItem.js';
@@ -27,7 +28,7 @@ beforeAll(async () => {
         // });
 
         console.log("[TEST SETUP] Creating test users");
-        const hashedPassword1 = await userLogic.hash_password("Password2!");
+        const hashedPassword1 = await UserLogic.hash_password("Password2!");
         const user1 = await User.create_new("TestUserA", "LastnameA", "testusera@example.com", hashedPassword1);
         //const user1 = await User.create({
         //    first_name: "TestUserA",
@@ -35,7 +36,7 @@ beforeAll(async () => {
         //    email:      "testusera@example.com",
         //    password:   "Password1"
         //});
-        const hashedPassword2 = await userLogic.hash_password("Password3@");
+        const hashedPassword2 = await UserLogic.hash_password("Password3@");
         await User.create_new("TestUserB", "LastnameB", "testuserb@example.com", hashedPassword2);
         //await User.create({
         //    first_name: "TestUserB",
