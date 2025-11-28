@@ -14,34 +14,36 @@ describe("Schedule API", () => {
 
     it("Get restaurant schedule: open", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
-        .send({
-            restID: restID,
-            day: "sunday",
-        });
+        .get(`/v1/restaurant/schedule?restID=${restID}&day=sunday`)
+
         expect(res.body.close).toEqual(24.0);
         expect(res.body.currently_open).toBe(true);
     });
 
     it("Get restaurant schedule: closed", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
-        .send({
-            restID: restID,
-            day: "monday",
-        });
+        .get(`/v1/restaurant/schedule?restID=${restID}&day=monday`)
+
         expect(res.body.close).toEqual(0.0);
         expect(res.body.currently_open).toBe(false);
     });
 
     it("Get schedule on invalid day", async () => {
-        const res = await request(app)
-        .get("/v1/restaurant/schedule")
-        .send({
-            restID: restID,
-            day: "badday",
-        });
+        let res = await request(app)
+        .get(`/v1/restaurant/schedule?restID=${restID}&day=badday`)
+
         expect(res.status).toBe(400);
+    });
+
+    it("Get schedule on invalid restaurant", async () => {
+        let res = await request(app)
+        .get(`/v1/restaurant/schedule?restID=${9999}&day=monday`)
+
+        expect(res.status).toBe(404);
+
+        res = await request(app)
+        .get(`/v1/restaurant/schedule`)
+        expect(res.status).toBe(500);
     });
 
     // -------------------------------------------------- PUT /restaurant/schedule
@@ -76,35 +78,74 @@ describe("Schedule API", () => {
         expect(res.status).toBe(201);
     });
 
+     it("Change schedule for invalid restaurant", async () => {
+        let res = await request(app)
+        .put("/v1/restaurant/schedule")
+        .send({
+            restID: 596,
+            schedule: sched_mon,
+        });
+        expect(res.status).toBe(404);
+
+         res = await request(app)
+        .put("/v1/restaurant/schedule")
+        expect(res.status).toBe(500);
+    });
+
+     it("Change schedule for invalid schedule type", async () => {
+        const res = await request(app)
+        .put("/v1/restaurant/schedule")
+        .send({
+            restID: restID,
+            schedule: "hello world",
+        });
+        expect(res.status).toBe(400);
+    });
+
     // -------------------------------------------------- Verify changes from PUT
 
     it("Verify new Sunday schedule", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
-        .send({
-            restID: restID,
-            day: "sunday",
-        });
+        .get(`/v1/restaurant/schedule?restID=${restID}&day=sunday`)
+
         expect(res.body.close).toEqual(0.0);
     });
 
     it("Verify new Monday schedule", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
-        .send({
-            restID: restID,
-            day: "monday",
-        });
+        .get(`/v1/restaurant/schedule?restID=${restID}&day=monday`)
+
         expect(res.body.close).toEqual(20.75);
     });
 
     it("Verify new Wednesday schedule", async () => {
         const res = await request(app)
-        .get("/v1/restaurant/schedule")
-        .send({
-            restID: restID,
-            day: "wednesday",
-        });
+        .get(`/v1/restaurant/schedule?restID=${restID}&day=wednesday`)
+
         expect(res.body.close).toEqual(18.3);
     });
+
+    it("invalid request syntax", async () => {
+        const res = await request(app)
+        .get(`/v1/restaurant/schedule/weekly/newWorld`)
+
+        expect(res.status).toBe(500);
+    });
+
+    it("Verify invalid restID", async () => {
+        const res = await request(app)
+        .get(`/v1/restaurant/schedule/weekly/${9999}`)
+
+        expect(res.status).toBe(404);
+    });
+
+     it("Verify valid restID", async () => {
+        const res = await request(app)
+        .get(`/v1/restaurant/schedule/weekly/${restID}`)
+
+        expect(res.status).toBe(200);
+        const days = Object.keys(await res.body.schedule)
+        expect(days.length).toBe(7)
+    });
+
 });

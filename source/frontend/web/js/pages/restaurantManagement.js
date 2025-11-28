@@ -1,15 +1,15 @@
-import {api} from '../global.js'
-import { getUserState } from '../utils.js';
-import { loadRestaurant } from './restaurantDetail.js';
-import { editPopup } from '../components/edit-popup.js';
-import { formatPhoneNumber } from '../logic/format-utils.js';
-import { loadOwnerMenu } from './menu.js';
-
+import { api } from "../global.js";
+import { getUserState } from "../utils.js";
+import { loadRestaurant } from "./restaurantDetail.js";
+import { editPopup } from "../components/edit-popup.js";
+import { formatPhoneNumber } from "../logic/format-utils.js";
+import { loadOwnerMenu } from "./menu.js";
+import { createScheduleCard } from "../components/schedule.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const owner = getUserState()
-  if(owner.restID){
-    await loadRestaurant(owner.restID)
+  const owner = getUserState();
+  if (owner.restID) {
+    await loadRestaurant(owner.restID);
     const reservationBtn = document.querySelector(".reservation-btn");
     if (reservationBtn && reservationBtn.parentElement) {
       reservationBtn.parentElement.removeChild(reservationBtn);
@@ -30,117 +30,132 @@ function loadEditableFields(owner) {
   const restaurant_header = document.querySelector("#restaurant-name");
   restaurant_header.append(editButton);
 
-  editButton.addEventListener("click", () => {createEditPopup(owner)});
-
+  editButton.addEventListener("click", () => {
+    createEditPopup(owner);
+  });
 }
 
-async function createEditPopup(owner){
+async function createEditPopup(owner) {
   //preexisting fields
   const rest_name = document.querySelector("#restaurant-name>h1");
   const tags = document.querySelector(".tags");
   const location = document.querySelector("#restaurant-location>span");
   const phone = document.querySelector("#restaurant-phone>span");
 
-  const rest_edit = editPopup("Edit Restaurant Info")
-  const req = await api.getRestaurantByID(owner.restID)
+  const rest_edit = editPopup("Edit Restaurant Info");
+  const req = await api.getRestaurantByID(owner.restID);
 
-  if(req.code <300){
+  if (req.code < 300) {
     const restaurant = req.data;
-    console.log(owner,'\n',restaurant)
-    
+    console.log(owner, "\n", restaurant);
+
     //edit restaurant name
-    rest_edit.add('Restaurant Name').editText(restaurant.name,
-      async(restNameInput)=>{
-        const res = await api.changeRestaurantName(owner.restID, owner.userID,restNameInput.value)
-        rest_edit.showFeedback(res.code,res.message)
-        if (res.code===200)
-          rest_name.innerText = restNameInput.value; //set the new restaurant name
+    rest_edit.add("Restaurant Name").editText(
+      restaurant.name,
+      async (restNameInput) => {
+        const res = await api.changeRestaurantName(
+          owner.restID,
+          owner.userID,
+          restNameInput.value
+        );
+        rest_edit.showFeedback(res.code, res.message);
+        if (res.code === 200) rest_name.innerText = restNameInput.value; //set the new restaurant name
       },
-      (restNameInput)=>{
+      (restNameInput) => {
         restNameInput.minLength = 5;
         restNameInput.maxLength = 100;
       }
-    )
-
+    );
 
     //edit restaurant tags
     const current_tags = restaurant.tags
-                        .map((tag) => `${tag},`)
-                        .join("").slice(0,-1)
-    rest_edit.add('Tags').editText(current_tags,
-      async(tagsInput)=>{
+      .map((tag) => `${tag},`)
+      .join("")
+      .slice(0, -1);
+    rest_edit.add("Tags").editText(
+      current_tags,
+      async (tagsInput) => {
         //filter the tag input
-        const new_tags = tagsInput.value.split(',')
-        .map(tag => tag.trim())
-        .filter(tag => tag.length > 2);
+        const new_tags = tagsInput.value
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag.length > 2);
 
-        const res = await api.changeRestaurantTags(owner.restID, owner.userID,new_tags)
-        rest_edit.showFeedback(res.code,res.message)
-        if (res.code===200)
+        const res = await api.changeRestaurantTags(
+          owner.restID,
+          owner.userID,
+          new_tags
+        );
+        rest_edit.showFeedback(res.code, res.message);
+        if (res.code === 200)
           tags.innerHTML = new_tags.map((tag) => `<p>${tag}</p>`).join("");
-
       },
-      (tagsInput)=>{
-          tagsInput.placeholder = "place tags, separated by, commas!";
-          tagsInput.required = true;
-          tagsInput.minLength = 3;
+      (tagsInput) => {
+        tagsInput.placeholder = "place tags, separated by, commas!";
+        tagsInput.required = true;
+        tagsInput.minLength = 3;
       }
     );
 
-
     //edit restaurant name
-    rest_edit.add('Address').editText(restaurant.address,
-      async(addressInput)=>{
-        const res = await api.changeRestaurantAddress(owner.restID, owner.userID, addressInput.value)
-        rest_edit.showFeedback(res.code,res.message)
-        if(res.code===200)
-          location.innerText = addressInput.value
-
+    rest_edit.add("Address").editText(
+      restaurant.address,
+      async (addressInput) => {
+        const res = await api.changeRestaurantAddress(
+          owner.restID,
+          owner.userID,
+          addressInput.value
+        );
+        rest_edit.showFeedback(res.code, res.message);
+        if (res.code === 200) location.innerText = addressInput.value;
       },
-      (addressInput)=>{ //define input fields properties
+      (addressInput) => {
+        //define input fields properties
         addressInput.placeholder = "123 Main St, Toronto, Canada";
         addressInput.minLength = 6;
         addressInput.maxLength = 105;
         addressInput.pattern = "^\\d+[\\w\\s]*,\\s*[\\w\\s]+,\\s*[\\w\\s]+$"; //generated by Grok
-        addressInput.title =`Enter an address like '123 Main St, Toronto, Canada' with at least one number in the street, 
+        addressInput.title = `Enter an address like '123 Main St, Toronto, Canada' with at least one number in the street, 
         two commas separating street, city, and country/province.`;
       }
     );
 
-
     //edit phone number
-    rest_edit.add('Phone Number')
-      .editText(restaurant.phone,
-        async(phoneInput)=>{
-        const res = await api.changeRestaurantPhone(owner.restID, owner.userID, phoneInput.value)
-        rest_edit.showFeedback(res.code,res.message)
-          if (res.code === 200)
-          phone.innerText = phoneInput.value;
+    rest_edit.add("Phone Number").editText(
+      restaurant.phone,
+      async (phoneInput) => {
+        const res = await api.changeRestaurantPhone(
+          owner.restID,
+          owner.userID,
+          phoneInput.value
+        );
+        rest_edit.showFeedback(res.code, res.message);
+        if (res.code === 200) phone.innerText = phoneInput.value;
       },
-        (phoneInput)=>{ //define input fields properties
-          phoneInput.type = 'tel'
-          phoneInput.placeholder = "Phone: (204) 123-1234";
-          phoneInput.pattern = "^\\([0-9]{3}\\) [0-9]{3}-[0-9]{4}$" // generated by Grok
-          phoneInput.title = "Enter a valid phone number: (111) 111-111";
-          phoneInput.addEventListener("input",()=>{phoneInput.value=formatPhoneNumber(phoneInput.value)})
+      (phoneInput) => {
+        //define input fields properties
+        phoneInput.type = "tel";
+        phoneInput.placeholder = "Phone: (204) 123-1234";
+        phoneInput.pattern = "^\\([0-9]{3}\\) [0-9]{3}-[0-9]{4}$"; // generated by Grok
+        phoneInput.title = "Enter a valid phone number: (111) 111-111";
+        phoneInput.addEventListener("input", () => {
+          phoneInput.value = formatPhoneNumber(phoneInput.value);
         });
-  
-    
-    const schedule = {
-  Sunday: { open: 8, close: 21 },
-  Monday: { open: "", close: "" },
-  Tuesday: { open: 10, close: 22 },
-  Wednesday: { open: 10, close: 22 },
-  Thursday: { open: 10, close: 22 },
-  Friday: { open: 10, close: 22 },
-  Saturday: { open: 10, close: 22 },
-};
+      }
+    );
 
-    rest_edit.add('Weekly Schedule').editSchedule(schedule,(updates)=>{
-      console.log("Schedule Updates:")
-      console.log(updates)
-    })
-    
-    document.querySelector('#app').append(rest_edit.overlay)
+    let currSchedule = document.querySelector(".schedule-card").schedule
+
+    rest_edit.add("Weekly Schedule").editSchedule(currSchedule, async(updates) => {
+      const res = await api.updateSchedule(owner.restID,updates);
+      rest_edit.showFeedback(res.code, res.message);
+      if(res.code<300){
+        currSchedule = { ...currSchedule, ...updates };
+        const newSchedule = createScheduleCard(currSchedule);
+        document.querySelector(".schedule-card").replaceWith(newSchedule);
+      }
+    });
+
+    document.querySelector("#app").append(rest_edit.overlay);
   }
 }

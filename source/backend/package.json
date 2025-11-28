@@ -16,6 +16,7 @@
         "test:endpoints:all": "node ./testAllEndpoints.js"
     },
     "dependencies": {
+        "argon2": "^0.44.0",
         "clinic": "^13.0.0",
         "cors": "^2.8.5",
         "dotenv": "^17.2.3",

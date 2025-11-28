@@ -1,9 +1,9 @@
 // partly made using chatGPT
 import express from "express";
 import cors from "cors";
-import userRouter from "./routes/user.js";
+import userRouter from "./routes/userRouter.js";
 import restaurantRouter from "./routes/restaurantRouter.js";
-import scheduleRouter from "./routes/ScheduleRouter.js";
+import scheduleRouter from "./routes/scheduleRouter.js";
 import menuRouter from "./routes/menuRouter.js";
 import responseTime from "response-time";
 

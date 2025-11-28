@@ -147,13 +147,13 @@ describe("editPopup - editSchedule", ()=>{
   let user;
 
   const mockSchedule = {
-  Sunday: { open: 8, close: 21 },
-  Monday: { open: "", close: "" },
-  Tuesday: { open: 10, close: 22 },
-  Wednesday: { open: 10, close: 22 },
-  Thursday: { open: "", close: "" },
-  Friday: { open: 10, close: 22 },
-  Saturday: { open: 10, close: 22 },
+  sunday: { open: 8, close: 21 },
+  monday: { open: "", close: "" },
+  tuesday: { open: 10, close: 22 },
+  wednesday: { open: 10, close: 22 },
+  thursday: { open: "", close: "" },
+  friday: { open: 10, close: 22 },
+  saturday: { open: 10, close: 22 },
 };
 
   beforeEach(() => {
@@ -215,11 +215,11 @@ describe("editPopup - editSchedule", ()=>{
 
     const out = onSubmit.mock.calls[0][0]
     expect(Object.keys(out).length).toBe(2) //for sun and thur were submitted
-    expect(out.Sunday).toBeInstanceOf(Object)
-    expect(out.Thursday).toBeInstanceOf(Object)
-    expect(out.Friday).toBeUndefined()
+    expect(out.sunday).toBeInstanceOf(Object)
+    expect(out.thursday).toBeInstanceOf(Object)
+    expect(out.friday).toBeUndefined()
 
-    expect(out.Thursday.open).toBe(8.5)
-    expect(out.Thursday.close).toBe(18.5)
+    expect(out.thursday.open).toBe(8.5)
+    expect(out.thursday.close).toBe(18.5)
   })
 })

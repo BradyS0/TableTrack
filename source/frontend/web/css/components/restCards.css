@@ -1,10 +1,8 @@
 .card-grid {
-  display: flex;
-  justify-content: flex-start; /* Aligns cards to the left, no space-between */
-  flex-wrap: wrap;
-  gap: 15px; /* Consistent gap between cards */
-  margin: 1em;
-  padding: 1em;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px,100%),1fr));
+  gap: 1rem; /* Consistent gap between cards */
+  margin: 1rem;
 }
 
 .restCard {
@@ -16,8 +14,6 @@
   flex: 0 0 23%; /* Slightly less than 25% to account for gap, allows 4 per row */
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
-  max-width: 400px;
-  min-width: 250px;
   min-height: 200px;
   gap: 5px;
 }
@@ -89,14 +85,4 @@
 /* show at most 3 tags */
 .tags p:nth-child(n+4) {
   display: none;
-}
-
-@media (max-width: 860px) {
-
-.card-grid{
-    padding: 1rem;
-    margin: .5rem;
-    gap: 15px;
-}
-
 }
