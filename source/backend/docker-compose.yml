@@ -20,14 +20,19 @@ services:
     depends_on:
       db:
         condition: service_healthy
+  
+    env_file:
+      - ./.env
+
     environment:
-      - DB_USER=user
-      - DB_PASS=password
-      - DB_NAME=tabletrackdb
-      - DB_HOST=db
-      - DB_PORT=5432
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - HOST=${HOST}
     ports:
-      - "3000:3000"
+      - "${API_PORT}:3000"
     volumes:
       - .:/app
       - /app/node_modules
