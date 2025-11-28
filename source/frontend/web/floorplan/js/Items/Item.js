@@ -51,7 +51,7 @@ export class Item {
     this.group.destroy();
   }
 
-  changeFill(colorHex){}
+  changeFill(){}
 
   delete() {
     this.unmount();

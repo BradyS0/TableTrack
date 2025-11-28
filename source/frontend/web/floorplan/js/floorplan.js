@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const items = floorplan.getTables()
       console.log(items)
       for (let table of items){
-        table.group.on('click', (e)=>{
+        table.group.on('click', ()=>{
           console.log(table.id)
         } )
       }
