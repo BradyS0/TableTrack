@@ -97,7 +97,7 @@ export class Item {
       id: this.id,
       type: this.type,
       pos: this.group.position(),
-      rotation : this.group.rotation(),
+      rotation: this.group.rotation(),
       data: this.data,
     };
   }
