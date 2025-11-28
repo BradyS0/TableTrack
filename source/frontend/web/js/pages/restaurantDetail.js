@@ -33,7 +33,7 @@ async function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], 
   container.id = 'restaurant-info';
 
   // setup page title
-  document.querySelector('title').innerText = `TableTrack | ${name ? name: '404'}`
+  document.querySelector('title').innerText = `TableTrack | ${name ? name : '404'}`
 
   // --- Header (name + image) ---
   const nameHeader = document.createElement('span');
