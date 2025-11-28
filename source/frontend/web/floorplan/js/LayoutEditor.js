@@ -19,15 +19,15 @@ export class LayoutEditor {
     this.drawGrid();
   }
 
- setMode(active) {
-  if (active) {
-    this.drawGrid();   // only draws grid inside polygon
-  } else {
-    this.backgroundLayer.destroyChildren();
-    this.backgroundLayer.draw();
-    this.closeContextMenu();
+  setMode(active) {
+    if (active) {
+      this.drawGrid();   // only draws grid inside polygon
+    } else {
+      this.backgroundLayer.destroyChildren();
+      this.backgroundLayer.draw();
+      this.closeContextMenu();
+    }
   }
-}
 
 
   setTool(tool) {
