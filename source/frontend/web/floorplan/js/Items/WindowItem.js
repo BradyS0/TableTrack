@@ -26,7 +26,7 @@ export class WindowItem extends SnappingItem {
     this.group.add(this.glassLine);
   }
 
-  onDragMove(){
+  onDragMove() {
     super.onDragMove()
     this.glassLine.stroke(this.hostSegment ? "#00aaff" : "#8b1e2b");
   }
