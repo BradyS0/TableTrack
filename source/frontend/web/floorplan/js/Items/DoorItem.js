@@ -51,7 +51,7 @@ export class DoorItem extends SnappingItem {
     this.group.add(this.rightBlock);
   }
 
-  onDragMove(){
+  onDragMove() {
     super.onDragMove()
     this.clearSpace.stroke(this.hostSegment ? "#f6f1ea" : "#8b1e2b");
   }
