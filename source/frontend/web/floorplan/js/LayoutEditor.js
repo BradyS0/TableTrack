@@ -197,6 +197,7 @@ drawGrid() {
 
   showContextMenu(item, clientX, clientY) {
     this.closeContextMenu();
+    if (this.state.mode === 'read-only') return
 
     const menu = document.createElement("div");
     menu.className = "context-menu";
