@@ -64,6 +64,7 @@ DB_NAME=tabletrackdb
 DB_HOST=localhost
 DB_PORT=5432
 API_PORT=3000
+HOST=127.0.0.1
 ```
 
 To start the backend server from the command line run:
@@ -86,6 +87,7 @@ DB_NAME=postgres
 DB_HOST=[given host]
 DB_PORT=5432
 API_PORT=3000
+HOST=127.0.0.1
 ```
 Then run:
 
@@ -108,6 +110,7 @@ DB_NAME=tabletrackdb
 DB_HOST=localhost
 DB_PORT=5432
 API_PORT=3001
+HOST=127.0.0.1
 ENABLE_PROFILING=true
 ```
 
