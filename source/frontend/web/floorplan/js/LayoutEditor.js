@@ -3,7 +3,6 @@ import { pointInPolygon } from "./geometry.js";
 import { TableItem } from "./items/TableItem.js";
 import { DoorItem } from "./items/DoorItem.js";
 import { WindowItem } from "./items/WindowItem.js";
-import { DividerItem } from "./items/DividerItem.js";
 
 export class LayoutEditor {
   constructor(stage, backgroundLayer, itemLayer, uiLayer, state, overlayRoot) {
@@ -16,8 +15,6 @@ export class LayoutEditor {
 
     this.currentContextMenu = null;
     this.currentModal = null;
-    this._dividerDraft = null;
-    this._dividerPreview = null;
 
     this.drawGrid();
   }
@@ -168,18 +165,7 @@ drawGrid() {
       } else {
         w.delete();
       }
-    } else if (this.state.tool === "divider") {
-      this._dividerDraft = { start: pos, end: pos };
-      if (!this._dividerPreview) {
-        this._dividerPreview = new Konva.Line({
-          points: [pos.x, pos.y, pos.x, pos.y],
-          stroke: "#aaaaaa",
-          strokeWidth: 3,
-          dash: [6, 4]
-        });
-        this.uiLayer.add(this._dividerPreview);
-      }
-    }
+    } 
 
     const shift= evt.evt.shiftKey
     if(!shift){
@@ -191,32 +177,15 @@ drawGrid() {
   }
 
   onMouseMove(evt, pos) {
-    if (this.state.tool === "divider" && this._dividerDraft) {
-      this._dividerDraft.end = pos;
-      this._updateDividerPreview();
-    }
+    evt
+    pos
   }
 
   onMouseUp(evt, pos) {
-    if (this.state.tool === "divider" && this._dividerDraft) {
-      const { start, end } = this._dividerDraft;
-      const item = new DividerItem(this, start, end);
-      this.registerItem(item);
-      this.selectItem(item);
-      this._dividerDraft = null;
-      if (this._dividerPreview) {
-        this._dividerPreview.destroy();
-        this._dividerPreview = null;
-      }
-      this.uiLayer.draw();
-    }
+    evt
+    pos
   }
 
-  _updateDividerPreview() {
-    const { start, end } = this._dividerDraft;
-    this._dividerPreview.points([start.x, start.y, end.x, end.y]);
-    this.uiLayer.batchDraw();
-  }
 
   /* ---------- Context Menu ---------- */
 

@@ -39,6 +39,7 @@ export class Item {
     this.group.on("dragend", () => {
       if (this.onDragEnd) this.onDragEnd();
     });
+    
   }
 
   mount(layer) {
@@ -49,6 +50,8 @@ export class Item {
   unmount() {
     this.group.destroy();
   }
+
+  changeFill(colorHex){}
 
   delete() {
     this.unmount();
@@ -74,6 +77,10 @@ export class Item {
         danger: true,
       },
     ];
+  }
+
+  setDraggable(active){
+    this.group.draggable(active)
   }
 
   _idGen() {

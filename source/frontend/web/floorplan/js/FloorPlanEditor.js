@@ -177,7 +177,8 @@ export class FloorPlanEditor {
     });
 
     clearBtn.addEventListener("click", () => {
-       
+      if(this.state.mode === 'read-only') return 
+
         this.state.items.forEach(it => it.delete());
         this.state.items = [];
 
@@ -213,15 +214,16 @@ export class FloorPlanEditor {
     tabCreator.classList.toggle("active", mode === "creator");
     tabEditor.classList.toggle("active", mode === "editor");
     
-    if (mode === "editor") {
-      toolTips[0].style.display = 'none'
-      toolTips[1].style.display= toolsSection.style.display = "block";
-      this.editor.setMode(true);
-    } else {
-      toolTips[1].style.display=toolsSection.style.display = "none";
-      toolTips[0].style.display = 'block'
-      this.editor.setMode(false);
-    }
+    const isEditMode = mode === "editor"
+    const isCreatorMode =  mode === "creator" 
+
+    toolTips[0].style.display = isCreatorMode ? 'block' : 'none'
+    
+    this.editor.setMode(isEditMode);
+    toolTips[1].style.display= toolsSection.style.display = isEditMode ? 'block' : 'none';
+
+    for(let item of this.state.items)
+      item.setDraggable(mode !== "read-only")
   }
 
   _onPolygonComplete() {
@@ -257,6 +259,14 @@ export class FloorPlanEditor {
   //return logic
   getFloorLayout(){
     return {floorplan: this.state.polygonPoints}
+  }
+
+  getTables(){
+    let output = []
+    for (let item of this.state.items)
+      if (item.type === 'table')
+        output.push(item)
+    return output
   }
 
   getItems(){

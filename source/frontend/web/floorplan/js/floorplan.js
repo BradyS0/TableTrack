@@ -10,7 +10,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if(floorplan.state.mode=== 'creator'){
       console.log(floorplan.getFloorLayout())
     }else{
-      console.log(floorplan.getItems())
+      const items = floorplan.getTables()
+      console.log(items)
+      for (let table of items){
+        table.group.on('click', (e)=>{
+          console.log(table.id)
+        } )
+      }
     }
   });
 

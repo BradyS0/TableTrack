@@ -62,6 +62,10 @@ export class TableItem extends Item {
     }
   }
 
+  changeFill(colorHex){
+    this.rect.fill(colorHex)
+  }
+
   rotate(deltaDeg) {
     this.data.rotation = (this.data.rotation + deltaDeg) % 360;
     this.group.rotation(this.data.rotation);
