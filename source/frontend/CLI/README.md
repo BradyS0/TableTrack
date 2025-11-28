@@ -42,12 +42,6 @@ The CLI interacts with the backend at:
 ```
 http://localhost:3000
 ```
-Make sure your backend is running:
-```
-npm install
-npm start
-```
-
 ---
 
 ## ▶ How to Compile & Run the CLI
