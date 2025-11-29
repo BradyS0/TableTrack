@@ -55,6 +55,7 @@ body {
   background: #fff7ee;
   border-bottom: 1px solid var(--border-soft);
   gap: 0.75rem;
+  margin-bottom: 0;
 }
 
 .tab-bar {
@@ -383,3 +384,28 @@ ul.controls-list{
 .checkbox-row input {
   accent-color: var(--accent);
 }
+
+
+.btn2:focus{
+  outline : var(--accent) 1px solid;
+
+}
+
+.reservation-options{
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 2fr 2fr 1fr;
+}
+
+.side-reservation-panel{
+   display: flex;
+   flex-flow: column;
+   gap: 1rem;
+}
+
+.side-reservation-panel section{
+  display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+   gap: .25rem;
+}
+

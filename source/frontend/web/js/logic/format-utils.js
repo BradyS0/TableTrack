@@ -36,3 +36,65 @@ export const timeToFloat = (val) => {
     const [h, m] = val.split(":").map(Number);
     return h + m / 60;
 };
+
+
+
+/**
+ * Checks if the password is at least 8 characters long.
+ * @param {string} password - The password string to check.
+ * @returns {boolean} True if the length is >= 8.
+ */
+function checkMinLength(password) {
+    // Regex: .{8,} matches any character (.) 8 or more times ({8,}).
+    return /.{8,}/.test(password);
+}
+
+/**
+ * Checks if the password contains at least one uppercase letter (A-Z).
+ * @param {string} password - The password string to check.
+ * @returns {boolean} True if at least one uppercase letter is present.
+ */
+function checkUppercase(password) {
+    // Regex: [A-Z] matches any uppercase letter.
+    return /[A-Z]/.test(password);
+}
+
+/**
+ * Checks if the password contains at least one lowercase letter (a-z).
+ * @param {string} password - The password string to check.
+ * @returns {boolean} True if at least one lowercase letter is present.
+ */
+function checkLowercase(password) {
+    // Regex: [a-z] matches any lowercase letter.
+    return /[a-z]/.test(password);
+}
+
+/**
+ * Checks if the password contains at least one digit (0-9).
+ * @param {string} password - The password string to check.
+ * @returns {boolean} True if at least one digit is present.
+ */
+function checkNumber(password) {
+    // Regex: [0-9] or \d matches any digit.
+    return /[0-9]/.test(password);
+}
+
+/**
+ * Checks if the password contains at least one special character.
+ * (Common non-alphanumeric characters: !@#$%^&*)
+ * @param {string} password - The password string to check.
+ * @returns {boolean} True if at least one special character is present.
+ */
+function checkSpecialCharacter(password) {
+    // Regex: [!@#$%^&*] matches any character inside the brackets.
+    // The characters are escaped if necessary, but !@#$%^&* are safe here.
+    return /[!@#$%^&*()_+={}\[\]:;"'<>,.?/\\|~`]/.test(password);
+}
+
+export const passValidator = (pass)=>{
+    const hasUpperAndLower = checkLowercase(pass) && checkUppercase
+    const hasSpecial = checkSpecialCharacter(pass)
+    const hasNumber = checkNumber(pass)
+    const hasMinLength = checkMinLength(pass)
+    return {hasUpperAndLower,hasSpecial,hasNumber,hasMinLength}
+}

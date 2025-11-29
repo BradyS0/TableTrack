@@ -37,7 +37,7 @@
     background: rgba(0,0,0,0.3);
   }
   
-  .popup.hidden {
+  .hidden {
     display: none;
   }
   
@@ -58,3 +58,27 @@
     font-size: 1.5rem;
     cursor: pointer;
   }
+
+  .pass-check{
+    font-size: 10pt;
+    color: maroon;
+    user-select: none;
+
+     &::before{
+    content: '❌';
+    margin-right: .1rem;
+  }
+
+}
+
+.valid-check{
+  color: green;
+  
+  &::before{
+    content: '✅';
+  }
+
+  transition: all .5s ease;
+}
+
+ 

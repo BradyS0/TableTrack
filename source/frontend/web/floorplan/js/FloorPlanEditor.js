@@ -247,6 +247,7 @@ export class FloorPlanEditor {
   }
 
   loadItems(itemList){
+    this.state.items.forEach(it => it.delete());
     for(let table of itemList.tables){
       this.editor.addItem(table)
     }
@@ -266,6 +267,8 @@ export class FloorPlanEditor {
     for (let item of this.state.items)
       if (item.type === 'table')
         output.push(item)
+    
+    output.sort((a, b) => a.data.capacity - b.data.capacity);
     return output
   }
 
