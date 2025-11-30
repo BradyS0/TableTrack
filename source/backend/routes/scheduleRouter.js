@@ -1,7 +1,5 @@
-
 import express from "express";
-import ScheduleModel from "../models/Schedule.js";
-import { Restaurant } from "../models/Restaurant.js";
+import { Schedule, Restaurant } from "../db/models/index.js";
 import ScheduleLogic from "../logic/scheduleLogic.js";
 import TimeLogic from "../logic/timeLogic.js";
 
@@ -17,7 +15,7 @@ router.put("/", async (req, res) => {
 
     try {
         // Ensure restaurant exists
-        const rest = await Restaurant.findByPk(parseInt(restID));
+        const rest = await Restaurant.get_by_id(parseInt(restID));
         if (!rest)
             return res.status(404).json({ error: "Restaurant cannot be found" });
 
@@ -33,9 +31,9 @@ router.put("/", async (req, res) => {
             if (day_index < 0 || open > 24 || close > 24) continue //skip this iteration
 
             if (open > close || open == close || open == -1 || close == -1)
-                await ScheduleModel.del_day(restID, day_index)
+                await Schedule.del_day(restID, day_index)
             else {
-                await ScheduleModel.set_day(restID, day_index, open, close);
+                await Schedule.set_day(restID, day_index, open, close);
                 changes++;
             }
         }
@@ -58,7 +56,7 @@ router.get("/", async (req, res) => {
     const { restID, day } = req.query;
     try {
         // Ensure restaurant exists
-        const rest = await Restaurant.findByPk(parseInt(restID));
+        const rest = await Restaurant.get_by_id(parseInt(restID));
         if (rest === null)
             return res.status(404).json({ error: "Restaurant cannot be found" });
 
@@ -68,8 +66,8 @@ router.get("/", async (req, res) => {
             return res.status(400).json({ error: "Invalid day" });
 
         // Get opening and closing hours
-        const open = await ScheduleModel.get_open(restID, day_num);
-        const close = await ScheduleModel.get_close(restID, day_num);
+        const open = await Schedule.get_open(restID, day_num);
+        const close = await Schedule.get_close(restID, day_num);
 
         // Restaurant closed today
         if (open === -1)
@@ -102,12 +100,12 @@ router.get("/weekly/:restID", async (req, res) => {
 
     try {
         // Ensure restaurant exists
-        const rest = await Restaurant.findByPk(parseInt(restID));
+        const rest = await Restaurant.get_by_id(parseInt(restID));
         if (!rest)
             return res.status(404).json({ error: "Restaurant cannot be found" });
 
         for (let i = 0; i < ScheduleLogic.DAYS.length; i++) {
-            let day = await ScheduleModel.get_day(restID, i);
+            let day = await Schedule.get_day(restID, i);
             schedule[ScheduleLogic.DAYS[i]] = day
         }
 
@@ -116,6 +114,7 @@ router.get("/weekly/:restID", async (req, res) => {
             schedule: schedule
         })
     } catch (error) {
+        console.log(error.message);
         return res.status(500).json({ error: error.message })
     }
 });

@@ -127,7 +127,33 @@ test("password is length 16", () => {
 });
 
 //hash_password
-//currently output = input
-test("password entered is hashed", () => {
-    expect(UserLogic.hash_password("Password1!")).toEqual("Password1!");
+test("checking password against hash returns true for correct password", async () => {
+    const hased = await UserLogic.hash_password("Password1!")
+    expect(await UserLogic.check_password("Password1!", hased)).toEqual(true);
+});
+
+test("password entered is hashed", async () => {
+    const hased = await UserLogic.hash_password("Password1!")
+    expect(hased).not.toEqual("Password1!");
+});
+
+test("hashed password does not match different password hash", async () => {
+    const hased = await UserLogic.hash_password("Password1!")
+    expect(await UserLogic.check_password("Password2!", hased)).toEqual(false);
+});
+
+test("hashing the same password twice results in different hashes", async () => {
+    const hash1 = await UserLogic.hash_password("Password1!")
+    const hash2 = await UserLogic.hash_password("Password1!")
+    expect(hash1).not.toEqual(hash2);
+});
+
+test("checking password against hash returns false for incorrect password", async () => {
+    const hased = await UserLogic.hash_password("Password1!")
+    expect(await UserLogic.check_password("WrongPassword!", hased)).toEqual(false);
+});
+
+test("checking empty password against hash returns false", async () => {
+    const hased = await UserLogic.hash_password("Password1!")
+    expect(await UserLogic.check_password("", hased)).toEqual(false);
 });

@@ -21,7 +21,6 @@ services:
       db:
         condition: service_healthy
     environment:
-      - NODE_ENV=development
       - DB_USER=user
       - DB_PASS=password
       - DB_NAME=tabletrackdb
