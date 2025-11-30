@@ -1,5 +1,6 @@
 import { setUserState} from '../utils.js';
 import {api} from '../global.js'
+import { passValidator } from '../logic/format-utils.js'; 
 
 const openBtn = document.getElementById("openSignup");
 const closeBtn = document.getElementById("closeSignup");
@@ -16,21 +17,6 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   const email = document.getElementById("loginEmail").value;
   const password = document.getElementById("loginPassword").value;
 
-  // const res = await fetch("/api/auth/login", {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({ email, password })
-  // });
-  // const data = await res.json();
-
-  // if (res.ok) {
-  //   setUserState(data);
-  //   alert("Login successful!");
-  //   // redirect user
-  //   window.location.href = "/dashboard.html";  //change this
-  // } else {
-  //   alert(data.message || "Login failed");
-  // }
 
   const res = await api.loginUser(email,password);
   console.log(res)
@@ -59,19 +45,6 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
     return;
   }
 
-  // const res = await fetch("/api/auth/signup", {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({ firstName, lastName, email, password })
-  // });
-
-  // const data = await res.json();
-  // if (res.ok) {
-  //   alert("Account created! You can now log in.");
-  //   popup.classList.add("hidden");
-  // } else {
-  //   alert(data.message || "Signup failed");
-  // }
 
   const res = await api.createUser(firstName,lastName,email,password)
   if (res.code<300){
@@ -81,5 +54,39 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
     alert(res.message || "Signup failed");
   }   
 
-
 });
+
+
+document.addEventListener("DOMContentLoaded",()=>{
+    const password = document.getElementById("signupPassword");
+    const confirm = document.getElementById("confirmPassword");
+
+    if (password && confirm) {
+        verifyPass(password, confirm);
+    }
+})
+
+
+function verifyPass(pass,confirm){
+  const validationContainer = document.querySelector(".pass-validation")
+  let copyHTML =''
+  
+  pass.addEventListener('input',()=>{
+    const result = passValidator(pass.value)
+    validationContainer.innerHTML = `
+    <p class="pass-check ${result.hasUpperAndLower ? "valid-check" : ""} ">At least one UPPERCASE and one lowercase</p>
+      <p class="pass-check ${result.hasNumber ? "valid-check" : ""}">At least one number</p>
+      <p class="pass-check ${result.hasSpecial ? "valid-check" : ""}  ">At least one special character</p>
+      <p class= "pass-check ${result.hasMinLength ? "valid-check" : ""}">At least 8 characters</p>
+    `
+    confirm.value = ''
+    copyHTML = validationContainer.innerHTML
+  })
+
+  confirm.addEventListener('input',()=>{
+    validationContainer.innerHTML = `${copyHTML}
+    <p class="pass-check ${pass.value===confirm.value ? "valid-check" : ""} ">Passwords Match</p>
+    `
+  })
+
+}

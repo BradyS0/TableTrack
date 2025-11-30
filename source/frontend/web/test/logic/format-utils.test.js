@@ -1,7 +1,9 @@
-import {formatPhoneNumber,
-     floatToTime,
-      timeToFloat}  from "../../js/logic/format-utils.js";
-
+import {
+  formatPhoneNumber,
+  floatToTime,
+  timeToFloat,
+  passValidator,
+} from "../../js/logic/format-utils.js";
 
 describe("formatPhoneNumber", () => {
   test("formats 10-digit number correctly", () => {
@@ -42,7 +44,7 @@ describe("floatToTime", () => {
     expect(floatToTime(23.999)).toBe("00:00"); // rounds up to next hour
     expect(floatToTime(24.999)).toBe("01:00"); // rounds up to next hour
     expect(floatToTime(24.59)).toBe("00:35"); // rounds up to next hour
-    expect(floatToTime(5.01)).toBe("05:01");  // near-zero fractional part
+    expect(floatToTime(5.01)).toBe("05:01"); // near-zero fractional part
   });
 
   test("returns empty string for null/undefined", () => {
@@ -67,4 +69,69 @@ describe("timeToFloat", () => {
     expect(timeToFloat(null)).toBe("");
     expect(timeToFloat(undefined)).toBe("");
   });
+});
+
+describe("password validation", () => {
+  const passwords = ["T3st!ngP@ss","aB1!CdeF",
+    "","Abc1!","Abc1!23",
+    "password!23","PASSWORD!23",
+    "P@ssword!#","OnlyLetters",
+    "12345678","123456!@#",
+  ];
+
+  test("test valid passwords", () => {
+    let result = passValidator(passwords[0]);
+    for (let r in result) expect(result[r]).toBe(true);
+
+    result = passValidator(passwords[1]);
+    for (let r in result) expect(result[r]).toBe(true);
+  });
+
+  test("test invalid length passwords", ()=>{
+    let result = passValidator(passwords[2]);
+    expect(result.hasMinLength).toBe(false)
+    expect(result.allValid).toBe(false)
+
+    result = passValidator(passwords[3]);
+    expect(result.hasMinLength).toBe(false)
+    expect(result.allValid).toBe(false)
+
+    result = passValidator(passwords[4]);
+    expect(result.hasMinLength).toBe(false)
+    expect(result.allValid).toBe(false)
+  })
+
+  test("test invalid case within passwords", ()=>{
+    let result = passValidator(passwords[5]);
+    expect(result.hasUpperAndLower).toBe(false)
+    expect(result.allValid).toBe(false)
+
+    result = passValidator(passwords[6]);
+    expect(result.hasUpperAndLower).toBe(false)
+    expect(result.allValid).toBe(false)
+  })
+
+  test("test missing requirements for passwords", ()=>{
+    let result = passValidator(passwords[7]);
+    expect(result.hasNumber).toBe(false)
+    expect(result.allValid).toBe(false)
+
+    result = passValidator(passwords[8]);
+    expect(result.hasUpperAndLower).toBe(true)
+    expect(result.hasMinLength).toBe(true)
+    expect(result.hasSpecial).toBe(false)
+    expect(result.hasNumber).toBe(false)
+    expect(result.allValid).toBe(false)
+
+    result = passValidator(passwords[9]);
+    expect(result.hasNumber).toBe(true)
+    expect(result.allValid).toBe(false)
+
+    result = passValidator(passwords[10]);
+    expect(result.hasNumber).toBe(true)
+    expect(result.hasSpecial).toBe(true)
+    expect(result.allValid).toBe(false)
+  })
+
+
 });

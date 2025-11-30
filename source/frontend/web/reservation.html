@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="assets/TableTrack-logo.svg">
+  <title>TableTrack | Reservation</title>
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./floorplan/floorplan.css">
+</head>
+<body>
+    <nav></nav>
+  <div id="overlay" class="overlay"></div>
+   <div id="app"></div> 
+  <div class="editor-root">
+    <header class="editor-header">
+      <div class="tab-bar" style="display:none">
+        <button class="tab active" id="tab-creator">Layout creator</button>
+        <button class="tab disabled" id="tab-editor">Layout editor</button>
+      </div>
+      
+      <div class="reservation-options">
+      <label for="guest-count">Guests:
+      <select class="btn2 drop-down" id="guest-count">
+        <option value="0" selected>Select Guests</option>
+      </select>
+      </label>
+         </div>
+
+      <h3 class="rest-title side-section-title">Restaurant Name</h3>
+     
+      <div class="toolbar" style="display:none">
+        <button class="btn2 small" id="btn-clear">Clear floor plan</button>
+      </div>
+    </header>
+
+    <main class="editor-main">
+      <aside class="side-panel">
+        <div>
+          <div class= "side-reservation-panel">
+            <!-- put reservation info here -->
+             <p class="side-help-text">Available Reservation time slots</p>
+             <section>
+             </section>
+          </div>
+        </div>
+
+        <div id="editor-tools" class="editor-tools">
+          <div class="side-section-title">Editor tools</div>
+          <div class="tool-list">
+            <button class="tool-btn active" data-tool="select">Select</button>
+            <button class="tool-btn" data-tool="table">Table</button>
+            <button class="tool-btn" data-tool="door">Door</button>
+            <button class="tool-btn" data-tool="window">Window</button>
+          </div>
+        </div>
+
+        <div class="side-footer">
+          <p class="side-section-title">Controls</p>
+          <ul class="controls-list">
+            <li><b>Wheel</b> = zoom</li>
+            <li><b>LMB+RMB</b>+drag = pan</li>
+            <li><b>Left-Click</b> on a table to make reservation</li>
+          </ul>
+
+          <section class="controls-list">
+          <p class="side-section-title">Layout Creator Controls </p>
+          <ul class="controls-list">
+            <li><b>Left-Click</b> = to add wall points</li>
+            <li><b>Right-Click</b> = to remove latest point</li>
+            <li><b>Shift</b> = straight segment</li>
+            <li><b>Left-Click</b> first point to complete floor plan after placing at least 3 points</li>
+          </ul>
+          </section>
+          
+          <section class="controls-list" style="display:none">
+          <p class="side-section-title">Layout Editor Controls </p>
+          <ul class="controls-list">
+            <li>Select item from the options, point and click inside the floor plan to place the item</li>
+            <li>Drag item outside = delete</li>
+            <li><b>Right-click</b> item = context menu</li>
+          </ul>
+          </section>
+        </div>
+      </aside>
+
+      <section class="canvas-wrapper">
+        <div id="konva-container"></div>
+        <div class="overlay-root" id="overlay-root"></div>
+        <div class="status-bar" id="status-bar">Scale: 1.00x</div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="./js/global.js"></script>
+  <script type="module" src="floorplan/js/reservation.js"></script>
+</body>
+</html>
