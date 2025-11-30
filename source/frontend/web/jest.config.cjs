@@ -12,7 +12,8 @@ module.exports = {
 
   moduleNameMapper: {
     // Map CSS imports to the installed proxy
-    '\\.css$': 'identity-obj-proxy',
+    // '\\.css$': 'identity-obj-proxy',
+    '\\.(css|less|scss)$': 'identity-obj-proxy',
   },
   
   collectCoverage: true,
