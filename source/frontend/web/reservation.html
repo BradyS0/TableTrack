@@ -19,11 +19,14 @@
       </div>
       
       <div class="reservation-options">
-        <!-- <group><label for="day-select">Select a Date:</label>
-      <input class="btn2 day-select" id="day-select" type="date"></group> -->
-      <group><label for="guest-count">Guests:</label>
-      <input class="btn2" id="guest-count" type="number" min="0" max="10"></group>
-      </div>
+      <group><label for="guest-count">Guests:
+      <select class="btn2 drop-down" id="guest-count">
+        <option value="0" default>Select Guests</option>
+      </select>
+      </label>
+         </div>
+
+      <h3 class="rest-title side-section-title">Restaurant Name</h3>
      
       <div class="toolbar" style="display:none">
         <button class="btn2 small" id="btn-clear">Clear floor plan</button>

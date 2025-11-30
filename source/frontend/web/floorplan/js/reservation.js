@@ -1,6 +1,7 @@
 import { FloorPlanEditor } from "./FloorPlanEditor.js";
 
 const MAX_DAYS_AHEAD = 14;
+const MAX_ALLOWED_GUESTS = 10;
 
 document.addEventListener("DOMContentLoaded", async () => {
   const root = document.querySelector(".editor-root");
@@ -17,8 +18,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   await populateFloorPlan(restID, floorplan);
 });
 
+
 async function populateFloorPlan(restID, floorplan) {
   const guest_count = document.getElementById("guest-count");
+  populateGuestDropDown(guest_count,MAX_ALLOWED_GUESTS)
 
   //make a request to fetch floorplan and layout using restID
   restID;
@@ -49,6 +52,7 @@ async function populateFloorPlan(restID, floorplan) {
     }
   });
 }
+
 
 function showReservations(table, guestAmount) {
   const title = document.querySelector(".side-reservation-panel p");
@@ -88,6 +92,7 @@ function showReservations(table, guestAmount) {
   }
 }
 
+
 function createReservationPopup(table, guestAmount, date, time) {
   const backdrop = document.createElement("div");
   backdrop.className = "modal-backdrop";
@@ -99,22 +104,12 @@ function createReservationPopup(table, guestAmount, date, time) {
   const heading = document.createElement("h3");
   heading.innerText = "Reservation Confirmation";
 
-  const guestSize = document.createElement("input");
-  guestSize.type = "number";
-  guestSize.min = 0;
-  guestSize.max = table.data.capacity;
-  guestSize.value = guestAmount <= guestSize.max ? guestAmount : guestSize.max;
-  guestSize.id = "res-guest";
+  const guestSelectParent = createGuestDropDown(table.data.capacity, guestAmount)
 
-  const labelGuestSize = document.createElement("label");
-  labelGuestSize.className = "modal-row";
-  labelGuestSize.innerText = "Guest Amount";
-  labelGuestSize.for = "res-guest";
-  labelGuestSize.appendChild(guestSize);
 
   const timeDateInfo = document.createElement("section");
   timeDateInfo.className = "modal-row";
-  timeDateInfo.innerHTML = `Making Reservation for <b>${date}</b> at <b>${time}</b>`;
+  timeDateInfo.innerHTML = `Reservation for <b>${date}</b> at <b>${time}</b>`;
 
   const acceptBtn = document.createElement("button");
   acceptBtn.className = "btn2 small primary";
@@ -134,10 +129,11 @@ function createReservationPopup(table, guestAmount, date, time) {
   modalFooter.className = "modal-footer";
 
   modalFooter.append(cancelBtn, acceptBtn);
-  modal.append(heading, timeDateInfo, labelGuestSize, modalFooter);
+  modal.append(heading, timeDateInfo, guestSelectParent, modalFooter);
 
   document.querySelector("body").append(backdrop);
 }
+
 
 function createDaySelect() {
   const daySelect = document.createElement("input");
@@ -150,6 +146,7 @@ function createDaySelect() {
 
   return daySelect;
 }
+
 
 function futureDateString(daysToAdd) {
   const date = new Date();
@@ -165,6 +162,7 @@ function futureDateString(daysToAdd) {
   return `${year}-${month}-${day}`;
 }
 
+
 function validateDate(daySelect) {
   const min = new Date(daySelect.min);
   const max = new Date(daySelect.max);
@@ -172,6 +170,36 @@ function validateDate(daySelect) {
 
   return min <= curr && curr <= max ? daySelect.value : daySelect.min;
 }
+
+function createGuestDropDown(maxCapacity,selectedCapacity){
+  const labelGuestSize = document.createElement("label");
+  labelGuestSize.className = "modal-row";
+  labelGuestSize.innerText = "Guest Amount";
+  labelGuestSize.for = "res-guest";
+  
+  const select = document.createElement('select')
+  select.className = "btn2 drop-down"
+  select.id = "res-guest";
+
+  populateGuestDropDown(select,maxCapacity)
+
+  select.selectedIndex = selectedCapacity > maxCapacity ? 0 : selectedCapacity-1
+
+  labelGuestSize.select = select
+  labelGuestSize.append(select)
+  return labelGuestSize
+}
+
+function populateGuestDropDown(select,max){
+  for(let i=1 ; i<=max ; i++){
+    const option = document.createElement('option')
+    option.value = i;
+    option.innerText = `${i} Guest${i>1 ? 's':""}`
+    select.append(option) 
+  }
+}
+
+
 
 function mock_floor() {
   return {
@@ -215,6 +243,7 @@ function mock_floor() {
     ],
   };
 }
+
 
 function mock_layout() {
   return {

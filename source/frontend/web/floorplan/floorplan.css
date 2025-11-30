@@ -177,7 +177,7 @@ body {
   margin-bottom: 0.25rem;
 }
 
-.side-help-text {
+.side-help-text , label {
   font-size: 0.8rem;
   color: var(--text-muted);
   line-height: 1.35;
@@ -391,11 +391,6 @@ ul.controls-list{
 
 }
 
-.reservation-options{
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 2fr 2fr 1fr;
-}
 
 .side-reservation-panel{
    display: flex;
@@ -413,4 +408,20 @@ ul.controls-list{
   width: 100%;
   margin-top: .8rem;
 }
+
+.rest-title{
+  margin: 0 auto;
+  font-size: normal;
+}
+
+label{
+  font-weight: 500;
+}
+
+
+.drop-down{
+  color:var(--text-main);
+  font-size: 0.8rem;
+}
+
 
