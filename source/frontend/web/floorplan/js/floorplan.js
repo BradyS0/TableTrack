@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (floorplan.state.mode === 'creator') {
       console.log(floorplan.getFloorLayout())
     } else {
-      const items = floorplan.getTables()
+      const items = floorplan.getItems()
       console.log(items)
       // Removed event listener attachment to avoid memory leak
     }
