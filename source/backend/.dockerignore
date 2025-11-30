@@ -1,0 +1,9 @@
+.vscode
+db/.vscode
+node_modules
+.git
+.env
+coverage
+*.log
+.DS_Store
+npm-debug.log

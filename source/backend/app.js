@@ -9,7 +9,10 @@ import responseTime from "response-time";
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: ["http://127.0.0.1:5500","https://tabletrack.netlify.app", "http://localhost:5500"],
+    credentials: true
+}));
 app.use(express.json());
 
 if (process.env.ENABLE_PROFILING === "true") {
