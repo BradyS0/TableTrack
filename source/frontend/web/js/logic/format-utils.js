@@ -88,7 +88,7 @@ function checkNumber(password) {
 function checkSpecialCharacter(password) {
     // Regex: [!@#$%^&*] matches any character inside the brackets.
     // The characters are escaped if necessary, but !@#$%^&* are safe here.
-    return /[!@#$%^&*()_+={}\[\]:;"'<>,.?/\\|~`]/.test(password);
+    return /[ !@#$%^&*()_+={}[\]:;"'<>,.?/\\|~`-]/.test(password);
 }
 
 export const passValidator = (pass)=>{
