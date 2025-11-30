@@ -185,7 +185,7 @@ function createGuestDropDown(maxCapacity,selectedCapacity){
   const labelGuestSize = document.createElement("label");
   labelGuestSize.className = "modal-row";
   labelGuestSize.innerText = "Guest Amount";
-  labelGuestSize.for = "res-guest";
+  labelGuestSize.htmlFor = "res-guest";
   
   const select = document.createElement('select')
   select.className = "btn2 drop-down"
