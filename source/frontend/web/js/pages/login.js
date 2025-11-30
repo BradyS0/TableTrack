@@ -72,10 +72,10 @@ function verifyPass(pass,confirm){
   pass.addEventListener('input',()=>{
     const result = passValidator(pass.value)
     validationContainer.innerHTML = `
-    <p class="pass-check ${result.hasUpperAndLower ? "valid-check" : ""} ">Have at least one UPPERCASE and one lowercase</p>
-      <p class="pass-check ${result.hasNumber ? "valid-check" : ""}">Have at least one number</p>
-      <p class="pass-check ${result.hasSpecial ? "valid-check" : ""}  ">Have at least one special character</p>
-      <p class= "pass-check ${result.hasMinLength ? "valid-check" : ""}">Have at least 8 characters</p>
+    <p class="pass-check ${result.hasUpperAndLower ? "valid-check" : ""} ">At least one UPPERCASE and one lowercase</p>
+      <p class="pass-check ${result.hasNumber ? "valid-check" : ""}">At least one number</p>
+      <p class="pass-check ${result.hasSpecial ? "valid-check" : ""}  ">At least one special character</p>
+      <p class= "pass-check ${result.hasMinLength ? "valid-check" : ""}">At least 8 characters</p>
     `
     confirm.value = ''
     copyHTML = validationContainer.innerHTML

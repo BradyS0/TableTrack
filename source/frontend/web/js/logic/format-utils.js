@@ -92,9 +92,10 @@ function checkSpecialCharacter(password) {
 }
 
 export const passValidator = (pass)=>{
-    const hasUpperAndLower = checkLowercase(pass) && checkUppercase
+    const hasUpperAndLower = checkLowercase(pass) && checkUppercase(pass)
     const hasSpecial = checkSpecialCharacter(pass)
     const hasNumber = checkNumber(pass)
     const hasMinLength = checkMinLength(pass)
-    return {hasUpperAndLower,hasSpecial,hasNumber,hasMinLength}
+    const allValid = hasMinLength && hasSpecial && hasNumber && hasUpperAndLower
+    return {hasUpperAndLower,hasSpecial,hasNumber,hasMinLength, allValid}
 }

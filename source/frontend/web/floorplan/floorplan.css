@@ -409,3 +409,8 @@ ul.controls-list{
    gap: .25rem;
 }
 
+.day-select{
+  width: 100%;
+  margin-top: .8rem;
+}
+
