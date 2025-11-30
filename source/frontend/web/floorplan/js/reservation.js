@@ -40,6 +40,7 @@ function showReservations(table, guestAmount) {
     ".side-reservation-panel section"
   );
   resContainer.innerHTML = "";
+  title.innerHTML = "";
 
   if (!table.data.reservable) return;
   title.innerHTML = `Available time-slots for ${table.id} <br> max-capacity: ${table.data.capacity}`;
@@ -49,7 +50,7 @@ function showReservations(table, guestAmount) {
   title.append(daySelect);
 
   daySelect.addEventListener("change", () => {
-    daySelect.value = validateDate(daySelect)
+    daySelect.value = validateDate(daySelect);
     console.log(daySelect.value);
   });
 
@@ -58,8 +59,13 @@ function showReservations(table, guestAmount) {
     newSpan.className = "btn2 danger small";
     newSpan.innerText = `${i + 1}:30pm`;
 
-    newSpan.addEventListener('click',()=>{
-      createReservationPopup(table, guestAmount, daySelect.value, newSpan.innerText)
+    newSpan.addEventListener("click", () => {
+      createReservationPopup(
+        table,
+        guestAmount,
+        daySelect.value,
+        newSpan.innerText
+      );
     });
 
     resContainer.append(newSpan);
@@ -106,17 +112,16 @@ function createReservationPopup(table, guestAmount, date, time) {
     console.log(timeDateInfo.innerHTML);
   });
 
-  cancelBtn.addEventListener("click", ()=>(backdrop.remove()));
+  cancelBtn.addEventListener("click", () => backdrop.remove());
 
-  const modalFooter = document.createElement('section')
-  modalFooter.className = 'modal-footer'
+  const modalFooter = document.createElement("section");
+  modalFooter.className = "modal-footer";
 
-  modalFooter.append(cancelBtn,acceptBtn)
-  modal.append(heading,labelGuestSize,timeDateInfo,modalFooter)
+  modalFooter.append(cancelBtn, acceptBtn);
+  modal.append(heading, timeDateInfo, labelGuestSize, modalFooter);
 
-  document.querySelector('body').append(backdrop)
+  document.querySelector("body").append(backdrop);
 }
-
 
 function createDaySelect() {
   const daySelect = document.createElement("input");
@@ -124,7 +129,7 @@ function createDaySelect() {
   daySelect.type = "date";
   daySelect.className = "btn2 day-select";
 
-  daySelect.min = futureDateString(1);
+  daySelect.min = daySelect.value = futureDateString(1);
   daySelect.max = futureDateString(MAX_DAYS_AHEAD);
 
   return daySelect;
@@ -144,12 +149,12 @@ function futureDateString(daysToAdd) {
   return `${year}-${month}-${day}`;
 }
 
-function validateDate(daySelect){
-  const min = new Date(daySelect.min)
-  const max = new Date(daySelect.max)
-  const curr = new Date(daySelect.value)
+function validateDate(daySelect) {
+  const min = new Date(daySelect.min);
+  const max = new Date(daySelect.max);
+  const curr = new Date(daySelect.value);
 
-  return (min<=curr && curr<=max ? daySelect.value : daySelect.min)
+  return min <= curr && curr <= max ? daySelect.value : daySelect.min;
 }
 
 function mock_floor() {
