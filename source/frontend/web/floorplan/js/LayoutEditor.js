@@ -276,7 +276,7 @@ drawGrid() {
 
     const capLabel = document.createElement("label");
     capLabel.textContent = "Max capacity";
-    capLabel.className = 'modal-row'
+    capLabel.className = 'modal-row';
 
     const capInput = document.createElement("input");
     capInput.type = "number";
