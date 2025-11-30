@@ -10,7 +10,7 @@ export class TableItem extends Item {
         super(editor, "table");
         TableItem.i++;
         
-        this.data = {...this.data, ...data}
+        this.data = {...data}
         this._buildVisuals();
         this.group.position(pos);
     }
@@ -30,7 +30,7 @@ export class TableItem extends Item {
       strokeWidth: 2
     });
 
-    const label = new Konva.Text({
+    this.label = new Konva.Text({
       text: `T${TableItem.i}`,
       fontSize: 16,
       fill: "#f5f5f5",
@@ -43,7 +43,7 @@ export class TableItem extends Item {
     });
 
     this.group.add(this.rect);
-    this.group.add(label);
+    this.group.add(this.label);
   }
 
   onDragMove() {
@@ -60,6 +60,10 @@ export class TableItem extends Item {
     } else {
       this.rect.fill("#2e7d5b");
     }
+  }
+
+  changeLabel(newLabel){
+    this.label.text(newLabel)
   }
 
   changeFill(colorHex){

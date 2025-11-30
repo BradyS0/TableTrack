@@ -83,6 +83,8 @@ export class Item {
     this.group.draggable(active)
   }
 
+  setID(id){this.id = id}
+
   _idGen() {
     return (
       crypto.randomUUID?.() ||

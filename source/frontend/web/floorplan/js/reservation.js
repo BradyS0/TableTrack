@@ -2,15 +2,31 @@ import { FloorPlanEditor } from "./FloorPlanEditor.js";
 
 const MAX_DAYS_AHEAD = 14;
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const root = document.querySelector(".editor-root");
-  const guest_count = document.getElementById("guest-count");
 
   if (!root) return;
   const floorplan = new FloorPlanEditor(root);
-  floorplan.loadFloorplanPolygon(mock_floor().floorplan);
-  floorplan.loadItems(mock_layout());
   floorplan.setMode("read-only");
+
+  const params = new URLSearchParams(window.location.search);
+  const restID = params.get("restID");
+
+  if (!restID) return;
+
+  await populateFloorPlan(restID, floorplan);
+});
+
+async function populateFloorPlan(restID, floorplan) {
+  const guest_count = document.getElementById("guest-count");
+
+  //make a request to fetch floorplan and layout using restID
+  restID;
+  const floor = mock_floor();
+  const layout = mock_layout();
+
+  floorplan.loadFloorplanPolygon(floor.floorplan);
+  floorplan.loadItems(layout);
 
   const tables = floorplan.getTables();
   tables.forEach((table) => {
@@ -32,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
       table.changeFill(withinValidDiff ? "green" : "#843");
     }
   });
-});
+}
 
 function showReservations(table, guestAmount) {
   const title = document.querySelector(".side-reservation-panel p");
