@@ -1,8 +1,8 @@
 import Konva from './konva.js'
 import { pointInPolygon } from "./geometry.js";
-import { TableItem } from "./items/TableItem.js";
-import { DoorItem } from "./items/DoorItem.js";
-import { WindowItem } from "./items/WindowItem.js";
+import { TableItem } from "./Items/TableItem.js";
+import { DoorItem } from "./Items/DoorItem.js";
+import { WindowItem } from "./Items/WindowItem.js";
 
 export class LayoutEditor {
   constructor(stage, backgroundLayer, itemLayer, uiLayer, state, overlayRoot) {
