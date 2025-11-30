@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = __API_URL__;
 const API = `${API_URL}/v1/user`;
 
 const createUser = async (first_name,last_name, email, password)=>{
