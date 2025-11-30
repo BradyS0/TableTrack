@@ -83,7 +83,7 @@ function verifyPass(pass,confirm){
 
   confirm.addEventListener('input',()=>{
     validationContainer.innerHTML = `${copyHTML}
-    <p class="pass-check ${pass.value===confirm.value ? "valid-check" : ""} ">Passwords Matched</p>
+    <p class="pass-check ${pass.value===confirm.value ? "valid-check" : ""} ">Passwords Match</p>
     `
   })
 
