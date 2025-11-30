@@ -104,9 +104,9 @@ function createReservationPopup(table, guestAmount, date, time) {
   const heading = document.createElement("h3");
   heading.innerText = "Reservation Confirmation";
 
-  const guestSelectParent = createGuestDropDown(table.data.capacity, guestAmount)
+  const guestSelectParent = createGuestDropDown(table.data.capacity, guestAmount);
 
-  const dateStamp = getDate(date)
+  const dateStamp = getDate(date);
   const timeDateInfo = document.createElement("section");
   timeDateInfo.className = "modal-row";
   timeDateInfo.innerHTML = `Reservation on <b>${dateStamp.toDateString()}</b> at <b>${time}</b>`;
