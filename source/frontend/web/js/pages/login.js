@@ -61,7 +61,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     const password = document.getElementById("signupPassword");
     const confirm = document.getElementById("confirmPassword");
 
-    verifyPass(password,confirm)
+    if (password && confirm) {
+        verifyPass(password, confirm);
+    }
 })
 
 
