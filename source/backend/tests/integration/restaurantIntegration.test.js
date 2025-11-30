@@ -5,6 +5,7 @@ import { app } from "../../app.js";
 const user1id = 1;
 const user2id = 2;
 const rest1id = 1;
+const rest2id = 2;
 
 describe("Restaurant API", () => {
   // -------------------------------------------------- GET /restaurant
@@ -13,7 +14,7 @@ describe("Restaurant API", () => {
     const res = await request(app).get("/v1/restaurant").send();
     expect(res.statusCode).toBe(200);
     var restaurants = res.body.restaurants;
-    expect(restaurants.length).toBe(1);
+    expect(restaurants.length).toBe(2);
     expect(restaurants[0].name).toBe("TestRestaurant1");
   });
 
@@ -27,9 +28,18 @@ describe("Restaurant API", () => {
     expect(res.body.name).toBe("TestRestaurant1");
   });
 
-  it("Get the restaurant with id 5 (Should not exist)", async () => {
+  it("Get the restaurant with id 100 (Should not exist)", async () => {
     const res = await request(app).get("/v1/restaurant/100").send();
     expect(res.statusCode).toBe(404);
+  });
+
+  it("Check the open hours of the restaurant", async () => {
+    const hours = "9:00 - 17:30";
+    const res = await request(app)
+      .get("/v1/restaurant/" + String(rest2id))
+      .send();
+    expect(res.statusCode).toBe(200);
+    expect(res.body.hours).toBe(hours);
   });
 
   // -------------------------------------------------- GET /restaurant/user/{id}

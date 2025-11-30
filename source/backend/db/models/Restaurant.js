@@ -2,6 +2,8 @@
 // Database Imports
 import { DataTypes } from "sequelize";
 import sequelize from "../db.js";
+import { Schedule } from "./index.js";
+import timeLogic from "../../logic/timeLogic.js";
 
 // Model Definition
 export const Restaurant = sequelize.define("Restaurant", {
@@ -21,6 +23,29 @@ export const Restaurant = sequelize.define("Restaurant", {
     description: { type: DataTypes.TEXT, defaultValue: "" },
     logo:        { type: DataTypes.STRING, defaultValue: "" }, // Filepath to image
 });
+
+// Helper to attach open hours
+async function add_open_hours(rest)
+{
+    // If rest null do nothing
+    if (!rest) return rest;
+
+    // Get day from time logic
+    const day = timeLogic.get_day();
+
+    // Format schedule data
+    rest = rest.toJSON();
+    const open  = await Schedule.get_open(rest.restID, day);
+    const close = await Schedule.get_close(rest.restID, day);
+    if (open >= 0 && close >= 0 && open < close) {
+        const open_str = String(parseInt(open)) + ":" + String((open % 1) * 60).padStart(2, '0');
+        const close_str = String(parseInt(close)) + ":" + String((close % 1) * 60).padStart(2, '0');
+        rest.hours = open_str + " - " + close_str;
+    } else {
+        rest.hours = "Closed";
+    }
+    return rest;
+}
 
 // Query: Create a new restaurant
 Restaurant.create_new = async function (ownerID, name, address, phone, tags)
@@ -94,41 +119,52 @@ Restaurant.change_tags = async function (id, tags)
 // Query: List of all restaurants
 Restaurant.get_all = async function ()
 {
-    return await Restaurant.findAll();
+    let rest_list = await Restaurant.findAll();
+    for (let i = 0; i < rest_list.length; i++)
+        rest_list[i] = await add_open_hours(rest_list[i]);
+    return rest_list;
 }
 
 // Query: Get restaurant using id
 Restaurant.get_by_id = async function (id)
 {
-    return await Restaurant.findOne({ 
+    let rest = await Restaurant.findOne({ 
         where: { 
             restID: parseInt(id)
     }});
+    rest = await add_open_hours(rest);
+    return rest;
 }
 
 // Query: Get restaurant using owner
 Restaurant.get_by_owner = async function (ownerID)
 {
-    return await Restaurant.findOne({ 
+    let rest = await Restaurant.findOne({ 
         where: { 
             userID: parseInt(ownerID) 
     }});
+    rest = await add_open_hours(rest);
+    return rest;
 }
 
 // Query: Get restaurant using address
 Restaurant.get_by_address = async function (address)
 {
-    return await Restaurant.findOne({ 
+    let rest = await Restaurant.findOne({ 
         where: { 
             address: address 
     }});
+    rest = await add_open_hours(rest);
+    return rest;
 }
 
 // Query: Get restaurant using phone
 Restaurant.get_by_phone = async function (phone)
 {
-    return await Restaurant.findOne({ 
+    let rest = await Restaurant.findOne({ 
         where: { 
             phone: phone
     }});
+    rest = await add_open_hours(rest);
+    return rest;
 }

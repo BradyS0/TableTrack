@@ -27,51 +27,30 @@ beforeAll(async () => {
         //     password: 'password123', // You can hash this if needed
         // });
 
-        console.log("[TEST SETUP] Creating test users");
+        console.log("[TEST SETUP] Creating test data");
+
+        // ==================== Users
+
         const hashedPassword1 = await UserLogic.hash_password("Password2!");
         const user1 = await User.create_new("TestUserA", "LastnameA", "testusera@example.com", hashedPassword1);
-        //const user1 = await User.create({
-        //    first_name: "TestUserA",
-        //    last_name:  "LastnameA",
-        //    email:      "testusera@example.com",
-        //    password:   "Password1"
-        //});
+
         const hashedPassword2 = await UserLogic.hash_password("Password3@");
         await User.create_new("TestUserB", "LastnameB", "testuserb@example.com", hashedPassword2);
-        //await User.create({
-        //    first_name: "TestUserB",
-        //    last_name:  "LastnameB",
-        //    email:      "testuserb@example.com",
-        //    password:   "Password2"
-        //});
+
+        // ==================== Restaurants & Schedules
 
         const rest1 = await Restaurant.create_new(parseInt(user1.userID), "TestRestaurant1", "100 Test Street", "(204) 123-4567", ["testtag"]);
-        //const rest1 = await Restaurant.create({
-        //    userID:    parseInt(user1.userID),
-        //    name:      "TestRestaurant1",
-        //    address:   "100 Test Street",
-        //    phone: "(204) 123-4567"
-        //});
-
         await Schedule.set_day(rest1.restID, 0, 0.0, 24.0); // Always open Sunday
         await Schedule.set_day(rest1.restID, 1, 0.0, 0.0);  // Always closed Monday
 
+        const rest2 = await Restaurant.create_new(parseInt(user1.userID), "TestRestaurant2", "200 Test Street", "(123) 123-4567", ["testtag"]);
+        for (let i = 0; i <= 6; i++) await Schedule.set_day(rest2.restID, i, 9.0, 17.5); // Set schedule every day to 9:00 to 5:30 
+
+        // ==================== Menu Items
+
         await MenuItem.create_new(rest1.restID, "TestItem", "1.00", "Test Description", "Test Category");
-        //await MenuItem.create({
-        //    restID:         rest1.restID,
-        //    name:           "TestItem",
-        //    price:          "1.00",
-        //    description:    "Test Description",
-        //    category:       "Test Category"
-        //});
         await MenuItem.create_new(rest1.restID, "To Delete", "0", "To Delete", "To Delete");
-        //await MenuItem.create({
-        //    restID: rest1.restID,
-        //    name: "To Delete",
-        //    price: "0",
-        //    description: "To Delete",
-        //    category: "To Delete"
-        //});
+
         //for future use
         // console.log('[TEST SETUP] Running migrations...');
         // If you're using Sequelize migrations, you can run them here
