@@ -120,7 +120,9 @@ function createReservationPopup(table, guestAmount, date, time) {
   cancelBtn.innerText = "Cancel";
 
   acceptBtn.addEventListener("click", () => {
-    
+    // TODO: Implement reservation confirmation logic here.
+    // For now, just close the modal.
+    backdrop.remove();
   });
 
   cancelBtn.addEventListener("click", () => backdrop.remove());
