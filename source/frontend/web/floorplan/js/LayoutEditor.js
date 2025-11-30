@@ -290,11 +290,11 @@ drawGrid() {
     const checkLabel = document.createElement("label");
     checkLabel.className = "checkbox-row";
     checkLabel.textContent = "Reservable";
-    checkLabel.for = "table-reserve"
+    checkLabel.for = "table-reserve";
     
     const chk = document.createElement("input");
     chk.type = "checkbox";
-    chk.id = "table-reserve"
+    chk.id = "table-reserve";
     chk.checked = tableItem.data.reservable ?? true;
 
     checkLabel.append(chk);
