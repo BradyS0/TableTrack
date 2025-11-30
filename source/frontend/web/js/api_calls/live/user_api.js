@@ -1,8 +1,9 @@
-const API = "http://localhost:3000/v1/user"
+const API_URL = import.meta.env.VITE_API_URL;
+const API = `${API_URL}/v1/user`;
 
 const createUser = async (first_name,last_name, email, password)=>{
-    const result = {code:9001, message:"api backend cannot be reached"};
-    
+    console.log("Creating user at api:",API);
+    const result = {code:9001, message:"api backend cannot be reached at "+API};
     try{
     const user = {first_name,last_name,email,password}
     const req = await fetch(API, {

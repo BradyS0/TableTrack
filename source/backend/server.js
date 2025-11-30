@@ -1,10 +1,11 @@
 import { app } from "./app.js";
 import { sequelize } from "./db/models/index.js";
 
-const PORT = process.env.API_PORT || 3000;
+const PORT = process.env.PORT || process.env.API_PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
 
 const startServer = () => {
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    app.listen(PORT, HOST, () => console.log(`Server running on ${HOST}:${PORT}`));
 };
 
 const connectWithRetry = async (retries = 5, delay = 5000) => {

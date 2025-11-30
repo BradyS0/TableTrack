@@ -1,4 +1,4 @@
-import { floatToTime } from "../logic/format-utils.js ";
+import { floatToTime } from "../logic/format-utils.js";
 
 // Creates the full schedule card
 export function createScheduleCard(scheduleData) {
