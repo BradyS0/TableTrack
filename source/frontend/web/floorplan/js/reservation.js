@@ -106,10 +106,10 @@ function createReservationPopup(table, guestAmount, date, time) {
 
   const guestSelectParent = createGuestDropDown(table.data.capacity, guestAmount)
 
-
+  const dateStamp = getDate(date)
   const timeDateInfo = document.createElement("section");
   timeDateInfo.className = "modal-row";
-  timeDateInfo.innerHTML = `Reservation for <b>${date}</b> at <b>${time}</b>`;
+  timeDateInfo.innerHTML = `Reservation on <b>${dateStamp.toDateString()}</b> at <b>${time}</b>`;
 
   const acceptBtn = document.createElement("button");
   acceptBtn.className = "btn2 small primary";
@@ -120,7 +120,7 @@ function createReservationPopup(table, guestAmount, date, time) {
   cancelBtn.innerText = "Cancel";
 
   acceptBtn.addEventListener("click", () => {
-    console.log(timeDateInfo.innerHTML);
+    
   });
 
   cancelBtn.addEventListener("click", () => backdrop.remove());
@@ -160,6 +160,14 @@ function futureDateString(daysToAdd) {
   const day = String(date.getDate()).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
+}
+
+function getDate(yearMonthDay){
+  let [year,month,day] = yearMonthDay.split('-')
+  month = month === 1 || month==0 ? 0 : month-1
+  console.log(yearMonthDay)
+  const date = new Date(year,month,day)
+  return date
 }
 
 
