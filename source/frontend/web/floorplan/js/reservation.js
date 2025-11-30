@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function populateFloorPlan(restID, floorplan) {
   const guest_count = document.getElementById("guest-count");
-  populateGuestDropDown(guest_count,MAX_ALLOWED_GUESTS)
+  populateGuestDropDown(guest_count,MAX_ALLOWED_GUESTS);
 
   //make a request to fetch floorplan and layout using restID
   restID;
