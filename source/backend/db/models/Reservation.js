@@ -2,6 +2,11 @@ import { DataTypes } from "sequelize";
 import {Op} from "sequelize"
 import sequelize from "../db.js";
 
+const ALLOWED_STATUS = Object.freeze({
+  OK: "ok", 
+  NEEDS_ATTENTION : "needs-attention"
+});
+
 export const Reservation = sequelize.define("Reservation",
   {
     reserveID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
@@ -41,9 +46,9 @@ export const Reservation = sequelize.define("Reservation",
     },
 
     status: {
-      type: DataTypes.ENUM("ok", "needs-attention"),
+      type: DataTypes.ENUM(...Object.values(ALLOWED_STATUS)),
       allowNull: false,
-      defaultValue: "ok",
+      defaultValue: ALLOWED_STATUS.OK,
     },
   },
   {
@@ -56,6 +61,7 @@ export const Reservation = sequelize.define("Reservation",
   }
 );
 
+Reservation.STATUS = ALLOWED_STATUS
 
 
 Reservation.create_new = async function (restID, userID, tableID, date_stamp) {
@@ -148,8 +154,7 @@ Reservation.get_all_table_reservations_for_day = async function (restID,tableID,
 
 
 Reservation.set_reservation_status = async function (reserveID, status) {
-  const allowed = ["ok", "needs-attention"];
-  if (!allowed.includes(status)) {
+  if (!Object.values(ALLOWED_STATUS).includes(status)) {
     throw new Error("Invalid reservation status.");
   }
 
