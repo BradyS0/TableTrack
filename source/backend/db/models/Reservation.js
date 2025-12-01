@@ -1,14 +1,10 @@
 import { DataTypes } from "sequelize";
+import {Op} from "sequelize"
 import sequelize from "../db.js";
 
 export const Reservation = sequelize.define("Reservation",
   {
-    reservationID: {
-      type: DataTypes.STRING(7),
-      allowNull: false,
-      unique: true,
-      defaultValue: sequelize.literal("substring(md5(random()::text), 1, 7)"), //auto generate 7 digit unique code using postgres
-    },
+    reservationID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
 
     restID:  { 
         type: DataTypes.INTEGER, 
