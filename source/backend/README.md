@@ -111,6 +111,7 @@ DB_NAME=tabletrackdb
 DB_HOST=localhost
 DB_PORT=5432
 API_PORT=3001
+HOST=127.0.0.1
 ENABLE_PROFILING=true
 ```
 

@@ -11,3 +11,5 @@ const config = {
 };
 
 export default config;
+
+// NOTE: file rewritten to normalize filesystem metadata for Docker build context
