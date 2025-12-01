@@ -10,6 +10,7 @@ Restaurant.belongsTo(User, { foreignKey: 'userID', onDelete: 'CASCADE', onUpdate
 MenuItem.belongsTo(Restaurant, { foreignKey: 'restID', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
 Schedule.belongsTo(Restaurant, { foreignKey: 'restID', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
 
+User.hasMany(Reservation, {foreignKey : 'userID'});
 Restaurant.hasMany(Reservation, {foreignKey : 'restID'});
 Reservation.belongsTo(Restaurant, { foreignKey: 'restID', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
 Reservation.belongsTo(User, { foreignKey: 'userID', onDelete: 'CASCADE', onUpdate: 'CASCADE'});

@@ -2,10 +2,13 @@ import { DataTypes } from "sequelize";
 import {Op} from "sequelize"
 import sequelize from "../db.js";
 
+
+//create immutable enum like structure
 const ALLOWED_STATUS = Object.freeze({
   OK: "ok", 
   NEEDS_ATTENTION : "needs-attention"
 });
+
 
 export const Reservation = sequelize.define("Reservation",
   {
@@ -61,7 +64,8 @@ export const Reservation = sequelize.define("Reservation",
   }
 );
 
-Reservation.STATUS = ALLOWED_STATUS
+
+Reservation.STATUS = ALLOWED_STATUS 
 
 
 Reservation.create_new = async function (restID, userID, tableID, date_stamp) {
