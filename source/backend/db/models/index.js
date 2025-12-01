@@ -10,8 +10,10 @@ Restaurant.belongsTo(User, { foreignKey: 'userID', onDelete: 'CASCADE', onUpdate
 MenuItem.belongsTo(Restaurant, { foreignKey: 'restID', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
 Schedule.belongsTo(Restaurant, { foreignKey: 'restID', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
 
+Restaurant.hasMany(Reservation, {foreignKey : 'restID'});
 Reservation.belongsTo(Restaurant, { foreignKey: 'restID', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
 Reservation.belongsTo(User, { foreignKey: 'userID', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
+
 // Export models and sequelize so other parts of the app can import from a single place
-export { sequelize, DataTypes, User, Restaurant, Schedule, MenuItem };
+export { sequelize, DataTypes, User, Restaurant, Schedule, MenuItem, Reservation};
 
