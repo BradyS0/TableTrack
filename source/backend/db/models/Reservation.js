@@ -7,7 +7,7 @@ export const Reservation = sequelize.define("Reservation",
       type: DataTypes.STRING(7),
       allowNull: false,
       unique: true,
-      defaultValue: sequelize.literal("substring(md5(random()::text), 1, 7)"),
+      defaultValue: sequelize.literal("substring(md5(random()::text), 1, 7)"), //auto generate 7 digit unique code using postgres
     },
 
     restID:  { 
