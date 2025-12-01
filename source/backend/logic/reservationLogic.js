@@ -56,7 +56,7 @@ LOGIC.validate_reservation_time = (time,reserved_times) => {
 
     for (const reserved of reserved_times){
         // if diff is less than INTERVAL then ticket overlaps an existing reservation
-        if(Math.abs(ticket-reserved) < INTERVAL){
+        if(Math.abs(time-reserved) < INTERVAL){
             is_blocked = true;
             break;
         }
@@ -72,7 +72,7 @@ LOGIC.generate_reservation_tickets = (open,close,reserved_times) =>{
     const tickets = []; //list of 24hr formatted floats : [8.5, 12.65, 20.25] 
 
     //times slots begin 15minutes after open time
-    //new time should be before 2hrs+15min of buffer of closing time
+    //new time should be before 2hrs+15min of buffer before closing time
     for (let ticket = open+MIN_INC ; (ticket+INTERVAL+MIN_INC) <= close ; ticket += ticket+MIN_INC){
         const is_blocked = LOGIC.validate_reservation_time(ticket,reserved_times)
 
