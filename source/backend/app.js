@@ -9,8 +9,18 @@ import responseTime from "response-time";
 
 const app = express();
 
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
+let allowed_website_urls = [];
+
+if(NODE_ENV === 'development'){
+    allowed_website_urls = ["http://localhost:5500","http://127.0.0.1:5500"];
+}else if (NODE_ENV === 'production'){
+    allowed_website_urls = ["https://tabletrack.netlify.app"];
+}
+
 app.use(cors({
-    origin: ["http://127.0.0.1:5500","https://tabletrack.netlify.app", "http://localhost:5500"],
+    origin: allowed_website_urls,
     credentials: true
 }));
 app.use(express.json());
