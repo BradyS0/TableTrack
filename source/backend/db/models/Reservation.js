@@ -25,7 +25,6 @@ export const Reservation = sequelize.define("Reservation",
     tableID: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references : {} //TO-DO: once table model has been provided
     },
 
     userID:  { 
@@ -152,6 +151,7 @@ Reservation.get_all_table_reservations_for_day = async function (restID,tableID,
         [Op.between]: [dayStart, dayEnd],
       },
     },
+    attributes: ["date_stamp"],
     order: [["date_stamp", "ASC"]],
   });
 };

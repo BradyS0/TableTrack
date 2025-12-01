@@ -411,3 +411,31 @@ export const schedule = {
   friday: { open: 10, close: 22 },
   saturday: { open: 10, close: 22 },
 };
+
+
+export const schedules = [{
+  sunday: { open: 8, close: 21 },
+  monday: { open: -1, close: -1 },
+  tuesday: { open: 10, close: 22 },
+  wednesday: { open: 10, close: 22 },
+  thursday: { open: 5, close: 15.5 },
+  friday: { open: 10, close: 22 },
+  saturday: { open: 10, close: 22 },
+}
+,
+ {sunday: { open: -1, close: -1 },
+  monday: { open: 5, close: 23 },
+  tuesday: { open: 10, close: 22 },
+  wednesday: { open: 10, close: 22 },
+  thursday: { open: 5.5, close: 23 },
+  friday: { open: -1, close: -1 },
+  saturday: { open: 12, close: 22 },
+},
+ {sunday: { open: 6, close: 16.5 },
+  monday: { open: -1, close: -1 },
+  tuesday: { open: 10, close: 22 },
+  wednesday: { open: 10, close: 22 },
+  thursday: { open: -1, close: -1 },
+  friday: { open: 10, close: 22 },
+  saturday: { open: 6, close: 16.5 },
+}];
