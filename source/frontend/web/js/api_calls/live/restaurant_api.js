@@ -1,5 +1,4 @@
 import { getRandomRating } from "../mock/restaurant_api.js";
-let __API_URL__ = "http://localhost:3000";
 const API_URL = __API_URL__;
 const API = `${API_URL}/v1/restaurant`;
 
