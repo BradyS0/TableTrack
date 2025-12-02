@@ -3,9 +3,7 @@ import dotenv from 'dotenv';
 // import sequelize from './db.js';
 import { sequelize, User, Restaurant, Schedule, MenuItem } from "./db/models/index.js";
 import UserLogic from './logic/userLogic.js';
-// import { Restaurant } from "./models/Restaurant.js";
-// import Schedule from "./models/Schedule.js";
-// import { MenuItem } from './models/MenuItem.js';
+
 
 // Load environment variables from .env.test
 dotenv.config({ path: './.env' });

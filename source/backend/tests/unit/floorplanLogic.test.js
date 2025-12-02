@@ -81,6 +81,10 @@ test("VALID: Valid table data given", () => {
     expect(FloorplanLogic.validate_table_data({capacity:5, reservable:true})).toEqual(true);
 });
 
+test("VALID: Valid table data given", () => {
+    expect(FloorplanLogic.validate_table_data({capacity:1, reservable:false})).toEqual(true);
+});
+
 test("INVALID: Data is null", () => {
     expect(() => FloorplanLogic.validate_table_data(null)).toThrow("Data cannot be null");
 });
