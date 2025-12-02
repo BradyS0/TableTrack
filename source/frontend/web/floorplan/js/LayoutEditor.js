@@ -177,14 +177,12 @@ drawGrid() {
       }
   }
 
-  onMouseMove(evt, pos) {
-    evt
-    pos
+  onMouseMove(_evt, _pos) {
+    // intentionally unused
   }
 
-  onMouseUp(evt, pos) {
-    evt
-    pos
+  onMouseUp(_evt, _pos) {
+    // intentionally unused
   }
 
 
