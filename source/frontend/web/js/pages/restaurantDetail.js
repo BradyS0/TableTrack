@@ -3,7 +3,7 @@ import { loadPublicMenu } from './menu.js';
 import { createScheduleCard} from "../components/schedule.js";
 
 
-if (window.location.pathname.includes("restaurantDetail")){
+if (window.location.pathname.toLowerCase().includes("restaurantdetail")){
 document.addEventListener("DOMContentLoaded", async()=>{
      const params = new URLSearchParams(window.location.search);
      await loadRestaurant(params.get('restID'))
