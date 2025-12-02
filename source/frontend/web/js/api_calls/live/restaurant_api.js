@@ -1,10 +1,11 @@
 import { getRandomRating } from "../mock/restaurant_api.js";
-const API = "http://localhost:3000/v1/restaurant"
+let __API_URL__ = "http://localhost:3000";
+const API_URL = __API_URL__;
+const API = `${API_URL}/v1/restaurant`;
 
 async function getRestaurants() {
 
   let result = {code:9001, message:"api backend cannot be reached"};
-    
     try{
     const req = await fetch(API, {method: 'GET'})
 

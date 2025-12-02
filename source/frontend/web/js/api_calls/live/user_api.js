@@ -1,8 +1,10 @@
-const API = "http://localhost:3000/v1/user"
+let __API_URL__ = "http://localhost:3000";
+const API_URL = __API_URL__;
+const API = `${API_URL}/v1/user`;
 
 const createUser = async (first_name,last_name, email, password)=>{
-    const result = {code:9001, message:"api backend cannot be reached"};
-    
+    console.log("Creating user at api:",API);
+    const result = {code:9001, message:"api backend cannot be reached at "+API};
     try{
     const user = {first_name,last_name,email,password}
     const req = await fetch(API, {

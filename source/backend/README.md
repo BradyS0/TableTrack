@@ -61,10 +61,11 @@ Next for the local API server + database, please change the `env` file to:
 DB_USER=user
 DB_PASS=password
 DB_NAME=tabletrackdb
-DB_HOST=localhost
+DB_HOST=db
 DB_PORT=5432
 API_PORT=3000
-HOST=127.0.0.1
+LOCAL_DB=true
+NODE_ENV=development
 ```
 
 To start the backend server from the command line run:
@@ -81,20 +82,22 @@ npm run local:stop    # this will stop the backend and clear the docker containe
 To set up the local API and cloud database, please ask for the database credentials and add or change your `env` to:
 
 ```bash
-DB_USER=postgres
-DB_PASS=[given password]
+DB_USER=[get from developer]
+DB_PASS=[get from developer]
 DB_NAME=postgres
-DB_HOST=[given host]
+DB_HOST=[get from developer]
 DB_PORT=5432
 API_PORT=3000
-HOST=127.0.0.1
+LOCAL_DB=false
+NODE_ENV=development
 ```
 Then run:
 
 ```bash
-node server.js
+npm run local:start
 
-# when you are done with the server simply hit CTRL-C to end the server
+# to close the server enter
+npm run local:stop
 ```
 
 ### Profiler
@@ -112,6 +115,7 @@ DB_PORT=5432
 API_PORT=3001
 HOST=127.0.0.1
 ENABLE_PROFILING=true
+NODE_ENV=development
 ```
 
 Then run the following commands:
