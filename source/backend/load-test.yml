@@ -1,29 +1,29 @@
 config:
-	target: "http://localhost:3000"
-	phases:
-		# run for 1 minute with a steady arrival rate
-		- duration: 60
-			arrivalRate: 5
-	variables:
-		# sample restaurant IDs to hit (adjust to match your DB)
-		restID: [1,2,3,4,5]
+  target: "http://localhost:3000"
+  phases:
+    # run for 1 minute with a steady arrival rate
+    - duration: 60
+      arrivalRate: 5
+  variables:
+    # sample restaurant IDs to hit (adjust to match your DB)
+    restID: [1,2,3,4,5]
 
 scenarios:
-	- name: "mixed-traffic"
-		flow:
-			- get:
-					url: "/v1/restaurant"
-			- get:
-					url: "/v1/restaurant/{{ restID }}"
-			- get:
-					url: "/v1/menu/{{ restID }}"
-			- post:
-					url: "/v1/user"
-					json:
-						first_name: "Load"
-						last_name: "Tester"
-						email: "load+{{ $timestamp }}@example.com"
-						password: "Password1!"
-			- think: 2
+  - name: "mixed-traffic"
+    flow:
+      - get:
+          url: "/v1/restaurant"
+      - get:
+          url: "/v1/restaurant/{{ restID }}"
+      - get:
+          url: "/v1/menu/{{ restID }}"
+      - post:
+          url: "/v1/user"
+          json:
+            first_name: "Load"
+            last_name: "Tester"
+            email: "user-{{ $uuid }}@example.com"
+            password: "Password1!"
+      - think: 2
 
-	# You can add more scenarios here (e.g. create restaurants, login flows)
+# You can add more scenarios here (e.g. create restaurants, login flows)

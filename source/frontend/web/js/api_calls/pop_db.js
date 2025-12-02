@@ -18,13 +18,13 @@ async function postJSON(path, body) {
     return { status: res.status, data };
 }
 
-async function getJSON(path) {
-    const url = `${API_URL}${path}`;
-    const res = await fetch(url, { method: 'GET' });
-    let data = null;
-    try { data = await res.json(); } catch (e) { /* ignore parse errors */ }
-    return { status: res.status, data };
-}
+// async function getJSON(path) {
+//     const url = `${API_URL}${path}`;
+//     const res = await fetch(url, { method: 'GET' });
+//     let data = null;
+//     try { data = await res.json(); } catch (e) { /* ignore parse errors */ }
+//     return { status: res.status, data };
+// }
 
 const userTemplate = {
     first_name: 'Test',
@@ -44,12 +44,16 @@ async function populateDB() {
         if (res1.status && res1.status < 300) {
             const rest = restaurants[userID - 1];
             console.log('creating restaurant:', rest.name);
+            let id = i;
+            if (i < 10)
+                id = "0" + i;
+            console.log(`(2${id}) ${id}1-${id}34`)
             const restBody = {
                 userID,
                 name: rest.name,
                 tags: rest.tags,
                 address: rest.address,
-                phone: `(20${i}) ${i}11-${i}234`
+                phone: `(2${id}) ${id}1-${id}34`
             };
 
             const res2 = await postJSON('/v1/restaurant', restBody);

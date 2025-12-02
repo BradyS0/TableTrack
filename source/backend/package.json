@@ -14,7 +14,7 @@
         "local:logs": "docker-compose -f docker-compose.yml logs",
         "local:stop": "docker-compose -f docker-compose.yml down -v",
         "test:endpoints:all": "node ./testAllEndpoints.js",
-        "load:test": "artillery run load-test.yml --output load-results.json",
+        "load:test": "artillery run load-test.yml --record --key $(grep ARTILLERY_KEY .env | cut -d '=' -f2)",
         "load:test:report": "artillery report load-results.json -o load-report.html"
     },
     "dependencies": {
