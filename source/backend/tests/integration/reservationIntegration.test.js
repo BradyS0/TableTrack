@@ -184,7 +184,7 @@ describe("Reservation API", () => {
 });
 
 
-describe("Reservation double booking test", () => {
+describe("Reservation double booking and overlapping test", () => {
 
   let user;
   let rest;
@@ -223,7 +223,7 @@ describe("Reservation double booking test", () => {
         userID: user.userID,
         tableID,
         date_stamp,
-        capacity : 3
+        capacity : 3,
       });
 
       const req2 = request(app)
@@ -233,29 +233,42 @@ describe("Reservation double booking test", () => {
           userID: user.userID,
           tableID,
           date_stamp,
-          capacity : 3
+          capacity : 3,
         });
 
+        const date_stamp2 = "2030-05-20T18:15:00"; // same exact slot
         const req3 = request(app)
         .post("/v1/reservation/create")
         .send({
           restID: rest.restID,
           userID: user.userID,
           tableID,
-          date_stamp,
-          capacity : 3
+          date_stamp:date_stamp2,
+          capacity : 3,
+        });
+
+        const date_stamp3 = "2030-05-20T15:00:00"; // same exact slot
+        const req4 = request(app)
+        .post("/v1/reservation/create")
+        .send({
+          restID: rest.restID,
+          userID: user.userID,
+          tableID,
+          date_stamp:date_stamp3,
+          capacity : 3,
         });
     
-    let result = await Promise.allSettled([req1,req2,req3])
+    let result = await Promise.allSettled([req1,req2,req3,req4])
     result = result.map(r=> {return  {status: r.value.status, body : r.value.body} });
 
     const success = result.filter(r => r.status === 201 )
     const fail = result.filter(r => r.status !== 201 )
 
-    expect(success.length).toBe(1);
+    expect(success.length).toBe(2);
     expect(fail.length).toBe(2);
 
     expect(success[0].body.message).toContain('Reservation made')
+     expect(success[1].body.message).toContain('Reservation made')
     expect(fail[0].body.error).toContain('already booked')
     expect(fail[1].body.error).toContain('already booked')
   });

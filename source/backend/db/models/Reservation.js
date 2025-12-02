@@ -69,25 +69,56 @@ Reservation.STATUS = ALLOWED_STATUS
 
 
 Reservation.create_new = async function (restID, userID, tableID, date_stamp) {
+  const t = await sequelize.transaction();
+  const booking_window = 2.25 * 60 * 60 * 1000 ; //2.25 hrs to milliseconds 
+
   try {
-    return await Reservation.create({
-      restID,
-      userID,
-      tableID,
-      date_stamp
+    const newStart = new Date(date_stamp);
+    const newEnd = new Date(newStart.getTime() + booking_window);
+
+    // Fetch ALL overlapping reservations and lock the rows
+    const overlapping = await Reservation.findAll({
+      where: {
+        restID,
+        tableID,
+        date_stamp: {
+          [Op.lt]: newEnd,                     // existingStart < newEnd
+        }
+      },
+      lock: t.LOCK.UPDATE,
+      transaction: t
     });
 
-  } catch (err) {
+    const conflicts = overlapping.filter(r => {
+      const existingStart = r.date_stamp;
+      const existingEnd = new Date(existingStart.getTime() + 2 * 60 * 60 * 1000);
+      return existingEnd > newStart;          // existingEnd > newStart
+    });
 
+
+    if (conflicts.length > 0) {
+      await t.rollback();
+      throw new Error("Overlapped Reservation: This reservation window is already booked");
+    }
+
+    // No overlaps → proceed with creation
+    const reservation = await Reservation.create(
+      { restID, userID, tableID, date_stamp },
+      { transaction: t }
+    );
+
+    await t.commit();
+    return reservation;
+
+  } catch (err) {
+    await t.rollback
     // Unique constraint violation (double booking)
     if (err.name === "SequelizeUniqueConstraintError") {
       throw new Error( "Table already booked for this time");
     }
 
     // All other errors
-    throw new Error(
-      "Failed to make reservation, verify the information provided is correct."
-    );
+    throw new Error (err.message)
   }
 };
 

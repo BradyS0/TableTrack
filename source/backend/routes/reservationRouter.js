@@ -8,7 +8,7 @@ const router = express.Router();
 // Request Body: restID, tableID, date_stamp
 // sends: 200 ok + [available tickets]
 router.post("/ticket", async (req, res) => {
-  let { restID, tableID, date_stamp } = req.body;
+  let { restID, tableID, date_stamp} = req.body;
   try {
     restID = ReservationLogic.validate_int(restID, "restaurant");
     tableID = ReservationLogic.validate_int(tableID, "table");
@@ -101,15 +101,7 @@ router.post("/create", async (req, res) => {
       const d = new Date(r.date_stamp);
       return d.getHours() + d.getMinutes() / 60;
     });
-
-    let reserved_time = date.getHours() + date.getMinutes() / 60;
-    let is_overlapped = ReservationLogic.validate_reservation_time(
-      reserved_time,
-      reserved
-    );
-
-    if (is_overlapped)
-      return res.status(400).json({ error: "Reservation time already booked" });
+    
 
     const reservation = await Reservation.create_new(
       restID,
