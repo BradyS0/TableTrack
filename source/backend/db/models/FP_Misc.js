@@ -14,7 +14,7 @@ export const FP_Misc = sequelize.define("FP_Misc", {
     {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: { model: 'Restaurant', key: "restID" },
+        references: { model: 'Restaurants', key: "restID" },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
     },
@@ -58,5 +58,24 @@ FP_Misc.set_misc = async function(restID, new_misc)
 FP_Misc.get_misc = async function(restID)
 {
     // Get all items from the database
-    return await FP_Misc.findAll({ where: { restID: restID }});
+    const misc_list = await FP_Misc.findAll({ where: { restID: restID }});
+
+    // Format each item for the frontend
+    let formatted_list = [];
+    for (let i = 0; i < misc_list.length; i++)
+    {
+        // Get item data, create JSON
+        const item = misc_list[i];
+        let formatted_item = {};
+
+        // Add data to the new item
+        formatted_item.type     = item.type;
+        formatted_item.pos      = item.position;
+        formatted_item.rotation = item.rotation;
+        formatted_item.data     = item.data;
+
+        // Add formatted item to array
+        formatted_list.push(formatted_item);
+    }
+    return formatted_list;
 }

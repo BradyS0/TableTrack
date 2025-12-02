@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import { sequelize, User, Restaurant, Schedule, MenuItem } from "./db/models/index.js";
 import UserLogic from './logic/userLogic.js';
 
-
 // Load environment variables from .env.test
 dotenv.config({ path: './.env' });
 console.log('TEST DB_PASS:', process.env.DB_PASS ? '******' : 'NOT SET');

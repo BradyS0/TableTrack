@@ -13,18 +13,18 @@ router.put("/walls/:id", async (req, res) => {
 
     // Retrieve data from body and URL
     const restID = req.params.id;
-    const { walls } = req.body;
+    const { floorplan } = req.body;
 
     // Check restaurant exists
     const rest = await Restaurant.get_by_id(parseInt(restID));
     if (!rest) return res.status(404).json({ error: "Restaurant cannot be found" });
 
     // Validate the input data
-    try { FloorplanLogic.validate_walls(walls); } 
+    try { FloorplanLogic.validate_walls(floorplan); } 
     catch (err) { return res.status(400).json({ error: err.message }); }
 
     // Update walls in database
-    FP_Walls.set_walls(restID, walls);
+    FP_Walls.set_walls(restID, floorplan);
 
     return res.status(201).json({ message: "Successfully added walls" });
 });
@@ -34,46 +34,43 @@ router.put("/walls/:id", async (req, res) => {
 // PUT /floorplan/layout/<restID>
 // Update the tables/misc for the restaurant
 router.put("/layout/:id", async (req, res) => {
-
+    
     // Retrieve data from body and URL
     const restID = req.params.id;
-    const { layout } = req.body;
-
+    const { tables, misc } = req.body;
+    
     // Check restaurant exists
     const rest = await Restaurant.get_by_id(parseInt(restID));
     if (!rest) return res.status(404).json({ error: "Restaurant cannot be found" });
 
-    // Validate the input data
-    try { JSON.parse(layout); } 
-    catch (err) { return res.status(400).json({ error: "Layout must be in JSON format" }); }
+    // Check neither array is null
+    if (tables == null || tables == undefined || misc == null || misc == undefined)
+        return res.status(400).json({ error: "Tables and Misc cannot be null" });
+    
+    try { 
+        // Validate properties of tables
+        for (let i = 0; i < tables.length; i++)
+        {
+            FloorplanLogic.validate_type((tables[i]).type);
+            FloorplanLogic.validate_position((tables[i]).pos);
+            FloorplanLogic.validate_rotation((tables[i]).rotation);
+            FloorplanLogic.validate_table_data((tables[i]).data);
+        }
 
-    // Separate into tables and misc
-    let tables = [];
-    let misc   = [];
-    for (let i = 0; i < layout.length; i++)
-    {
-        try { // Validate properties of the item
+        // Validate properties of misc
+        for (let i = 0; i < misc.length; i++)
+        {
+            FloorplanLogic.validate_type((misc[i]).type);
+            FloorplanLogic.validate_position((misc[i]).pos);
+            FloorplanLogic.validate_rotation((misc[i]).rotation);
+            FloorplanLogic.validate_data((misc[i]).data);
+        }
+    } catch (err) { return res.status(400).json({ error: err.message }); }
+    
+    // Add items to database tables
+    await FP_Tables.set_tables(restID, tables);
+    await FP_Misc.set_misc(restID, misc);
 
-            // Validate general properties
-            FloorplanLogic.validate_type((layout[i]).type);
-            FloorplanLogic.validate_position((layout[i]).pos);
-            FloorplanLogic.validate_rotation((layout[i]).rotation);
-
-            // Validate specific properties
-            if ((layout[i]).type == "table") FloorplanLogic.validate_table_data((layout[i]).data);
-            else                             FloorplanLogic.validate_data((layout[i]).data);
-        
-        // Print error that occured in validation
-        } catch (err) { return res.status(400).json({ error: err.message }); }
-
-        // Add item to appropriate list
-        if ((layout[i]).type == "table") tables.push(layour[i]);
-        else                             misc.push(layout[i]);
-
-        // Add items to database tables
-        FP_Tables.set_tables(restID, tables);
-        FP_Misc.set_misc(restID, misc);
-    }
     return res.status(201).json({ message: "Successfully added layout" });
 });
 
@@ -81,18 +78,37 @@ router.put("/layout/:id", async (req, res) => {
 
 // GET /floorplan/walls/<restID>
 // Retrieve the walls for the restaurant
-router.put("/walls/:id", async (req, res) => {
+router.get("/walls/:id", async (req, res) => {
 
+    // Retrieve data from URL
+    const restID = req.params.id;
 
+    // Check restaurant exists
+    const rest = await Restaurant.get_by_id(parseInt(restID));
+    if (!rest) return res.status(404).json({ error: "Restaurant cannot be found" });
 
+    // Return the walls
+    const walls = await FP_Walls.get_walls(restID);
+    return res.status(200).json({ floorplan:walls });
 });
+
+
 
 // GET /floorplan/layout/<restID>
 // Retrieve the tables/misc for the restaurant
 router.get("/layout/:id", async (req, res) => {
 
+    // Retrieve data from URL
+    const restID = req.params.id;
 
+    // Check restaurant exists
+    const rest = await Restaurant.get_by_id(parseInt(restID));
+    if (!rest) return res.status(404).json({ error: "Restaurant cannot be found" });
 
+    // Return the layout
+    const tables = await FP_Tables.get_tables(restID);
+    const misc   = await FP_Misc.get_misc(restID);
+    return res.status(200).json({ tables:tables, misc:misc });
 });
 
 

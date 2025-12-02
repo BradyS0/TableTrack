@@ -14,7 +14,7 @@ export const FP_Tables = sequelize.define("FP_Tables", {
     {
         type: DataTypes.INTEGER, 
         allowNull: false,
-        references: { model: 'Restaurant', key: "restID" },
+        references: { model: 'Restaurants', key: "restID" },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
     },
@@ -59,7 +59,7 @@ FP_Tables.get_tables = async function(restID)
 {
     // Get all tables from the database
     const table_list = await FP_Tables.findAll({ where: { restID: restID }});
-
+    
     // Format each table for the frontend
     let formatted_list = [];
     for (let i = 0; i < table_list.length; i++)

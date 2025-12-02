@@ -12,7 +12,7 @@ export const FP_Walls = sequelize.define("FP_Walls", {
     {
         type: DataTypes.INTEGER, 
         allowNull: false,
-        references: { model: 'Restaurant', key: "restID" },
+        references: { model: 'Restaurants', key: "restID" },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
     },
@@ -60,5 +60,5 @@ FP_Walls.get_walls = async function(restID)
 
     // Return array or empty if null
     if (curr_walls == null) return [];
-    else return curr_walls;
+    else return curr_walls.points;
 }
