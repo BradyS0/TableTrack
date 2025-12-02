@@ -10,7 +10,7 @@ const ALLOWED_STATUS = Object.freeze({
 });
 
 
-export const Reservation = sequelize.define("Reservation",
+const Reservation = sequelize.define("Reservation",
   {
     reserveID: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
 
@@ -25,12 +25,13 @@ export const Reservation = sequelize.define("Reservation",
     tableID: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      //TO-DO: references  for FP_Table , tableID
     },
 
     userID:  { 
         type: DataTypes.INTEGER, 
         allowNull: false,
-        references: { model: 'User', key: "userID" },
+        references: { model: 'Users', key: "userID" },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
      },
@@ -173,3 +174,12 @@ Reservation.set_reservation_status = async function (reserveID, status) {
 
   return true;
 };
+
+
+Reservation.delete_reserved = async function (reserveID,restID,userID) {
+  return await Reservation.destroy(
+    { where: { reserveID , restID , userID } }
+  );
+};
+
+export default Reservation;

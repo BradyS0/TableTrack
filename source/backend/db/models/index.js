@@ -4,7 +4,7 @@ import { User } from "./User.js";
 import { Restaurant } from "./Restaurant.js";
 import { Schedule } from "./Schedule.js";
 import { MenuItem } from "./MenuItem.js";
-import {Reservation} from "./Reservation.js"
+import Reservation from "./Reservation.js"
 
 Restaurant.belongsTo(User, { foreignKey: 'userID', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
 MenuItem.belongsTo(Restaurant, { foreignKey: 'restID', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
