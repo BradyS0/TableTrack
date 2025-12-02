@@ -21,8 +21,6 @@ router.post("/ticket", async (req, res) => {
     const date = ReservationLogic.validate_date(date_stamp);
     const schedule = await Schedule.get_day(restID, date.getDay());
 
-    console.log("DB TEST::::",date_stamp,'-+-',date.toDateString(),' ',schedule)
-
     if (schedule.open === schedule.close)
       return res
         .status(200)
@@ -125,7 +123,7 @@ router.post("/create", async (req, res) => {
 
     return res
       .status(201)
-      .json({ message: `Reservation made successfully for ${date}` });
+      .json({ message: `Reservation made successfully for ${date.toDateString()}` });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }
@@ -142,7 +140,6 @@ router.get("/user/:userID", async (req, res) => {
     if (!user) return res.status(404).json({ error: "User not found." });
 
     const reservations = await Reservation.get_all_user_reservations(userID);
-    // const out = reservations.map(r => r.get({ plain: true }));
 
     return res.status(200).json({ reservations: reservations });
   } catch (err) {
@@ -196,6 +193,7 @@ router.delete("/delete/:reserveID", async (req, res) => {
 // Request Body: reserveID, status
 // sends: 201
 router.patch("/update/status", async (req, res) => {});
+
 
 // PATCH /v1/reservation/change/old_reserveID
 // Request Body: restID, tableID, date, date_stamp

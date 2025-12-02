@@ -216,7 +216,7 @@ describe("Reservation double booking test", () => {
     const date_stamp = "2030-05-20T18:00:00"; // same exact slot
 
     // 1st reservation → should succeed
-    const res1 = await request(app)
+    const req1 = request(app)
       .post("/v1/reservation/create")
       .send({
         restID: rest.restID,
@@ -226,26 +226,38 @@ describe("Reservation double booking test", () => {
         capacity : 3
       });
 
-    console.log(res1.body.error || res1.body.message)
-    expect(res1.status).toBe(201);
+      const req2 = request(app)
+        .post("/v1/reservation/create")
+        .send({
+          restID: rest.restID,
+          userID: user.userID,
+          tableID,
+          date_stamp,
+          capacity : 3
+        });
 
-    // 2nd reservation → SAME slot → should trigger unique constraint
-    const res2 = await request(app)
-      .post("/v1/reservation/create")
-      .send({
-        restID: rest.restID,
-        userID: user.userID,
-        tableID,
-        date_stamp,
-        capacity : 3
-      });
+        const req3 = request(app)
+        .post("/v1/reservation/create")
+        .send({
+          restID: rest.restID,
+          userID: user.userID,
+          tableID,
+          date_stamp,
+          capacity : 3
+        });
+    
+    let result = await Promise.allSettled([req1,req2,req3])
+    result = result.map(r=> {return  {status: r.value.status, body : r.value.body} });
 
-    // EXPECT FAILURE
-    console.log(res2.body.error || res2.body.message)
-    expect(res2.status).toBe(400); // or whatever your handler returns
-    expect(res2.body.error).toBe(
-      "Reservation time already booked"
-    );
+    const success = result.filter(r => r.status === 201 )
+    const fail = result.filter(r => r.status !== 201 )
+
+    expect(success.length).toBe(1);
+    expect(fail.length).toBe(2);
+
+    expect(success[0].body.message).toContain('Reservation made')
+    expect(fail[0].body.error).toContain('already booked')
+    expect(fail[1].body.error).toContain('already booked')
   });
 
 });

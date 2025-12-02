@@ -81,7 +81,7 @@ Reservation.create_new = async function (restID, userID, tableID, date_stamp) {
 
     // Unique constraint violation (double booking)
     if (err.name === "SequelizeUniqueConstraintError") {
-      throw new Error( "Reservation time already booked");
+      throw new Error( "Table already booked for this time");
     }
 
     // All other errors
