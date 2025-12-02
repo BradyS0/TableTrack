@@ -17,20 +17,42 @@ LOGIC.validate_guest_amount = (guest_amount) => {
 };
 
 LOGIC.validate_date = (date) => {
-  const dateObj = new Date(date);
-  if (isNaN(dateObj)) throw new Error("Invalid date syntax");
+  let dateObj;
 
+  if (date instanceof Date) {
+    // Already a Date object → clone safely
+    dateObj = new Date(date);
+  } else if (typeof date === "string") {
+    // Case 1: YYYY-MM-DD (pure date, avoid timezone shift)
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      const [y, m, d] = date.split("-").map(Number);
+      dateObj = new Date(y, m - 1, d); // local midnight
+    } else {
+      // Case 2: full ISO or other date string
+      dateObj = new Date(date);
+    }
+  } else {
+    throw new Error("Invalid date syntax");
+  }
+
+  if (isNaN(dateObj)) {
+    throw new Error("Invalid date syntax");
+  }
+
+  // Compare calendar day only
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const d = new Date(dateObj);
   d.setHours(0, 0, 0, 0);
 
-  if (d.getTime() <= today.getTime())
+  if (d <= today) {
     throw new Error("Same day or past reservations not allowed");
+  }
 
   return dateObj;
 };
+
 
 LOGIC.create_date_stamp = (yyyy, mm, dd, hh, min) => {
   try {
@@ -73,13 +95,14 @@ LOGIC.generate_reservation_tickets = (open, close, reserved_times) => {
   let tickets = []; //list of 24hr formatted floats : [8.5, 12.65, 20.25]
   const LATEST_START = close - INTERVAL - MIN_INC;
 
+  if (open === close) return tickets;
+
   //times slots begin 15minutes after open time
   for (let ticket = open + MIN_INC; ticket <= LATEST_START; ticket += MIN_INC) {
     const is_blocked = LOGIC.validate_reservation_time(ticket, reserved_times);
 
     //if the current ticket is not overlapping any existing reservation
-    if (!is_blocked) 
-        tickets[tickets.length] = Number(ticket.toFixed(2));
+    if (!is_blocked) tickets[tickets.length] = Number(ticket.toFixed(2));
   }
 
   return tickets;

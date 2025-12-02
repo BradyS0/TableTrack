@@ -21,6 +21,8 @@ router.post("/ticket", async (req, res) => {
     const date = ReservationLogic.validate_date(date_stamp);
     const schedule = await Schedule.get_day(restID, date.getDay());
 
+    console.log("DB TEST::::",date_stamp,'-+-',date.toDateString(),' ',schedule)
+
     if (schedule.open === schedule.close)
       return res
         .status(200)
@@ -42,11 +44,16 @@ router.post("/ticket", async (req, res) => {
       schedule.close,
       reserved
     );
+
     //convert tickets back into timestamps from floats
     tickets = tickets.map((t) => {
       const ds = new Date(date);
-      ds.setHours(t);
-      ds.setSeconds(0,0);
+
+      const hours = Math.floor(t);
+      const minutes = Math.round((t % 1) * 60);
+
+      ds.setHours(hours, minutes, 0, 0);
+
       return ds;
     });
 
@@ -135,9 +142,9 @@ router.get("/user/:userID", async (req, res) => {
     if (!user) return res.status(404).json({ error: "User not found." });
 
     const reservations = await Reservation.get_all_user_reservations(userID);
+    // const out = reservations.map(r => r.get({ plain: true }));
 
-    return res.status(200).json({reservations: reservations});
-    
+    return res.status(200).json({ reservations: reservations });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }
@@ -153,38 +160,37 @@ router.get("/restaurant/:restID", async (req, res) => {
     const rest = await Restaurant.get_by_id(restID);
     if (!rest) return res.status(404).json({ error: "Restaurant not found." });
 
-    const reservations = await Reservation.get_all_restaurant_reservations(restID);
+    const reservations = await Reservation.get_all_restaurant_reservations(
+      restID
+    );
 
-    return res.status(200).json({reservations: reservations});
+    return res.status(200).json({ reservations: reservations });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }
 });
 
-
 // DELETE /v1/reservation/reserveID
 // Request Body: restID, userID
-router.post("/delete/:reserveID", async (req, res) => {
-    let {reserveID} = req.params 
-    let {restID,userID} = req.body
-    try{
-        reserveID = ReservationLogic.validate_int(reserveID, 'reservation');
-        restID = ReservationLogic.validate_int(restID, 'restaurant');
-        userID = ReservationLogic.validate_int(userID, 'user');
+router.delete("/delete/:reserveID", async (req, res) => {
+  let { reserveID } = req.params;
+  let {restID,userID} = req.body
 
-        const result = await Reservation.delete_reserved(reserveID,restID,userID)
-        
-        if(!result)
-            return res.status(400).json({ error: "Failed to cancel reservation"});
+  try {
+    reserveID = ReservationLogic.validate_int(reserveID, "reservation");
+    restID = ReservationLogic.validate_int(restID, "restaurant");
+    userID = ReservationLogic.validate_int(userID, "user");
 
-         return res.status(200).json({ message: "Reservation successfully removed"})
+    const result = await Reservation.delete_reserved(reserveID, restID, userID);
 
-    } catch(err){
-        return res.status(400).json({ error: err.message });
-    }
+    if (!result)
+      return res.status(400).json({ error: "Failed to cancel reservation" });
+
+    return res.status(200).json({ message: "Reservation successfully removed" });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
 });
-
-
 
 // PATCH /v1/reservation/update/status
 // Request Body: reserveID, status
@@ -194,9 +200,6 @@ router.patch("/update/status", async (req, res) => {});
 // PATCH /v1/reservation/change/old_reserveID
 // Request Body: restID, tableID, date, date_stamp
 // sends: 201
-router.patch("/change/:old_reserveID", async (req, res) => {
-
-
-});
+router.patch("/change/:old_reserveID", async (req, res) => {});
 
 export default router;

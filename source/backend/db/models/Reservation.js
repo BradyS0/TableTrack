@@ -81,9 +81,7 @@ Reservation.create_new = async function (restID, userID, tableID, date_stamp) {
 
     // Unique constraint violation (double booking)
     if (err.name === "SequelizeUniqueConstraintError") {
-      throw new Error(
-        "Sorry, it seems someone was faster and made the reservation before you could."
-      );
+      throw new Error( "Reservation time already booked");
     }
 
     // All other errors
@@ -91,18 +89,6 @@ Reservation.create_new = async function (restID, userID, tableID, date_stamp) {
       "Failed to make reservation, verify the information provided is correct."
     );
   }
-};
-
-
-Reservation.delete = async function (reserveID) {
-  const deleted = await Reservation.destroy({
-    where: { reserveID }
-  });
-
-  if (!deleted) 
-    throw new Error("Reservation not found.");
-  
-  return true;
 };
 
 
@@ -119,6 +105,7 @@ Reservation.get_all_restaurant_reservations = async function (restID) {
       ["date_stamp", "ASC"],
       ["tableID", "ASC"]
     ],
+    raw: true,
   });
 };
 
@@ -133,6 +120,7 @@ Reservation.get_all_user_reservations = async function (userID) {
       }
     ],
     order: [["date_stamp", "ASC"]],
+    raw: true,
   });
 };
 
@@ -154,6 +142,7 @@ Reservation.get_all_table_reservations_for_day = async function (restID,tableID,
     },
     attributes: ["date_stamp"],
     order: [["date_stamp", "ASC"]],
+    raw: true,
   });
 };
 
