@@ -21,12 +21,12 @@ export const Schedule = sequelize.define("Schedule", {
 Schedule.set_day = async function (restID, day, open, close)
 {
     // Find entry with primary key
-    var sched = await Schedule.findOne({ where: {
+    const sched = await Schedule.findOne({ where: {
         restID: parseInt(restID),
         day:    parseInt(day),
     }});
 
-    var new_day = null;
+    let new_day = null;
     if (sched === null) // CASE 1: Schedule does not exist -> create day
     {
         new_day = await Schedule.create({
