@@ -176,11 +176,11 @@ drawGrid() {
         );
       }
   }
-
+/* eslint-disable-line no-unused-vars */
   onMouseMove(_evt, _pos) {
     // intentionally unused
   }
-
+/* eslint-disable-line no-unused-vars */
   onMouseUp(_evt, _pos) {
     // intentionally unused
   }
