@@ -1,10 +1,11 @@
 import {restaurantAPI} from './live/restaurant_api.js'
 import {usersAPI} from './live/user_api.js'
 import {menusAPI} from './live/menu_api.js'
-import { restaurants, menus } from './mock/mockRestdata.js'
+import { restaurants, menus, schedules } from './mock/mockRestdata.js'
 
 
 const api = {...usersAPI,...restaurantAPI}
+
 const user =  {first_name: "Test",
     last_name: "User",
     password: "Password123!"
@@ -23,6 +24,7 @@ async function populateDB(){
             console.log("creating restaurant: ", rest.name )
             const res2 = await api.createRestaurant(userID,rest.name,rest.tags, rest.address, `(20${i}) ${i}11-${i}234`)
             if(res2.code<300){
+                await api.updateSchedule(i,schedules[i%3])
                 let m = menus[i%menus.length]
                 for (let menu of m){
                     menu.price = `${menu.price}`
@@ -30,7 +32,6 @@ async function populateDB(){
                 }
             }
             
-
         }
     }
 }
