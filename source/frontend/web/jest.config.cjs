@@ -10,6 +10,12 @@ module.exports = {
 
   moduleDirectories: ['node_modules', 'js'],
 
+  moduleNameMapper: {
+    // Map CSS imports to the installed proxy
+    // '\\.css$': 'identity-obj-proxy',
+    '\\.(css|less|scss)$': 'identity-obj-proxy',
+  },
+  
   collectCoverage: true,
   collectCoverageFrom: [
     'js/components/*.js',

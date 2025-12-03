@@ -55,6 +55,7 @@ body {
   background: #fff7ee;
   border-bottom: 1px solid var(--border-soft);
   gap: 0.75rem;
+  margin-bottom: 0;
 }
 
 .tab-bar {
@@ -176,7 +177,7 @@ body {
   margin-bottom: 0.25rem;
 }
 
-.side-help-text {
+.side-help-text , label {
   font-size: 0.8rem;
   color: var(--text-muted);
   line-height: 1.35;
@@ -383,3 +384,44 @@ ul.controls-list{
 .checkbox-row input {
   accent-color: var(--accent);
 }
+
+
+.btn2:focus{
+  outline : var(--accent) 1px solid;
+
+}
+
+
+.side-reservation-panel{
+   display: flex;
+   flex-flow: column;
+   gap: 1rem;
+}
+
+.side-reservation-panel section{
+  display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+   gap: .25rem;
+}
+
+.day-select{
+  width: 100%;
+  margin-top: .8rem;
+}
+
+.rest-title{
+  margin: 0 auto;
+  font-size: medium;
+}
+
+label{
+  font-weight: 500;
+}
+
+
+.drop-down{
+  color:var(--text-main);
+  font-size: 0.8rem;
+}
+
+

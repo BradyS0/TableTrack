@@ -1,8 +1,8 @@
 import Konva from './konva.js'
 import { pointInPolygon } from "./geometry.js";
-import { TableItem } from "./items/TableItem.js";
-import { DoorItem } from "./items/DoorItem.js";
-import { WindowItem } from "./items/WindowItem.js";
+import { TableItem } from "./Items/TableItem.js";
+import { DoorItem } from "./Items/DoorItem.js";
+import { WindowItem } from "./Items/WindowItem.js";
 
 export class LayoutEditor {
   constructor(stage, backgroundLayer, itemLayer, uiLayer, state, overlayRoot) {
@@ -62,6 +62,7 @@ export class LayoutEditor {
     let item = null
     if(type ==='table' && this.isInsideFloor(pos)){
       item = new TableItem(this, pos, newItem.data)
+      item.changeFill(newItem.data.reservable ? 'green' : 'slategrey')
     }else if (type==='door'){
       item = new DoorItem(this,pos) 
       item = item.snapToNearestWall(pos) ? item : null
@@ -175,15 +176,13 @@ drawGrid() {
         );
       }
   }
-
-  onMouseMove(evt, pos) {
-    evt
-    pos
+/* eslint-disable-line no-unused-vars */
+  onMouseMove(_evt, _pos) {
+    // intentionally unused
   }
-
-  onMouseUp(evt, pos) {
-    evt
-    pos
+/* eslint-disable-line no-unused-vars */
+  onMouseUp(_evt, _pos) {
+    // intentionally unused
   }
 
 
@@ -273,11 +272,9 @@ drawGrid() {
     title.textContent = "Table settings";
     modal.appendChild(title);
 
-    const capRow = document.createElement("div");
-    capRow.className = "modal-row";
-
-    const capLabel = document.createElement("span");
+    const capLabel = document.createElement("label");
     capLabel.textContent = "Max capacity";
+    capLabel.className = 'modal-row';
 
     const capInput = document.createElement("input");
     capInput.type = "number";
@@ -285,21 +282,21 @@ drawGrid() {
     capInput.max = "20";
     capInput.value = tableItem.data.capacity ?? 4;
 
-    capRow.appendChild(capLabel);
-    capRow.appendChild(capInput);
-    modal.appendChild(capRow);
+    capLabel.appendChild(capInput);
+    modal.appendChild(capLabel);
 
-    const chkRow = document.createElement("div");
-    chkRow.className = "checkbox-row";
+    const checkLabel = document.createElement("label");
+    checkLabel.className = "checkbox-row";
+    checkLabel.textContent = "Reservable";
+    checkLabel.for = "table-reserve";
+    
     const chk = document.createElement("input");
     chk.type = "checkbox";
+    chk.id = "table-reserve";
     chk.checked = tableItem.data.reservable ?? true;
-    const chkLbl = document.createElement("span");
-    chkLbl.textContent = "Reservable";
 
-    chkRow.appendChild(chk);
-    chkRow.appendChild(chkLbl);
-    modal.appendChild(chkRow);
+    checkLabel.append(chk);
+    modal.appendChild(checkLabel);
 
     const footer = document.createElement("div");
     footer.className = "modal-footer";

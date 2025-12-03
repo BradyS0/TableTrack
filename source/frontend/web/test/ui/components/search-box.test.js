@@ -7,13 +7,6 @@ describe("createSearchBox", () => {
     document.body.innerHTML = "";
   });
 
-  test("adds stylesheet link to document head", () => {
-    createSearchBox();
-    const link = document.querySelector('link[href="css/components/search.css"]');
-    expect(link).not.toBeNull();
-    expect(link.rel).toBe("stylesheet");
-  });
-
   test("returns a span element with correct class and structure", () => {
     const searchGroup = createSearchBox();
 
@@ -42,11 +35,4 @@ describe("createSearchBox", () => {
     expect(searchGroup.searchButton).toBeInstanceOf(HTMLButtonElement);
   });
 
-  test("does not create duplicate stylesheet links on multiple calls", () => {
-    createSearchBox();
-    createSearchBox();
-    const links = document.querySelectorAll('link[href="css/components/search.css"]');
-    // you might consider enforcing uniqueness in the real function
-    expect(links.length).toBeGreaterThanOrEqual(1);
-  });
 });

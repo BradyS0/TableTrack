@@ -1,6 +1,5 @@
 //this file was partially created using copilot
 import dotenv from 'dotenv';
-// import sequelize from './db.js';
 import { sequelize, User, Restaurant, Schedule, MenuItem } from "./db/models/index.js";
 import UserLogic from './logic/userLogic.js';
 
@@ -12,17 +11,9 @@ beforeAll(async () => {
     try {
         console.log('[TEST SETUP] Resetting the test database...');
         await sequelize.sync({ force: true });
+
         console.log('[TEST SETUP] Connecting to the test database...');
         await sequelize.authenticate();
-        
-        //create any necessary test data here
-        // console.log('[TEST SETUP] Creating test user...');
-        // await User.create({
-        //     first_name: 'Test',
-        //     last_name: 'User',
-        //     email: 'testuser@example.com',
-        //     password: 'password123', // You can hash this if needed
-        // });
 
         console.log("[TEST SETUP] Creating test data");
 
@@ -47,7 +38,7 @@ beforeAll(async () => {
 
         await MenuItem.create_new(rest1.restID, "TestItem", "1.00", "Test Description", "Test Category");
         await MenuItem.create_new(rest1.restID, "To Delete", "0", "To Delete", "To Delete");
-
+        
         //for future use
         // console.log('[TEST SETUP] Running migrations...');
         // If you're using Sequelize migrations, you can run them here

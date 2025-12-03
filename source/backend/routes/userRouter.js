@@ -34,9 +34,11 @@ router.post("/login", async (req, res) => {
 
     if (!user || await UserLogic.check_password(password, user.password) === false)
         return res.status(401).json({ error: "Invalid email or password" });
+    
+    const logged_in_user = await User.get_by_email(email);
 
     return res.status(200).json({
-        user,
+        user: logged_in_user,
         message: "Login successful!"
     });
 });
