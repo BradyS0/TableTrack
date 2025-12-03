@@ -1,5 +1,5 @@
 //this file was created with help github copilot
-import { restaurants, menus } from './mock/mockRestdata.js'
+import { restaurants, menus, schedules, wallplan, tableplan, miscitems} from './mock/mockRestdata.js'
 
 // Configurable API_URL support for Node and browser environments.
 // Priority: process.env.API_URL -> window.__API_URL__ -> fallback
@@ -11,6 +11,19 @@ async function postJSON(path, body) {
     const url = `${API_URL}${path}`;
     const res = await fetch(url, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+    let data = null;
+    try { data = await res.json(); } catch (e) { /* ignore parse errors */ }
+    return { status: res.status, data };
+}
+
+// same as above but for PUT
+async function putJSON(path, body) {
+    const url = `${API_URL}${path}`;
+    const res = await fetch(url, {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     });
@@ -35,7 +48,7 @@ async function populateDB() {
         console.log('createUser ->', res1);
 
         if (res1.status && res1.status < 300) {
-            const rest = restaurants[userID - 1];
+            const rest = restaurants[i - 1];
             console.log('creating restaurant:', rest.name);
             let id = i;
             if (i < 10)
@@ -52,14 +65,31 @@ async function populateDB() {
             const res2 = await postJSON('/v1/restaurant', restBody);
             console.log('createRestaurant ->', res2);
 
+            
             if (res2.status && res2.status < 300) {
                 const m = menus[i % menus.length];
                 for (let menuItem of m) {
                     // ensure price is string like original
                     menuItem.price = `${menuItem.price}`;
-                    const res3 = await postJSON(`/v1/menu/${userID}`, menuItem);
+                    const res3 = await postJSON(`/v1/menu/${i}`, menuItem);
                     console.log('addMenuItem ->', res3);
                 }
+                const scheduleData = {};
+                scheduleData.schedule = schedules[i % schedules.length];
+                scheduleData.restID = i;
+                const schedRes = await putJSON(`/v1/restaurant/schedule`, scheduleData);
+                console.log('setSchedule ->', schedRes);
+
+                const walls = wallplan;
+                // /floorplan/walls/<restID></restID>
+                const wallRes = await putJSON(`/v1/floorplan/walls/${i}`, walls);
+                console.log('setWallLayout ->', wallRes);
+
+                // /floorplan/layout/</restID>
+                const items = { tables: tableplan, misc: miscitems };
+                const layoutRes = await putJSON(`/v1/floorplan/layout/${i}`, items);
+                console.log('setLayout ->', layoutRes);
+
             }
         } else {
             console.log('skipping restaurant creation; user create failed');
