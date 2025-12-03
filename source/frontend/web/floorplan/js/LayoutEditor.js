@@ -63,6 +63,7 @@ export class LayoutEditor {
     if(type ==='table' && this.isInsideFloor(pos)){
       item = new TableItem(this, pos, newItem.data)
       item.changeFill(newItem.data.reservable ? 'green' : 'slategrey')
+      item.changeLabel(newItem.tableID)
     }else if (type==='door'){
       item = new DoorItem(this,pos) 
       item = item.snapToNearestWall(pos) ? item : null

@@ -1,4 +1,9 @@
 import { FloorPlanEditor } from "./FloorPlanEditor.js";
+import { api } from "../../js/global.js";
+import { goToHome, goToLogin } from "../../js/components/nav.js";
+import { display_popup_msg } from "../../js/components/popupMsg.js";
+import { isoTo12hr } from "../../js/logic/format-utils.js";
+import { getUserState } from "../../js/utils.js";
 
 const MAX_DAYS_AHEAD = 14;
 const MAX_ALLOWED_GUESTS = 10;
@@ -12,29 +17,44 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const params = new URLSearchParams(window.location.search);
   const restID = params.get("restID");
-
+  
   if (!restID) return;
+  const rest = await api.getRestaurantByID(restID);
 
-  await populateFloorPlan(restID, floorplan);
+  if (rest.code < 300) {
+    await populateFloorPlan(rest.data, floorplan);
+  } else goToHome();
 });
 
-
-async function populateFloorPlan(restID, floorplan) {
+async function populateFloorPlan(rest, floorplan) {
   const guest_count = document.getElementById("guest-count");
-  populateGuestDropDown(guest_count,MAX_ALLOWED_GUESTS);
+  populateGuestDropDown(guest_count, MAX_ALLOWED_GUESTS);
+
+  document.getElementById("rest-name").innerText = rest.name;
+
+  document.getElementById('rest-name').innerText = rest.name
 
   //make a request to fetch floorplan and layout using restID
-  restID;
-  const floor = mock_floor();
-  const layout = mock_layout();
+  const floor = await api.get_walls(rest.restID);
 
-  floorplan.loadFloorplanPolygon(floor.floorplan);
-  floorplan.loadItems(layout);
+  if (floor.code < 300 && floor.data.floorplan.length >= 3) {
+    floorplan.loadFloorplanPolygon(floor.data.floorplan);
+
+    const layout = await api.get_layout(rest.restID);
+    if (layout.code < 300) floorplan.loadItems(layout.data);
+    else {
+      empty_reservation(rest.restID);
+      return;
+    }
+  } else {
+    empty_reservation(rest.restID);
+    return;
+  }
 
   const tables = floorplan.getTables();
   tables.forEach((table) => {
-    table.group.on("click", () => {
-      showReservations(table, guest_count.value);
+    table.group.on("click", async () => {
+      await showReservations(rest.restID, table);
     });
   });
 
@@ -53,47 +73,85 @@ async function populateFloorPlan(restID, floorplan) {
   });
 }
 
-
-function showReservations(table, guestAmount) {
+async function showReservations(restID, table) {
   const title = document.querySelector(".side-reservation-panel p");
   const resContainer = document.querySelector(
     ".side-reservation-panel section"
   );
+  const message = document.getElementById('ticket-msg')
+
+  message.innerHTML = ""
   resContainer.innerHTML = "";
   title.innerHTML = "";
 
+  const guest_count = document.getElementById("guest-count");
+
   if (!table.data.reservable) return;
   title.innerHTML = `Available time-slots for ${table.id} <br> max-capacity: ${table.data.capacity}`;
-  //make request and get the times from the table
 
   const daySelect = createDaySelect();
+  let i_tickets = await api.get_tickets(restID, table.id, daySelect.value);
+  if(i_tickets.data.length === 0) message.innerHTML = "No Possible Reservations Found"
+  for (let ticket of remove2Keep1(i_tickets.data))
+    resContainer.append(
+      generateTicket(restID, guest_count, table, daySelect, ticket)
+    );
+
   title.append(daySelect);
 
-  daySelect.addEventListener("change", () => {
+  daySelect.addEventListener("change", async () => {
+    resContainer.innerHTML = "";
+    message.innerHTML = ""
     daySelect.value = validateDate(daySelect);
-    console.log(daySelect.value);
-  });
-
-  for (let i = 0; i < 5; i++) {
-    const newSpan = document.createElement("button");
-    newSpan.className = "btn2 danger small";
-    newSpan.innerText = `${i + 1}:30pm`;
-
-    newSpan.addEventListener("click", () => {
-      createReservationPopup(
-        table,
-        guestAmount,
-        daySelect.value,
-        newSpan.innerText
+    const tickets = await api.get_tickets(restID, table.id, daySelect.value);
+    if(tickets.data.length === 0) message.innerHTML = "No Possible Reservations Found"
+    for (let ticket of remove2Keep1(tickets.data)) {
+      resContainer.append(
+        generateTicket(restID, guest_count, table, daySelect, ticket)
       );
-    });
-
-    resContainer.append(newSpan);
-  }
+    }
+  });
 }
 
+function generateTicket(restID, guest_count, table, daySelect, timeInfo) {
+  const newSpan = document.createElement("button");
+  newSpan.className = "btn2 danger small";
+  newSpan.innerText = isoTo12hr(timeInfo);
 
-function createReservationPopup(table, guestAmount, date, time) {
+  const user = getUserState();
+  if (!user) {
+    display_popup_msg(
+      "No User",
+      "You need to be logged in to reserve a spot",
+      goToLogin
+    );
+    return;
+  }
+
+  newSpan.addEventListener("click", () => {
+    let guestAmount = guest_count.value > 0 ? guest_count.value : 1;
+    createReservationPopup(
+      restID,
+      user.userID,
+      table,
+      guestAmount,
+      daySelect.value,
+      timeInfo
+    );
+  });
+
+  return newSpan;
+}
+
+function createReservationPopup(
+  restID,
+  userID,
+  table,
+  guestAmount,
+  date,
+  time
+) {
+  console.log(time);
   const backdrop = document.createElement("div");
   backdrop.className = "modal-backdrop";
   const modal = document.createElement("div");
@@ -104,12 +162,17 @@ function createReservationPopup(table, guestAmount, date, time) {
   const heading = document.createElement("h3");
   heading.innerText = "Reservation Confirmation";
 
-  const guestSelectParent = createGuestDropDown(table.data.capacity, guestAmount);
+  const guestSelectParent = createGuestDropDown(
+    table.data.capacity,
+    guestAmount
+  );
 
   const dateStamp = getDate(date);
   const timeDateInfo = document.createElement("section");
   timeDateInfo.className = "modal-row";
-  timeDateInfo.innerHTML = `Reservation on <b>${dateStamp.toDateString()}</b> at <b>${time}</b>`;
+  timeDateInfo.innerHTML = `Reservation on <b>${dateStamp.toDateString()}</b> at <b>${isoTo12hr(
+    time
+  )}</b>`;
 
   const acceptBtn = document.createElement("button");
   acceptBtn.className = "btn2 small primary";
@@ -119,9 +182,19 @@ function createReservationPopup(table, guestAmount, date, time) {
   cancelBtn.className = "btn2 small danger";
   cancelBtn.innerText = "Cancel";
 
-  acceptBtn.addEventListener("click", () => {
+  acceptBtn.addEventListener("click", async () => {
     // TODO: Implement reservation confirmation logic here.
     // For now, just close the modal.
+    const res = await api.create_res(
+      restID,
+      userID,
+      table.id,
+      time,
+      guestSelectParent.select.value
+    );
+    console.log(res);
+    display_popup_msg("Reservation Status",res.message)
+
     backdrop.remove();
   });
 
@@ -136,6 +209,7 @@ function createReservationPopup(table, guestAmount, date, time) {
   document.querySelector("body").append(backdrop);
 }
 
+// helper for checks and html element creation
 
 function createDaySelect() {
   const daySelect = document.createElement("input");
@@ -148,7 +222,6 @@ function createDaySelect() {
 
   return daySelect;
 }
-
 
 function futureDateString(daysToAdd) {
   const date = new Date();
@@ -164,14 +237,13 @@ function futureDateString(daysToAdd) {
   return `${year}-${month}-${day}`;
 }
 
-function getDate(yearMonthDay){
-  let [year,month,day] = yearMonthDay.split('-')
-  month = month === 1 || month==0 ? 0 : month-1
-  console.log(yearMonthDay)
-  const date = new Date(year,month,day)
-  return date
+function getDate(yearMonthDay) {
+  let [year, month, day] = yearMonthDay.split("-");
+  month = month === 1 || month == 0 ? 0 : month - 1;
+  console.log(yearMonthDay);
+  const date = new Date(year, month, day);
+  return date;
 }
-
 
 function validateDate(daySelect) {
   const min = new Date(daySelect.min);
@@ -181,283 +253,54 @@ function validateDate(daySelect) {
   return min <= curr && curr <= max ? daySelect.value : daySelect.min;
 }
 
-function createGuestDropDown(maxCapacity,selectedCapacity){
+function createGuestDropDown(maxCapacity, selectedCapacity) {
   const labelGuestSize = document.createElement("label");
   labelGuestSize.className = "modal-row";
   labelGuestSize.innerText = "Guest Amount";
   labelGuestSize.htmlFor = "res-guest";
-  
-  const select = document.createElement('select')
-  select.className = "btn2 drop-down"
+
+  const select = document.createElement("select");
+  select.className = "btn2 drop-down";
   select.id = "res-guest";
 
-  populateGuestDropDown(select,maxCapacity)
+  populateGuestDropDown(select, maxCapacity);
 
-  select.selectedIndex = selectedCapacity > maxCapacity ? 0 : selectedCapacity-1
+  select.selectedIndex =
+    selectedCapacity > maxCapacity ? 0 : selectedCapacity - 1;
 
-  labelGuestSize.select = select
-  labelGuestSize.append(select)
-  return labelGuestSize
+  labelGuestSize.select = select;
+  labelGuestSize.append(select);
+  return labelGuestSize;
 }
 
-function populateGuestDropDown(select,max){
-  for(let i=1 ; i<=max ; i++){
-    const option = document.createElement('option')
+function populateGuestDropDown(select, max) {
+  for (let i = 1; i <= max; i++) {
+    const option = document.createElement("option");
     option.value = i;
-    option.innerText = `${i} Guest${i>1 ? 's':""}`
-    select.append(option) 
+    option.innerText = `${i} Guest${i > 1 ? "s" : ""}`;
+    select.append(option);
   }
 }
 
-
-
-function mock_floor() {
-  return {
-    floorplan: [
-      {
-        x: 327.65625,
-        y: 147.8125,
-      },
-      {
-        x: 721.65625,
-        y: 147.8125,
-      },
-      {
-        x: 721.65625,
-        y: 375.8125,
-      },
-      {
-        x: 588.65625,
-        y: 375.8125,
-      },
-      {
-        x: 588.65625,
-        y: 495.8125,
-      },
-      {
-        x: 277.65625,
-        y: 495.8125,
-      },
-      {
-        x: 277.65625,
-        y: 261.8125,
-      },
-      {
-        x: 150.65625,
-        y: 261.8125,
-      },
-      {
-        x: 150.65625,
-        y: 147.8125,
-      },
-    ],
-  };
+function empty_reservation(restID) {
+  display_popup_msg(
+    "Not Reservable",
+    "It seems this restaurant doesn't have a floorplan and reservations setup",
+    () => {
+      window.location.href = `./restaurantDetail.html?restID=${restID}`;
+    }
+  );
 }
 
-
-function mock_layout() {
-  return {
-    tables: [
-      {
-        id: "a86dbffa-ae1b-4326-b085-32ef3dd08e81",
-        type: "table",
-        pos: {
-          x: 355.65625,
-          y: 406.8125,
-        },
-        rotation: 0,
-        data: {
-          capacity: 4,
-          reservable: true,
-          rotation: 0,
-        },
-      },
-      {
-        id: "c1785334-735d-467c-9e9c-dc7eda746fca",
-        type: "table",
-        pos: {
-          x: 353.65625,
-          y: 327.8125,
-        },
-        rotation: 0,
-        data: {
-          capacity: 5,
-          reservable: true,
-          rotation: 0,
-        },
-      },
-      {
-        id: "9e694792-030b-4e92-a866-bb9ff1ce52d1",
-        type: "table",
-        pos: {
-          x: 542.65625,
-          y: 403.8125,
-        },
-        rotation: 0,
-        data: {
-          capacity: 4,
-          reservable: true,
-          rotation: 0,
-        },
-      },
-      {
-        id: "b9284fcb-1f8f-4dae-902b-2d9d521e76fd",
-        type: "table",
-        pos: {
-          x: 542.65625,
-          y: 329.8125,
-        },
-        rotation: 0,
-        data: {
-          capacity: 8,
-          reservable: true,
-          rotation: 0,
-        },
-      },
-      {
-        id: "8789871e-ddf6-437a-a88c-680b9ec2c1a7",
-        type: "table",
-        pos: {
-          x: 675.65625,
-          y: 324.8125,
-        },
-        rotation: 0,
-        data: {
-          capacity: 4,
-          reservable: true,
-          rotation: 0,
-        },
-      },
-      {
-        id: "41dc6c1e-7857-4da5-8b66-ec502a831c3b",
-        type: "table",
-        pos: {
-          x: 678.65625,
-          y: 253.8125,
-        },
-        rotation: 0,
-        data: {
-          capacity: 4,
-          reservable: true,
-          rotation: 0,
-        },
-      },
-      {
-        id: "4a93da6f-c398-4664-afc2-4e7da3b782c1",
-        type: "table",
-        pos: {
-          x: 674.65625,
-          y: 188.8125,
-        },
-        rotation: 0,
-        data: {
-          capacity: 10,
-          reservable: true,
-          rotation: 0,
-        },
-      },
-      {
-        id: "20cdb432-e22b-4437-a91b-76bd31dcf884",
-        type: "table",
-        pos: {
-          x: 199.65625,
-          y: 199.8125,
-        },
-        rotation: 0,
-        data: {
-          capacity: 4,
-          reservable: false,
-          rotation: 0,
-        },
-      },
-      {
-        id: "fc90aaa7-1ea4-4d8b-a272-90b6a1c0f248",
-        type: "table",
-        pos: {
-          x: 299.65625,
-          y: 196.8125,
-        },
-        rotation: 0,
-        data: {
-          capacity: 26,
-          reservable: true,
-          rotation: 0,
-        },
-      },
-    ],
-    misc: [
-      {
-        id: "f64ca693-6f25-480c-8ded-a05d54f6997a",
-        type: "window",
-        pos: {
-          x: 150.65625,
-          y: 176.8125,
-        },
-        rotation: -90,
-        data: {
-          length: 50,
-        },
-      },
-      {
-        id: "378b763c-cc93-46fe-8086-b7a45005fddc",
-        type: "window",
-        pos: {
-          x: 150.65625,
-          y: 227.8125,
-        },
-        rotation: -90,
-        data: {
-          length: 50,
-        },
-      },
-      {
-        id: "6df8bded-2c17-4281-85f3-b0084161b198",
-        type: "window",
-        pos: {
-          x: 721.65625,
-          y: 188.8125,
-        },
-        rotation: 90,
-        data: {
-          length: 50,
-        },
-      },
-      {
-        id: "6f1a0b6e-a861-461c-abc3-6c60a82d9e53",
-        type: "window",
-        pos: {
-          x: 721.65625,
-          y: 268.8125,
-        },
-        rotation: 90,
-        data: {
-          length: 50,
-        },
-      },
-      {
-        id: "bfc2ae43-63f1-4237-b3a9-bce40a62fcc4",
-        type: "window",
-        pos: {
-          x: 721.65625,
-          y: 335.8125,
-        },
-        rotation: 90,
-        data: {
-          length: 50,
-        },
-      },
-      {
-        id: "0738398d-8ea2-4d89-93e7-8e0b12467c13",
-        type: "door",
-        pos: {
-          x: 424.65625,
-          y: 495.8125,
-        },
-        rotation: 180,
-        data: {
-          length: 80,
-        },
-      },
-    ],
-  };
+function remove2Keep1(arr) {
+  if (arr.length > 25) {
+    const result = [];
+    for (let i = 0; i < arr.length; i += 3) {
+      if (arr[i + 2] !== undefined) {
+        result.push(arr[i + 2]);
+      }
+    }
+    return result;
+  }
+  return arr;
 }

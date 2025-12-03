@@ -9,11 +9,12 @@ import sequelize from "../db.js";
 export const FP_Tables = sequelize.define("FP_Tables", {
 
     // Composite key, restID from the Restaurant table
-    tableID: { type: DataTypes.INTEGER, allowNull: false },
+    tableID: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true},
     restID:
     {
         type: DataTypes.INTEGER, 
         allowNull: false,
+        primaryKey: true,
         references: { model: 'Restaurants', key: "restID" },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
@@ -44,7 +45,7 @@ FP_Tables.set_tables = async function(restID, new_tables)
 
         // Create object in database
         await FP_Tables.create({
-            tableID: i,
+            tableID: i+1,
             restID: parseInt(restID),
             position: table.pos,
             rotation: parseFloat(table.rotation),
@@ -84,4 +85,30 @@ FP_Tables.get_tables = async function(restID)
         formatted_list.push(formatted_table);
     }
     return formatted_list;
+}
+
+
+FP_Tables.get_a_table = async function(restID,tableID)
+{
+    // Get all tables from the database
+    const table = await FP_Tables.findOne({ where: { restID: restID, tableID: tableID }});
+    
+    if (!table)
+        throw new Error("Table does not exist")
+    
+        let formatted_table = {};
+
+        // Add basic data to the new table
+        formatted_table.tableID  = table.tableID;
+        formatted_table.type     = "table";
+        formatted_table.pos      = table.position;
+        formatted_table.rotation = table.rotation;
+
+        // Add table data to the new table
+        let data = {};
+        data.capacity   = table.capacity;
+        data.reservable = table.reservable;
+        formatted_table.data = data;
+
+    return formatted_table;
 }

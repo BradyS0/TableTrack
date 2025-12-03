@@ -1,0 +1,107 @@
+
+// eslint-disable-next-line
+const API_URL = __API_URL__;
+const API = `${API_URL}/v1/floorplan`;
+
+async function set_walls(restID, walls)
+{
+
+    let result = {code:9001, message:"api backend cannot be reached"};
+    try {
+        
+        // Send request to the backend
+        const req = await fetch(`${API}/walls/${restID}`, {method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(walls)
+        });
+
+        // Unpack request results
+        result.code = req.status;
+        const data  = await req.json();
+        if(result.code < 300) 
+            result.message = 'Request completed';
+        else
+            result.message = data.error;
+
+    } catch (e) { console.log("ERROR:::",e.message); }
+
+    return result;
+}
+
+async function get_walls(restID)
+{
+    let result = {code:9001, message:"api backend cannot be reached"};
+    try {
+        
+        // Send request to the backend
+        const req = await fetch(`${API}/walls/${restID}`, {method: 'GET'});
+
+        // Unpack request results
+        result.code = req.status;
+        const data  = await req.json();
+        if(result.code < 300) {
+            result.message = 'Request completed';
+            result.data    = data;
+            //result.floorplan = data.floorplan;
+        } else 
+            result.message = data.error;
+
+    } catch (e) { console.log("ERROR:::",e.message); }
+
+    return result;
+}
+
+async function set_layout(restID, layout)
+{
+    const new_layout = { tables:layout.tables, misc:layout.misc };
+
+    let result = {code:9001, message:"api backend cannot be reached"};
+    try {
+
+        // Send request to the backend
+        const req = await fetch(`${API}/layout/${restID}`, {method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(new_layout)
+        });
+
+        // Unpack request results
+        result.code = req.status;
+        const data  = await req.json();
+        if(result.code < 300) 
+            result.message = 'Request completed';
+        else
+            result.message = data.error;
+
+    } catch (e) { console.log("ERROR:::",e.message); }
+
+    return result;
+}
+
+async function get_layout(restID)
+{
+    let result = {code:9001, message:"api backend cannot be reached"};
+    try {
+        
+        // Send request to the backend
+        const req = await fetch(`${API}/layout/${restID}`, {method: 'GET'});
+
+        // Unpack request results
+        result.code = req.status;
+        const data  = await req.json();
+        if(result.code < 300) {
+            result.message = 'Request completed';
+            result.data    = data;
+            //result.tables  = data.tables;
+            //result.misc    = data.misc;
+        } else 
+            result.message = data.error;
+
+    } catch (e) { console.log("ERROR:::",e.message); }
+
+    return result;
+}
+
+export const floorplanAPI = {
+    set_walls, get_walls,
+    set_layout, get_layout
+}

@@ -25,7 +25,6 @@ const Reservation = sequelize.define("Reservation",
     tableID: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      //TO-DO: references  for FP_Table , tableID
     },
 
     userID:  { 
@@ -68,22 +67,18 @@ const Reservation = sequelize.define("Reservation",
 Reservation.STATUS = ALLOWED_STATUS 
 
 
-Reservation.create_new = async function (restID, userID, tableID, date_stamp) {
-  const t = await sequelize.transaction();
-  const booking_window = 2.25 * 60 * 60 * 1000 ; //2.25 hrs to milliseconds 
-
-  try {
+Reservation.create_new = async function(restID, userID, tableID, date_stamp) {
+  return sequelize.transaction(async (t) => {
+    const booking_window = 2.5 * 60 * 60 * 1000
+    // interval logic
     const newStart = new Date(date_stamp);
     const newEnd = new Date(newStart.getTime() + booking_window);
 
-    // Fetch ALL overlapping reservations and lock the rows
     const overlapping = await Reservation.findAll({
       where: {
         restID,
         tableID,
-        date_stamp: {
-          [Op.lt]: newEnd,                     // existingStart < newEnd
-        }
+        date_stamp: { [Op.lt]: newEnd },
       },
       lock: t.LOCK.UPDATE,
       transaction: t
@@ -92,34 +87,28 @@ Reservation.create_new = async function (restID, userID, tableID, date_stamp) {
     const conflicts = overlapping.filter(r => {
       const existingStart = r.date_stamp;
       const existingEnd = new Date(existingStart.getTime() + 2 * 60 * 60 * 1000);
-      return existingEnd > newStart;          // existingEnd > newStart
+      return existingEnd > newStart;
     });
 
-
     if (conflicts.length > 0) {
-      await t.rollback();
-      throw new Error("Overlapped Reservation: This reservation window is already booked");
+      throw new Error("Table already booked for this time");
     }
 
-    // No overlaps → proceed with creation
-    const reservation = await Reservation.create(
-      { restID, userID, tableID, date_stamp },
-      { transaction: t }
-    );
+    try{
+    return Reservation.create({
+      restID,
+      userID,
+      tableID,
+      date_stamp
+    }, { transaction: t });
+  }catch(err){
+    if (err.name === "SequelizeUniqueConstraintError")
+      throw new Error ("Table already booked")
 
-    await t.commit();
-    return reservation;
-
-  } catch (err) {
-    await t.rollback
-    // Unique constraint violation (double booking)
-    if (err.name === "SequelizeUniqueConstraintError") {
-      throw new Error( "Table already booked for this time");
-    }
-
-    // All other errors
-    throw new Error (err.message)
+    throw err
   }
+
+  });
 };
 
 

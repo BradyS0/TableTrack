@@ -41,7 +41,7 @@ FP_Walls.set_walls = async function(restID, new_walls)
     else // ------------------- CASE 2: Walls exist, update current value
     {
         await FP_Walls.update({
-            point: new_walls,
+            points: new_walls,
         },{ where: {
             restID: parseInt(restID),
         }});

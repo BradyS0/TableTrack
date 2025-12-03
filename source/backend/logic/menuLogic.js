@@ -1,5 +1,5 @@
 function validate_name(name) {
-    return (typeof name == "string" && name.length > 0 && name.length <= 20);
+    return (typeof name == "string" && name.length > 0 && name.length <= 40);
 }
 
 //checks if string is a valid price

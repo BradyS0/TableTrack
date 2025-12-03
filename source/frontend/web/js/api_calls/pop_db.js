@@ -1,40 +1,101 @@
-import {restaurantAPI} from './live/restaurant_api.js'
-import {usersAPI} from './live/user_api.js'
-import {menusAPI} from './live/menu_api.js'
-import { restaurants, menus, schedules } from './mock/mockRestdata.js'
+//this file was created with help github copilot
+import { restaurants, menus, schedules, wallplan, tableplan, miscitems} from './mock/mockRestdata.js'
 
+// Configurable API_URL support for Node and browser environments.
+// Priority: process.env.API_URL -> window.__API_URL__ -> fallback
+const API_URL = (typeof process !== 'undefined' && process.env && process.env.API_URL)
+    || (typeof window !== 'undefined' && window.__API_URL__)
+    || 'http://localhost:3000';
 
-const api = {...usersAPI,...restaurantAPI}
+async function postJSON(path, body) {
+    const url = `${API_URL}${path}`;
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+    let data = null;
+    try { data = await res.json(); } catch (e) { /* ignore parse errors */ }
+    return { status: res.status, data };
+}
 
-const user =  {first_name: "Test",
-    last_name: "User",
-    password: "Password123!"
-  }
+// same as above but for PUT
+async function putJSON(path, body) {
+    const url = `${API_URL}${path}`;
+    const res = await fetch(url, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+    let data = null;
+    try { data = await res.json(); } catch (e) { /* ignore parse errors */ }
+    return { status: res.status, data };
+}
 
-async function populateDB(){
-    for (let i=1; i<=restaurants.length; i++){
-        let userID = i
-        user.email = `testuser${i}@example.com`
-        console.log("calling db to create: ", user.email)
+const userTemplate = {
+    first_name: 'Test',
+    last_name: 'User',
+    password: 'Password123!'
+};
 
-        const res1 = await api.createUser(user.first_name,user.last_name,user.email,user.password)
-        console.log(res1)
-        if(res1.code<300){
-            let rest = restaurants[userID-1]
-            console.log("creating restaurant: ", rest.name )
-            const res2 = await api.createRestaurant(userID,rest.name,rest.tags, rest.address, `(20${i}) ${i}11-${i}234`)
-            if(res2.code<300){
-                await api.updateSchedule(i,schedules[i%3])
-                let m = menus[i%menus.length]
-                for (let menu of m){
-                    menu.price = `${menu.price}`
-                    await menusAPI.addMenuItem(i,userID, menu)
-                }
-            }
+async function populateDB() {
+    for (let i = 1; i <= restaurants.length; i++) {
+        const userID = i;
+        const user = { ...userTemplate, email: `testuser${i}@example.com` };
+        console.log('creating user:', user.email);
+
+        const res1 = await postJSON('/v1/user', user);
+        console.log('createUser ->', res1);
+
+        if (res1.status && res1.status < 300) {
+            const rest = restaurants[i - 1];
+            console.log('creating restaurant:', rest.name);
+            let id = i;
+            if (i < 10)
+                id = "0" + i;
+            console.log(`(2${id}) ${id}1-${id}34`)
+            const restBody = {
+                userID,
+                name: rest.name,
+                tags: rest.tags,
+                address: rest.address,
+                phone: `(2${id}) ${id}1-${id}34`
+            };
+
+            const res2 = await postJSON('/v1/restaurant', restBody);
+            console.log('createRestaurant ->', res2);
+
             
+            if (res2.status && res2.status < 300) {
+                const m = menus[i % menus.length];
+                for (let menuItem of m) {
+                    // ensure price is string like original
+                    menuItem.price = `${menuItem.price}`;
+                    const res3 = await postJSON(`/v1/menu/${i}`, menuItem);
+                    console.log('addMenuItem ->', res3);
+                }
+                const scheduleData = {};
+                scheduleData.schedule = schedules[i % schedules.length];
+                scheduleData.restID = i;
+                const schedRes = await putJSON(`/v1/restaurant/schedule`, scheduleData);
+                console.log('setSchedule ->', schedRes);
+
+                const walls = wallplan;
+                // /floorplan/walls/<restID></restID>
+                const wallRes = await putJSON(`/v1/floorplan/walls/${i}`, walls);
+                console.log('setWallLayout ->', wallRes);
+
+                // /floorplan/layout/</restID>
+                const items = { tables: tableplan, misc: miscitems };
+                const layoutRes = await putJSON(`/v1/floorplan/layout/${i}`, items);
+                console.log('setLayout ->', layoutRes);
+
+            }
+        } else {
+            console.log('skipping restaurant creation; user create failed');
         }
     }
 }
 
-populateDB()
+populateDB().catch(e => console.error('populateDB error:', e));
 
