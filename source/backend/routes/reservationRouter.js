@@ -89,18 +89,6 @@ router.post("/create", async (req, res) => {
     );
 
     //TO-DO: get table info and match table capacity with given capacity
-
-    let reserved = await Reservation.get_all_table_reservations_for_day(
-      restID,
-      tableID,
-      date_stamp
-    );
-
-    //build a list of time floats from the reserved date_stamps
-    reserved = reserved.map((r) => {
-      const d = new Date(r.date_stamp);
-      return d.getHours() + d.getMinutes() / 60;
-    });
     
 
     const reservation = await Reservation.create_new(
@@ -115,7 +103,7 @@ router.post("/create", async (req, res) => {
 
     return res
       .status(201)
-      .json({ message: `Reservation made successfully for ${date.toDateString()}` });
+      .json({ message: `Reservation made successfully for ${date.toDateString()} ${date.toTimeString()}` });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }

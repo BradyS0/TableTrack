@@ -247,7 +247,7 @@ describe("Reservation double booking and overlapping test", () => {
           capacity : 3,
         });
 
-        const date_stamp3 = "2030-05-20T15:00:00"; // same exact slot
+        const date_stamp3 = "2030-05-20T15:45:00"; // super close to the overlap
         const req4 = request(app)
         .post("/v1/reservation/create")
         .send({
