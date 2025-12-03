@@ -130,3 +130,11 @@ async function delete_res(reserveID, restID, userID)
 
     return result;
 }
+
+export const reservationAPI = {
+    get_tickets,
+    create_res,
+    get_by_user,
+    get_by_rest,
+    delete_res
+}
