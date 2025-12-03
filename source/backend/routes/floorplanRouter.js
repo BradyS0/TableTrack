@@ -28,7 +28,7 @@ router.put("/walls/:id", async (req, res) => {
 
         return res.status(201).json({ message: "Successfully added walls" });
 
-    } catch (err) { return res.status(500).json({ error: "Unknown Error: Ensure request formatting is correct" }); }
+    } catch { return res.status(500).json({ error: "Unknown Error: Ensure request formatting is correct" }); }
 });
 
 
@@ -75,7 +75,7 @@ router.put("/layout/:id", async (req, res) => {
 
         return res.status(201).json({ message: "Successfully added layout" });
 
-    } catch (err) { return res.status(500).json({ error: "Unknown Error: Ensure request formatting is correct" }); }
+    } catch { return res.status(500).json({ error: "Unknown Error: Ensure request formatting is correct" }); }
 });
 
 // ================================================================================ GET
@@ -95,7 +95,7 @@ router.get("/walls/:id", async (req, res) => {
         const walls = await FP_Walls.get_walls(restID);
         return res.status(200).json({ floorplan:walls });
 
-    } catch (err) { return res.status(500).json({ error: "Unknown Error: Ensure request formatting is correct" }); }
+    } catch { return res.status(500).json({ error: "Unknown Error: Ensure request formatting is correct" }); }
 });
 
 
@@ -116,7 +116,7 @@ router.get("/layout/:id", async (req, res) => {
         const misc   = await FP_Misc.get_misc(restID);
         return res.status(200).json({ tables:tables, misc:misc });
 
-    } catch (err) { return res.status(500).json({ error: "Unknown Error: Ensure request formatting is correct" }); }
+    } catch { return res.status(500).json({ error: "Unknown Error: Ensure request formatting is correct" }); }
 });
 
 
