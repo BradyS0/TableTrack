@@ -9,11 +9,12 @@ import sequelize from "../db.js";
 export const FP_Tables = sequelize.define("FP_Tables", {
 
     // Composite key, restID from the Restaurant table
-    tableID: { type: DataTypes.INTEGER, allowNull: false },
+    tableID: { type: DataTypes.INTEGER, allowNull: false, primaryKey: true},
     restID:
     {
         type: DataTypes.INTEGER, 
         allowNull: false,
+        primaryKey: true,
         references: { model: 'Restaurants', key: "restID" },
         onDelete: "CASCADE",
         onUpdate: "CASCADE",

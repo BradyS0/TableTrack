@@ -20,7 +20,7 @@ User.hasMany(Reservation, {foreignKey : 'userID'});
 Restaurant.hasMany(Reservation, {foreignKey : 'restID'});
 Reservation.belongsTo(Restaurant, { foreignKey: 'restID', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
 Reservation.belongsTo(User, { foreignKey: 'userID', onDelete: 'CASCADE', onUpdate: 'CASCADE'});
-Reservation.belongsTo(FP_Tables, { foreignKey: 'tableID', onDelete: 'CASCADE', onUpdate: 'CASCADE'})
+Reservation.belongsTo(FP_Tables, { foreignKey: {restID:'restID', tableID:'tableID'}, onDelete: 'CASCADE', onUpdate: 'CASCADE'})
 
 // Export models and sequelize so other parts of the app can import from a single place
 export { sequelize, DataTypes, User, Restaurant, Schedule, MenuItem, FP_Walls, FP_Tables, FP_Misc, Reservation };
