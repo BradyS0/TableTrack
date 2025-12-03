@@ -1,5 +1,11 @@
 import express from "express";
-import { Schedule, Restaurant, User, Reservation } from "../db/models/index.js";
+import {
+  Schedule,
+  Restaurant,
+  User,
+  Reservation,
+  FP_Tables,
+} from "../db/models/index.js";
 import ReservationLogic from "../logic/reservationLogic.js";
 
 const router = express.Router();
@@ -8,7 +14,7 @@ const router = express.Router();
 // Request Body: restID, tableID, date_stamp
 // sends: 200 ok + [available tickets]
 router.post("/ticket", async (req, res) => {
-  let { restID, tableID, date_stamp} = req.body;
+  let { restID, tableID, date_stamp } = req.body;
   try {
     restID = ReservationLogic.validate_int(restID, "restaurant");
     tableID = ReservationLogic.validate_int(tableID, "table");
@@ -16,7 +22,8 @@ router.post("/ticket", async (req, res) => {
     const rest = await Restaurant.get_by_id(restID);
     if (!rest) return res.status(404).json({ error: "Restaurant not found." });
 
-    //TO-DO: validate the table
+    const table = await FP_Tables.get_a_table(restID, tableID);
+    if (!table.data.reservable) throw new Error("This table is not reservable");
 
     const date = ReservationLogic.validate_date(date_stamp);
     const schedule = await Schedule.get_day(restID, date.getDay());
@@ -88,14 +95,18 @@ router.post("/create", async (req, res) => {
       date.getMinutes()
     );
 
-    //TO-DO: get table info and match table capacity with given capacity
-    
+    const table = await FP_Tables.get_a_table(restID, tableID);
+    if (!table.data.reservable) throw new Error("This table is not reservable");
+    if (capacity > table.data.capacity)
+      throw new Error(
+        `Max capacity of ${table.data.capacity} allowed for this table`
+      );
 
     const reservation = await Reservation.create_new(
       restID,
       userID,
       tableID,
-      date
+      date.toISOString()
     );
 
     if (!reservation)
@@ -103,7 +114,9 @@ router.post("/create", async (req, res) => {
 
     return res
       .status(201)
-      .json({ message: `Reservation made successfully for ${date.toDateString()} ${date.toTimeString()}` });
+      .json({
+        message: `Reservation made successfully for ${date.toDateString()} ${date.toTimeString()}`,
+      });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }
@@ -151,7 +164,7 @@ router.get("/restaurant/:restID", async (req, res) => {
 // Request Body: restID, userID
 router.delete("/delete/:reserveID", async (req, res) => {
   let { reserveID } = req.params;
-  let {restID,userID} = req.body
+  let { restID, userID } = req.body;
 
   try {
     reserveID = ReservationLogic.validate_int(reserveID, "reservation");
@@ -163,21 +176,22 @@ router.delete("/delete/:reserveID", async (req, res) => {
     if (!result)
       return res.status(400).json({ error: "Failed to cancel reservation" });
 
-    return res.status(200).json({ message: "Reservation successfully removed" });
+    return res
+      .status(200)
+      .json({ message: "Reservation successfully removed" });
   } catch (err) {
     return res.status(400).json({ error: err.message });
   }
 });
 
-// PATCH /v1/reservation/update/status
-// Request Body: reserveID, status
-// sends: 201
-router.patch("/update/status", async (req, res) => {});
+// // PATCH /v1/reservation/update/status
+// // Request Body: reserveID, status
+// // sends: 201
+// router.patch("/update/status", async (req, res) => {});
 
-
-// PATCH /v1/reservation/change/old_reserveID
-// Request Body: restID, tableID, date, date_stamp
-// sends: 201
-router.patch("/change/:old_reserveID", async (req, res) => {});
+// // PATCH /v1/reservation/change/old_reserveID
+// // Request Body: restID, tableID, date, date_stamp
+// // sends: 201
+// router.patch("/change/:old_reserveID", async (req, res) => {});
 
 export default router;
