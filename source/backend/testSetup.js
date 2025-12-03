@@ -26,7 +26,6 @@ beforeAll(async () => {
         await User.create_new("TestUserB", "LastnameB", "testuserb@example.com", hashedPassword2);
 
         // ==================== Restaurants & Schedules
-        const rest1 = await Restaurant.create_new(parseInt(user1.userID), "TestRestaurant1", "100 Test Street", "(204) 123-4567", ["testtag"]);
 
         const rest1 = await Restaurant.create_new(parseInt(user1.userID), "TestRestaurant1", "100 Test Street", "(204) 123-4567", ["testtag"]);
         await Schedule.set_day(rest1.restID, 0, 0.0, 24.0); // Always open Sunday
