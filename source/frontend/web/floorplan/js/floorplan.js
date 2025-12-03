@@ -1,10 +1,13 @@
 import { FloorPlanEditor } from "./FloorPlanEditor.js";
+import { api } from "../../js/global.js";
+import { getUserState } from "../../js/utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const root = document.querySelector(".editor-root");
   const save_btn = document.getElementById("save-changes");
   if (!root) return;
   const floorplan = new FloorPlanEditor(root);
+
 
   save_btn.addEventListener("click", () => {
     if (floorplan.state.mode === 'creator') {
