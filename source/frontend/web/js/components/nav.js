@@ -47,10 +47,35 @@ async function createUserOptions(){
     userOptions.append(userName,userProfile)
 
     if(user.restID){
+    // Manager sees TWO reservation buttons
+    const myReservations = document.createElement('p');
+    myReservations.innerText = "My Reservations";
+    myReservations.addEventListener("click", () => {
+      window.location.href = './myReservations.html';
+    });
+
+    const restaurantReservations = document.createElement('p');
+      restaurantReservations.innerText = "Restaurant Reservations";
+      restaurantReservations.addEventListener("click", () => {
+        window.location.href = './restaurantReservations.html';
+      });
+
+      userOptions.append(myReservations, restaurantReservations);
+
+
     const manage = document.createElement('p')
     manage.innerText = "Manage Restaurant"
     manage.addEventListener('click', goToRestaurantManagement)
     userOptions.append(manage)
+    }else {
+      // Normal user sees ONE reservation button
+      const viewReservations = document.createElement('p');
+      viewReservations.innerText = "View Reservations";
+      viewReservations.addEventListener("click", () => {
+        window.location.href = './myReservations.html';
+      });
+
+      userOptions.append(viewReservations);
     }
 
     //show a logout button

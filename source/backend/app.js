@@ -16,7 +16,12 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 let allowed_website_urls = [];
 
 if(NODE_ENV === 'development'){
-    allowed_website_urls = ["http://localhost:5500","http://127.0.0.1:5500"];
+    allowed_website_urls = [
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
+        "http://localhost:5173",   // Vite dev server
+        "http://127.0.0.1:5173"
+      ];
 }else if (NODE_ENV === 'production'){
     allowed_website_urls = ["https://tabletrack.netlify.app"];
 }
