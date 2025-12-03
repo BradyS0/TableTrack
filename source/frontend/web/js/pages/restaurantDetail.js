@@ -1,6 +1,7 @@
 import { api } from "../global.js"
 import { loadPublicMenu } from './menu.js';
 import { createScheduleCard} from "../components/schedule.js";
+import { goToReservation } from "../components/nav.js";
 
 
 if (window.location.pathname.toLowerCase().includes("restaurantdetail")){
@@ -110,8 +111,7 @@ function createReservationButton(restID){
   reservationBtn.textContent = 'Make Reservation';
   
   reservationBtn.addEventListener("click",()=>{
-    alert("feature coming soon!")
-    restID //use this to make a call to reservation logic
+    goToReservation(restID)
   })
 
   return reservationBtn;

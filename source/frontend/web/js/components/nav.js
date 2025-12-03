@@ -1,6 +1,6 @@
 import {createRegistrationPopup} from './merchantRegister.js'
 import { getUserState, clearUserState } from '../utils.js';
-import { display_popup_msg } from "./popupMsg.js"; 
+// import { display_popup_msg } from "./popupMsg.js"; 
 
 export async function mainNavRoutes(){
   const user = getUserState() 
@@ -17,17 +17,17 @@ export async function mainNavRoutes(){
   home.innerText = "Home"
   home.addEventListener("click",goToHome)
   
-  const about = document.createElement('p')
-  about.innerText = 'About'
-  about.addEventListener('click', ()=>{
-    display_popup_msg("In Progress", "This page will contain our project vision statement and a little info about project features 😊.")})
+  // const about = document.createElement('p')
+  // about.innerText = 'About'
+  // about.addEventListener('click', ()=>{
+  //   display_popup_msg("In Progress", "This page will contain our project vision statement and a little info about project features 😊.")})
 
   //Become a merchant
   if(user && user.restID) merchant.style.display='none'    
   merchant.addEventListener("click",
         createRegistrationPopup)
 
-  nav.append(userOptions,hr,home,about,merchant)
+  nav.append(userOptions,hr,home,merchant)
 }
 
 
@@ -46,19 +46,26 @@ async function createUserOptions(){
     userProfile.addEventListener('click',goToUserProfile)
     userOptions.append(userName,userProfile)
 
-    if(user.restID){
-    const manage = document.createElement('p')
-    manage.innerText = "Manage Restaurant"
-    manage.addEventListener('click', goToRestaurantManagement)
-    userOptions.append(manage)
-    }
-
-    //show a logout button
+     //show a logout button
     const logoutOption = document.createElement('button')
     logoutOption.className = 'login-btn btn'
     logoutOption.innerText = 'Logout'
     userOptions.append(logoutOption)
     logoutOption.addEventListener('click', clearUserState)
+    
+
+    if(user.restID){
+    const mBreak = document.createElement('hr')
+    const manage = document.createElement('p')
+    manage.innerText = "Manage Restaurant"
+    manage.addEventListener('click', goToRestaurantManagement)
+
+    const fp = document.createElement('p')
+    fp.innerText = "\tManage Floorplan"
+    fp.addEventListener('click', goToFloorplan)
+    userOptions.append(mBreak,manage,fp)
+    }
+
   
   }else{
     const login = document.createElement('button')
@@ -67,6 +74,7 @@ async function createUserOptions(){
     login.addEventListener('click', goToLogin)
     userOptions.append(login)
   }
+    
 
   return userOptions;
 }
@@ -91,5 +99,7 @@ export function createNav(menuItems = ['item1', 'item2']) {
 
 export function goToHome(){window.location.href = './';}
 export function goToLogin(){window.location.href = './login.html';}
+export function goToFloorplan(){window.location.href = './floorplan.html'}
+export function goToReservation(restID){window.location.href = `./reservation.html?restID=${restID}`}
 function goToUserProfile(){window.open('./userProfile.html', '_self');}
 function goToRestaurantManagement(){window.location.href = './restaurantManagement.html'}
