@@ -62,8 +62,9 @@ export class TableItem extends Item {
     }
   }
 
-  changeLabel(newLabel){
-    this.label.text(newLabel)
+  changeLabel(id){
+    this.setID(id)
+    this.label.text(`${id}`)
   }
 
   changeFill(colorHex){

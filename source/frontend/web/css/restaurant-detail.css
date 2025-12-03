@@ -38,7 +38,7 @@
 }
 
 .reservation-btn:hover{
-    background-color: #eec05c;
+    background-color: #d47f06;
     color : black;
     transition: all 200ms ease;
 }

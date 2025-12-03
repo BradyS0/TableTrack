@@ -217,7 +217,7 @@ router.get("/:id", async (req, res) => {
     try {
         // Get restaurant id from URL
         const restID = req.params.id;
-
+        
         // Get restaurant using the id
         const restaurant = await Restaurant.get_by_id(parseInt(restID));
         if (restaurant == null)
