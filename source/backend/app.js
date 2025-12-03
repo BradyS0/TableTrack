@@ -5,6 +5,8 @@ import userRouter from "./routes/userRouter.js";
 import restaurantRouter from "./routes/restaurantRouter.js";
 import scheduleRouter from "./routes/scheduleRouter.js";
 import menuRouter from "./routes/menuRouter.js";
+import floorplanRouter from "./routes/floorplanRouter.js";
+import reservationRouter from "./routes/reservationRouter.js"
 import responseTime from "response-time";
 
 const app = express();
@@ -35,5 +37,7 @@ app.use("/v1/user", userRouter);
 app.use("/v1/restaurant/schedule", scheduleRouter);
 app.use("/v1/restaurant", restaurantRouter);
 app.use("/v1/menu", menuRouter);
+app.use("/v1/floorplan", floorplanRouter);
+app.use("/v1/reservation",reservationRouter)
 
 export { app };

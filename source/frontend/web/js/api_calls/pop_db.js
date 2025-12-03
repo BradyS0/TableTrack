@@ -1,3 +1,4 @@
+//this file was created with help github copilot
 import { restaurants, menus } from './mock/mockRestdata.js'
 
 // Configurable API_URL support for Node and browser environments.
@@ -17,14 +18,6 @@ async function postJSON(path, body) {
     try { data = await res.json(); } catch (e) { /* ignore parse errors */ }
     return { status: res.status, data };
 }
-
-// async function getJSON(path) {
-//     const url = `${API_URL}${path}`;
-//     const res = await fetch(url, { method: 'GET' });
-//     let data = null;
-//     try { data = await res.json(); } catch (e) { /* ignore parse errors */ }
-//     return { status: res.status, data };
-// }
 
 const userTemplate = {
     first_name: 'Test',
