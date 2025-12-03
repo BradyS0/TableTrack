@@ -2,7 +2,7 @@ import MenuLogic from "../../logic/menuLogic";
 
 // -------------------------------------------------- validate_name
 // valid cases
-test("menu item name that is between length 1-20", () => {
+test("menu item name that is between length 1-40", () => {
     expect(MenuLogic.validate_name("Cheese")).toEqual(true);
 });
 
@@ -15,12 +15,12 @@ test("menu item name that is length 1", () => {
     expect(MenuLogic.validate_name("a")).toEqual(true);
 });
 
-test("menu item name that is length 20", () => {
-    expect(MenuLogic.validate_name("Eggs Bacon and Toast")).toEqual(true);
+test("menu item name that is length 40", () => {
+    expect(MenuLogic.validate_name("Eggs Bacon and Toast with Avocado and To")).toEqual(true);
 });
 
-test("menu item name that is length 21", () => {
-    expect(MenuLogic.validate_name("Cheese is a long word")).toEqual(false);
+test("menu item name that is length 41", () => {
+    expect(MenuLogic.validate_name("Eggs Bacon and Toast with Avocado and Tom")).toEqual(false);
 });
 
 test("menu item name that is not a string", () => {
