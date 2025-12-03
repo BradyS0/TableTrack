@@ -10,12 +10,12 @@
         "test:integration:start": "docker-compose -f docker-compose.test.yml up -d",
         "test:integration:logs": "docker-compose -f docker-compose.test.yml logs",
         "test:integration:stop": "docker-compose -f docker-compose.test.yml down -v",
-        "local:start": "docker-compose -f docker-compose.yml up -d --build",
+        "local:start": "docker-compose -f docker-compose.yml up -d",
         "local:logs": "docker-compose -f docker-compose.yml logs",
         "local:stop": "docker-compose -f docker-compose.yml down -v",
         "test:endpoints:all": "node ./testAllEndpoints.js",
-        "load:test": "artillery run load-test.yml --record --key $(grep ARTILLERY_KEY .env | cut -d '=' -f2)",
-        "load:test:report": "artillery report load-results.json -o load-report.html"
+        "load:test": "artillery run load-test.yml --output load-results.json",
+        "load:test:cloud": "artillery run load-test.yml --record --key [enter key here]"
     },
     "dependencies": {
         "argon2": "^0.44.0",

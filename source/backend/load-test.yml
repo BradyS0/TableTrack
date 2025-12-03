@@ -1,22 +1,29 @@
 config:
   target: "http://localhost:3000"
+  payload:
+    path: "./phones_2.csv"
+    fields: ["phone", "phone_2"]
+    order: "sequential"
   phases:
     # run for 1 minute with a steady arrival rate
-    - duration: 60
-      arrivalRate: 5
+    - duration: 120
+      arrivalRate: 10
   variables:
     # sample restaurant IDs to hit (adjust to match your DB)
-    restID: [1,2,3,4,5]
+    restID: [1,2,3,4,5,6,7,8,9]
+    tags: [["Italian","Pizza"], ["Chinese","Noodles"], ["Mexican","Tacos"], ["Indian","Curry"], ["Fast-Food","Burgers"]]
 
 scenarios:
-  - name: "mixed-traffic"
+  - name: "browse restaurants"
     flow:
       - get:
           url: "/v1/restaurant"
       - get:
           url: "/v1/restaurant/{{ restID }}"
-      - get:
-          url: "/v1/menu/{{ restID }}"
+
+
+  - name: "user signup and login and restaurant creation"
+    flow:
       - post:
           url: "/v1/user"
           json:
@@ -24,6 +31,141 @@ scenarios:
             last_name: "Tester"
             email: "user-{{ $uuid }}@example.com"
             password: "Password1!"
+          capture:
+            json: "$.email"
+            as: "email"
+      - post:
+          url: "/v1/user/login"
+          json:
+            email: "{{ email }}"
+            password: "Password1!"
+          capture:
+            json: "$.user.userID"
+            as: "userID"
+      - patch:
+          url: "/v1/user/change/firstname"
+          json:
+            userID: "{{ userID }}"
+            first_name: "TesterUpdated"
+      - patch:
+          url: "/v1/user/change/lastname"
+          json:
+            userID: "{{ userID }}"
+            last_name: "LoadUpdated"
+      - patch:
+          url: "/v1/user/change/password"
+          json:
+            userID: "{{ userID }}"
+            old_password: "Password1!"
+            new_password: "NewPassword1!"
+      - patch:
+          url: "/v1/user/change/email"
+          json:
+            userID: "{{ userID }}"
+            email: "updated-{{ $uuid }}@example.com"
+      - post:
+          url: "/v1/restaurant"
+          json:
+            userID: "{{ userID }}"
+            name: "Test Restaurant"
+            tags: "{{ tags }}"
+            address: "{{ $randomNumber(1, 1000000) }} Load St, {{ $uuid}}"
+            phone: "{{ phone }}"
+          capture:
+            json: "$.restID"
+            as: "madeRestID"
+      - patch:
+          url: "/v1/restaurant/change/name"
+          json:
+            restID: "{{ madeRestID }}" 
+            name: "{{ $uuid }}"
+      - patch:
+          url: "/v1/restaurant/change/tags"
+          json:
+            restID: "{{ madeRestID }}"
+            tags: "{{ tags }}"
+      - patch:
+          url: "/v1/restaurant/change/address"
+          json:
+            restID: "{{ madeRestID }}"
+            address: "{{ $randomNumber(1, 1000000) }} Updated Address, {{ $uuid}}"
+      - patch:
+          url: "/v1/restaurant/change/description"
+          json:
+            restID: "{{ madeRestID }}"
+            description: "Updated description {{ $uuid }}"
+      - patch:
+          url: "/v1/restaurant/change/phone"
+          json:
+            restID: "{{ madeRestID }}"
+            phone: "{{ phone_2 }}"
+      - delete:
+          url: "/v1/user/{{ userID }}"
+
+  - name: "menu browsing, creation, updates, and deletion"
+    flow:
+      - post:
+          url: "/v1/menu/{{ restID }}"
+          json:
+            name: "Test Item"
+            price: "9.99"
+            description: "This is a test item."
+            category: "Test"
+          capture:
+            json: "$.itemID"
+            as: "itemID"
+      - get:
+          url: "/v1/menu/{{ restID }}"
+      - get:
+          url: "/v1/menu/{{ restID }}/{{ itemID }}"
+      - patch:
+          url: "/v1/menu/{{ restID }}/change/name"
+          json:
+            itemID: "{{ itemID }}"
+            name: "Updated Test Item"
+      - patch:
+          url: "/v1/menu/{{ restID }}/change/price"
+          json:
+            itemID: "{{ itemID }}"
+            price: "12.99"
+      - patch:
+          url: "/v1/menu/{{ restID }}/change/description"
+          json:
+            itemID: "{{ itemID }}"
+            description: "This is an updated test item."
+      - patch:
+          url: "/v1/menu/{{ restID }}/change/category"
+          json:
+            itemID: "{{ itemID }}"
+            category: "Updated Test"
+      - delete:
+          url: "/v1/menu/{{ restID }}/{{ itemID }}"
+      
+  - name: "add update, and get schedules"
+    flow:
+      - put:
+          url: "/v1/restaurant/schedule"
+          json:
+            restID: "{{ restID }}"
+            schedule:
+              - day: "sunday"
+                open: 9
+                close: 20
+              - day: "tuesday"
+                open: 11
+                close: 21
+              - day: "wednesday"
+                open: 11
+                close: 21
+              - day: "friday"
+                open: 11
+                close: 21
+              - day: "saturday"
+                open: 11
+                close: 21
+      - get:
+          url: "/v1/restaurant/schedule/weekly/{{ restID }}"
       - think: 2
+    
 
 # You can add more scenarios here (e.g. create restaurants, login flows)
