@@ -69,6 +69,7 @@ FP_Tables.get_tables = async function(restID)
         let formatted_table = {};
 
         // Add basic data to the new table
+        formatted_table.tableID  = table.tableID;
         formatted_table.type     = "table";
         formatted_table.pos      = table.position;
         formatted_table.rotation = table.rotation;
