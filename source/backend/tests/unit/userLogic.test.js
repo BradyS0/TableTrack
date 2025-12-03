@@ -128,18 +128,18 @@ test("password is length 16", () => {
 
 //hash_password
 test("checking password against hash returns true for correct password", async () => {
-    const hased = await UserLogic.hash_password("Password1!")
-    expect(await UserLogic.check_password("Password1!", hased)).toEqual(true);
+    const hashed = await UserLogic.hash_password("Password1!")
+    expect(await UserLogic.check_password("Password1!", hashed)).toEqual(true);
 });
 
 test("password entered is hashed", async () => {
-    const hased = await UserLogic.hash_password("Password1!")
-    expect(hased).not.toEqual("Password1!");
+    const hashed = await UserLogic.hash_password("Password1!")
+    expect(hashed).not.toEqual("Password1!");
 });
 
 test("hashed password does not match different password hash", async () => {
-    const hased = await UserLogic.hash_password("Password1!")
-    expect(await UserLogic.check_password("Password2!", hased)).toEqual(false);
+    const hashed = await UserLogic.hash_password("Password1!")
+    expect(await UserLogic.check_password("Password2!", hashed)).toEqual(false);
 });
 
 test("hashing the same password twice results in different hashes", async () => {
@@ -149,11 +149,11 @@ test("hashing the same password twice results in different hashes", async () => 
 });
 
 test("checking password against hash returns false for incorrect password", async () => {
-    const hased = await UserLogic.hash_password("Password1!")
-    expect(await UserLogic.check_password("WrongPassword!", hased)).toEqual(false);
+    const hashed = await UserLogic.hash_password("Password1!")
+    expect(await UserLogic.check_password("WrongPassword!", hashed)).toEqual(false);
 });
 
 test("checking empty password against hash returns false", async () => {
-    const hased = await UserLogic.hash_password("Password1!")
-    expect(await UserLogic.check_password("", hased)).toEqual(false);
+    const hashed = await UserLogic.hash_password("Password1!")
+    expect(await UserLogic.check_password("", hashed)).toEqual(false);
 });

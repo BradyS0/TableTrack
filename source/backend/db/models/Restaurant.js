@@ -1,4 +1,3 @@
-
 // Database Imports
 import { DataTypes } from "sequelize";
 import sequelize from "../db.js";

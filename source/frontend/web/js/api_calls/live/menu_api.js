@@ -1,8 +1,9 @@
-const BASE = "http://localhost:3000/v1/menu";
+const API_URL = __API_URL__;
+const API = `${API_URL}/v1/menu`;
 
 export const menusAPI = {
   async getMenuItems(restID) {
-    const res = await fetch(`${BASE}/${restID}`);
+    const res = await fetch(`${API}/${restID}`);
     const data = await res.json();
 
     return {
@@ -12,7 +13,7 @@ export const menusAPI = {
   },
 
   async addMenuItem(restID, userID, item) {
-    const res = await fetch(`${BASE}/${restID}`, {
+    const res = await fetch(`${API}/${restID}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(item)
@@ -23,7 +24,7 @@ export const menusAPI = {
   },
 
   async deleteMenuItem(restID, userID, itemID) {
-    const res = await fetch(`${BASE}/${restID}/${itemID}`, {
+    const res = await fetch(`${API}/${restID}/${itemID}`, {
       method: "DELETE"
     });
 
