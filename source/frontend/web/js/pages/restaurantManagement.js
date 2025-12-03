@@ -5,6 +5,7 @@ import { editPopup } from "../components/edit-popup.js";
 import { formatPhoneNumber } from "../logic/format-utils.js";
 import { loadOwnerMenu } from "./menu.js";
 import { createScheduleCard } from "../components/schedule.js";
+import { goToFloorplan } from "../components/nav.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const owner = getUserState();
@@ -12,7 +13,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadRestaurant(owner.restID);
     const reservationBtn = document.querySelector(".reservation-btn");
     if (reservationBtn && reservationBtn.parentElement) {
-      reservationBtn.parentElement.removeChild(reservationBtn);
+      const btn = document.createElement('button')
+      btn.innerText = "Manage Floorplan"
+      btn.onclick = goToFloorplan
+      btn.className = reservationBtn.className
+      reservationBtn.replaceWith(btn)
     }
 
     loadEditableFields(owner);

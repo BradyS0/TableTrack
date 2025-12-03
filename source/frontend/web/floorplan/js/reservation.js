@@ -1,4 +1,6 @@
 import { FloorPlanEditor } from "./FloorPlanEditor.js";
+import { api } from "../../js/global.js";
+import { goToHome } from "../../js/components/nav.js";
 
 const MAX_DAYS_AHEAD = 14;
 const MAX_ALLOWED_GUESTS = 10;
@@ -12,19 +14,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const params = new URLSearchParams(window.location.search);
   const restID = params.get("restID");
-
+  
   if (!restID) return;
+  console.log(restID)
+  const rest = await api.getRestaurantByID(restID)
+  console.log(rest)
 
-  await populateFloorPlan(restID, floorplan);
+  if(rest.code <300){
+     await populateFloorPlan(rest.data, floorplan);
+  }else
+    goToHome()
+  
 });
 
 
-async function populateFloorPlan(restID, floorplan) {
+async function populateFloorPlan(rest, floorplan) {
   const guest_count = document.getElementById("guest-count");
   populateGuestDropDown(guest_count,MAX_ALLOWED_GUESTS);
 
+  document.getElementById('rest-name').innerText = rest.name
+
   //make a request to fetch floorplan and layout using restID
-  restID;
+  rest.restID;
   const floor = mock_floor();
   const layout = mock_layout();
 
@@ -34,7 +45,7 @@ async function populateFloorPlan(restID, floorplan) {
   const tables = floorplan.getTables();
   tables.forEach((table) => {
     table.group.on("click", () => {
-      showReservations(table, guest_count.value);
+      showReservations(table);
     });
   });
 
@@ -54,13 +65,14 @@ async function populateFloorPlan(restID, floorplan) {
 }
 
 
-function showReservations(table, guestAmount) {
+function showReservations(table) {
   const title = document.querySelector(".side-reservation-panel p");
-  const resContainer = document.querySelector(
-    ".side-reservation-panel section"
-  );
+  const resContainer = document.querySelector( ".side-reservation-panel section");
   resContainer.innerHTML = "";
   title.innerHTML = "";
+
+  const guest_count = document.getElementById("guest-count");
+ 
 
   if (!table.data.reservable) return;
   title.innerHTML = `Available time-slots for ${table.id} <br> max-capacity: ${table.data.capacity}`;
@@ -80,6 +92,7 @@ function showReservations(table, guestAmount) {
     newSpan.innerText = `${i + 1}:30pm`;
 
     newSpan.addEventListener("click", () => {
+      let guestAmount = guest_count.value>0 ? guest_count.value : 1 
       createReservationPopup(
         table,
         guestAmount,
@@ -259,7 +272,7 @@ function mock_layout() {
   return {
     tables: [
       {
-        id: "a86dbffa-ae1b-4326-b085-32ef3dd08e81",
+        tableID: "1",
         type: "table",
         pos: {
           x: 355.65625,
@@ -273,7 +286,7 @@ function mock_layout() {
         },
       },
       {
-        id: "c1785334-735d-467c-9e9c-dc7eda746fca",
+        tableID: "2",
         type: "table",
         pos: {
           x: 353.65625,
@@ -287,7 +300,7 @@ function mock_layout() {
         },
       },
       {
-        id: "9e694792-030b-4e92-a866-bb9ff1ce52d1",
+        tableID: "3",
         type: "table",
         pos: {
           x: 542.65625,
@@ -301,7 +314,7 @@ function mock_layout() {
         },
       },
       {
-        id: "b9284fcb-1f8f-4dae-902b-2d9d521e76fd",
+        tableID: "4",
         type: "table",
         pos: {
           x: 542.65625,
@@ -315,7 +328,7 @@ function mock_layout() {
         },
       },
       {
-        id: "8789871e-ddf6-437a-a88c-680b9ec2c1a7",
+        tableID: "5",
         type: "table",
         pos: {
           x: 675.65625,
@@ -329,7 +342,7 @@ function mock_layout() {
         },
       },
       {
-        id: "41dc6c1e-7857-4da5-8b66-ec502a831c3b",
+        tableID: "6",
         type: "table",
         pos: {
           x: 678.65625,
@@ -343,7 +356,7 @@ function mock_layout() {
         },
       },
       {
-        id: "4a93da6f-c398-4664-afc2-4e7da3b782c1",
+        tableID: "7",
         type: "table",
         pos: {
           x: 674.65625,
@@ -357,7 +370,7 @@ function mock_layout() {
         },
       },
       {
-        id: "20cdb432-e22b-4437-a91b-76bd31dcf884",
+        tableID: "B",
         type: "table",
         pos: {
           x: 199.65625,
@@ -371,7 +384,7 @@ function mock_layout() {
         },
       },
       {
-        id: "fc90aaa7-1ea4-4d8b-a272-90b6a1c0f248",
+        tableID: "A",
         type: "table",
         pos: {
           x: 299.65625,
@@ -387,7 +400,7 @@ function mock_layout() {
     ],
     misc: [
       {
-        id: "f64ca693-6f25-480c-8ded-a05d54f6997a",
+        tableID: "f64ca693-6f25-480c-8ded-a05d54f6997a",
         type: "window",
         pos: {
           x: 150.65625,
