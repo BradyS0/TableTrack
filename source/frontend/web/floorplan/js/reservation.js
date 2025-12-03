@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const params = new URLSearchParams(window.location.search);
   const restID = params.get("restID");
-
+  
   if (!restID) return;
   const rest = await api.getRestaurantByID(restID);
 
@@ -31,6 +31,8 @@ async function populateFloorPlan(rest, floorplan) {
   populateGuestDropDown(guest_count, MAX_ALLOWED_GUESTS);
 
   document.getElementById("rest-name").innerText = rest.name;
+
+  document.getElementById('rest-name').innerText = rest.name
 
   //make a request to fetch floorplan and layout using restID
   const floor = await api.get_walls(rest.restID);
