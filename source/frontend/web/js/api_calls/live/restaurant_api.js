@@ -1,11 +1,10 @@
 import { getRandomRating } from "../mock/restaurant_api.js";
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = __API_URL__;
 const API = `${API_URL}/v1/restaurant`;
 
 async function getRestaurants() {
 
   let result = {code:9001, message:"api backend cannot be reached"};
-    
     try{
     const req = await fetch(API, {method: 'GET'})
 

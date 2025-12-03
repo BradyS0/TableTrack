@@ -65,6 +65,7 @@ DB_HOST=db
 DB_PORT=5432
 API_PORT=3000
 LOCAL_DB=true
+NODE_ENV=development
 ```
 
 To start the backend server from the command line run:
@@ -88,6 +89,7 @@ DB_HOST=[get from developer]
 DB_PORT=5432
 API_PORT=3000
 LOCAL_DB=false
+NODE_ENV=development
 ```
 Then run:
 
@@ -111,7 +113,9 @@ DB_NAME=tabletrackdb
 DB_HOST=localhost
 DB_PORT=5432
 API_PORT=3001
+HOST=127.0.0.1
 ENABLE_PROFILING=true
+NODE_ENV=development
 ```
 
 Then run the following commands:

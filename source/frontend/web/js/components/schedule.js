@@ -1,10 +1,15 @@
 import { floatToTime } from "../logic/format-utils.js";
+import scheduleCssUrl from '../../css/components/schedule.css?url';
 
 // Creates the full schedule card
 export function createScheduleCard(scheduleData) {
-const head = document.querySelector('head');
-  if(!head.innerHTML.includes('schedule.css'))
-    head.innerHTML+='<link rel="stylesheet" href="css/components/schedule.css">'
+  const head = document.querySelector('head');
+  if (!document.querySelector(`link[href="${scheduleCssUrl}"]`)) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = scheduleCssUrl;
+    head.appendChild(link);
+  }
 
   const card = document.createElement("div");
   card.className = "schedule-card";
