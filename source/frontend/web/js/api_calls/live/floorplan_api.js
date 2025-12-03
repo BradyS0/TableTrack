@@ -5,7 +5,6 @@ const API = `${API_URL}/v1/floorplan`;
 
 async function set_walls(restID, walls)
 {
-    const new_walls = { floorplan: walls };
 
     let result = {code:9001, message:"api backend cannot be reached"};
     try {
@@ -13,7 +12,7 @@ async function set_walls(restID, walls)
         // Send request to the backend
         const req = await fetch(`${API}/walls/${restID}`, {method: 'PUT',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(new_walls)
+            body: JSON.stringify(walls)
         });
 
         // Unpack request results
@@ -52,9 +51,9 @@ async function get_walls(restID)
     return result;
 }
 
-async function set_layout(restID, tables, misc)
+async function set_layout(restID, layout)
 {
-    const new_layout = { tables:tables, misc:misc };
+    const new_layout = { tables:layout.tables, misc:layout.misc };
 
     let result = {code:9001, message:"api backend cannot be reached"};
     try {

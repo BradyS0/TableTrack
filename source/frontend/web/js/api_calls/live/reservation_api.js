@@ -21,7 +21,7 @@ async function get_tickets(restID, tableID, date)
         const data  = await req.json();
         if(result.code < 300) {
             result.message = 'Request completed';
-            result.data    = data;
+            result.data    = data.tickets;
             //result.tickets = data.tickets;
         } else
             result.message = data.error;
@@ -48,8 +48,7 @@ async function create_res(restID, userID, tableID, date, people)
         result.code = req.status;
         const data  = await req.json();
         if(result.code < 300) {
-            result.message = 'Request completed';
-            result.data    = data;
+            result.message = data.message;
         } else
             result.message = data.error;
 
