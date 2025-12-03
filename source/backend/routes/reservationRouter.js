@@ -96,6 +96,7 @@ router.post("/create", async (req, res) => {
     );
 
     const table = await FP_Tables.get_a_table(restID, tableID);
+    if(!table) throw new Error ("Table not found")
     if (!table.data.reservable) throw new Error("This table is not reservable");
     if (capacity > table.data.capacity)
       throw new Error(

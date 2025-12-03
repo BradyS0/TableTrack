@@ -38,6 +38,18 @@ export const timeToFloat = (val) => {
 };
 
 
+export function isoTo12hr(isoString) {
+  const date = new Date(isoString);
+
+  return new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "UTC",
+  }).format(date);
+}
+
+
 
 /**
  * Checks if the password is at least 8 characters long.

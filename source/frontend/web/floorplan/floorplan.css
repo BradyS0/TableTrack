@@ -404,6 +404,10 @@ ul.controls-list{
    gap: .25rem;
 }
 
+.side-reservation-panel section:only-child {
+   grid-column: 1 / -1; /* spans all grid columns */
+}
+
 .day-select{
   width: 100%;
   margin-top: .8rem;
@@ -422,6 +426,10 @@ label{
 .drop-down{
   color:var(--text-main);
   font-size: 0.8rem;
+}
+
+#ticket-msg{
+  font-size: medium;
 }
 
 
