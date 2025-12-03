@@ -6,3 +6,4 @@ changed_files.txt
 .clinic/
 dist/
 .vscode/
+frontend/*/*.class
