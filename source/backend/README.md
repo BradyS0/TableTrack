@@ -113,7 +113,6 @@ DB_NAME=tabletrackdb
 DB_HOST=localhost
 DB_PORT=5432
 API_PORT=3001
-HOST=127.0.0.1
 ENABLE_PROFILING=true
 NODE_ENV=development
 ```
@@ -141,3 +140,19 @@ Go back to the first command line and hit Ctrl-c, then run:
 ```bash
 npm run local:stop    # this will stop the backend and clear the docker container
 ```
+
+### Load Testing:
+
+To run the load tests you must first be run a clean version of the local API Server + Database from above (added data may interfere with test data)
+
+Then run this to to populate the database:
+```bash
+node ../frontend/web/js/api_calls/pop_db.js
+```
+
+After this is done run this to run the load test:
+
+```bash
+npm run load:test
+```
+This will print a summary of the events.
