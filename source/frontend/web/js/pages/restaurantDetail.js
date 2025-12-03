@@ -4,7 +4,7 @@ import { createScheduleCard} from "../components/schedule.js";
 import { goToReservation } from "../components/nav.js";
 
 
-if (window.location.pathname.includes("restaurantDetail")){
+if (window.location.pathname.toLowerCase().includes("restaurantdetail")){
 document.addEventListener("DOMContentLoaded", async()=>{
      const params = new URLSearchParams(window.location.search);
      await loadRestaurant(params.get('restID'))
