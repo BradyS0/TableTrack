@@ -1,4 +1,5 @@
 
+// eslint-disable-next-line
 const API_URL = __API_URL__;
 const API = `${API_URL}/v1/floorplan`;
 
@@ -28,7 +29,7 @@ async function set_walls(restID, walls)
     return result;
 }
 
-async function get_walls()
+async function get_walls(restID)
 {
     let result = {code:9001, message:"api backend cannot be reached"};
     try {
@@ -77,7 +78,7 @@ async function set_layout(restID, tables, misc)
     return result;
 }
 
-async function get_layout()
+async function get_layout(restID)
 {
     let result = {code:9001, message:"api backend cannot be reached"};
     try {
@@ -99,4 +100,9 @@ async function get_layout()
     } catch (e) { console.log("ERROR:::",e.message); }
 
     return result;
+}
+
+export const floorplanAPI = {
+    set_walls, get_walls,
+    set_layout, get_layout
 }
