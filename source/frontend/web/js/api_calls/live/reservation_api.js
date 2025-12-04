@@ -1,140 +1,143 @@
-
+import loader from "./loader.js";
 // eslint-disable-next-line
 const API_URL = __API_URL__;
 const API = `${API_URL}/v1/reservation`;
 
-async function get_tickets(restID, tableID, date)
-{
-    const new_body = { restID:restID, tableID:tableID, date_stamp:date };
+async function get_tickets(restID, tableID, date) {
+  const new_body = { restID: restID, tableID: tableID, date_stamp: date };
+  loader.showLoading();
+  let result = { code: 9001, message: "api backend cannot be reached" };
+  try {
+    // Send request to the backend
+    const req = await fetch(`${API}/ticket`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(new_body),
+    });
 
-    let result = {code:9001, message:"api backend cannot be reached"};
-    try {
-
-        // Send request to the backend
-        const req = await fetch(`${API}/ticket`, {method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(new_body)
-        });
-
-        // Unpack request results
-        result.code = req.status;
-        const data  = await req.json();
-        if(result.code < 300) {
-            result.message = 'Request completed';
-            result.data    = data.tickets || [];
-            //result.tickets = data.tickets;
-        } else{
-            result.data = []
-            result.message = data.error;
-        }
-
-    } catch (e) { console.log("ERROR:::",e.message); }
-
-    return result;
+    // Unpack request results
+    result.code = req.status;
+    const data = await req.json();
+    if (result.code < 300) {
+      result.message = "Request completed";
+      result.data = data.tickets || [];
+      //result.tickets = data.tickets;
+    } else {
+      result.data = [];
+      result.message = data.error;
+    }
+  } catch (e) {
+    console.log("ERROR:::", e.message);
+  }
+  loader.hideLoading();
+  return result;
 }
 
-async function create_res(restID, userID, tableID, date, people)
-{
-    const new_body = { restID:restID, userID:userID, tableID:tableID, date_stamp:date, capacity:people };
+async function create_res(restID, userID, tableID, date, people) {
+  const new_body = {
+    restID: restID,
+    userID: userID,
+    tableID: tableID,
+    date_stamp: date,
+    capacity: people,
+  };
+  loader.showLoading();
+  let result = { code: 9001, message: "api backend cannot be reached" };
+  try {
+    // Send request to the backend
+    const req = await fetch(`${API}/create`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(new_body),
+    });
 
-    let result = {code:9001, message:"api backend cannot be reached"};
-    try {
-
-        // Send request to the backend
-        const req = await fetch(`${API}/create`, {method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(new_body)
-        });
-
-        // Unpack request results
-        result.code = req.status;
-        const data  = await req.json();
-        if(result.code < 300) {
-            result.message = data.message;
-        } else
-            result.message = data.error;
-
-    } catch (e) { console.log("ERROR:::",e.message); }
-
-    return result;
+    // Unpack request results
+    result.code = req.status;
+    const data = await req.json();
+    if (result.code < 300) {
+      result.message = data.message;
+    } else result.message = data.error;
+  } catch (e) {
+    console.log("ERROR:::", e.message);
+  }
+  loader.hideLoading();
+  return result;
 }
 
-async function get_by_user(userID)
-{
-    let result = {code:9001, message:"api backend cannot be reached"};
-    try {
+async function get_by_user(userID) {
+  loader.showLoading();
+  let result = { code: 9001, message: "api backend cannot be reached" };
+  try {
+    // Send request to the backend
+    const req = await fetch(`${API}/user/${userID}`, { method: "GET" });
 
-        // Send request to the backend
-        const req = await fetch(`${API}/user/${userID}`, {method: 'GET'});
-
-        // Unpack request results
-        result.code = req.status;
-        const data  = await req.json();
-        if(result.code < 300) {
-            result.message = 'Request completed';
-            result.data    = data.reservations;
-        } else
-            result.message = data.error;
-
-    } catch (e) { console.log("ERROR:::",e.message); }
-
-    return result;
+    // Unpack request results
+    result.code = req.status;
+    const data = await req.json();
+    if (result.code < 300) {
+      result.message = "Request completed";
+      result.data = data.reservations;
+    } else result.message = data.error;
+  } catch (e) {
+    console.log("ERROR:::", e.message);
+  }
+  loader.hideLoading();
+  return result;
 }
 
-async function get_by_rest(restID)
-{
-    let result = {code:9001, message:"api backend cannot be reached"};
-    try {
+async function get_by_rest(restID) {
+  loader.showLoading();
+  let result = { code: 9001, message: "api backend cannot be reached" };
+  try {
+    // Send request to the backend
+    const req = await fetch(`${API}/restaurant/${restID}`, { method: "GET" });
 
-        // Send request to the backend
-        const req = await fetch(`${API}/restaurant/${restID}`, {method: 'GET'});
-
-        // Unpack request results
-        result.code = req.status;
-        const data  = await req.json();
-        if(result.code < 300) {
-            result.message = 'Request completed';
-            result.data    = data.reservations;
-            //result.reservations = data.reservations;
-        } else
-            result.message = data.error;
-
-    } catch (e) { console.log("ERROR:::",e.message); }
-
-    return result;
+    // Unpack request results
+    result.code = req.status;
+    const data = await req.json();
+    if (result.code < 300) {
+      result.message = "Request completed";
+      result.data = data.reservations;
+      //result.reservations = data.reservations;
+    } else result.message = data.error;
+  } catch (e) {
+    console.log("ERROR:::", e.message);
+  }
+  loader.hideLoading();
+  return result;
 }
 
-async function delete_res(reserveID, restID, userID)
-{
-    const new_body = { restID:restID, userID:userID };
+async function delete_res(reserveID, restID, userID) {
+  loader.showLoading();
+  const new_body = { restID: restID, userID: userID };
 
-    let result = {code:9001, message:"api backend cannot be reached"};
-    try {
+  let result = { code: 9001, message: "api backend cannot be reached" };
+  try {
+    // Send request to the backend
+    const req = await fetch(`${API}/delete/${reserveID}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(new_body),
+    });
 
-        // Send request to the backend
-        const req = await fetch(`${API}/delete/${reserveID}`, {method: 'DELETE',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(new_body)
-        });
-
-        // Unpack request results
-        result.code = req.status;
-        const data  = await req.json();
-        if(result.code < 300) {
-            result.message = 'Request completed';
-            result.data    = data;
-        } else
-            result.message = data.error;
-
-    } catch (e) { console.log("ERROR:::",e.message); }
-
-    return result;
+    // Unpack request results
+    result.code = req.status;
+    const data = await req.json();
+    if (result.code < 300) {
+      result.message = "Request completed";
+      result.data = data;
+    } else result.message = data.error;
+  } catch (e) {
+    console.log("ERROR:::", e.message);
+  }
+  loader.hideLoading();
+  return result;
 }
 
 export const reservationAPI = {
-    get_tickets,
-    create_res,
-    get_by_user,
-    get_by_rest,
-    delete_res
-}
+  get_tickets,
+  create_res,
+  get_by_user,
+  get_by_rest,
+  delete_res,
+};

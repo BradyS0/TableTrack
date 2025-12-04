@@ -1,309 +1,309 @@
 import { getRandomRating } from "../mock/restaurant_api.js";
 const API_URL = __API_URL__;
 const API = `${API_URL}/v1/restaurant`;
+import loader from "./loader.js";
 
 async function getRestaurants() {
+  loader.showLoading();
+  let result = { code: 9001, message: "api backend cannot be reached" };
+  try {
+    const req = await fetch(API, { method: "GET" });
 
-  let result = {code:9001, message:"api backend cannot be reached"};
-    try{
-    const req = await fetch(API, {method: 'GET'})
-
-    result.code = req.status
+    result.code = req.status;
     const data = await req.json();
 
-    if(result.code<300){
-      const rests = data.restaurants
-      console.log(rests)
-      rests.forEach( r => r.rating = getRandomRating(2,5) )
+    if (result.code < 300) {
+      const rests = data.restaurants;
+      console.log(rests);
+      rests.forEach((r) => (r.rating = getRandomRating(2, 5)));
 
-      result.restaurants = rests
-      result.message = 'request completed'
-    }else
-      result.message = data.error
-    
-  }catch(e){
-      console.log("ERROR:::",e.message)
-    }
-
-    return result;
+      result.restaurants = rests;
+      result.message = "request completed";
+    } else result.message = data.error;
+  } catch (e) {
+    console.log("ERROR:::", e.message);
+  }
+  loader.hideLoading();
+  return result;
 }
 
-
-
 const createRestaurant = async (userID, name, tags, address, phone) => {
-  let result = {code:9001, message:"api backend cannot be reached"};
+  loader.showLoading();
+  let result = { code: 9001, message: "api backend cannot be reached" };
   const newRest = {
     userID,
     name,
     tags,
     address,
-    phone
+    phone,
   };
 
-  console.log(newRest)
-    
-    try{
-    const req = await fetch(API, {method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(newRest)
-    })
+  console.log(newRest);
 
-    result.code = req.status
+  try {
+    const req = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newRest),
+    });
+
+    result.code = req.status;
     const data = await req.json();
 
-    if(result.code<300){
-      result.restID =  data.restID
-      result.message = 'Restaurant created successfully'
-    }else
-      result.message = data.error
-    
-  }catch{
-      console.log("ERROR:::",result)
-      result = {code:9001, message:"api backend cannot be reached"};
+    if (result.code < 300) {
+      result.restID = data.restID;
+      result.message = "Restaurant created successfully";
+    } else result.message = data.error;
+  } catch {
+    console.log("ERROR:::", result);
+    result = { code: 9001, message: "api backend cannot be reached" };
   }
-
-    return result;
-};
-
-
-
-const getRestaurantByOwner = async(userID) => {
-   let result = {code:9001, message:"api backend cannot be reached"};
-
-    try{
-    const req = await fetch(`${API}/user/${userID}`, {method: 'GET'})
-
-    result.code = req.status
-    const data = await req.json();
-
-    if(result.code<300){
-      result.restID =  data.restID
-      result.message = 'Restaurant found'
-    }else
-      result.message = data.error
-    
-  }catch{
-      console.log("ERROR:::",result)
-      result = {code:9001, message:"api backend cannot be reached"};
-  } 
-
+  loader.hideLoading();
   return result;
 };
 
+const getRestaurantByOwner = async (userID) => {
+  loader.showLoading();
+  let result = { code: 9001, message: "api backend cannot be reached" };
 
-const getRestaurantByID = async(restID) => {
-  let result = {code:9001, message:"api backend cannot be reached"};
+  try {
+    const req = await fetch(`${API}/user/${userID}`, { method: "GET" });
 
-    try{
-    const req = await fetch(`${API}/${restID}`, {method: 'GET'})
-
-    result.code = req.status
+    result.code = req.status;
     const data = await req.json();
 
-    if(result.code<300){
-      data.rating  = getRandomRating(2,5)
-      result.data =  data
-      result.message = 'Restaurant found'
-    }else
-      result.message = data.error
-    
-  }catch(e){
-      console.log("ERROR:::",e.message)
-      result = {code:9001, message:"api backend cannot be reached"};
+    if (result.code < 300) {
+      result.restID = data.restID;
+      result.message = "Restaurant found";
+    } else result.message = data.error;
+  } catch {
+    console.log("ERROR:::", result);
+    result = { code: 9001, message: "api backend cannot be reached" };
   }
 
+  loader.hideLoading();
   return result;
 };
 
+const getRestaurantByID = async (restID) => {
+  loader.showLoading();
+  let result = { code: 9001, message: "api backend cannot be reached" };
 
+  try {
+    const req = await fetch(`${API}/${restID}`, { method: "GET" });
 
-const changeRestaurantName = async(restID, userID, name) => {
-  let result = {code:9001, message:"api backend cannot be reached"};
-
-    try{
-    const req = await fetch(`${API}/change/name`, {method: 'PATCH',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({restID:restID, name:name})}
-    )
-
-    result.code = req.status
+    result.code = req.status;
     const data = await req.json();
 
-    if(result.code<300){
-      result.message = 'Restaurant name updated'
-    }else
-      result.message = data.error
-    
-  }catch{
-      console.log("ERROR:::",result)
-      result = {code:9001, message:"api backend cannot be reached"};
+    if (result.code < 300) {
+      data.rating = getRandomRating(2, 5);
+      result.data = data;
+      result.message = "Restaurant found";
+    } else result.message = data.error;
+  } catch (e) {
+    console.log("ERROR:::", e.message);
+    result = { code: 9001, message: "api backend cannot be reached" };
   }
-
+  loader.hideLoading();
   return result;
 };
 
+const changeRestaurantName = async (restID, userID, name) => {
+  let result = { code: 9001, message: "api backend cannot be reached" };
+  loader.showLoading();
 
-const changeRestaurantAddress = async(restID, userID, address) => {
-  let result = {code:9001, message:"api backend cannot be reached"};
+  try {
+    const req = await fetch(`${API}/change/name`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ restID: restID, name: name }),
+    });
 
-    try{
-    const req = await fetch(`${API}/change/address`, {method: 'PATCH',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({restID,address})}
-    )
-
-    result.code = req.status
+    result.code = req.status;
     const data = await req.json();
 
-    if(result.code<300){
-      result.message = 'Restaurant address updated'
-    }else
-      result.message = data.error
-    
-  }catch{
-      console.log("ERROR:::",result)
-      result = {code:9001, message:"api backend cannot be reached"};
+    if (result.code < 300) {
+      result.message = "Restaurant name updated";
+    } else result.message = data.error;
+  } catch {
+    console.log("ERROR:::", result);
+    result = { code: 9001, message: "api backend cannot be reached" };
   }
-
+  loader.hideLoading();
   return result;
 };
 
+const changeRestaurantAddress = async (restID, userID, address) => {
+  loader.showLoading();
+  let result = { code: 9001, message: "api backend cannot be reached" };
 
-const changeRestaurantPhone = async(restID, userID, phone) => {
- let result = {code:9001, message:"api backend cannot be reached"};
+  try {
+    const req = await fetch(`${API}/change/address`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ restID, address }),
+    });
 
-    try{
-    const req = await fetch(`${API}/change/phone`, {method: 'PATCH',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({restID:restID, phone:phone})}
-    )
-
-    result.code = req.status
+    result.code = req.status;
     const data = await req.json();
 
-    if(result.code<300){
-      result.message = 'Restaurant phone updated'
-    }else
-      result.message = data.error
-    
-  }catch{
-      console.log("ERROR:::",result)
-      result = {code:9001, message:"api backend cannot be reached"};
+    if (result.code < 300) {
+      result.message = "Restaurant address updated";
+    } else result.message = data.error;
+  } catch {
+    console.log("ERROR:::", result);
+    result = { code: 9001, message: "api backend cannot be reached" };
   }
-
+  loader.hideLoading();
   return result;
 };
 
+const changeRestaurantPhone = async (restID, userID, phone) => {
+  let result = { code: 9001, message: "api backend cannot be reached" };
+  loader.showLoading();
+  try {
+    const req = await fetch(`${API}/change/phone`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ restID: restID, phone: phone }),
+    });
 
-const changeRestaurantTags = async(restID, userID, tags) => {
-  const tagInfo = Array.isArray(tags) ? 
-                  tags.filter(tag=>tag.trim().length>2).join('') : ""
-                  
-if (tagInfo.length<3) return { code: 400, message: "Tags must contain some information consisting of atleast 3 characters or more" };
-
-let result = {code:9001, message:"api backend cannot be reached"};
-
-    try{
-    console.log(tags)
-    const req = await fetch(`${API}/change/tags`, {method: 'PATCH',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({restID, tags})}
-    )
-
-    result.code = req.status
+    result.code = req.status;
     const data = await req.json();
 
-    if(result.code<300){
-      result.message = 'Restaurant tags updated'
-    }else
-      result.message = data.error
-    
-  }catch{
-      console.log("ERROR:::",result)
-      result = {code:9001, message:"api backend cannot be reached"};
+    if (result.code < 300) {
+      result.message = "Restaurant phone updated";
+    } else result.message = data.error;
+  } catch {
+    console.log("ERROR:::", result);
+    result = { code: 9001, message: "api backend cannot be reached" };
   }
-
+  loader.hideLoading();
   return result;
 };
 
+const changeRestaurantTags = async (restID, userID, tags) => {
+  loader.showLoading();
+  const tagInfo = Array.isArray(tags)
+    ? tags.filter((tag) => tag.trim().length > 2).join("")
+    : "";
+
+  if (tagInfo.length < 3)
+    return {
+      code: 400,
+      message:
+        "Tags must contain some information consisting of atleast 3 characters or more",
+    };
+
+  let result = { code: 9001, message: "api backend cannot be reached" };
+
+  try {
+    console.log(tags);
+    const req = await fetch(`${API}/change/tags`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ restID, tags }),
+    });
+
+    result.code = req.status;
+    const data = await req.json();
+
+    if (result.code < 300) {
+      result.message = "Restaurant tags updated";
+    } else result.message = data.error;
+  } catch {
+    console.log("ERROR:::", result);
+    result = { code: 9001, message: "api backend cannot be reached" };
+  }
+
+  loader.hideLoading();
+  return result;
+};
 
 // -----------------------------------------------Schedule functions
-async function updateSchedule(restID,schedule){
-  let result = {code:9001, message:"api backend cannot be reached"};
+async function updateSchedule(restID, schedule) {
+  let result = { code: 9001, message: "api backend cannot be reached" };
+  loader.showLoading();
 
-  try{
-    const req = await fetch(`${API}/schedule`, {method: 'PUT',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({restID, schedule})}
-    )
+  try {
+    const req = await fetch(`${API}/schedule`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ restID, schedule }),
+    });
 
-    result.code = req.status
+    result.code = req.status;
     const data = await req.json();
 
-    if(result.code<300){
-      result.message = 'Schedule changes accepted'
-    }else
-      result.message = data.error
-    
-  }catch{
-      console.log("ERROR:::",result)
-      result = {code:9001, message:"api backend cannot be reached"};
+    if (result.code < 300) {
+      result.message = "Schedule changes accepted";
+    } else result.message = data.error;
+  } catch {
+    console.log("ERROR:::", result);
+    result = { code: 9001, message: "api backend cannot be reached" };
   }
 
-  return result
+  loader.hideLoading();
+  return result;
 }
 
-async function getDaySchedule(restID,day){
-  let result = {code:9001, message:"api backend cannot be reached"};
+async function getDaySchedule(restID, day) {
+  let result = { code: 9001, message: "api backend cannot be reached" };
+  loader.showLoading();
 
-  try{
-    const req = await fetch(`${API}/schedule?restID=${restID}&day=${day}`, 
-      {method: 'GET'})
+  try {
+    const req = await fetch(`${API}/schedule?restID=${restID}&day=${day}`, {
+      method: "GET",
+    });
 
-    result.code = req.status
+    result.code = req.status;
     const data = await req.json();
 
-    if(result.code<300){
-      result.message = 'Schedule changes accepted'
-    }else
-      result.message = data.error
-    
-  }catch{
-      console.log("ERROR:::",result)
-      result = {code:9001, message:"api backend cannot be reached"};
+    if (result.code < 300) {
+      result.message = "Schedule changes accepted";
+    } else result.message = data.error;
+  } catch {
+    console.log("ERROR:::", result);
+    result = { code: 9001, message: "api backend cannot be reached" };
   }
 
-  return result
-
+  loader.hideLoading();
+  return result;
 }
 
-async function getFullSchedule(restID){
-  let result = {code:9001, message:"api backend cannot be reached"};
+async function getFullSchedule(restID) {
+  let result = { code: 9001, message: "api backend cannot be reached" };
+  loader.showLoading();
 
-  try{
-    const req = await fetch(`${API}/schedule/weekly/${restID}`, {method: 'GET'} )
+  try {
+    const req = await fetch(`${API}/schedule/weekly/${restID}`, {
+      method: "GET",
+    });
 
-    result.code = req.status
+    result.code = req.status;
     const data = await req.json();
 
-    if(result.code<300)
-      result.schedule = data.schedule
-    else
-      result.message = data.error
-    
-  }catch(e){
-      console.log("ERROR:::",e.message)
-      result = {code:9001, message:"api backend cannot be reached"};
+    if (result.code < 300) result.schedule = data.schedule;
+    else result.message = data.error;
+  } catch (e) {
+    console.log("ERROR:::", e.message);
+    result = { code: 9001, message: "api backend cannot be reached" };
   }
 
-  return result
-
+  loader.hideLoading();
+  return result;
 }
 
-
-export const restaurantAPI = {getRestaurants,createRestaurant,
-  getRestaurantByOwner,getRestaurantByID,
-    changeRestaurantName,changeRestaurantAddress,
-    changeRestaurantPhone,changeRestaurantTags,
-    updateSchedule,getDaySchedule,getFullSchedule
+export const restaurantAPI = {
+  getRestaurants,
+  createRestaurant,
+  getRestaurantByOwner,
+  getRestaurantByID,
+  changeRestaurantName,
+  changeRestaurantAddress,
+  changeRestaurantPhone,
+  changeRestaurantTags,
+  updateSchedule,
+  getDaySchedule,
+  getFullSchedule,
 };
