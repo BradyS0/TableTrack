@@ -15,6 +15,9 @@ import { createHeader } from './components/header.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = document.getElementById('app');
-  app.appendChild(createHeader());
+  const header = createHeader()
+  if (!app.contains(header)){
+    app.append(header)
+  };
 });
 

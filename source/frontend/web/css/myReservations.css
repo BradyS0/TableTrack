@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 1.5rem;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.reservation-card {
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.no-res {
+    margin-top: 2rem;
+    color: #777;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.loading {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.back {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #333;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.danger {
+    background-color: #cb0300;
+    &:hover{
+        filter: brightness(0.8);
+    }
+}

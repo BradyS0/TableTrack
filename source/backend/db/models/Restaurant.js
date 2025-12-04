@@ -37,8 +37,8 @@ async function add_open_hours(rest)
     const open  = await Schedule.get_open(rest.restID, day);
     const close = await Schedule.get_close(rest.restID, day);
     if (open >= 0 && close >= 0 && open < close) {
-        const open_str = String(parseInt(open)) + ":" + String((open % 1) * 60).padStart(2, '0');
-        const close_str = String(parseInt(close)) + ":" + String((close % 1) * 60).padStart(2, '0');
+        const open_str = String(parseInt(open)) + ":" + ((open % 1) * 60).toFixed(0).padStart(2, '0');
+        const close_str = String(parseInt(close)) + ":" + ((close % 1) * 60).toFixed(0).padStart(2, '0');
         rest.hours = open_str + " - " + close_str;
     } else {
         rest.hours = "Closed";
