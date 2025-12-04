@@ -15,7 +15,6 @@ async function postJSON(path, body) {
         body: JSON.stringify(body)
     });
     let data = null;
-    try { data = await res.json(); } catch (e) { /* ignore parse errors */ }
     return { status: res.status, data };
 }
 
@@ -28,7 +27,6 @@ async function putJSON(path, body) {
         body: JSON.stringify(body)
     });
     let data = null;
-    try { data = await res.json(); } catch (e) { /* ignore parse errors */ }
     return { status: res.status, data };
 }
 
