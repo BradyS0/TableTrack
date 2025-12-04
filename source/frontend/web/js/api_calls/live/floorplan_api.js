@@ -1,11 +1,11 @@
-
+import loader from "./loader";
 // eslint-disable-next-line
 const API_URL = __API_URL__;
 const API = `${API_URL}/v1/floorplan`;
 
 async function set_walls(restID, walls)
 {
-
+loader.showLoading()
     let result = {code:9001, message:"api backend cannot be reached"};
     try {
         
@@ -24,12 +24,12 @@ async function set_walls(restID, walls)
             result.message = data.error;
 
     } catch (e) { console.log("ERROR:::",e.message); }
-
+loader.hideLoading();
     return result;
 }
 
 async function get_walls(restID)
-{
+{loader.showLoading()
     let result = {code:9001, message:"api backend cannot be reached"};
     try {
         
@@ -47,12 +47,12 @@ async function get_walls(restID)
             result.message = data.error;
 
     } catch (e) { console.log("ERROR:::",e.message); }
-
+loader.hideLoading();
     return result;
 }
 
 async function set_layout(restID, layout)
-{
+{loader.showLoading()
     const new_layout = { tables:layout.tables, misc:layout.misc };
 
     let result = {code:9001, message:"api backend cannot be reached"};
@@ -73,12 +73,12 @@ async function set_layout(restID, layout)
             result.message = data.error;
 
     } catch (e) { console.log("ERROR:::",e.message); }
-
+loader.hideLoading();
     return result;
 }
 
 async function get_layout(restID)
-{
+{loader.showLoading()
     let result = {code:9001, message:"api backend cannot be reached"};
     try {
         
@@ -97,7 +97,7 @@ async function get_layout(restID)
             result.message = data.error;
 
     } catch (e) { console.log("ERROR:::",e.message); }
-
+loader.hideLoading();
     return result;
 }
 
