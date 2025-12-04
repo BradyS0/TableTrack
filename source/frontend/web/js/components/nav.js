@@ -1,6 +1,6 @@
 import {createRegistrationPopup} from './merchantRegister.js'
 import { getUserState, clearUserState } from '../utils.js';
-// import { display_popup_msg } from "./popupMsg.js"; 
+import { display_popup_msg } from "./popupMsg.js"; 
 
 export async function mainNavRoutes(){
   const user = getUserState() 
@@ -49,7 +49,7 @@ async function createUserOptions(){
     const viewReservations = document.createElement('p');
     viewReservations.innerText = "View Reservations";
     viewReservations.addEventListener("click", () => {
-    window.location.href = './myReservations.html';
+    window.location.href = './myReservations.html'});
       
     userOptions.append(userName,userProfile,viewReservations)
 
@@ -80,6 +80,7 @@ async function createUserOptions(){
     fp.innerText = "\tManage Floorplan"
     fp.addEventListener('click', goToFloorplan)
     userOptions.append(mBreak,restaurantReservations,manage,fp)
+    }
     
   }else{
     const login = document.createElement('button')

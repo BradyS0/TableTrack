@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (!root) return;
   const floorplan = new FloorPlanEditor(root);
-  floorplan.setMode("read-only");
+  
 
   const params = new URLSearchParams(window.location.search);
   const restID = params.get("restID");
@@ -50,7 +50,8 @@ async function populateFloorPlan(rest, floorplan) {
     empty_reservation(rest.restID);
     return;
   }
-
+  
+  floorplan.setMode("read-only");
   const tables = floorplan.getTables();
   tables.forEach((table) => {
     table.group.on("click", async () => {
@@ -183,8 +184,6 @@ function createReservationPopup(
   cancelBtn.innerText = "Cancel";
 
   acceptBtn.addEventListener("click", async () => {
-    // TODO: Implement reservation confirmation logic here.
-    // For now, just close the modal.
     const res = await api.create_res(
       restID,
       userID,

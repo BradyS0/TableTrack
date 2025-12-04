@@ -18,25 +18,23 @@ document.addEventListener("DOMContentLoaded", async() => {
 async function buildFloorplan(restID, floorplan){
   const save_btn = document.getElementById("save-changes");
   save_btn.addEventListener("click", async () => {
+    const fp = floorplan.getFloorLayout()
     if (floorplan.state.mode === 'creator') {
-      const fp = floorplan.getFloorLayout()
       await api.set_walls(restID,fp)
     } else {
       const items = floorplan.getItems()
+      await api.set_walls(restID,fp)
       await api.set_layout(restID,items)
     }
   });
 
   let fp = await api.get_walls(restID)
   let layout = await api.get_layout(restID)
-  console.log(fp)
-  console.log(layout)
-  if (fp.code < 300){
+
+  if (fp.code < 300)
     floorplan.loadFloorplanPolygon(fp.data.floorplan)
-  }
   
-  if (layout.code < 300){
+  if (layout.code < 300)
     floorplan.loadItems(layout.data)
-  }
 
 }

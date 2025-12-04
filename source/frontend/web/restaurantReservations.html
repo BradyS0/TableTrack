@@ -1,61 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Restaurant Reservations | TableTrack</title>
 
-    <link rel="stylesheet" href="./css/restaurantReservations.css" />
-    <script type="module" src="./js/global.js"></script>
-    <script type="module" src="./js/components/nav.js"></script>
-</head>
+    <link rel="stylesheet" href="./css/global.css" />
+    <link rel="stylesheet" href="./css/myReservations.css" />
+   
+  </head>
 
-<body>
-    <main>
-        <h1>Restaurant Reservations</h1>
-        <div id="reservations"></div>
+  <body>
+    <nav></nav>
+    <div id="overlay" class="overlay"></div>
+    <div id="app"></div>
+    <main id = "container">
+      <h1>Restaurant Reservations</h1>
+      <div id="reservations"></div>
     </main>
 
-    <script type="module">
-        import { getRestaurantReservations } from "./js/pages/reservationServices.js";
-
-        const container = document.getElementById("reservations");
-
-        async function loadReservations() {
-            container.innerHTML = "<p class='loading'>Loading...</p>";
-
-            try {
-                const reservations = await getRestaurantReservations();
-
-                if (reservations.length === 0) {
-                    container.innerHTML = "<p class='no-res'>No reservations yet.</p>";
-                    return;
-                }
-
-                container.innerHTML = "";
-                reservations.forEach(r => {
-                    const div = document.createElement("div");
-                    div.className = "reservation-card";
-
-                    const date = new Date(r.date_stamp);
-
-                    div.innerHTML = `
-                        <h3>${r.first_name} ${r.last_name}</h3>
-                        <p><strong>Date:</strong> ${date.toDateString()}</p>
-                        <p><strong>Time:</strong> ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</p>
-                        <p><strong>Guests:</strong> ${r.capacity}</p>
-                    `;
-
-                    container.appendChild(div);
-                });
-
-            } catch (e) {
-                container.innerHTML = "<p class='no-res'>Failed to load reservations.</p>";
-            }
-        }
-
-        loadReservations();
-    </script>
-
-</body>
+    <script type="module" src="./js/global.js"></script>
+    <script type="module" src="./js/pages/restaurantReservations.js"></script>
+  </body>
 </html>

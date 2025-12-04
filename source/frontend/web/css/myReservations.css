@@ -38,3 +38,10 @@ h1 {
     cursor: pointer;
     text-decoration: underline;
 }
+
+.danger {
+    background-color: #cb0300;
+    &:hover{
+        filter: brightness(0.8);
+    }
+}
