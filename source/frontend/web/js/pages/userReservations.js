@@ -50,4 +50,11 @@ const template = document.createElement("div");
   return template.firstElementChild;
 }
 
-loadReservations();
+document.addEventListener("DOMContentLoaded",async()=>{
+  await loadReservations();
+  const container = document.getElementById("container")
+  const app = document.getElementById("app")
+
+  app.append(container)
+
+})
