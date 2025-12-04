@@ -21,10 +21,12 @@ async function get_tickets(restID, tableID, date)
         const data  = await req.json();
         if(result.code < 300) {
             result.message = 'Request completed';
-            result.data    = data.tickets;
+            result.data    = data.tickets || [];
             //result.tickets = data.tickets;
-        } else
+        } else{
+            result.data = []
             result.message = data.error;
+        }
 
     } catch (e) { console.log("ERROR:::",e.message); }
 
@@ -70,8 +72,7 @@ async function get_by_user(userID)
         const data  = await req.json();
         if(result.code < 300) {
             result.message = 'Request completed';
-            result.data    = data;
-            //result.reservations = data.reservations;
+            result.data    = data.reservations;
         } else
             result.message = data.error;
 
@@ -93,7 +94,7 @@ async function get_by_rest(restID)
         const data  = await req.json();
         if(result.code < 300) {
             result.message = 'Request completed';
-            result.data    = data;
+            result.data    = data.reservations;
             //result.reservations = data.reservations;
         } else
             result.message = data.error;

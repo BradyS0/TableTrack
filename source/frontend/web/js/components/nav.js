@@ -44,7 +44,14 @@ async function createUserOptions(){
     const userProfile = document.createElement('p')
     userProfile.innerText = "Profile Settings"
     userProfile.addEventListener('click',goToUserProfile)
-    userOptions.append(userName,userProfile)
+  
+    // Normal user sees ONE reservation button
+    const viewReservations = document.createElement('p');
+    viewReservations.innerText = "View Reservations";
+    viewReservations.addEventListener("click", () => {
+    window.location.href = './myReservations.html'});
+      
+    userOptions.append(userName,userProfile,viewReservations)
 
      //show a logout button
     const logoutOption = document.createElement('button')
@@ -55,18 +62,26 @@ async function createUserOptions(){
     
 
     if(user.restID){
-    const mBreak = document.createElement('hr')
+      
+    const restaurantReservations = document.createElement('p');
+      restaurantReservations.innerText = "Restaurant Reservations";
+      restaurantReservations.addEventListener("click", () => {
+        window.location.href = './restaurantReservations.html';
+      });
+      
     const manage = document.createElement('p')
     manage.innerText = "Manage Restaurant"
     manage.addEventListener('click', goToRestaurantManagement)
+    
+
+    const mBreak = document.createElement('hr')
 
     const fp = document.createElement('p')
     fp.innerText = "\tManage Floorplan"
     fp.addEventListener('click', goToFloorplan)
-    userOptions.append(mBreak,manage,fp)
+    userOptions.append(mBreak,restaurantReservations,manage,fp)
     }
-
-  
+    
   }else{
     const login = document.createElement('button')
     login.innerText = "Login"

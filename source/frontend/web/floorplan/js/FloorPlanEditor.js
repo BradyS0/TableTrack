@@ -239,6 +239,7 @@ export class FloorPlanEditor {
 
   //populate logic
   loadFloorplanPolygon(polygon){
+    if(polygon.length<3) return
     this.state.polygonPoints = polygon.map(p => ({ x: p.x, y: p.y }));
     this.state.polygonClosed = true;
     this.state.isDrawing = false;
