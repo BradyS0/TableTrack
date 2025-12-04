@@ -441,124 +441,121 @@ export const schedules = [{
 }];
 
 export const wallplan = {
-  "floorplan": [
+  floorplan: [
     {
-      "x": 210.23333740234375,
-      "y": 86.80000305175781
+      x: 210.23333740234375,
+      y: 86.80000305175781
     },
     {
-      "x": 210.23333740234375,
-      "y": 415.8000030517578
+      x: 210.23333740234375,
+      y: 415.8000030517578
     },
     {
-      "x": 586.2333374023438,
-      "y": 415.8000030517578
+      x: 586.2333374023438,
+      y: 415.8000030517578
     },
     {
-      "x": 589.2333374023438,
-      "y": 86.80000305175781
+      x: 589.2333374023438,
+      y: 86.80000305175781
     }
   ]
 }
 
-export const tableplan = {
-  "tables":[
+export const layout = {
+  tables:[
   {
-    "id": "1",
-    "type": "table",
-    "pos": {
-      "x": 312.3905644148153,
-      "y": 158.6766490268145
+    id: "1",
+    type: "table",
+    pos: {
+      x: 194.18333740234374, 
+      y: 76.9000030517578
     },
-    "rotation": 0,
-    "data": {
-      "capacity": 8,
-      "reservable": true,
-      "rotation": 0
+    rotation: 0,
+    data: {
+      capacity: 8,
+      reservable: true,
+      rotation: 0
     }
   },
   {
-    "id": "2",
-    "type": "table",
-    "pos": {
-      "x": 470.2750678523155,
-      "y": 167.79788090181447
+    id: "2",
+    type: "table",
+    pos: {
+      x: 470.2750678523155,
+      y: 167.79788090181447
     },
-    "rotation": 0,
-    "data": {
-      "capacity": 2,
-      "reservable": true,
-      "rotation": 0
+    rotation: 0,
+    data: {
+      capacity: 2,
+      reservable: true,
+      rotation: 0
     }
   },
   {
-    "id": "3",
-    "type": "table",
-    "pos": {
-      "x": 310.0239366023153,
-      "y": 304.1027121518146
+    id: "3",
+    type: "table",
+    pos: {
+      x: 310.0239366023153,
+      y: 304.1027121518146
     },
-    "rotation": 0,
-    "data": {
-      "capacity": 4,
-      "reservable": true,
-      "rotation": 0
+    rotation: 0,
+    data: {
+      capacity: 4,
+      reservable: true,
+      rotation: 0
     }
   },
   {
-    "id": "4",
-    "type": "table",
-    "pos": {
-      "x": 476.7219366023153,
-      "y": 301.78746215181457
+    id: "4",
+    type: "table",
+    pos: {
+      x: 476.7219366023153,
+      y: 301.78746215181457
     },
-    "rotation": 0,
-    "data": {
-      "capacity": 4,
-      "reservable": true,
-      "rotation": 0
+    rotation: 0,
+    data: {
+      capacity: 4,
+      reservable: true,
+      rotation: 0
     }
   }
-]
-}
-
-export const miscitems = {
-  "misc":[
+],
+  misc: [
   {
-    "id": "3d160047-560e-4a26-9e73-0b33872789b0",
-    "type": "door",
-    "pos": {
-      "x": 210.23333740234375,
-      "y": 238.11808715181454
+    id: "3d160047-560e-4a26-9e73-0b33872789b0",
+    type: "door",
+    pos: {
+      x: 210.23333740234375,
+      y: 238.11808715181454
     },
-    "rotation": 90,
-    "data": {
-      "length": 80
+    rotation: 90,
+    data: {
+      length: 80
     }
   },
   {
-    "id": "de38c3a9-0839-44ab-a51a-32cd499e6016",
-    "type": "window",
-    "pos": {
-      "x": 407.2644366023153,
-      "y": 86.80000305175781
+    id: "de38c3a9-0839-44ab-a51a-32cd499e6016",
+    type: "window",
+    pos: {
+      x: 407.2644366023153,
+      y: 86.80000305175781
     },
-    "rotation": 180,
-    "data": {
-      "length": 50
+    rotation: 180,
+    data: {
+      length: 50
     }
   },
   {
-    "id": "3385f1e0-f2b3-4978-ac0e-29a38eff8542",
-    "type": "window",
-    "pos": {
-      "x": 413.05256160231534,
-      "y": 415.8000030517578
+    id: "3385f1e0-f2b3-4978-ac0e-29a38eff8542",
+    type: "window",
+    pos: {
+      x: 413.05256160231534, 
+      y: 415.8000030517578
     },
-    "rotation": 0,
-    "data": {
-      "length": 50
+    rotation: 0,
+    data: {
+      length: 50
     }
   }
-]
+  ]
 }

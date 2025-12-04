@@ -1,5 +1,5 @@
 //this file was created with help github copilot
-import { restaurants, menus, schedules, wallplan, tableplan, miscitems} from './mock/mockRestdata.js'
+import { restaurants, menus, schedules, wallplan, layout} from './mock/mockRestdata.js'
 
 // Configurable API_URL support for Node and browser environments.
 // Priority: process.env.API_URL -> window.__API_URL__ -> fallback
@@ -80,14 +80,12 @@ async function populateDB() {
                 const schedRes = await putJSON(`/v1/restaurant/schedule`, scheduleData);
                 console.log('setSchedule ->', schedRes);
 
-                const walls = wallplan;
                 // /floorplan/walls/<restID></restID>
-                const wallRes = await putJSON(`/v1/floorplan/walls/${i}`, walls);
+                const wallRes = await putJSON(`/v1/floorplan/walls/${i}`, wallplan);
                 console.log('setWallLayout ->', wallRes);
 
                 // /floorplan/layout/</restID>
-                const items = { tables: tableplan, misc: miscitems };
-                const layoutRes = await putJSON(`/v1/floorplan/layout/${i}`, items);
+                const layoutRes = await putJSON(`/v1/floorplan/layout/${i}`, layout);
                 console.log('setLayout ->', layoutRes);
 
             }
