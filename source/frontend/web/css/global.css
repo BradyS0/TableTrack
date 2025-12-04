@@ -60,7 +60,7 @@ nav {
     margin: 0;
     padding: 10px 20px;
     padding-top: 25px; 
-    width: 250px; /* Base width, adjustable within min/max constraints */
+    width: 275px; /* Base width, adjustable within min/max constraints */
     height: 100%; /* Full height of parent */
     z-index: 2;
     opacity: 0;

@@ -1,6 +1,6 @@
 import {createRegistrationPopup} from './merchantRegister.js'
 import { getUserState, clearUserState } from '../utils.js';
-import { display_popup_msg } from "./popupMsg.js"; 
+// import { display_popup_msg } from "./popupMsg.js"; 
 
 export async function mainNavRoutes(){
   const user = getUserState() 
