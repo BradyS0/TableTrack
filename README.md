@@ -15,7 +15,7 @@ We looked at the current ways to reserve and the features they offer to fit two 
   - [x] Management
   - [x] Schedules
   - [x] Menus
-  - [x] Review
+  - [ ] Review
 - [x] Floor-plan Creation
 - [x] Booking/Viewing Reservation
   
