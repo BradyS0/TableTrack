@@ -65,3 +65,14 @@
 | DELETE | `/v1/reservation/delete/:reserveID`  | [Delete Reservation](./reservation_api.md#delete-v1reservationdeletereserveid)           |
 
 
+---
+
+## [**Floorplan API**](./floorplan_api.md)
+| **Method** | **Endpoint**                   | **Link**                                                        |
+| ---------- | ------------------------------ | --------------------------------------------------------------- |
+| **PUT**    | `/v1/floorplan/walls/:restID`  | [Update Walls](./floorplan_api.md#put-v1floorplanwallsrestid)   |
+| **PUT**    | `/v1/floorplan/layout/:restID` | [Update Layout](./floorplan_api.md#put-v1floorplanlayoutrestid) |
+| **GET**    | `/v1/floorplan/walls/:restID`  | [Get Walls](./floorplan_api.md#get-v1floorplanwallsrestid)      |
+| **GET**    | `/v1/floorplan/layout/:restID` | [Get Layout](./floorplan_api.md#get-v1floorplanlayoutrestid)    |
+
+

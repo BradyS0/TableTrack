@@ -85,8 +85,8 @@ Create a new reservation.
 * Normalizes the provided date into a proper date stamp.
 * Validates that the table exists and is reservable.
 * Ensures the requested capacity does not exceed the table's max capacity.
-* Checks if the reservation overlaps with the times of any existing table for the requested day and time. It should also not overlap within 2hrs of any existing reservations.
-* > ! Need to have protection for possible overlapping concurrent reservation requests
+* Checks if the requested reservation doesnt overlaps within 2hrs of any existing reservations for the requested table, day and time.
+ >! Needs to have protection for possible concurrent reservation requests that overlap.
 
 ### **Responses**
 
