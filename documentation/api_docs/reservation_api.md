@@ -4,7 +4,7 @@ Base URL: `/v1/reservation`
 
 ---
 
-## **POST /v1/reservation/ticket**
+## **POST [/v1/reservation/ticket]()**
 
 Retrieve available reservation tickets for a specific table on a given date.
 
@@ -61,7 +61,7 @@ If the restaurant is closed:
 
 ---
 
-## **POST /v1/reservation/create**
+## **POST [/v1/reservation/create]()**
 
 Create a new reservation.
 
@@ -111,7 +111,7 @@ Create a new reservation.
 
 ---
 
-## **GET /v1/reservation/user/:userID**
+## **GET [/v1/reservation/user/:userID]()**
 
 Retrieve all reservations belonging to a specific user.
 
@@ -131,7 +131,11 @@ Retrieve all reservations belonging to a specific user.
 
 ```json
 {
-  "reservations": [ ... ]
+  "reservations": [ {reserveID, restID, tableID,
+                    date_stamp, "Restaurant.name",
+                    "Restaurant.address", "Restaurant.phone"},
+                     {...}, ... 
+                  ]
 }
 ```
 
@@ -149,7 +153,7 @@ Retrieve all reservations belonging to a specific user.
 
 ---
 
-## **GET /v1/reservation/restaurant/:restID**
+## **GET [/v1/reservation/restaurant/:restID]()**
 
 Retrieve all reservations for a specific restaurant.
 
@@ -169,7 +173,11 @@ Retrieve all reservations for a specific restaurant.
 
 ```json
 {
-  "reservations": [ ... ]
+  "reservations": [ {reserveID, userID, tableID,
+                    date_stamp, "User.first_name",
+                    "User.last_name", "User.email"},
+                     {...}, ... 
+                  ]
 }
 ```
 
@@ -187,7 +195,7 @@ Retrieve all reservations for a specific restaurant.
 
 ---
 
-## **DELETE /v1/reservation/delete/:reserveID**
+## **DELETE [/v1/reservation/delete/:reserveID]()**
 
 Delete an existing reservation.
 
