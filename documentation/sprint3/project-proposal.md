@@ -46,7 +46,7 @@ We looked at the current ways to reserve and the features they offer to fit two 
 
 # Non-Functional Feature
 
-* The database will purge reservations that have expired.
+* Respond to 20 users with a total of 200 requests concurrently/s.
 
 # Additional Features and User Stories
 
