@@ -22,9 +22,9 @@ Create a new restaurant.
 
 ### **Validation**
 
-* `name` must be valid
+* `name` must be 1-50 charachters long
 * `address` must be valid
-* `phone` must be valid
+* `phone` must be valid (111)-111-1111
 * `tags` (if provided) must be a valid array of strings
 * `userID` must refer to an existing user
 * A user may own *only one* restaurant *for current implementation*

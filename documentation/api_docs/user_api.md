@@ -21,10 +21,10 @@ Create a new user account.
 
 ### **Validation Rules**
 
-* `first_name` & `last_name` must pass `UserLogic.validate_name`
-* `email` must pass `UserLogic.validate_email`
-* `password` must pass `UserLogic.validate_password`
-* `email` must not already exist in the database
+* `first_name` & `last_name` must contain at least 2 characters or more starting with an uppercase letter
+* `email` must follow syntax `user@email.com`
+* `password` must be 8 at least 8 characters long with aleast 1 uppercase,lowercase,number and a special character.
+* `email` must not already be registered
 
 ### **Responses**
 
@@ -179,7 +179,7 @@ User deleted successfully.
 
 ### **Validation Rules**
 
-* Email must be valid syntax.
+* Email must be valid syntax `name@email.ca`.
 * Email must not already exist.
 
 ### **Responses**

@@ -20,12 +20,13 @@ Retrieve available reservation tickets for a specific table on a given date.
 
 ### **Description**
 
-* Validates `restID`, `tableID`, and `date_stamp`.
+* Validates `restID`, `tableID`.
 * Confirms the restaurant exists.
 * Confirms the table exists and is reservable.
+* Validate `date_stamp` it can be any date from tomorrow onwards. *it can be any value that can be casted into a valid date by js `Date()` function*
 * Checks the restaurant schedule for that day.
 * Fetches all reservations for the table on the given date.
-* Generates a list of available time slots (“tickets”).
+* Attempts to generate a list of available time slots (“tickets”), t doesn't overlap.
 * Returns the tickets converted into timestamps.
 
 ### **Responses**
@@ -84,7 +85,7 @@ Create a new reservation.
 * Normalizes the provided date into a proper date stamp.
 * Validates that the table exists and is reservable.
 * Ensures the requested capacity does not exceed the table's max capacity.
-* Attempts to create a reservation with transactional protection.
+* Checks if the reservation overlaps with the times of any existing table for the requested day and time. It should also not overlap within 2hrs of any existing reservations.
 * > ! Need to have protection for possible overlapping concurrent reservation requests
 
 ### **Responses**
