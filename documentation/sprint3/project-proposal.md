@@ -4,9 +4,9 @@ With TableTrack, our aim is to merge the experience of restaurant discovery and 
  
 We looked at the current ways to reserve and the features they offer to fit two categories, merging what we felt was the best from both sides into one seamless process. From one category, these options displayed the actual menu of the restaurant as well as its pricing. While the other gave more control to the customer, by providing information vital to the reservation process, which was time slot scheduling and seating. What sets us apart from the competition would be the visualization of the restaurant’s floor plan.
 
-# [Initial Project Proposal Presentation](./proposal_presentation.pdf)
+# [Initial Project Proposal Presentation](../sprint0/proposal_presentation.pdf)
 
-# Core Features and User Stories
+# Initial Core Features and User Stories
 
 ## Account Creation and Management
 
@@ -78,13 +78,13 @@ We looked at the current ways to reserve and the features they offer to fit two 
 * As a manager, I want to adjust floor plans for special events so that I can accommodate larger groups or different setups.  
 * As a manager, I want to create additional floor plan layouts for special events, so that customers can pick the arrangement that meets their needs.
 
-## Planned implementation for Sprint1
+## Planned Implementation for Sprint 1
 **[Features](https://github.com/BradyS0/TableTrack/issues?q=milestone%3A%22Sprint%201%22%20label%3Afeature)**
 
 **[User Stories](https://github.com/BradyS0/TableTrack/issues?q=milestone%3A%22Sprint%201%22%20label%3Auser-story)** *(includes Acceptance criteria)*
 
-# Architecture Diagram
-![Archtecture Diagram image](./archDiagram.png)
+# Initial Architecture Diagram
+![Initial Archtecture Diagram image](../sprint0/archDiagram.png)
 
 # Technology Rationale
 
@@ -94,7 +94,7 @@ We looked at the current ways to reserve and the features they offer to fit two 
 
 **Command-Line Interface:** Our secondary frontend uses **Java** to satisfy the requirement for a second technology. This app focuses on a minimal interface, allowing users to create an account, login, and browser restaurant info.
 
-**Android App:** Our former secondary frontend was planned be built in **Android Studio (Java)** to satisfy the requirement for a second technology. This app will focus on customers, allowing them to browse restaurant info, leave reviews, and make reservations. It will consume the same backend APIs as the web client, demonstrating clear separation between frontend and backend. This was changed to the Command-Line Interface due to time constraints.
+**Android App:** Our former secondary frontend was planned be built in **Android Studio (Java)** to satisfy the requirement for a second technology. This app would focus on customers, allowing them to browse restaurant info, leave reviews, and make reservations. It would consume the same backend APIs as the web client, demonstrating clear separation between frontend and backend. This was changed to the Command-Line Interface due to time constraints.
 
 ## Logic Layer
 
