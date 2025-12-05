@@ -20,7 +20,7 @@ The array must contain at least three pairs of json containing valid `pos.x` and
 
 ```json
 {
-  "floorplan": [ {"pos.x":number,"pos.y":number}, ...]
+  "floorplan": [ {"x":number, "y":number}, ...]
 }
 ```
 
