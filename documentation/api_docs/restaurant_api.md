@@ -4,7 +4,7 @@
 
 ---
 
-## **POST [/v1/restaurant/]()**
+## **POST [/v1/restaurant/](##)**
 
 Create a new restaurant.
 
@@ -24,7 +24,7 @@ Create a new restaurant.
 
 * `name` must be 1-50 charachters long
 * `address` must be valid
-* `phone` must be valid (111)-111-1111
+* `phone` must be valid syntax (111) 111-1111
 * `tags` (if provided) must be a valid array of strings
 * `userID` must refer to an existing user
 * A user may own *only one* restaurant *for current implementation*
@@ -53,7 +53,7 @@ Unexpected server error.
 
 ---
 
-## **PATCH [/v1/restaurant/change/name]()**
+## **PATCH [/v1/restaurant/change/name](##)**
 
 Update the name of a restaurant.
 
@@ -82,7 +82,7 @@ Restaurant not found.
 
 ---
 
-## **PATCH [/v1/restaurant/change/address]()**
+## **PATCH [/v1/restaurant/change/address](##)**
 
 Update the address of a restaurant.
 
@@ -111,7 +111,7 @@ Restaurant not found.
 
 ---
 
-## **PATCH [/v1/restaurant/change/phone]()**
+## **PATCH [/v1/restaurant/change/phone](##)**
 
 Update the phone number of a restaurant.
 
@@ -140,7 +140,7 @@ Restaurant not found.
 
 ---
 
-## **PATCH [/v1/restaurant/change/description]()**
+## **PATCH [/v1/restaurant/change/description](##)**
 
 Update the description of a restaurant.
 
@@ -169,7 +169,7 @@ Restaurant not found.
 
 ---
 
-## **PATCH [/v1/restaurant/change/tags]()**
+## **PATCH [/v1/restaurant/change/tags](##)**
 
 Update a restaurant's tag list.
 
@@ -208,7 +208,7 @@ Restaurant not found.
 
 ---
 
-## **GET [/v1/restaurant/]()**
+## **GET [/v1/restaurant/](##)**
 
 Retrieve a list of all restaurants.
 
@@ -242,7 +242,7 @@ Unexpected server error.
 
 ---
 
-## **GET [/v1/restaurant/:id]()**
+## **GET [/v1/restaurant/:id](##)**
 
 Retrieve a specific restaurant by ID.
 
@@ -273,7 +273,7 @@ Restaurant not found.
 
 ---
 
-## **GET [/v1/restaurant/user/:id]()**
+## **GET [/v1/restaurant/user/:id](##)**
 
 Retrieve the restaurant owned by a specific user.
 
@@ -304,7 +304,7 @@ No restaurant found for the user.
 
 ---
 
-## **PATCH [/v1/restaurant/change]()**
+## **PATCH [/v1/restaurant/change](##)**
 
 Bulk update a restaurant (name, address, phone, description).
 

@@ -4,7 +4,7 @@
 
 ---
 
-## **POST [/v1/menu/:restID]()**
+## **POST [/v1/menu/:restID](##)**
 
 Create a new menu item for a restaurant.
 
@@ -57,7 +57,7 @@ Restaurant not found.
 
 ---
 
-## **GET [/v1/menu/:restID]()**
+## **GET [/v1/menu/:restID](##)**
 
 Retrieve the full menu for a restaurant.
 
@@ -95,7 +95,7 @@ Restaurant not found.
 
 ---
 
-## **GET [/v1/menu/:restID/:itemID]()**
+## **GET [/v1/menu/:restID/:itemID](##)**
 
 Retrieve a specific menu item.
 
@@ -124,7 +124,7 @@ Item does not exist for that restaurant.
 
 ---
 
-## **PATCH [/v1/menu/:restID/change/name]()**
+## **PATCH [/v1/menu/:restID/change/name](##)**
 
 Update the **name** of a menu item.
 
@@ -155,7 +155,7 @@ Menu item not found.
 
 ---
 
-## **PATCH [/v1/menu/:restID/change/price]()**
+## **PATCH [/v1/menu/:restID/change/price](##)**
 
 Update the **price** of a menu item.
 
@@ -186,7 +186,7 @@ Menu item not found.
 
 ---
 
-## **PATCH [/v1/menu/:restID/change/description]()**
+## **PATCH [/v1/menu/:restID/change/description](##)**
 
 Update the **description** of a menu item.
 
@@ -217,7 +217,7 @@ Menu item not found.
 
 ---
 
-## **PATCH [/v1/menu/:restID/change/category]()**
+## **PATCH [/v1/menu/:restID/change/category](##)**
 
 Update the **category** of a menu item.
 
@@ -248,7 +248,7 @@ Menu item not found.
 
 ---
 
-## **DELETE [/v1/menu/:restID/:itemID]()**
+## **DELETE [/v1/menu/:restID/:itemID](##)**
 
 Delete a menu item.
 

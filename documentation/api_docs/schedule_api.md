@@ -4,7 +4,7 @@
 
 ---
 
-## **PUT [/v1/restaurant/schedule/]()**
+## **PUT [/v1/restaurant/schedule/](##)**
 
 Update the weekly schedule of a restaurant.
 
@@ -68,7 +68,7 @@ Update the weekly schedule of a restaurant.
 
 ---
 
-## **GET [/v1/restaurant/schedule/]()**
+## **GET [/v1/restaurant/schedule/](##)**
 
 Retrieve a restaurant’s schedule for a specific day and whether it is currently open.
 
@@ -121,7 +121,7 @@ day    = string (monday–sunday)
 
 ---
 
-## **GET [/v1/restaurant/schedule/weekly/:restID]()**
+## **GET [/v1/restaurant/schedule/weekly/:restID](##)**
 
 Retrieve the entire weekly schedule for a restaurant.
 

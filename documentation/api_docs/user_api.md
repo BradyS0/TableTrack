@@ -4,7 +4,7 @@
 
 ---
 
-## **POST [/v1/user/]()**
+## **POST [/v1/user/](##)**
 
 Create a new user account.
 
@@ -46,7 +46,7 @@ Create a new user account.
 
 ---
 
-## **POST [/v1/user/login]()**
+## **POST [/v1/user/login](##)**
 
 Authenticate and sign in a user.
 
@@ -78,7 +78,7 @@ Authenticate and sign in a user.
 
 ---
 
-## **DELETE [/v1/user/:userID]()**
+## **DELETE [/v1/user/:userID](##)**
 
 Delete a user by ID.
 
@@ -100,7 +100,7 @@ User deleted successfully.
 
 ---
 
-## **PATCH [v1/user/change/firstname]()**
+## **PATCH [v1/user/change/firstname](##)**
 
 ### **Request Body**
 
@@ -133,7 +133,7 @@ User deleted successfully.
 
 ---
 
-## **PATCH [v1/user/change/lastname]()**
+## **PATCH [v1/user/change/lastname](##)**
 
 ### **Request Body**
 
@@ -166,7 +166,7 @@ User deleted successfully.
 
 ---
 
-## **PATCH [/v1/user/change/email]()** 
+## **PATCH [/v1/user/change/email](##)** 
 
 ### **Request Body**
 
@@ -204,7 +204,7 @@ User deleted successfully.
 
 ---
 
-## **PATCH [/v1/user/change/password]()** — Update Password
+## **PATCH [/v1/user/change/password](##)** — Update Password
 
 ### **Request Body**
 
