@@ -23,7 +23,7 @@ Create a new user account.
 
 * `first_name` & `last_name` must contain at least 2 characters or more starting with an uppercase letter
 * `email` must follow syntax `user@email.com`
-* `password` must be 8 at least 8 characters long with aleast 1 uppercase,lowercase,number and a special character.
+* `password` must be at least 8 characters long with aleast 1 uppercase, 1 lowercase, 1 number and 1 special character.
 * `email` must not already be registered
 
 ### **Responses**
