@@ -92,7 +92,7 @@ Instructions for preparing the local environment for frontend testing can be fou
 ## Quality Assurance and Exceptions  
 Identify any untested components, justify why they’re excluded, and explain how you maintain overall quality (e.g., through manual tests or code reviews).
 
-Most of frontend is untested apart from reusable logic. Due to time constraints, we were unable to focus on frontend testing. In the backend, there is no testing for time, since the implementation of time was dependent on the actual day, making it difficult to test specific times.
+Most of frontend is untested apart from reusable logic. Due to time constraints, we were unable to focus on frontend testing. In the backend, there is no testing for time, since the implementation of time was dependent on the actual day, making it difficult to test specific times. We were not able to test concurrency for reservations.
 
 To maintain overall quality, we use linting to find mistakes such as unused variables as well as code reviews to catch any bugs and improve quality.
 ---
