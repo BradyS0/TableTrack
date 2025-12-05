@@ -281,3 +281,11 @@ Length: 3h
 * Retrospective of Final Project Presentation  
 * Distribution of final tasks  
 * Checklist of documents that need to be updated
+
+## December 5
+
+Length: 1h45m
+
+* Update previous documentation
+* Finish Worksheet 3
+* Finish overall documentation
