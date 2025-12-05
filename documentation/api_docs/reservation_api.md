@@ -4,7 +4,7 @@ Base URL: `/v1/reservation`
 
 ---
 
-## **POST [/v1/reservation/ticket]()**
+## **POST [/v1/reservation/ticket](#)**
 
 Retrieve available reservation tickets for a specific table on a given date.
 
