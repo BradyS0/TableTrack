@@ -5,6 +5,7 @@ import { getUserState, clearUserState } from '../utils.js';
 export async function mainNavRoutes(){
   const user = getUserState() 
   const nav = document.querySelector('nav')
+  nav.innerHTML = ''
   
   const merchant = document.createElement('p')
   merchant.className = 'merchant-note'
