@@ -37,7 +37,10 @@ export class Item {
     });
 
     this.group.on("dragend", () => {
-      if (this.onDragEnd) this.onDragEnd();
+      if (this.onDragEnd){
+        this.onDragEnd();
+        document.getElementById("save-changes").disabled = false;
+      } 
     });
     
   }

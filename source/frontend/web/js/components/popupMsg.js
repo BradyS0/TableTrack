@@ -1,29 +1,18 @@
+import {generateTemplate} from "../utils.js"
 
 export function display_popup_msg(heading,msg, redirect=()=>{}){
    const body = document.querySelector('body')
 
-   const popup = document.createElement('div')
-   const container = document.createElement('div')
-    
-   popup.classList.add('popup')
-   container.classList.add('popup-content')
-
+   const popup = generateTemplate(`<div class="popup">
+    <div class="popup-content">
+      <h2>${heading}</h2>
+      <p>${msg.trim()}</p>
+      <button class="btn">OK</button>
+    </div>
+    </div>`)
 
   //Ok button
-  const okBtn = document.createElement('button');
-  okBtn.classList.add('btn');
-  okBtn.textContent = ' OK ';
-
-  // Header
-  const head = document.createElement('h2');
-  head.textContent = heading;
-
-  // msg_body
-  const msg_body = document.createElement('p');
-  msg_body.textContent = msg;
- 
-  container.append(head,msg_body,okBtn)
-  popup.append(container)
+  const okBtn = popup.querySelector("button")
   
   body.appendChild(popup)
 
@@ -31,5 +20,4 @@ export function display_popup_msg(heading,msg, redirect=()=>{}){
     body.removeChild(popup)
     redirect()
   })
-
 }
