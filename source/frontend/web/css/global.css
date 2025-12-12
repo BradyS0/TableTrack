@@ -241,12 +241,19 @@ form input {
   justify-content: center;
   height: fit-content;
   transition: opacity 100ms ease;
+  transform: scale(.65);
 }
 
 #load-ico.active{
-  opacity: 1;
-  transition: opacity 50ms ease;
-  z-index: 9999;
+    opacity: 1;
+    transition: opacity 50ms ease;
+    z-index: 9999;
+}
+
+.load-wrap{
+    perspective: 800px;
+    perspective-origin: center;
+    user-select: none;
 }
 
 
@@ -256,20 +263,21 @@ form input {
 
 #logo-tracker{
   position: relative;   /* overlap on top of table */
-  left: -74px;
-  top: -45px;
+  left: -80px;
+  top: -35px;
+  transform-style: preserve-3d;
 }
 
+
+
 #load-ico.active #logo-tracker{
-  animation: tilt 1.5s ease-in-out infinite alternate;
+  animation: tilt 2s ease infinite alternate;
   transform-origin: center;
 }
 
-
-
 @keyframes tilt {
   from { transform: rotateY(0deg); }
-  to   { transform: rotateY(360deg); }
+  to   { transform: rotateY(540deg); }
 }
 
 

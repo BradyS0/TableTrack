@@ -11,7 +11,7 @@ function createLoader() {
         <div id="load-ico">
         <div class="load-wrap">
         <img id="logo-table" src="assets/split-logo/table.png" alt="tableTrack loading animation" width="85px"/>
-        <img id="logo-tracker" src="assets/split-logo/track.png" alt="tableTrack loading animation" width="50px"/>
+        <img id="logo-tracker" src="assets/split-logo/track2.png" alt="tableTrack loading animation" width="65px"/>
         </div>
         </div>
       `);

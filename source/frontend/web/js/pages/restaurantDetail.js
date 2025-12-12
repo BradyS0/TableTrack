@@ -2,7 +2,9 @@ import { api } from "../global.js"
 import { loadPublicMenu } from './menu.js';
 import { createScheduleCard} from "../components/schedule.js";
 import { goToReservation } from "../components/nav.js";
+import { generateTemplate } from "../utils.js";
 
+const DEFAULT_LOGO = "https://media.istockphoto.com/id/1038356020/vector/restaurant-icon.jpg?s=612x612&w=0&k=20&c=Tk_v3JuJA4lz_8ZRJi78xS4p75Idqt97uEtYJciVtFI=";
 
 if (window.location.pathname.toLowerCase().includes("restaurantdetail")){
 document.addEventListener("DOMContentLoaded", async()=>{
@@ -28,44 +30,34 @@ export async function loadRestaurant(restID){
 }
 
 async function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], rating, address, hours, phone}) {
-  // Create main container
-  const hr_break = document.createElement('hr')
-  const container = document.createElement('div');
-  container.id = 'restaurant-info';
-
   // setup page title
   document.querySelector('title').innerText = `TableTrack | ${name ? name : '404'}`
 
-  // --- Header (name + image) ---
-  const nameHeader = document.createElement('span');
-  nameHeader.id = 'restaurant-name';
-
-  const img = document.createElement('img');
-  img.src = logo || "https://media.istockphoto.com/id/1038356020/vector/restaurant-icon.jpg?s=612x612&w=0&k=20&c=Tk_v3JuJA4lz_8ZRJi78xS4p75Idqt97uEtYJciVtFI=";
-
-  nameHeader.appendChild(img);
-  nameHeader.innerHTML = nameHeader.innerHTML + `<h1>${name || "No name found"} </h1>`; 
-  
-  const tagsSpan = document.createElement("span")
-  tagsSpan.classList.add('tags')
-  tagsSpan.innerHTML = tags.map(tag => `<p>${tag}</p>`).join('') || "<p> no tags found</p>";
+  const tags_html = tags.map(tag => `<p>${tag}</p>`).join('') || "<p> no tags found</p>";
+  const container = generateTemplate(`<div id="restaurant-info">
+    <span id="restaurant-name">
+    <img src="${logo || DEFAULT_LOGO}"/>
+    <h1>${name || "No name found"} </h1>
+    </span>
+    <span class="tags">
+      ${tags_html}
+    </span>
+    </div>`)
 
   // --- Detail Section ---
   const detailSection = createDetailSection({restID,name,address,rating,hours,phone})
+  container.append(detailSection)
 
-  // --- Content Section ---
-  const contentSection = document.createElement('section');
-  contentSection.id = 'restaurant-content';
-
-  
-  container.append(nameHeader, tagsSpan, detailSection);
-  
   // --- weekly schedule ----
   const schedule_req = await api.getFullSchedule(restID)
   if (schedule_req.code<300){
     const weeklySchedule = createScheduleCard(schedule_req.schedule)
     container.append(weeklySchedule)
-  }
+  }    
+  
+  const hr_break = document.createElement('hr')
+  // --- Content Section ---
+  const contentSection = generateTemplate(`<section id="restaurant-content"/>`)
 
   // --- populate  ----
   container.append(hr_break,contentSection)
@@ -73,43 +65,27 @@ async function createRestaurantInfo({ restID, name, logo,tags=["no-tag-found"], 
   return container;
 }
 
+
 function createDetailSection({restID,rating,hours,address,phone}){
-  const detailSection = document.createElement('section');
-  detailSection.className = 'detail-header';
-
-  const detailsDiv = document.createElement('div');
-
-  const ratingP = document.createElement('p');
-  ratingP.className = 'rating';
-  ratingP.textContent = `⭐ ${rating || "NaN"}`;
-
-  const locationP = document.createElement('p');
-  locationP.id = 'restaurant-location';
-  locationP.innerHTML = `Location: <span>${address || "404 Lost street, Nowhere, Never Land"}</span>`;
-
-  const hoursP = document.createElement('p');
-  hoursP.id = 'restaurant-hours';
-  hoursP.textContent = `Hours: ${hours || "13pm-14pm"}`;
-
-  const phoneNumP = document.createElement('p');
-  phoneNumP.id = 'restaurant-phone';
-  phoneNumP.innerHTML = `Phone: <span>${phone || "204 - 111 - 1111"}</span>`;
-
-  detailsDiv.append(ratingP, locationP, phoneNumP);
-
-  // --- Reservation Button ---
-  const reservationBtn = createReservationButton(restID)
-
-  detailSection.append(detailsDiv, reservationBtn);
+  const detailSection = generateTemplate(`<section class="detail-header">
+    <div>
+    <p class="rating">⭐ ${rating || "NaN"}</p> 
+    <p id="restaurant-location">Location: <span>${address || "404 Lost street, Nowhere, Never Land"}</span></p>
+    <p id="restaurant-hours">Hours: ${hours || "13pm-14pm"}</p>
+    <p id="restaurant-phone">Phone: <span>${phone || "204 - 111 - 1111"}</span></p>
+    </div>
+    </section>`)
+    
+    // --- Reservation Button ---
+    const reservationBtn = createReservationButton(restID)
+    detailSection.append(reservationBtn)
 
   return detailSection;
 }
 
 function createReservationButton(restID){
-  const reservationBtn = document.createElement('button');
-  reservationBtn.className = 'btn reservation-btn';
-  reservationBtn.textContent = 'Make Reservation';
-  
+  const reservationBtn = generateTemplate(`<button class="btn reservation-btn">Make Reservation</button>`)
+
   reservationBtn.addEventListener("click",()=>{
     goToReservation(restID)
   })
