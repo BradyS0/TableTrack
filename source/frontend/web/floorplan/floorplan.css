@@ -11,6 +11,7 @@
   --text-muted: #9c8f7d;
   --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.12);
   --danger : #c0392b; 
+  --danger-background : #fdd8d2;
 }
 
 /* Reset-ish */
@@ -183,6 +184,30 @@ body {
   line-height: 1.35;
 }
 
+#save-changes{anchor-name: --fp-save-btn;}
+
+#save-msg{
+  position: absolute;
+  position-anchor: --fp-save-btn;
+  top: anchor(bottom);
+  right: anchor(right);
+  animation: drop .2s forwards;
+  margin-top: 1.5rem;
+  margin-right: .2rem;
+  border-radius: 1000px;
+  border: 1px solid #ded1c1;
+  padding: .3rem .8rem;
+  font-weight: 500;
+  &.primary{
+    color: #d2ffe3;
+    background: var(--success);
+  }
+  &.danger{
+    color : var(--danger);
+    background: var(--danger-background);
+  }
+}
+
 /* Tools */
 
 .editor-tools {
@@ -284,6 +309,7 @@ ul.controls-list{
   z-index: 999999;
   pointer-events: auto;
   overflow: hidden;
+  animation: drop .2s forwards;
 }
 
 .context-item {
@@ -302,7 +328,7 @@ ul.controls-list{
 }
 
 .context-item.danger:hover {
-  background: #ffe8e2;
+  background: var(--danger-background);
 }
 
 /* Modal (matches your existing app style) */
@@ -326,6 +352,7 @@ ul.controls-list{
   min-width: 280px;
   max-width: 360px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  animation: drop .2s forwards;
 }
 
 .modal h3 {
@@ -433,3 +460,15 @@ label{
 }
 
 
+@keyframes drop{
+  0%{
+    transform: translateY(-10px) scale(0.2);
+    opacity: 0;
+    z-index: -1;
+  }
+  100%{
+    transform: translateY(1) scale(1);
+    opacity: 1;
+    z-index: 100;
+  }
+}

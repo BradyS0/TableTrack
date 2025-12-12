@@ -37,6 +37,7 @@ export class LayoutEditor {
   registerItem(item) {
     this.state.items.push(item);
     item.mount(this.itemLayer);
+    document.getElementById("save-changes").disabled = false
   }
 
   unregisterItem(item) {
@@ -45,6 +46,7 @@ export class LayoutEditor {
       this.selectItem(null);
     }
     this.itemLayer.draw();
+    document.getElementById("save-changes").disabled = false
   }
 
   selectItem(item) {
@@ -316,6 +318,7 @@ drawGrid() {
       tableItem.data.capacity = parseInt(capInput.value, 10) || 4;
       tableItem.data.reservable = chk.checked;
       backdrop.remove();
+      document.getElementById("save-changes").disabled = false
     });
 
     footer.appendChild(cancel);

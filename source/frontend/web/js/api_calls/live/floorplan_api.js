@@ -19,7 +19,7 @@ loader.showLoading()
         result.code = req.status;
         const data  = await req.json();
         if(result.code < 300) 
-            result.message = 'Request completed';
+            result.message = 'changes saved successfully.';
         else
             result.message = data.error;
 
@@ -68,7 +68,7 @@ async function set_layout(restID, layout)
         result.code = req.status;
         const data  = await req.json();
         if(result.code < 300) 
-            result.message = 'Request completed';
+            result.message = 'changes saved successfully';
         else
             result.message = data.error;
 
