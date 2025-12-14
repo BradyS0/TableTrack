@@ -64,7 +64,7 @@ export class TableItem extends Item {
 
   changeLabel(id){
     this.setID(id)
-    this.label.text(`${id}`)
+    this.label.text(`${this.data.capacity}`)
   }
 
   changeFill(colorHex){

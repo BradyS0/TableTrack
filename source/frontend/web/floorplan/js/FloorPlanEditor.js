@@ -19,7 +19,17 @@ export class FloorPlanEditor {
       lastPointerPos: null,
       cameraPanning: false,
       items: [],
-      selectedItem: null
+      selectedItem: null,
+      save: {
+        disable: ()=>{
+           if(document.getElementById("save-changes"))
+             document.getElementById("save-changes").disabled = true
+        },
+        enable: ()=>{
+           if(document.getElementById("save-changes"))
+            document.getElementById("save-changes").disabled = false
+        }
+      } 
     };
 
     this._initStage();
@@ -230,7 +240,7 @@ export class FloorPlanEditor {
   _onPolygonComplete() {
     const tabEditor = this.rootEl.querySelector("#tab-editor");
     tabEditor.classList.remove("disabled");
-    document.getElementById("save-changes").disabled = false
+    this.state.save.enable();
     // this.setMode("editor");
   }
 
@@ -247,7 +257,7 @@ export class FloorPlanEditor {
     this.state.isDrawing = false;
     this.creator._redrawPolygon();
     this._onPolygonComplete()
-    document.getElementById("save-changes").disabled = true
+    this.state.save.disable()
   }
 
   loadItems(itemList){
@@ -259,7 +269,7 @@ export class FloorPlanEditor {
     for(let item of itemList.misc){
       this.editor.addItem(item)
     }
-    document.getElementById("save-changes").disabled = true
+    this.state.save.disable()
   }
 
   //return logic

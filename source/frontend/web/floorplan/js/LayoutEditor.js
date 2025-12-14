@@ -37,7 +37,7 @@ export class LayoutEditor {
   registerItem(item) {
     this.state.items.push(item);
     item.mount(this.itemLayer);
-    document.getElementById("save-changes").disabled = false
+    this.state.save.enable()
   }
 
   unregisterItem(item) {
@@ -46,7 +46,7 @@ export class LayoutEditor {
       this.selectItem(null);
     }
     this.itemLayer.draw();
-    document.getElementById("save-changes").disabled = false
+    this.state.save.enable()
   }
 
   selectItem(item) {

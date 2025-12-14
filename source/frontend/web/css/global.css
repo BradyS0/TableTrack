@@ -76,8 +76,12 @@ nav .user-options{
 .nav-active{
     transition: left 300ms ease-in, opacity 500ms ease; 
     left:0;
-    opacity: .98;
-    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.2));    
+    background-color: rgba(255,255,255,0.3);
+    opacity: 1;
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.2)); 
+    backdrop-filter: blur(12px) 
+    saturate(150%)
+    brightness(2.5);   
     z-index: 10;
 }
 
@@ -130,15 +134,13 @@ nav .user-options{
     color: white;
     font-weight: bold;
     cursor: pointer;
+
+    &:hover{filter: brightness(1.5);}
   }
   
 .login-btn {
     padding: 0.8rem 1.25rem;
     transition: all ease-in 100ms;
-}
-
-.login-btn:hover{
-    background-color: #464545 ;
 }
 
 
