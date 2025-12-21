@@ -1,1 +1,0 @@
-export { default } from "https://cdn.jsdelivr.net/npm/konva@9/+esm";

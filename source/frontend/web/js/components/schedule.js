@@ -2,16 +2,17 @@ import { floatToTime } from "../logic/format-utils.js";
 import  '../../css/components/schedule.css';
 import { generateTemplate } from "../utils.js"
 
+export const DAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+
 // Creates the full schedule card
 export function createScheduleCard(scheduleData) {
-  const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
   
   const card = generateTemplate(`<div class="schedule-card">
     <h3>Weekly Schedule</h3></div>`)
 
   const list = generateTemplate(`<ul class="schedule-list"/>`)
 
-  days.forEach(day => {
+  DAYS.forEach(day => {
     const open = scheduleData[day]?.open;
     const close = scheduleData[day]?.close;
 

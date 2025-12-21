@@ -1,6 +1,8 @@
 import { LayoutCreator } from "./LayoutCreator.js";
 import { LayoutEditor } from "./LayoutEditor.js";
-import Konva from './konva.js'
+import Konva from "konva";
+import { generateTemplate } from "../../js/utils.js";
+
 
 export class FloorPlanEditor {
   constructor(rootEl) {
@@ -8,6 +10,7 @@ export class FloorPlanEditor {
     this.container = rootEl.querySelector("#konva-container");
     this.overlayRoot = rootEl.querySelector("#overlay-root");
     this.statusBar = rootEl.querySelector("#status-bar");
+    this.lastShown = 0;
 
     this.state = {
       mode: "creator",
@@ -19,7 +22,20 @@ export class FloorPlanEditor {
       lastPointerPos: null,
       cameraPanning: false,
       items: [],
-      selectedItem: null
+      selectedItem: null,
+      changeCount: 0,
+      save: {
+        disable: () => {
+          if (document.getElementById("save-changes"))
+            document.getElementById("save-changes").disabled = true;
+          this.clearChanges();
+        },
+        enable: () => {
+          if (document.getElementById("save-changes"))
+            document.getElementById("save-changes").disabled = false;
+          this._incChanges();
+        },
+      },
     };
 
     this._initStage();
@@ -30,7 +46,7 @@ export class FloorPlanEditor {
     this.stage = new Konva.Stage({
       container: this.container,
       width: this.container.clientWidth,
-      height: this.container.clientHeight
+      height: this.container.clientHeight,
     });
 
     this.backgroundLayer = new Konva.Layer();
@@ -72,61 +88,61 @@ export class FloorPlanEditor {
   }
 
   _attachStageEvents() {
-   
-     this.stage.on("mousedown", (evt) => {
-    const pointer = this.stage.getPointerPosition();
-    const worldPos = this.stage.getRelativePointerPosition();
+    this.stage.on("mousedown", (evt) => {
+      const pointer = this.stage.getPointerPosition();
+      const worldPos = this.stage.getRelativePointerPosition();
 
-    // screen-space for panning
-    this.state.lastPointerScreenPos = pointer;
-
-    // L+R buttons = pan
-    const buttons = evt.evt.buttons || 0;
-    if ((buttons & 3) === 3) {
-      this.state.cameraPanning = true;
-      return;
-    }
-
-    if (this.state.mode === "creator") {
-      this.creator.onMouseDown(evt, worldPos);
-    } else {
-      if (evt.evt.button === 0) { // left only for editor tools
-        this.editor.onMouseDown(evt, worldPos);
-      }
-    }
-  });
-
-  this.stage.on("mousemove", (evt) => {
-    const pointer = this.stage.getPointerPosition();
-    const worldPos = this.stage.getRelativePointerPosition();
-    if (!pointer || !worldPos) return;
-
-    if (this.state.cameraPanning && this.state.lastPointerScreenPos) {
-      const dx = pointer.x - this.state.lastPointerScreenPos.x;
-      const dy = pointer.y - this.state.lastPointerScreenPos.y;
-      this.stage.x(this.stage.x() + dx);
-      this.stage.y(this.stage.y() + dy);
-      this.stage.batchDraw();
+      // screen-space for panning
       this.state.lastPointerScreenPos = pointer;
-      return;
-    }
 
-    if (this.state.mode === "creator") {
-      this.creator.onMouseMove(evt, worldPos);
-    } else {
-      this.editor.onMouseMove(evt, worldPos);
-    }
-  });
+      // L+R buttons = pan
+      const buttons = evt.evt.buttons || 0;
+      if ((buttons & 3) === 3) {
+        this.state.cameraPanning = true;
+        return;
+      }
 
-  this.stage.on("mouseup", (evt) => {
-    const worldPos = this.stage.getRelativePointerPosition();
-    this.state.cameraPanning = false;
-    this.state.lastPointerScreenPos = null;
+      if (this.state.mode === "creator") {
+        this.creator.onMouseDown(evt, worldPos);
+      } else {
+        if (evt.evt.button === 0) {
+          // left only for editor tools
+          this.editor.onMouseDown(evt, worldPos);
+        }
+      }
+    });
 
-    if (this.state.mode === "editor") {
-      this.editor.onMouseUp(evt, worldPos);
-    }
-  });
+    this.stage.on("mousemove", (evt) => {
+      const pointer = this.stage.getPointerPosition();
+      const worldPos = this.stage.getRelativePointerPosition();
+      if (!pointer || !worldPos) return;
+
+      if (this.state.cameraPanning && this.state.lastPointerScreenPos) {
+        const dx = pointer.x - this.state.lastPointerScreenPos.x;
+        const dy = pointer.y - this.state.lastPointerScreenPos.y;
+        this.stage.x(this.stage.x() + dx);
+        this.stage.y(this.stage.y() + dy);
+        this.stage.batchDraw();
+        this.state.lastPointerScreenPos = pointer;
+        return;
+      }
+
+      if (this.state.mode === "creator") {
+        this.creator.onMouseMove(evt, worldPos);
+      } else {
+        this.editor.onMouseMove(evt, worldPos);
+      }
+    });
+
+    this.stage.on("mouseup", (evt) => {
+      const worldPos = this.stage.getRelativePointerPosition();
+      this.state.cameraPanning = false;
+      this.state.lastPointerScreenPos = null;
+
+      if (this.state.mode === "editor") {
+        this.editor.onMouseUp(evt, worldPos);
+      }
+    });
 
     this.stage.on("wheel", (evt) => {
       evt.evt.preventDefault();
@@ -141,13 +157,13 @@ export class FloorPlanEditor {
 
       const mousePointTo = {
         x: (pointer.x - this.stage.x()) / oldScale,
-        y: (pointer.y - this.stage.y()) / oldScale
+        y: (pointer.y - this.stage.y()) / oldScale,
       };
 
       this.stage.scale({ x: scale, y: scale });
       const newPos = {
         x: pointer.x - mousePointTo.x * scale,
-        y: pointer.y - mousePointTo.y * scale
+        y: pointer.y - mousePointTo.y * scale,
       };
       this.stage.position(newPos);
       this.stage.batchDraw();
@@ -177,26 +193,28 @@ export class FloorPlanEditor {
     });
 
     clearBtn.addEventListener("click", () => {
-      if(this.state.mode === 'read-only') return 
+      if (this.state.mode === "read-only") return;
 
-        this.state.items.forEach(it => it.delete());
-        this.state.items = [];
+      this.state.items.forEach((it) => it.delete());
+      this.state.items = [];
 
-        if(this.state.mode ==='creator'){
-          this.creator.reset();
-          tabEditor.classList.add("disabled");
-        }
-      document.getElementById("save-changes").disabled = false
+      if (this.state.mode === "creator") {
+        this.creator.reset();
+        tabEditor.classList.add("disabled");
+      }
+      this.state.save.disable()
     });
 
-    this.rootEl.querySelectorAll(".tool-btn").forEach(btn => {
+    this.rootEl.querySelectorAll(".tool-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         if (this.state.mode !== "editor") return;
         const tool = btn.dataset.tool;
         this.state.tool = tool;
-        this.rootEl.querySelectorAll(".tool-btn").forEach(b =>
-          b.classList.toggle("active", b.dataset.tool === tool)
-        );
+        this.rootEl
+          .querySelectorAll(".tool-btn")
+          .forEach((b) =>
+            b.classList.toggle("active", b.dataset.tool === tool)
+          );
       });
     });
 
@@ -210,81 +228,119 @@ export class FloorPlanEditor {
     const tabCreator = this.rootEl.querySelector("#tab-creator");
     const tabEditor = this.rootEl.querySelector("#tab-editor");
     const toolsSection = this.rootEl.querySelector("#editor-tools");
-    const toolTips = document.querySelectorAll('section.controls-list')
-    
+    const toolTips = document.querySelectorAll("section.controls-list");
+
     tabCreator.classList.toggle("active", mode === "creator");
     tabEditor.classList.toggle("active", mode === "editor");
-    
-    const isEditMode = mode === "editor"
-    const isCreatorMode =  mode === "creator" 
 
-    toolTips[0].style.display = isCreatorMode ? 'block' : 'none'
-    
+    const isEditMode = mode === "editor";
+    const isCreatorMode = mode === "creator";
+
+    toolTips[0].style.display = isCreatorMode ? "block" : "none";
+
     this.editor.setMode(isEditMode);
-    toolTips[1].style.display= toolsSection.style.display = isEditMode ? 'block' : 'none';
+    toolTips[1].style.display = toolsSection.style.display = isEditMode
+      ? "block"
+      : "none";
 
-    for(let item of this.state.items)
-      item.setDraggable(mode !== "read-only")
+    for (let item of this.state.items) item.setDraggable(mode !== "read-only");
   }
 
   _onPolygonComplete() {
     const tabEditor = this.rootEl.querySelector("#tab-editor");
     tabEditor.classList.remove("disabled");
-    document.getElementById("save-changes").disabled = false
+    this.state.save.enable();
     // this.setMode("editor");
   }
 
   _updateStatus() {
-    this.statusBar.textContent =
-      `Mode: ${this.state.mode} • Scale: ${this.state.worldScale.toFixed(2)}x`;
+    this.statusBar.textContent = `Mode: ${
+      this.state.mode
+    } • Scale: ${this.state.worldScale.toFixed(2)}x`;
+  }
+
+  showSaveMessage(timer=7000) {
+    const old_msg = document.getElementById("save-msg");
+    const message = generateTemplate(`<p id="save-msg">
+      Hey! You’ve made a lot of changes — don’t forget to save 🙂
+      </p>`);
+
+    if (old_msg) old_msg.replaceWith(message);
+    else document.body.append(message);
+
+    setTimeout(() => {
+      message.remove();
+    }, timer);
+  }
+  
+  maybeShowMessage() {
+    const now = Date.now();
+    const changeThreshold = 10
+    if (now - this.lastShown < 50_000) return false; // 50s cooldown
+
+    const probability = this.state.changeCount > changeThreshold ? 0.7 : 0.1;
+
+    if (Math.random() < probability) {
+      this.lastShown = now;
+      this.showSaveMessage();
+      return true;
+    }
+
+    return false;
+  }
+
+  _incChanges() {
+    this.state.changeCount += 1;
+    if(this.state.changeCount % 3 === 0 || this.state.changeCount>20) 
+      this.maybeShowMessage()
+  }
+  clearChanges() {
+    this.state.changeCount = 0;
   }
 
   //populate logic
-  loadFloorplanPolygon(polygon){
-    if(polygon.length<3) return
-    this.state.polygonPoints = polygon.map(p => ({ x: p.x, y: p.y }));
+  loadFloorplanPolygon(polygon) {
+    if (polygon.length < 3) return;
+    this.state.polygonPoints = polygon.map((p) => ({ x: p.x, y: p.y }));
     this.state.polygonClosed = true;
     this.state.isDrawing = false;
     this.creator._redrawPolygon();
-    this._onPolygonComplete()
-    document.getElementById("save-changes").disabled = true
+    this._onPolygonComplete();
+    this.state.save.disable();
   }
 
-  loadItems(itemList){
-    this.state.items.forEach(it => it.delete());
-    for(let table of itemList.tables){
-      this.editor.addItem(table)
+  loadItems(itemList) {
+    this.state.items.forEach((it) => it.delete());
+    for (let table of itemList.tables) {
+      this.editor.addItem(table);
     }
 
-    for(let item of itemList.misc){
-      this.editor.addItem(item)
+    for (let item of itemList.misc) {
+      this.editor.addItem(item);
     }
-    document.getElementById("save-changes").disabled = true
+    this.state.save.disable();
   }
 
   //return logic
-  getFloorLayout(){
-    return {floorplan: this.state.polygonPoints}
+  getFloorLayout() {
+    return { floorplan: this.state.polygonPoints };
   }
 
-  getTables(){
-    let output = []
+  getTables() {
+    let output = [];
     for (let item of this.state.items)
-      if (item.type === 'table')
-        output.push(item)
-    
+      if (item.type === "table") output.push(item);
+
     output.sort((a, b) => a.data.capacity - b.data.capacity);
-    return output
+    return output;
   }
 
-  getItems(){
-    let output = {tables:[], misc:[]}
-    for (let item of this.state.items){
-      if (item.type === 'table')
-        output.tables.push(item.serialize())
-      else
-        output.misc.push(item.serialize())
+  getItems() {
+    let output = { tables: [], misc: [] };
+    for (let item of this.state.items) {
+      if (item.type === "table") output.tables.push(item.serialize());
+      else output.misc.push(item.serialize());
     }
-    return output
+    return output;
   }
 }

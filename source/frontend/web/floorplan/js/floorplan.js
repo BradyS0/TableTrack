@@ -39,6 +39,7 @@ async function buildFloorplan(restID, floorplan) {
   if (fp.code < 300) floorplan.loadFloorplanPolygon(fp.data.floorplan);
 
   if (layout.code < 300) floorplan.loadItems(layout.data);
+  setUnload(floorplan)
 }
 
 function displaySavedMsg(msg, success) {
@@ -55,4 +56,16 @@ function displaySavedMsg(msg, success) {
   setTimeout(() => {
     message.remove();
   }, 2000);
+}
+
+
+function setUnload(floorplan){
+  window.addEventListener('beforeunload', function (event) {
+            if (floorplan.state.changeCount>2) {
+                // Standard way to trigger the confirmation dialog in modern browsers
+                event.preventDefault();
+                event.returnValue = ''; 
+            }
+            // If formChanged is false, no dialog will appear, and navigation proceeds normally.
+  });
 }

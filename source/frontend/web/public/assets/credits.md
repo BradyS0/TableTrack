@@ -9,4 +9,6 @@ following document will be used to keep track of sources and credits to any asse
 
 - magnifying-glass - https://fontawesome.com/icons/magnifying-glass?f=classic&s=solid
 
+- calendar - https://www.reshot.com/free-svg-icons/item/calendar-boxed-UAD9PSZXNL/
+
 

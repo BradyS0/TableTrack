@@ -4,9 +4,12 @@ import { goToHome, goToLogin } from "../../js/components/nav.js";
 import { display_popup_msg } from "../../js/components/popupMsg.js";
 import { isoTo12hr } from "../../js/logic/format-utils.js";
 import { getUserState } from "../../js/utils.js";
+import { DAYS } from "../../js/components/schedule.js";
+import { createDatePicker } from "../../js/components/datePicker.js";
+import { generateTemplate } from "../../js/utils.js";
 
-const MAX_DAYS_AHEAD = 14;
 const MAX_ALLOWED_GUESTS = 10;
+let invalid_days = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
   const root = document.querySelector(".editor-root");
@@ -29,10 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function populateFloorPlan(rest, floorplan) {
   const guest_count = document.getElementById("guest-count");
   populateGuestDropDown(guest_count, MAX_ALLOWED_GUESTS);
-
   document.getElementById("rest-name").innerText = rest.name;
-
-  document.getElementById('rest-name').innerText = rest.name
 
   //make a request to fetch floorplan and layout using restID
   const floor = await api.get_walls(rest.restID);
@@ -52,6 +52,7 @@ async function populateFloorPlan(rest, floorplan) {
   }
   
   floorplan.setMode("read-only");
+  await setInvalidDays(rest.restID)
   const tables = floorplan.getTables();
   tables.forEach((table) => {
     table.group.on("click", async () => {
@@ -88,9 +89,9 @@ async function showReservations(restID, table) {
   const guest_count = document.getElementById("guest-count");
 
   if (!table.data.reservable) return;
-  title.innerHTML = `Available time-slots for ${table.id} <br> max-capacity: ${table.data.capacity}`;
+  title.innerHTML = `Table capacity: ${table.data.capacity}`;
 
-  const daySelect = createDaySelect();
+  const daySelect = createDatePicker(title, invalid_days);
   let i_tickets = await api.get_tickets(restID, table.id, daySelect.value);
   if(i_tickets.data.length === 0) message.innerHTML = "No Possible Reservations Found"
   for (let ticket of remove2Keep1(i_tickets.data))
@@ -98,12 +99,10 @@ async function showReservations(restID, table) {
       generateTicket(restID, guest_count, table, daySelect, ticket)
     );
 
-  title.append(daySelect);
 
   daySelect.addEventListener("change", async () => {
     resContainer.innerHTML = "";
     message.innerHTML = ""
-    daySelect.value = validateDate(daySelect);
     const tickets = await api.get_tickets(restID, table.id, daySelect.value);
     if(tickets.data.length === 0) message.innerHTML = "No Possible Reservations Found"
     for (let ticket of remove2Keep1(tickets.data)) {
@@ -152,16 +151,6 @@ function createReservationPopup(
   date,
   time
 ) {
-  console.log(time);
-  const backdrop = document.createElement("div");
-  backdrop.className = "modal-backdrop";
-  const modal = document.createElement("div");
-  modal.className = "modal";
-
-  backdrop.appendChild(modal);
-
-  const heading = document.createElement("h3");
-  heading.innerText = "Reservation Confirmation";
 
   const guestSelectParent = createGuestDropDown(
     table.data.capacity,
@@ -169,20 +158,25 @@ function createReservationPopup(
   );
 
   const dateStamp = getDate(date);
-  const timeDateInfo = document.createElement("section");
-  timeDateInfo.className = "modal-row";
-  timeDateInfo.innerHTML = `Reservation on <b>${dateStamp.toDateString()}</b> at <b>${isoTo12hr(
-    time
-  )}</b>`;
-
-  const acceptBtn = document.createElement("button");
-  acceptBtn.className = "btn2 small primary";
-  acceptBtn.innerText = "Confirm";
-
-  const cancelBtn = document.createElement("button");
-  cancelBtn.className = "btn2 small danger";
-  cancelBtn.innerText = "Cancel";
-
+  const backdrop = generateTemplate(`
+    <div class="modal-backdrop">
+    <div class="modal">
+      <h3>Reservation Confirmation</h3>
+      <section class="modal-row">
+        ${`Reservation on 
+          <b>${dateStamp.toDateString()}</b> at 
+        <b>${isoTo12hr(time)}</b>`}
+      </section>
+      ${guestSelectParent.outerHTML}
+      <section class="modal-footer">
+        <button class = "btn2 small danger">Cancel</button>
+        <button class = "btn2 small primary">Confirm</button>
+      </section>
+    </div>
+    </div>`
+  )
+  
+  const acceptBtn = backdrop.querySelector("button.primary");
   acceptBtn.addEventListener("click", async () => {
     const res = await api.create_res(
       restID,
@@ -193,49 +187,17 @@ function createReservationPopup(
     );
     console.log(res);
     display_popup_msg("Reservation Status",res.message)
-
+    
     backdrop.remove();
   });
-
+  
+  const cancelBtn = backdrop.querySelector("button.danger");
   cancelBtn.addEventListener("click", () => backdrop.remove());
-
-  const modalFooter = document.createElement("section");
-  modalFooter.className = "modal-footer";
-
-  modalFooter.append(cancelBtn, acceptBtn);
-  modal.append(heading, timeDateInfo, guestSelectParent, modalFooter);
 
   document.querySelector("body").append(backdrop);
 }
 
 // helper for checks and html element creation
-
-function createDaySelect() {
-  const daySelect = document.createElement("input");
-  daySelect.id = "day-select";
-  daySelect.type = "date";
-  daySelect.className = "btn2 day-select";
-
-  daySelect.min = daySelect.value = futureDateString(1);
-  daySelect.max = futureDateString(MAX_DAYS_AHEAD);
-
-  return daySelect;
-}
-
-function futureDateString(daysToAdd) {
-  const date = new Date();
-  // Advance the date by the specified number of days
-  date.setDate(date.getDate() + daysToAdd);
-
-  // Format components to YYYY-MM-DD
-  const year = date.getFullYear();
-  // Months are 0-indexed, so add 1 and pad with '0'
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
-}
-
 function getDate(yearMonthDay) {
   let [year, month, day] = yearMonthDay.split("-");
   month = month === 1 || month == 0 ? 0 : month - 1;
@@ -244,31 +206,19 @@ function getDate(yearMonthDay) {
   return date;
 }
 
-function validateDate(daySelect) {
-  const min = new Date(daySelect.min);
-  const max = new Date(daySelect.max);
-  const curr = new Date(daySelect.value);
-
-  return min <= curr && curr <= max ? daySelect.value : daySelect.min;
-}
 
 function createGuestDropDown(maxCapacity, selectedCapacity) {
-  const labelGuestSize = document.createElement("label");
-  labelGuestSize.className = "modal-row";
-  labelGuestSize.innerText = "Guest Amount";
-  labelGuestSize.htmlFor = "res-guest";
+  const labelGuestSize = generateTemplate(`<label class="modal-row" for="res-guest"> Guest Amount
+      <select class="btn2 drop-down" id="res-guest" name="rest-guest"></select>
+    </label>`)
 
-  const select = document.createElement("select");
-  select.className = "btn2 drop-down";
-  select.id = "res-guest";
-
+  const select = labelGuestSize.querySelector("#res-guest")
   populateGuestDropDown(select, maxCapacity);
 
   select.selectedIndex =
     selectedCapacity > maxCapacity ? 0 : selectedCapacity - 1;
 
   labelGuestSize.select = select;
-  labelGuestSize.append(select);
   return labelGuestSize;
 }
 
@@ -294,12 +244,26 @@ function empty_reservation(restID) {
 function remove2Keep1(arr) {
   if (arr.length > 25) {
     const result = [];
-    for (let i = 0; i < arr.length; i += 3) {
-      if (arr[i + 2] !== undefined) {
-        result.push(arr[i + 2]);
+    for (let i = 0; i < arr.length; i += 2) {
+      if (arr[i] !== undefined) {
+        result.push(arr[i]);
       }
     }
     return result;
   }
   return arr;
+}
+
+async function setInvalidDays(restID){
+  const req = await api.getFullSchedule(restID)
+  if(req.code>299) return
+  const schedule = req.schedule;
+  const data = []
+  for (let i=0; i<DAYS.length ; i++){
+    const day = schedule[DAYS[i]]
+    if(day.open===day.close || day.open===-1 || day.close===-1)
+      data.push(i)
+  }
+
+  invalid_days = data
 }

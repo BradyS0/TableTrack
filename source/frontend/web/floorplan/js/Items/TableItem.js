@@ -1,7 +1,7 @@
 // js/items/TableItem.js
 import { Item } from "./Item.js";
 import { pointInPolygon } from "../geometry.js";
-import Konva from "../konva.js"
+import Konva from "konva"
 
 export class TableItem extends Item {
     static i = 0;
@@ -11,6 +11,7 @@ export class TableItem extends Item {
         TableItem.i++;
         
         this.data = {...data}
+        this.data.rotation = 0
         this._buildVisuals();
         this.group.position(pos);
     }
@@ -64,7 +65,7 @@ export class TableItem extends Item {
 
   changeLabel(id){
     this.setID(id)
-    this.label.text(`${id}`)
+    this.label.text(`${this.data.capacity}`)
   }
 
   changeFill(colorHex){
@@ -74,6 +75,7 @@ export class TableItem extends Item {
   rotate(deltaDeg) {
     this.data.rotation = (this.data.rotation + deltaDeg) % 360;
     this.group.rotation(this.data.rotation);
+    this.editor.state.save.enable()
   }
 
   getContextMenuItems() {
