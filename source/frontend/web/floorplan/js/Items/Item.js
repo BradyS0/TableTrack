@@ -1,4 +1,4 @@
-import Konva from "../konva.js"
+import Konva from "konva"
 export class Item {
   /**
    * @param {LayoutEditor} editor

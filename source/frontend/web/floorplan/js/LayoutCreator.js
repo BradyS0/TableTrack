@@ -1,4 +1,4 @@
-import Konva from './konva.js'
+import Konva from "konva"
 import { distance, constrainToAxis, formatFeetInches } from "./geometry.js";
 
 // Detect real segment intersection (excluding shared endpoints)

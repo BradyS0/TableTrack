@@ -1,4 +1,4 @@
-import Konva from './konva.js'
+import Konva from "konva"
 import { pointInPolygon } from "./geometry.js";
 import { TableItem } from "./Items/TableItem.js";
 import { DoorItem } from "./Items/DoorItem.js";
@@ -78,6 +78,7 @@ export class LayoutEditor {
       this.registerItem(item)
       item.group.rotation(rotation)
     }
+    this.state.changeCount=0
     return item
   }
 

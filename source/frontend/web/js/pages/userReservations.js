@@ -2,7 +2,11 @@ import { api } from "../global.js";
 import { getUserState } from "../utils.js";
 import { isoTo12hr } from "../logic/format-utils.js";
 
-const container = document.getElementById("reservations");
+const container = document.querySelector(".reservations");
+// container.addEventListener("click", (e)=>{
+//   if(!e.target.className.includes("btn danger"))
+//     container.classList.toggle("open")
+// })
 
 async function loadReservations() {
   container.innerHTML = "<p class='loading'>Loading...</p>";
