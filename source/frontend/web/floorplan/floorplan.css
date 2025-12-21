@@ -1,6 +1,6 @@
 :root {
   --bg: #f7efe4;          /* page background */
-  --card: #f0f0f0;        /* main panels / cards */
+  --card: #f0f0f06c;        /* main panels / cards */
   --card-soft: #fdf7ef;
   --border-soft: #e6d7c4;
   --accent: #f5a623;      /* orange accent (similar to tags / highlights) */
@@ -11,6 +11,8 @@
   --text-muted: #9c8f7d;
   --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.12);
   --danger : #c0392b; 
+  --danger-background : #97170049;
+  --accent-dark-background: #a35f003d;
 }
 
 /* Reset-ish */
@@ -159,7 +161,7 @@ body {
 /* Side panel */
 
 .side-panel {
-  width: 260px;
+  width: 280px;
   background: var(--card-soft);
   border-right: 1px solid var(--border-soft);
   padding: 0.75rem 0.85rem;
@@ -181,6 +183,30 @@ body {
   font-size: 0.8rem;
   color: var(--text-muted);
   line-height: 1.35;
+}
+
+#save-changes{anchor-name: --fp-save-btn;}
+
+#save-msg{
+  position: absolute;
+  position-anchor: --fp-save-btn;
+  top: anchor(bottom);
+  right: anchor(right);
+  animation: drop .2s forwards;
+  margin-top: 1.5rem;
+  margin-right: .2rem;
+  border-radius: 1000px;
+  border: 1px solid #ded1c1;
+  padding: .3rem .8rem;
+  font-weight: 500;
+  &.primary{
+    color: #d2ffe3;
+    background: var(--success);
+  }
+  &.danger{
+    color : var(--danger);
+    background: var(--danger-background);
+  }
 }
 
 /* Tools */
@@ -276,7 +302,7 @@ ul.controls-list{
   position: fixed;
   background: var(--card);
   border-radius: .5rem;
-  border: 1px solid var(--border-soft);
+  border: .05rem solid transparent;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
   color: var(--text-main);
   padding: 0;
@@ -284,25 +310,31 @@ ul.controls-list{
   z-index: 999999;
   pointer-events: auto;
   overflow: hidden;
+  animation: drop .2s forwards;
+  backdrop-filter: blur(10px) brightness(1.3) saturate(110%);
 }
 
 .context-item {
   padding: 8px 14px;
   cursor: pointer;
   font-size: 0.85rem;
-  transition: background 500ms ease;
+  text-shadow: 0.05rem 0.02rem 0.08rem var(--text-main);
+  transition: background 300ms ease;
+
 }
 
 .context-item:hover {
-  background: #fff5e6;
+  transition: background 500ms linear;
+  background: var(--accent-dark-background);
 }
 
 .context-item.danger {
   color: var(--danger);
+  text-shadow:  0.05rem 0.02rem 0.05rem var(--danger);
 }
 
 .context-item.danger:hover {
-  background: #ffe8e2;
+  background: var(--danger-background);
 }
 
 /* Modal (matches your existing app style) */
@@ -316,6 +348,7 @@ ul.controls-list{
   align-items: center;
   z-index: 1000000;
   pointer-events: auto;
+  animation: backdrop-load 2s forwards ease-in;
 }
 
 .modal {
@@ -326,6 +359,8 @@ ul.controls-list{
   min-width: 280px;
   max-width: 360px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px) brightness(1.45) saturate(50%) contrast(85%);
+  animation: drop .2s forwards;
 }
 
 .modal h3 {
@@ -346,6 +381,8 @@ ul.controls-list{
   justify-content: space-between;
   gap: 0.4rem;
   margin-bottom: 0.55rem;
+  text-shadow: 0 0 0.02rem var(--text-main);
+  color: var(--text-main);
   font-size: 0.83rem;
 }
 
@@ -379,6 +416,7 @@ ul.controls-list{
   gap: 0.35rem;
   font-size: 0.8rem;
   color: var(--text-main);
+  text-shadow: 0 0 0.05rem var(--text-main);
 }
 
 .checkbox-row input {
@@ -400,8 +438,8 @@ ul.controls-list{
 
 .side-reservation-panel section{
   display: grid;
-   grid-template-columns: 1fr 1fr 1fr;
-   gap: .25rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: .2rem;
 }
 
 .side-reservation-panel section:only-child {
@@ -432,4 +470,25 @@ label{
   font-size: medium;
 }
 
+
+@keyframes drop{
+  from{
+    transform: translateY(-10px) scale(0.2);
+    opacity: 0;
+    z-index: -1;
+  }
+  to{
+    transform: translateY(1) scale(1);
+    opacity: 1;
+    z-index: 100;
+  }
+}
+
+@keyframes backdrop-load{
+  from{background: rgba(0,0,0,0);
+  }
+  to{
+    background: rgba(0,0,0,0.35);  
+  }
+}
 

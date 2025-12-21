@@ -1,4 +1,4 @@
-import Konva from './konva.js'
+import Konva from "konva"
 import { pointInPolygon } from "./geometry.js";
 import { TableItem } from "./Items/TableItem.js";
 import { DoorItem } from "./Items/DoorItem.js";
@@ -37,6 +37,7 @@ export class LayoutEditor {
   registerItem(item) {
     this.state.items.push(item);
     item.mount(this.itemLayer);
+    this.state.save.enable()
   }
 
   unregisterItem(item) {
@@ -45,6 +46,7 @@ export class LayoutEditor {
       this.selectItem(null);
     }
     this.itemLayer.draw();
+    this.state.save.enable()
   }
 
   selectItem(item) {
@@ -76,6 +78,7 @@ export class LayoutEditor {
       this.registerItem(item)
       item.group.rotation(rotation)
     }
+    this.state.changeCount=0
     return item
   }
 
@@ -316,6 +319,7 @@ drawGrid() {
       tableItem.data.capacity = parseInt(capInput.value, 10) || 4;
       tableItem.data.reservable = chk.checked;
       backdrop.remove();
+      document.getElementById("save-changes").disabled = false
     });
 
     footer.appendChild(cancel);

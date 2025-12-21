@@ -1,57 +1,37 @@
 import { floatToTime } from "../logic/format-utils.js";
-import scheduleCssUrl from '../../css/components/schedule.css?url';
+import  '../../css/components/schedule.css';
+import { generateTemplate } from "../utils.js"
+
+export const DAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
 // Creates the full schedule card
 export function createScheduleCard(scheduleData) {
-  const head = document.querySelector('head');
-  if (!document.querySelector(`link[href="${scheduleCssUrl}"]`)) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = scheduleCssUrl;
-    head.appendChild(link);
-  }
+  
+  const card = generateTemplate(`<div class="schedule-card">
+    <h3>Weekly Schedule</h3></div>`)
 
-  const card = document.createElement("div");
-  card.className = "schedule-card";
+  const list = generateTemplate(`<ul class="schedule-list"/>`)
 
-  const title = document.createElement("h3");
-  title.textContent = "Weekly Schedule";
-  card.appendChild(title);
-
-  const list = document.createElement("ul");
-  list.className = "schedule-list";
-
-  const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-
-  days.forEach(day => {
-    const item = document.createElement("li");
-    item.className = "schedule-item";
-
-    const dayLabel = document.createElement("span");
-    dayLabel.className = "schedule-day";
-    dayLabel.textContent = day.slice(0, 3);
-
-    const timeLabel = document.createElement("span");
-    timeLabel.className = "schedule-time";
-
+  DAYS.forEach(day => {
     const open = scheduleData[day]?.open;
     const close = scheduleData[day]?.close;
 
-    if (open<0 || close<0 || open===close) {
-      timeLabel.textContent = "closed";
-      timeLabel.classList.add("closed");
-    } else {
-      timeLabel.textContent = `${floatToTime(open)} - ${floatToTime(close)}`;
-    }
+    const item = generateTemplate(`<li class="schedule-item">
+      <span class="schedule-day">${day.slice(0,3)}</span>
+      ${(open<0 || close<0 || open===close) ?
+        `<span class="schedule-time closed">closed</span>` :
+        `<span class="schedule-time">${floatToTime(open)} - ${floatToTime(close)}</span>`
+      }
+      </li>`)
 
-    title.onclick = ()=>{
-      title.classList.toggle('active')
-      list.classList.toggle('active')
-    }
-
-    item.append(dayLabel,timeLabel);
     list.appendChild(item);
   });
+
+  const title = card.querySelector('h3')
+  title.onclick = ()=>{
+    title.classList.toggle('active')
+    list.classList.toggle('active')
+  }
 
   card.appendChild(list);
   card.schedule = scheduleData;

@@ -1,4 +1,5 @@
 import { floatToTime,timeToFloat } from "../logic/format-utils.js";
+import { generateTemplate } from "../utils.js"
 
 export const editPopup = function (heading) {
   const overlay = document.createElement("div");
@@ -222,13 +223,16 @@ export const editPopup = function (heading) {
   };
 
   popup.showFeedback = function (code, message) {
-    const feedback = document.createElement("span");
-    feedback.className = "feedback-msg";
-    feedback.innerText = message;
+    const feedback = generateTemplate(`<span id="feedback-msg"
+      class = "feedback-msg ${code>299 ? "feedback-fail":""}">
+      ${message.trim()}
+      </span>`)
 
-    if (code > 299) feedback.classList.add("feedback-fail");
-
-    overlay.append(feedback);
+    if(overlay.querySelector("#feedback-msg"))
+        overlay.querySelector("#feedback-msg").replaceWith(feedback)
+    else
+      overlay.append(feedback);
+    
     setTimeout(() => {
       feedback.classList.add("feedback-transition");
       setTimeout(() => {

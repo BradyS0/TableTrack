@@ -2,26 +2,19 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-bottom: 1rem;
-    
     padding: 1.25rem 1.5rem;
     border-radius: 12px;
-
     background: #ffffff;
     border: 1px solid #e5e5e5;
-    box-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.05),
-        0 1px 2px rgba(0, 0, 0, 0.04);
-
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.5s ease, box-shadow 0.15s ease;
 }
 
 /* Hover effect for better feel */
 .reservation-card:hover {
     transform: translateY(-1px);
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.08),
-        0 2px 6px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 2;
 }
 
 /* Make restaurant title stand out */
@@ -111,3 +104,70 @@
 #container h1{
     margin-bottom: 2rem;
 }
+
+.reservations{
+    display: flex;
+    flex-direction: column;
+    gap:.5rem;
+}
+
+.res-group-parent{
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+}
+
+.reservations.group{
+    gap:0;
+    & .reservation-card{
+        margin-bottom: -12rem;
+        box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.1);
+        transition: margin-bottom .5s ease,
+        transform 0.3s linear, box-shadow 0.4s ease;
+     &:hover{
+        transform: scale(1.05) translateY(-1px);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+     }
+      &:last-child {margin-bottom: 0;}
+    }
+    &.open .reservation-card{
+        margin-bottom: 1rem;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        transition-delay: 200ms transform;
+    }
+}
+
+.reservations.group h2{
+    margin-top: .9rem;
+}
+
+.reservations.group>p{
+    margin-bottom: .5rem;
+    margin-left: .2rem;
+    font-size: .9rem;
+    color : rgb(80, 58, 39);
+}
+
+.head-group{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+#filter-select{
+    margin-top: .4rem;
+    height: fit-content;
+    width: fit-content;
+    padding: .3rem .5rem;
+    padding-right: 2rem;
+    border: 1px solid grey;
+    border-radius: 1rem;
+    cursor: pointer;
+    outline: none;
+
+    &:hover{
+        background: rgb(255, 246, 238);
+        border-color: peachpuff;
+    }
+}
+

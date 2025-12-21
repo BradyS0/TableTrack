@@ -27,7 +27,7 @@ header {
     margin-bottom: 20px;
     margin-top: 5px;
     transition: 200ms height ease, 300ms background ease;
-    z-index: 2;
+    z-index: 3;
     background: linear-gradient(to bottom,#fdeacf, #fbe4c5b2, #fbe4c500);
     backdrop-filter: blur(5px);
     padding-block: .25rem;
@@ -76,8 +76,12 @@ nav .user-options{
 .nav-active{
     transition: left 300ms ease-in, opacity 500ms ease; 
     left:0;
-    opacity: .98;
-    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.2));    
+    background-color: rgba(255,255,255,0.3);
+    opacity: 1;
+    filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.2)); 
+    backdrop-filter: blur(12px) 
+    saturate(150%)
+    brightness(2.5);   
     z-index: 10;
 }
 
@@ -106,7 +110,7 @@ nav .user-options{
     top: 0;
     left: 0;
     backdrop-filter: blur(1px);
-    z-index: 1;
+    z-index: 6;
     width: 100%;
     height: 100%;
     opacity: 0;
@@ -130,15 +134,13 @@ nav .user-options{
     color: white;
     font-weight: bold;
     cursor: pointer;
+
+    &:hover{filter: brightness(1.5);}
   }
   
 .login-btn {
     padding: 0.8rem 1.25rem;
     transition: all ease-in 100ms;
-}
-
-.login-btn:hover{
-    background-color: #464545 ;
 }
 
 
@@ -230,27 +232,54 @@ form input {
 }
 
 #load-ico{
-    position: fixed;
-    inset: 0;
-    margin: 0 auto;
-    top: 175px;
-    user-select: none;
-    z-index: -1;
-    opacity: 0;
+  position: fixed;
+  inset: 0;
+  top: 175px;
+  user-select: none;
+  opacity: 0;
+  z-index: -1;
+  /* center the overlapped logo group horizontally */
+  display: flex;
+  justify-content: center;
+  height: fit-content;
+  transition: opacity 100ms ease;
+  transform: scale(.65);
 }
 
 #load-ico.active{
     opacity: 1;
-    animation: tilt .5s ease-in-out infinite alternate;
-    transform-origin: center;
-    z-index: 9999;
     transition: opacity 50ms ease;
+    z-index: 9999;
+}
+
+.load-wrap{
+    perspective: 800px;
+    perspective-origin: center;
+    user-select: none;
 }
 
 
+#logo-table{
+  position: relative;
+}
+
+#logo-tracker{
+  position: relative;   /* overlap on top of table */
+  left: -80px;
+  top: -35px;
+  transform-style: preserve-3d;
+}
+
+
+
+#load-ico.active #logo-tracker{
+  animation: tilt 2s ease infinite alternate;
+  transform-origin: center;
+}
+
 @keyframes tilt {
-  from { transform: rotate(-5deg); }
-  to   { transform: rotate(5deg); }
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(540deg); }
 }
 
 

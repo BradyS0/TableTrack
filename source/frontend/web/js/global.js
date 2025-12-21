@@ -16,8 +16,8 @@ import { createHeader } from './components/header.js';
 document.addEventListener('DOMContentLoaded', () => {
   const app = document.getElementById('app');
   const header = createHeader()
-  if (!app.contains(header)){
-    app.append(header)
-  };
+  if (!app.querySelector('header'))
+      app.append(header)
+  
 });
 

@@ -1,0 +1,111 @@
+*{
+    --hover-date : peachpuff; 
+    --hover-text : rgb(192, 111, 40); 
+}
+
+.flatpickr-day{
+    transition: all .5s ease;
+    &.selected{
+        background-color: rgb(221, 103, 0);
+    }
+    &:hover{
+        background-color: peachpuff;
+    }
+
+    &.flatpickr-disabled{
+        text-decoration-line:line-through;
+        &:hover{background-color: transparent;}
+    }
+}
+
+.flatpickr-calendar{
+    border: 1px solid transparent;
+    border-radius: .7rem;
+    overflow: hidden;
+    margin-top: 2px;
+    font-size: .9rem;
+}
+
+.numInputWrapper{
+    opacity:0;
+    user-select: none;
+}
+
+.date-fp-wrapper{
+    display: flex;
+    margin-top: .5rem ;
+    inset: 0;
+    padding: 0;  
+    width: 100%;
+
+    &::after{
+    content: "";
+    display: inline-block;
+    position: relative;
+    top: 5px;
+    left: -35px;
+    width: 20px; 
+
+    /* 1. Set the color you want here */
+    background-color: black; 
+
+    /* 2. Use the SVG as a mask */
+    -webkit-mask-image: url("../../public/assets/calander.svg");
+    mask-image: url("../../public/assets/calander.svg");
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    pointer-events: none;
+    }
+
+    &:focus-within::after, &:has(.date-fp:hover)::after{
+        background-color: var(--hover-text);
+    }
+}
+
+.date-fp{
+    flex-grow: 1;
+    padding: .5rem .7rem;
+    outline: none;
+    border : 1px solid rgba(128, 128, 128, 0.397);
+    border-radius: 1rem; 
+    text-shadow: 0 0 0 var(--hover-text);
+    font-size:0.75rem;
+    transition: 80ms ease all;
+    
+    &:hover{
+        color : var(--hover-text);
+        background: rgb(255, 242, 230);
+        border-color: var(--hover-date);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    &:focus{
+        border: 2px solid var(--hover-date);
+        text-shadow: 0.04rem 0 0 var(--hover-text);
+        background-color: var(--hover-date);
+        color : var(--hover-text);
+        box-shadow: none;
+    }
+}
+
+.flatpickr-month, .flatpickr-month select,
+.flatpickr-weekdays, .flatpickr-weekdays *{
+    background: var(--hover-date) !important;
+}
+
+.flatpickr-calendar.open.animate{
+    animation: drop .25s forwards;
+}
+
+@keyframes drop{
+  from{
+    transform: translateY(-25px);
+    opacity: 0;
+  }
+  to{
+    transform: translateY(1);
+    opacity: 1;
+  }
+}

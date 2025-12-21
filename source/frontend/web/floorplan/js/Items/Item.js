@@ -1,4 +1,4 @@
-import Konva from "../konva.js"
+import Konva from "konva"
 export class Item {
   /**
    * @param {LayoutEditor} editor
@@ -37,7 +37,10 @@ export class Item {
     });
 
     this.group.on("dragend", () => {
-      if (this.onDragEnd) this.onDragEnd();
+      if (this.onDragEnd){
+        this.onDragEnd();
+        this.editor.state.save.enable()
+      } 
     });
     
   }

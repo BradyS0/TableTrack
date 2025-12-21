@@ -15,11 +15,17 @@
     <div id="overlay" class="overlay"></div>
     <div id="app"></div>
     <main id = "container">
-      <h1>Restaurant Reservations</h1>
-      <div id="reservations"></div>
+      <section class="head-group">
+        <h1>Restaurant Reservations</h1>
+        <select id="filter-select">
+          <option value="0" default>group-by</option>
+          <option value="tableID">tables</option>
+          <option value="date_stamp">date</option>
+        </select>
+      </section>
+      <div class="reservations"></div>
     </main>
 
-    <img id="load-ico" src="assets/TableTrack-logo.svg" alt="tableTrack loading animation" width="100px"/>
     <script type="module" src="./js/global.js"></script>
     <script type="module" src="./js/pages/restaurantReservations.js"></script>
   </body>

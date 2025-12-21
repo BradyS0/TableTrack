@@ -1,4 +1,4 @@
-import Konva from "../konva.js"
+import Konva from "konva"
 import { SnappingItem } from "./SnappingItem.js";
 
 export class WindowItem extends SnappingItem {

@@ -16,6 +16,7 @@
     "vite": "^5.1.0"
   },
   "dependencies": {
-    "argon2": "^0.44.0"
+    "flatpickr": "^4.6.13",
+    "konva": "^10.0.12"
   }
 }
